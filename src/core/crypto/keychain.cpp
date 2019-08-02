@@ -682,18 +682,24 @@ namespace crypto {
     lamport::KeyHash::Shared TrustLineKeychain::ownPublicKeysHash(
         IOTransaction::Shared ioTransaction) const
     {
+        info() << "ownPublicKeysHash " << mTrustLineID;
         auto currentKeysSetSequenceNumber = ioTransaction->ownKeysHandler()->maxKeySetSequenceNumber(
             mTrustLineID);
+        info() << "currentKeysSetSequenceNumber " << currentKeysSetSequenceNumber;
         auto ownPublicKeys = ioTransaction->ownKeysHandler()->publicKeysBySetNumber(
             mTrustLineID,
             currentKeysSetSequenceNumber);
+        info() << "currentKeysSetSequenceNumber " << currentKeysSetSequenceNumber;
         crypto_generichash_state state;
         crypto_generichash_init(&state, nullptr, 0, lamport::KeyHash::kBytesSize);
+        info() << "after crypto_generichash_init";
         for (const auto &publicKey : ownPublicKeys) {
             crypto_generichash_update(&state, publicKey->data(), lamport::PublicKey::keySize());
+            info() << "after crypto_generichash_update ";
         }
         auto keyHashBuffer = (byte*)malloc(lamport::KeyHash::kBytesSize);
         crypto_generichash_final(&state, keyHashBuffer, lamport::KeyHash::kBytesSize);
+        info() << "after crypto_generichash_final";
         return make_shared<lamport::KeyHash>(
             keyHashBuffer);
     }
