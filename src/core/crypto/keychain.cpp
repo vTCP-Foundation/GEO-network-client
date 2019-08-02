@@ -689,7 +689,7 @@ namespace crypto {
         auto ownPublicKeys = ioTransaction->ownKeysHandler()->publicKeysBySetNumber(
             mTrustLineID,
             currentKeysSetSequenceNumber);
-        info() << "currentKeysSetSequenceNumber " << currentKeysSetSequenceNumber;
+        info() << "ownPublicKeys " << ownPublicKeys.size();
         crypto_generichash_state state;
         crypto_generichash_init(&state, nullptr, 0, lamport::KeyHash::kBytesSize);
         info() << "after crypto_generichash_init";
@@ -707,18 +707,24 @@ namespace crypto {
     lamport::KeyHash::Shared TrustLineKeychain::contractorPublicKeysHash(
         IOTransaction::Shared ioTransaction) const
     {
+        info() << "contractorPublicKeysHash " << mTrustLineID;
         auto currentKeysSetSequenceNumber = ioTransaction->contractorKeysHandler()->maxKeySetSequenceNumber(
             mTrustLineID);
+        info() << "currentKeysSetSequenceNumber " << currentKeysSetSequenceNumber;
         auto contractorPublicKeys = ioTransaction->contractorKeysHandler()->publicKeysBySetNumber(
             mTrustLineID,
             currentKeysSetSequenceNumber);
+        info() << "contractorPublicKeys " << contractorPublicKeys.size();
         crypto_generichash_state state;
         crypto_generichash_init(&state, nullptr, 0, lamport::KeyHash::kBytesSize);
+        info() << "after crypto_generichash_init";
         for (const auto &publicKey : contractorPublicKeys) {
             crypto_generichash_update(&state, publicKey->data(), lamport::PublicKey::keySize());
+            info() << "after crypto_generichash_update";
         }
         auto keyHashBuffer = (byte*)malloc(lamport::KeyHash::kBytesSize);
         crypto_generichash_final(&state, keyHashBuffer, lamport::KeyHash::kBytesSize);
+        info() << "after crypto_generichash_final";
         return make_shared<lamport::KeyHash>(
             keyHashBuffer);
     }
