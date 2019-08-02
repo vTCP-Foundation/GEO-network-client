@@ -68,6 +68,7 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     lamport::KeyHash::Shared ownPublicKeysHash,
     lamport::KeyHash::Shared contractorPublicKeysHash)
 {
+    info() << "getOwnSerializedAuditData";
     size_t bytesCount = sizeof(AuditNumber)
                         + kTrustLineAmountBytesCount
                         + kTrustLineAmountBytesCount
@@ -76,7 +77,9 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
                         + lamport::KeyHash::kBytesSize
                         + sizeof(EquivalentRegisterAddressLength)
                         + mFeaturesManager->getEquivalentsRegistryAddress().length();
+    info() << "bytesCount " << bytesCount;
     BytesShared dataBytesShared = tryCalloc(bytesCount);
+    info() << "after tryCalloc";
     size_t dataBytesOffset = 0;
 
     memcpy(
