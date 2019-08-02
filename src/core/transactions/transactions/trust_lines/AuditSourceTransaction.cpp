@@ -80,12 +80,14 @@ TransactionResult::SharedConst AuditSourceTransaction::runInitializationStage()
         warning() << "There is no contractor with requested id";
         return resultDone();
     }
+    info() << "Contractor present";
 
     try {
         if (mTrustLines->trustLineState(mContractorID) != TrustLine::Active) {
             warning() << "Invalid TL state " << mTrustLines->trustLineState(mContractorID);
             return resultDone();
         }
+        info() << "TL active";
 
     } catch (NotFoundError &e) {
         warning() << "Attempt to audit not existing TL";
@@ -97,25 +99,31 @@ TransactionResult::SharedConst AuditSourceTransaction::runInitializationStage()
         warning() << "There are no own keys";
         return resultDone();
     }
+    info() << "Own keys present";
 
     // todo maybe check in storage (keyChain)
     if (!mTrustLines->trustLineContractorKeysPresent(mContractorID)) {
         warning() << "There are no contractor keys";
         return resultDone();
     }
+    info() << "Contractor keys present";
 
     mTrustLines->setTrustLineState(
         mContractorID,
         TrustLine::AuditPending);
+    info() << "TL set as AuditPending";
 
     // note: io transaction would commit automatically on destructor call.
     // there is no need to call commit manually.
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
         mTrustLines->trustLineID(mContractorID));
+    info() << "KeyChain taken";
     try {
         auto ownPublicKeysHash = keyChain.ownPublicKeysHash(ioTransaction);
+        info() << "ownPublicKeysHash " << ownPublicKeysHash->toString();
         auto contractorPublicKeysHash = keyChain.contractorPublicKeysHash(ioTransaction);
+        info() << "contractorPublicKeysHash " << contractorPublicKeysHash->toString();
         auto serializedAuditData = getOwnSerializedAuditData(
             ownPublicKeysHash,
             contractorPublicKeysHash);

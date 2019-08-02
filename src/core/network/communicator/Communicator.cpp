@@ -60,7 +60,7 @@ Communicator::Communicator(
                 udp::v4(),
                 contractorsManager->selfContractor()->mainAddress()->port()));
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
-        logger.debug("Communicator mSocket v4()") << ":" << port;
+        logger.debug("Communicator mSocket v4()") << ":" << contractorsManager->selfContractor()->mainAddress()->port();
 #endif
     }
 

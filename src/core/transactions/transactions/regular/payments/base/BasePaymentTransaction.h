@@ -431,7 +431,7 @@ protected:
     const PaymentNodeID kCoordinatorPaymentNodeID = 0;
 
     static const uint64_t kCountBlocksForClaiming = 20;
-    static const uint64_t kAllowableBlockNumberDifference = 2;
+    static const uint64_t kAllowableBlockNumberDifference = 200;
 
     static const uint32_t kMaxHoursTransactionDuration = 0;
     static const uint32_t kMaxMinutesTransactionDuration = 0;

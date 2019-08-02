@@ -74,7 +74,7 @@ ContractorsManager::ContractorsManager(
     }
     debug() << "Own addresses:";
     for (const auto &address : mSelf->addresses()) {
-        debug() << address->fullAddress();
+        debug() << address->fullAddress() << " : " << address->port();
     }
     debug() << "Main address " << mSelf->mainAddress()->fullAddress();
 #endif
