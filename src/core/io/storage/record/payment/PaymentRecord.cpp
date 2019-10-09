@@ -47,106 +47,155 @@ PaymentRecord::PaymentRecord(
     mPayload(payload)
 {}
 
+//PaymentRecord::PaymentRecord(
+//    const TransactionUUID &operationUUID,
+//    const GEOEpochTimestamp geoEpochTimestamp,
+//    BytesShared recordBody):
+//    Record(
+//        Record::PaymentRecordType,
+//        operationUUID,
+//        geoEpochTimestamp)
+//{
+//    size_t dataBufferOffset = 0;
+//    auto *operationType
+//        = new (recordBody.get() + dataBufferOffset) PaymentRecord::SerializedPaymentOperationType;
+//    dataBufferOffset += sizeof(
+//        PaymentRecord::SerializedPaymentOperationType);
+//    mPaymentOperationType = (PaymentOperationType)*operationType;
+//
+//    mContractor = make_shared<Contractor>(
+//        recordBody.get() + dataBufferOffset);
+//    dataBufferOffset += mContractor->serializedSize();
+//
+//    vector<byte> amountBytes(
+//        recordBody.get() + dataBufferOffset,
+//        recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
+//    mAmount = bytesToTrustLineAmount(
+//        amountBytes);
+//    dataBufferOffset += kTrustLineAmountBytesCount;
+//
+//    vector<byte> balanceBytes(
+//        recordBody.get() + dataBufferOffset,
+//        recordBody.get() + dataBufferOffset + kTrustLineBalanceSerializeBytesCount);
+//    mBalanceAfterOperation = bytesToTrustLineBalance(
+//        balanceBytes);
+//    dataBufferOffset += kTrustLineBalanceSerializeBytesCount;
+//
+//    uint16_t outgoingTransfersCount;
+//    memcpy(
+//        &outgoingTransfersCount,
+//        recordBody.get() + dataBufferOffset,
+//        sizeof(uint16_t));
+//    dataBufferOffset += sizeof(uint16_t);
+//
+//    mOutgoingTransfers.reserve(outgoingTransfersCount);
+//    for (uint16_t idx = 0; idx < outgoingTransfersCount; idx++) {
+//        ContractorID contractorID;
+//        memcpy(
+//            &contractorID,
+//            recordBody.get() + dataBufferOffset,
+//            sizeof(ContractorID));
+//        dataBufferOffset += sizeof(ContractorID);
+//
+//        vector<byte> amountTransferBytes(
+//            recordBody.get() + dataBufferOffset,
+//            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
+//        dataBufferOffset += kTrustLineAmountBytesCount;
+//
+//        mOutgoingTransfers.emplace_back(
+//            contractorID,
+//            bytesToTrustLineAmount(
+//                amountTransferBytes));
+//    }
+//
+//    uint16_t incomingTransfersCount;
+//    memcpy(
+//        &incomingTransfersCount,
+//        recordBody.get() + dataBufferOffset,
+//        sizeof(uint16_t));
+//    dataBufferOffset += sizeof(uint16_t);
+//
+//    mIncomingTransfers.reserve(incomingTransfersCount);
+//    for (uint16_t idx = 0; idx < incomingTransfersCount; idx++) {
+//        ContractorID contractorID;
+//        memcpy(
+//            &contractorID,
+//            recordBody.get() + dataBufferOffset,
+//            sizeof(ContractorID));
+//        dataBufferOffset += sizeof(ContractorID);
+//
+//        vector<byte> amountTransferBytes(
+//            recordBody.get() + dataBufferOffset,
+//            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
+//        dataBufferOffset += kTrustLineAmountBytesCount;
+//
+//        mIncomingTransfers.emplace_back(
+//            contractorID,
+//            bytesToTrustLineAmount(
+//                amountTransferBytes));
+//    }
+//
+//    byte payloadLength;
+//    memcpy(
+//        &payloadLength,
+//        recordBody.get() + dataBufferOffset,
+//        sizeof(byte));
+//
+//    mPayload = "";
+//    if (payloadLength > 0) {
+//        dataBufferOffset += sizeof(byte);
+//        mPayload = string(
+//            recordBody.get() + dataBufferOffset,
+//            recordBody.get() + dataBufferOffset + payloadLength);
+//    }
+//}
+
 PaymentRecord::PaymentRecord(
-    const TransactionUUID &operationUUID,
-    const GEOEpochTimestamp geoEpochTimestamp,
-    BytesShared recordBody):
-    Record(
-        Record::PaymentRecordType,
-        operationUUID,
-        geoEpochTimestamp)
+        const TransactionUUID &operationUUID,
+        const GEOEpochTimestamp geoEpochTimestamp,
+        BytesShared recordBody):
+        Record(
+                Record::PaymentRecordType,
+                operationUUID,
+                geoEpochTimestamp)
 {
     size_t dataBufferOffset = 0;
     auto *operationType
-        = new (recordBody.get() + dataBufferOffset) PaymentRecord::SerializedPaymentOperationType;
+            = new (recordBody.get() + dataBufferOffset) PaymentRecord::SerializedPaymentOperationType;
     dataBufferOffset += sizeof(
-        PaymentRecord::SerializedPaymentOperationType);
+            PaymentRecord::SerializedPaymentOperationType);
     mPaymentOperationType = (PaymentOperationType)*operationType;
 
     mContractor = make_shared<Contractor>(
-        recordBody.get() + dataBufferOffset);
+            recordBody.get() + dataBufferOffset);
     dataBufferOffset += mContractor->serializedSize();
 
     vector<byte> amountBytes(
-        recordBody.get() + dataBufferOffset,
-        recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
+            recordBody.get() + dataBufferOffset,
+            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
     mAmount = bytesToTrustLineAmount(
-        amountBytes);
+            amountBytes);
     dataBufferOffset += kTrustLineAmountBytesCount;
 
     vector<byte> balanceBytes(
-        recordBody.get() + dataBufferOffset,
-        recordBody.get() + dataBufferOffset + kTrustLineBalanceSerializeBytesCount);
+            recordBody.get() + dataBufferOffset,
+            recordBody.get() + dataBufferOffset + kTrustLineBalanceSerializeBytesCount);
     mBalanceAfterOperation = bytesToTrustLineBalance(
-        balanceBytes);
+            balanceBytes);
     dataBufferOffset += kTrustLineBalanceSerializeBytesCount;
-
-    uint16_t outgoingTransfersCount;
-    memcpy(
-        &outgoingTransfersCount,
-        recordBody.get() + dataBufferOffset,
-        sizeof(uint16_t));
-    dataBufferOffset += sizeof(uint16_t);
-
-    mOutgoingTransfers.reserve(outgoingTransfersCount);
-    for (uint16_t idx = 0; idx < outgoingTransfersCount; idx++) {
-        ContractorID contractorID;
-        memcpy(
-            &contractorID,
-            recordBody.get() + dataBufferOffset,
-            sizeof(ContractorID));
-        dataBufferOffset += sizeof(ContractorID);
-
-        vector<byte> amountTransferBytes(
-            recordBody.get() + dataBufferOffset,
-            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
-        dataBufferOffset += kTrustLineAmountBytesCount;
-
-        mOutgoingTransfers.emplace_back(
-            contractorID,
-            bytesToTrustLineAmount(
-                amountTransferBytes));
-    }
-
-    uint16_t incomingTransfersCount;
-    memcpy(
-        &incomingTransfersCount,
-        recordBody.get() + dataBufferOffset,
-        sizeof(uint16_t));
-    dataBufferOffset += sizeof(uint16_t);
-
-    mIncomingTransfers.reserve(incomingTransfersCount);
-    for (uint16_t idx = 0; idx < incomingTransfersCount; idx++) {
-        ContractorID contractorID;
-        memcpy(
-            &contractorID,
-            recordBody.get() + dataBufferOffset,
-            sizeof(ContractorID));
-        dataBufferOffset += sizeof(ContractorID);
-
-        vector<byte> amountTransferBytes(
-            recordBody.get() + dataBufferOffset,
-            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
-        dataBufferOffset += kTrustLineAmountBytesCount;
-
-        mIncomingTransfers.emplace_back(
-            contractorID,
-            bytesToTrustLineAmount(
-                amountTransferBytes));
-    }
 
     byte payloadLength;
     memcpy(
-        &payloadLength,
-        recordBody.get() + dataBufferOffset,
-        sizeof(byte));
+            &payloadLength,
+            recordBody.get() + dataBufferOffset,
+            sizeof(byte));
 
     mPayload = "";
     if (payloadLength > 0) {
         dataBufferOffset += sizeof(byte);
         mPayload = string(
-            recordBody.get() + dataBufferOffset,
-            recordBody.get() + dataBufferOffset + payloadLength);
+                recordBody.get() + dataBufferOffset,
+                recordBody.get() + dataBufferOffset + payloadLength);
     }
 }
 

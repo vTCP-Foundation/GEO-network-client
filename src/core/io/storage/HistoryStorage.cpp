@@ -1056,6 +1056,104 @@ PaymentAdditionalRecord::Shared HistoryStorage::deserializePaymentAdditionalReco
         recordBody);
 }
 
+void HistoryStorage::deleteAllMainHistory(
+    const SerializedEquivalent equivalent)
+{
+    string query = "DELETE FROM " + mMainTableName + " WHERE equivalent = ?";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        throw IOError("AddressHandler::deleteAllMainHistory: "
+                      "Bad query; sqlite error: " + to_string(rc));
+    }
+    rc = sqlite3_bind_int(stmt, 1, equivalent);
+    if (rc != SQLITE_OK) {
+        throw IOError("AddressHandler::deleteAllMainHistory: "
+                      "Bad binding of Equivalent; sqlite error: " + to_string(rc));
+    }
+
+    rc = sqlite3_step(stmt);
+    sqlite3_reset(stmt);
+    sqlite3_finalize(stmt);
+    if (rc == SQLITE_DONE) {
+#ifdef STORAGE_HANDLER_DEBUG_LOG
+        info() << "deleting is completed successfully";
+#endif
+    } else {
+        throw IOError("AddressHandler::deleteAllMainHistory: "
+                      "Run query; sqlite error: " + to_string(rc));
+    }
+}
+
+void HistoryStorage::deleteAllAdditionalHistory(
+    const SerializedEquivalent equivalent)
+{
+    string query = "DELETE FROM " + mAdditionalTableName + " WHERE equivalent = ?";
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        throw IOError("AddressHandler::deleteAllAdditionalHistory: "
+                      "Bad query; sqlite error: " + to_string(rc));
+    }
+    rc = sqlite3_bind_int(stmt, 1, equivalent);
+    if (rc != SQLITE_OK) {
+        throw IOError("AddressHandler::deleteAllAdditionalHistory: "
+                      "Bad binding of Equivalent; sqlite error: " + to_string(rc));
+    }
+
+    rc = sqlite3_step(stmt);
+    sqlite3_reset(stmt);
+    sqlite3_finalize(stmt);
+    if (rc == SQLITE_DONE) {
+#ifdef STORAGE_HANDLER_DEBUG_LOG
+        info() << "deleting is completed successfully";
+#endif
+    } else {
+        throw IOError("AddressHandler::deleteAllAdditionalHistory: "
+                      "Run query; sqlite error: " + to_string(rc));
+    }
+}
+
+vector<SerializedEquivalent> HistoryStorage::allMainEquivalents()
+{
+    vector<SerializedEquivalent> result;
+    string query = "SELECT DISTINCT equivalent FROM " + mMainTableName;
+
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        throw IOError("HistoryStorage::allEquivalents: "
+                      "Bad query; sqlite error: " + to_string(rc));
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+        auto equivalent = (SerializedEquivalent)sqlite3_column_int(stmt, 0);
+        result.push_back(equivalent);
+    }
+
+    return result;
+}
+
+vector<SerializedEquivalent> HistoryStorage::allAdditionalEquivalents()
+{
+    vector<SerializedEquivalent> result;
+    string query = "SELECT DISTINCT equivalent FROM " + mAdditionalTableName;
+
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        throw IOError("HistoryStorage::allEquivalents: "
+                      "Bad query; sqlite error: " + to_string(rc));
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+        auto equivalent = (SerializedEquivalent)sqlite3_column_int(stmt, 0);
+        result.push_back(equivalent);
+    }
+
+    return result;
+}
+
 LoggerStream HistoryStorage::info() const
 {
     return mLog.info(logHeader());

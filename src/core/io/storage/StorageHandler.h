@@ -23,6 +23,8 @@ public:
 
     IOTransaction::Shared beginTransaction();
 
+    void migrateHistory();
+
 private:
     static void checkDirectory(
         const string &directory);

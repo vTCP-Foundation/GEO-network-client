@@ -27,6 +27,41 @@ TrustLineRecord::TrustLineRecord(
     mAmount(amount)
 {}
 
+//TrustLineRecord::TrustLineRecord(
+//    const TransactionUUID &operationUUID,
+//    const GEOEpochTimestamp geoEpochTimestamp,
+//    BytesShared recordBody):
+//    Record(
+//        Record::TrustLineRecordType,
+//        operationUUID,
+//        geoEpochTimestamp)
+//{
+//    size_t dataBufferOffset = 0;
+//    auto* operationType =
+//        new (recordBody.get() + dataBufferOffset) TrustLineRecord::SerializedTrustLineOperationType;
+//    dataBufferOffset += sizeof(
+//        TrustLineRecord::SerializedTrustLineOperationType);
+//    mTrustLineOperationType = (TrustLineOperationType)*operationType;
+//
+//    // todo : in future this parameter could be used for history with contractor by channel
+//    dataBufferOffset += sizeof(ContractorID);
+//
+//    mContractor = make_shared<Contractor>(
+//        recordBody.get() + dataBufferOffset);
+//    dataBufferOffset += mContractor->serializedSize();
+//
+//    mAmount = 0;
+//    if (*operationType != TrustLineRecord::TrustLineOperationType::Closing &&
+//        *operationType != TrustLineRecord::TrustLineOperationType::Rejecting) {
+//        vector<byte> amountBytes(
+//            recordBody.get() + dataBufferOffset,
+//            recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
+//
+//        mAmount = bytesToTrustLineAmount(
+//            amountBytes);
+//    }
+//}
+
 TrustLineRecord::TrustLineRecord(
     const TransactionUUID &operationUUID,
     const GEOEpochTimestamp geoEpochTimestamp,
@@ -38,13 +73,10 @@ TrustLineRecord::TrustLineRecord(
 {
     size_t dataBufferOffset = 0;
     auto* operationType =
-        new (recordBody.get() + dataBufferOffset) TrustLineRecord::SerializedTrustLineOperationType;
+            new (recordBody.get() + dataBufferOffset) TrustLineRecord::SerializedTrustLineOperationType;
     dataBufferOffset += sizeof(
         TrustLineRecord::SerializedTrustLineOperationType);
     mTrustLineOperationType = (TrustLineOperationType)*operationType;
-
-    // todo : in future this parameter could be used for history with contractor by channel
-    dataBufferOffset += sizeof(ContractorID);
 
     mContractor = make_shared<Contractor>(
         recordBody.get() + dataBufferOffset);

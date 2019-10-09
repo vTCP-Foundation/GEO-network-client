@@ -18,21 +18,24 @@ int Core::run()
         return initCode;
     }
 
-    writePIDFile();
-    updateProcessName();
+    mStorageHandler->migrateHistory();
 
-    try {
-        mCommunicator->beginAcceptMessages();
-        mCommandsInterface->beginAcceptCommands();
-
-        info() << "Processing started.";
-        mIOService.run();
-        return 0;
-
-    } catch (Exception &e) {
-        mLog->logException("Core", e);
-        return -1;
-    }
+//    writePIDFile();
+//    updateProcessName();
+//
+//    try {
+//        mCommunicator->beginAcceptMessages();
+//        mCommandsInterface->beginAcceptCommands();
+//
+//        info() << "Processing started.";
+//        mIOService.run();
+//        return 0;
+//
+//    } catch (Exception &e) {
+//        mLog->logException("Core", e);
+//        return -1;
+//    }
+    info() << "finish";
 }
 
 int Core::initSubsystems()
@@ -75,88 +78,88 @@ int Core::initSubsystems()
         return initCode;
     }
 
-    initCode = initResourcesManager();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initResourcesManager();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initCommandsInterface();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initCommandsInterface();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initResultsInterface();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initResultsInterface();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initEventsInterfaceManager(conf);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initEventsInterfaceManager(conf);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
     initCode = initContractorsManager(conf);
     if (initCode != 0) {
         return initCode;
     }
 
-    initCode = initProvidingHandler(conf);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initProvidingHandler(conf);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initTailManager();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initTailManager();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initCommunicator(conf);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initCommunicator(conf);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initObservingHandler(conf);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initObservingHandler(conf);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initSubsystemsController();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initSubsystemsController();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initTrustLinesInfluenceController();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initTrustLinesInfluenceController();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initKeysStore();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initKeysStore();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initEquivalentsSubsystemsRouter(
-        equivalentsOnWhichIAmIsGateway);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initEquivalentsSubsystemsRouter(
+//        equivalentsOnWhichIAmIsGateway);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initFeaturesManager(conf);
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initFeaturesManager(conf);
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initTransactionsManager();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initTransactionsManager();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    initCode = initTopologyEventDelayedTask();
-    if (initCode != 0) {
-        return initCode;
-    }
+//    initCode = initTopologyEventDelayedTask();
+//    if (initCode != 0) {
+//        return initCode;
+//    }
 
-    connectSignalsToSlots();
+//    connectSignalsToSlots();
     return 0;
 }
 

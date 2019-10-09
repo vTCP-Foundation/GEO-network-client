@@ -96,6 +96,33 @@ IOTransaction::Shared StorageHandler::beginTransaction()
         mLog);
 }
 
+void StorageHandler::migrateHistory()
+{
+    auto equivalentsMain = mHistoryStorage.allMainEquivalents();
+    for (auto &equivalent : equivalentsMain) {
+        auto trustLineRecords = mHistoryStorage.allTrustLineRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false);
+        auto paymentRecords = mHistoryStorage.allPaymentRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false, 0, false, 0, false);
+        mHistoryStorage.deleteAllMainHistory(equivalent);
+        for (const auto &trustLineRecord : trustLineRecords) {
+            mHistoryStorage.saveTrustLineRecord(trustLineRecord, equivalent);
+        }
+        for (const auto &paymentRecord : paymentRecords) {
+            mHistoryStorage.savePaymentRecord(paymentRecord, equivalent);
+        }
+    }
+
+    auto equivalentsAdditional = mHistoryStorage.allAdditionalEquivalents();
+    for (auto &equivalent : equivalentsAdditional) {
+        auto paymentAdditionalRecords = mHistoryStorage.allPaymentAdditionalRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false, 0, false, 0, false);
+        mHistoryStorage.deleteAllAdditionalHistory(equivalent);
+        for (const auto &paymentAdditionalRecord : paymentAdditionalRecords) {
+            mHistoryStorage.savePaymentAdditionalRecord(paymentAdditionalRecord, equivalent);
+        }
+    }
+
+    info() << "Migration finished";
+}
+
 LoggerStream StorageHandler::info() const
 {
     return mLog.info(logHeader());

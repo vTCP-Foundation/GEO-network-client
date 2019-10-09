@@ -85,6 +85,16 @@ public:
     bool whetherOperationWasConducted(
         const TransactionUUID &transactionUUID);
 
+    void deleteAllMainHistory(
+        const SerializedEquivalent equivalent);
+
+    void deleteAllAdditionalHistory(
+        const SerializedEquivalent equivalent);
+
+    vector<SerializedEquivalent> allMainEquivalents();
+
+    vector<SerializedEquivalent> allAdditionalEquivalents();
+
 private:
     void savePaymentMainOutgoingRecord(
         PaymentRecord::Shared record,
