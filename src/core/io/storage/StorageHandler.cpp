@@ -99,9 +99,13 @@ IOTransaction::Shared StorageHandler::beginTransaction()
 void StorageHandler::migrateHistory()
 {
     auto equivalentsMain = mHistoryStorage.allMainEquivalents();
+    info() << "main history";
     for (auto &equivalent : equivalentsMain) {
+        info() << "equivalent " << equivalent;
         auto trustLineRecords = mHistoryStorage.allTrustLineRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false);
+        info() << "Trust line records cnt " << trustLineRecords.size();
         auto paymentRecords = mHistoryStorage.allPaymentRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false, 0, false, 0, false);
+        info() << "Payment records cnt " << paymentRecords.size();
         mHistoryStorage.deleteAllMainHistory(equivalent);
         for (const auto &trustLineRecord : trustLineRecords) {
             mHistoryStorage.saveTrustLineRecord(trustLineRecord, equivalent);
@@ -109,15 +113,20 @@ void StorageHandler::migrateHistory()
         for (const auto &paymentRecord : paymentRecords) {
             mHistoryStorage.savePaymentRecord(paymentRecord, equivalent);
         }
+        info() << "done";
     }
 
     auto equivalentsAdditional = mHistoryStorage.allAdditionalEquivalents();
+    info() << "additional history";
     for (auto &equivalent : equivalentsAdditional) {
+        info() << "equivalent " << equivalent;
         auto paymentAdditionalRecords = mHistoryStorage.allPaymentAdditionalRecords(equivalent, 1000000, 0, utc_now(), false, utc_now(), false, 0, false, 0, false);
+        info() << "Additional payment records cnt " << paymentAdditionalRecords.size();
         mHistoryStorage.deleteAllAdditionalHistory(equivalent);
         for (const auto &paymentAdditionalRecord : paymentAdditionalRecords) {
             mHistoryStorage.savePaymentAdditionalRecord(paymentAdditionalRecord, equivalent);
         }
+        info() << "done";
     }
 
     info() << "Migration finished";
