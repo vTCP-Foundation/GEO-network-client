@@ -1,0 +1,4 @@
+--style=mozilla
+--align-pointer=type
+--align-reference=type
+--break-after-logical
