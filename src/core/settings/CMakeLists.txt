@@ -1,9 +1,19 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        Settings.h
-        Settings.cpp)
+add_library(settings
+    Settings.h
+    Settings.cpp)
 
-add_library(settings ${SOURCE_FILES})
+target_include_directories(settings
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(settings
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(settings
+    PUBLIC
         common)

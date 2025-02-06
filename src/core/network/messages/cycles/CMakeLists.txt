@@ -1,31 +1,37 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        ThreeNodes/CyclesThreeNodesBalancesRequestMessage.h
-        ThreeNodes/CyclesThreeNodesBalancesRequestMessage.cpp
-        ThreeNodes/CyclesThreeNodesBalancesResponseMessage.h
-        ThreeNodes/CyclesThreeNodesBalancesResponseMessage.cpp
+add_library(messages__cycles
+    ThreeNodes/CyclesThreeNodesBalancesRequestMessage.h
+    ThreeNodes/CyclesThreeNodesBalancesRequestMessage.cpp
+    ThreeNodes/CyclesThreeNodesBalancesResponseMessage.h
+    ThreeNodes/CyclesThreeNodesBalancesResponseMessage.cpp
+    FourNodes/CyclesFourNodesNegativeBalanceRequestMessage.h
+    FourNodes/CyclesFourNodesNegativeBalanceRequestMessage.cpp
+    FourNodes/CyclesFourNodesPositiveBalanceRequestMessage.h
+    FourNodes/CyclesFourNodesPositiveBalanceRequestMessage.cpp
+    FourNodes/CyclesFourNodesBalancesResponseMessage.h
+    FourNodes/CyclesFourNodesBalancesResponseMessage.cpp
+    SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesInBetweenMessage.h
+    SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesInBetweenMessage.cpp
+    SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesBoundaryMessage.h
+    SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesBoundaryMessage.cpp
+    SixAndFiveNodes/CyclesFiveNodesInBetweenMessage.hpp
+    SixAndFiveNodes/CyclesSixNodesInBetweenMessage.hpp
+    SixAndFiveNodes/CyclesFiveNodesBoundaryMessage.hpp
+    SixAndFiveNodes/CyclesSixNodesBoundaryMessage.hpp)
 
-        FourNodes/CyclesFourNodesNegativeBalanceRequestMessage.h
-        FourNodes/CyclesFourNodesNegativeBalanceRequestMessage.cpp
-        FourNodes/CyclesFourNodesPositiveBalanceRequestMessage.h
-        FourNodes/CyclesFourNodesPositiveBalanceRequestMessage.cpp
-        FourNodes/CyclesFourNodesBalancesResponseMessage.h
-        FourNodes/CyclesFourNodesBalancesResponseMessage.cpp
+target_include_directories(messages__cycles
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesInBetweenMessage.h
-        SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesInBetweenMessage.cpp
-        SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesBoundaryMessage.h
-        SixAndFiveNodes/base/CyclesBaseFiveOrSixNodesBoundaryMessage.cpp
-        SixAndFiveNodes/CyclesFiveNodesInBetweenMessage.hpp
-        SixAndFiveNodes/CyclesSixNodesInBetweenMessage.hpp
-        SixAndFiveNodes/CyclesFiveNodesBoundaryMessage.hpp
-        SixAndFiveNodes/CyclesSixNodesBoundaryMessage.hpp)
+target_compile_features(messages__cycles
+    PRIVATE
+        cxx_std_20
+)
 
-add_library(messages__cycles ${SOURCE_FILES})
 target_link_libraries(messages__cycles
-
+    PUBLIC
         messages__base__transaction
-
         common
         exceptions)

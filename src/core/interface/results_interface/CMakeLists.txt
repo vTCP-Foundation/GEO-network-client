@@ -1,15 +1,23 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
+add_library(interface__results
+    interface/ResultsInterface.cpp
+    interface/ResultsInterface.h
+    result/CommandResult.cpp
+    result/CommandResult.h)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/core/interface/)
-set(SOURCE_FILES
-        interface/ResultsInterface.cpp
-        interface/ResultsInterface.h
+target_include_directories(interface__results
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/src/core/interface
+)
 
-        result/CommandResult.cpp
-        result/CommandResult.h)
+target_compile_features(interface__results
+    PRIVATE
+        cxx_std_20
+)
 
-add_library(interface__results ${SOURCE_FILES})
 target_link_libraries(interface__results
+    PUBLIC
         common
         exceptions)

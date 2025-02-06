@@ -1,21 +1,27 @@
-cmake_minimum_required(VERSION 3.6)
-find_package(Boost COMPONENTS system REQUIRED)
+cmake_minimum_required(VERSION 3.14)
 
-
+find_package(Boost REQUIRED COMPONENTS system)
 add_subdirectory(messages)
 
-set(SOURCE_FILES
-        ObservingHandler.h
-        ObservingHandler.cpp
+add_library(observing
+    ObservingHandler.h
+    ObservingHandler.cpp
+    ObservingTransaction.h
+    ObservingTransaction.cpp
+    ObservingCommunicator.h
+    ObservingCommunicator.cpp)
 
-        ObservingTransaction.h
-        ObservingTransaction.cpp
+target_include_directories(observing
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        ObservingCommunicator.h
-        ObservingCommunicator.cpp)
+target_compile_features(observing
+    PRIVATE
+        cxx_std_20
+)
 
-
-add_library(observing ${SOURCE_FILES})
 target_link_libraries(observing
+    PUBLIC
         observing__messages
-        ${Boost_SYSTEM_LIBRARY})
+        Boost::system)

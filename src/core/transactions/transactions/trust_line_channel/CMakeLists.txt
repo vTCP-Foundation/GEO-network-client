@@ -1,19 +1,16 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-
+add_library(transactions__channels
     InitChannelTransaction.h
     InitChannelTransaction.cpp
     ConfirmChannelTransaction.h
     ConfirmChannelTransaction.cpp
-
     GetContractorListTransaction.h
     GetContractorListTransaction.cpp
     GetChannelInfoTransaction.h
     GetChannelInfoTransaction.cpp
     GetChannelInfoByAddressesTransaction.h
     GetChannelInfoByAddressesTransaction.cpp
-
     UpdateChannelAddressesInitiatorTransaction.h
     UpdateChannelAddressesInitiatorTransaction.cpp
     UpdateChannelAddressesTargetTransaction.h
@@ -25,8 +22,18 @@ set(SOURCE_FILES
     RegenerateChannelCryptoKeyTransaction.h
     RegenerateChannelCryptoKeyTransaction.cpp)
 
-add_library(transactions__channels ${SOURCE_FILES})
+target_include_directories(transactions__channels
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(transactions__channels
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(transactions__channels
-    transactions__base
-    common
-    exceptions)
+    PUBLIC
+        transactions__base
+        common
+        exceptions)

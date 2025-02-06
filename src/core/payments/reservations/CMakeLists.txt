@@ -1,12 +1,21 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        AmountReservation.h
-        AmountReservation.cpp
-        AmountReservationsHandler.h
-        AmountReservationsHandler.cpp)
+add_library(reservations
+    AmountReservation.h
+    AmountReservation.cpp
+    AmountReservationsHandler.h
+    AmountReservationsHandler.cpp)
 
+target_include_directories(reservations
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-add_library(reservations ${SOURCE_FILES})
+target_compile_features(reservations
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(reservations
+    PUBLIC
         common)

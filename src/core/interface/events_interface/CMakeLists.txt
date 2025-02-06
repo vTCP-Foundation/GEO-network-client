@@ -1,18 +1,25 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/core/interface/)
+add_library(interface__events
+    interface/EventsInterface.h
+    interface/EventsInterface.cpp
+    events/Event.h
+    events/Event.cpp
+    interface/EventsInterfaceManager.h
+    interface/EventsInterfaceManager.cpp)
 
-set(SOURCE_FILES
-        interface/EventsInterface.h
-        interface/EventsInterface.cpp
+target_include_directories(interface__events
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/src/core/interface
+)
 
-        events/Event.h
-        events/Event.cpp
+target_compile_features(interface__events
+    PRIVATE
+        cxx_std_20
+)
 
-        interface/EventsInterfaceManager.h
-        interface/EventsInterfaceManager.cpp)
-
-add_library(interface__events ${SOURCE_FILES})
 target_link_libraries(interface__events
+    PUBLIC
         common
         exceptions)

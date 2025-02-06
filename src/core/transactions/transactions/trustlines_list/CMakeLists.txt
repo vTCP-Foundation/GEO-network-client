@@ -1,20 +1,27 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        GetFirstLevelContractorsTransaction.h
-        GetFirstLevelContractorsTransaction.cpp
+add_library(transactions__trustlines_list
+    GetFirstLevelContractorsTransaction.h
+    GetFirstLevelContractorsTransaction.cpp
+    GetTrustLinesListTransaction.h
+    GetTrustLinesListTransaction.cpp
+    GetTrustLineByIDTransaction.h
+    GetTrustLineByIDTransaction.cpp
+    GetTrustLineByAddressTransaction.h
+    GetTrustLineByAddressTransaction.cpp
+    GetEquivalentListTransaction.h
+    GetEquivalentListTransaction.cpp)
 
-        GetTrustLinesListTransaction.h
-        GetTrustLinesListTransaction.cpp
+target_include_directories(transactions__trustlines_list
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        GetTrustLineByIDTransaction.h
-        GetTrustLineByIDTransaction.cpp
-        GetTrustLineByAddressTransaction.h
-        GetTrustLineByAddressTransaction.cpp
+target_compile_features(transactions__trustlines_list
+    PRIVATE
+        cxx_std_20
+)
 
-        GetEquivalentListTransaction.h
-        GetEquivalentListTransaction.cpp)
-
-add_library(transactions__trustlines_list ${SOURCE_FILES})
 target_link_libraries(transactions__trustlines_list
+    PUBLIC
         transactions__base)

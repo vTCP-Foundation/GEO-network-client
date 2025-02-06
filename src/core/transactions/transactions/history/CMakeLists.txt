@@ -1,17 +1,28 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        HistoryPaymentsTransaction.h
-        HistoryPaymentsTransaction.cpp
-        HistoryPaymentsAllEquivalentsTransaction.h
-        HistoryPaymentsAllEquivalentsTransaction.cpp
-        HistoryTrustLinesTransaction.h
-        HistoryTrustLinesTransaction.cpp
-        HistoryWithContractorTransaction.h
-        HistoryWithContractorTransaction.cpp
-        HistoryAdditionalPaymentsTransaction.h
-        HistoryAdditionalPaymentsTransaction.cpp)
+add_library(transactions__history
+    HistoryPaymentsTransaction.h
+    HistoryPaymentsTransaction.cpp
+    HistoryPaymentsAllEquivalentsTransaction.h
+    HistoryPaymentsAllEquivalentsTransaction.cpp
+    HistoryTrustLinesTransaction.h
+    HistoryTrustLinesTransaction.cpp
+    HistoryWithContractorTransaction.h
+    HistoryWithContractorTransaction.cpp
+    HistoryAdditionalPaymentsTransaction.h
+    HistoryAdditionalPaymentsTransaction.cpp)
 
-add_library(transactions__history ${SOURCE_FILES})
+target_include_directories(transactions__history
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-target_link_libraries(transactions__history)
+target_compile_features(transactions__history
+    PRIVATE
+        cxx_std_20
+)
+
+target_link_libraries(transactions__history
+    PUBLIC
+        transactions__base
+        io__storage)

@@ -1,18 +1,24 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        TransactionUUID.h
+add_library(transactions__base
+    TransactionUUID.h
+    BaseTransaction.h
+    BaseTransaction.cpp
+    BaseCollectTopologyTransaction.h
+    BaseCollectTopologyTransaction.cpp)
 
-        BaseTransaction.h
-        BaseTransaction.cpp
+target_include_directories(transactions__base
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        BaseCollectTopologyTransaction.h
-        BaseCollectTopologyTransaction.cpp)
+target_compile_features(transactions__base
+    PRIVATE
+        cxx_std_20
+)
 
-add_library(transactions__base ${SOURCE_FILES})
 target_link_libraries(transactions__base
+    PUBLIC
         common
-        #        time
         exceptions
-
         network__messages)

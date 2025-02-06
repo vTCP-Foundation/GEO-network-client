@@ -1,5 +1,9 @@
-cmake_minimum_required(VERSION 3.6)
-find_package(Boost COMPONENTS system REQUIRED)
+cmake_minimum_required(VERSION 3.14)
+
+# Use modern Boost configuration
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost REQUIRED COMPONENTS system)
 
 add_subdirectory(messages)
 add_subdirectory(communicator)

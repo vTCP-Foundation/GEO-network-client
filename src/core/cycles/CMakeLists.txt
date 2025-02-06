@@ -1,12 +1,17 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
+add_library(cycles
+    CyclesManager.h
+    CyclesManager.cpp
+    RoutingTableManager.h
+    RoutingTableManager.cpp)
 
-        CyclesManager.h
-        CyclesManager.cpp
+target_include_directories(cycles
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        RoutingTableManager.h
-        RoutingTableManager.cpp)
-
-add_library(cycles ${SOURCE_FILES})
-target_link_libraries(cycles)
+target_compile_features(cycles
+    PRIVATE
+        cxx_std_20
+)

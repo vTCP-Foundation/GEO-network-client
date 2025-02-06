@@ -1,19 +1,24 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
+add_library(common
     Types.h 
     Constraints.h
-
     NodeUUID.cpp
     NodeUUID.h
-    
     serialization/BytesDeserializer.cpp 
     serialization/BytesDeserializer.h 
     serialization/BytesSerializer.cpp 
     serialization/BytesSerializer.h 
-    
     time/TimeUtils.h
     multiprecision/MultiprecisionUtils.h
     memory/MemoryUtils.h)
 
-add_library(common ${SOURCE_FILES})
+target_include_directories(common
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(common
+    PRIVATE
+        cxx_std_20
+)

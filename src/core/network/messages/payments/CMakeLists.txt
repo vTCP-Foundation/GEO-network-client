@@ -1,87 +1,70 @@
-﻿cmake_minimum_required(VERSION 3.6)
+﻿cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
+add_library(messages__payments
     base/RequestMessage.h
     base/RequestMessage.cpp
-
     base/ResponseMessage.h
     base/ResponseMessage.cpp
-
     base/RequestCycleMessage.h
     base/RequestCycleMessage.cpp
-
     base/ResponseCycleMessage.h
     base/ResponseCycleMessage.cpp
-
     base/RequestMessageWithReservations.h
     base/RequestMessageWithReservations.cpp
-
     ReceiverInitPaymentRequestMessage.h
     ReceiverInitPaymentRequestMessage.cpp
-
     ReceiverInitPaymentResponseMessage.h
     ReceiverInitPaymentResponseMessage.cpp
-
     CoordinatorReservationRequestMessage.h
     CoordinatorReservationRequestMessage.cpp
-
     CoordinatorReservationResponseMessage.h
     CoordinatorReservationResponseMessage.cpp
-
     IntermediateNodeReservationRequestMessage.h
     IntermediateNodeReservationRequestMessage.cpp
-
     IntermediateNodeReservationResponseMessage.h
     IntermediateNodeReservationResponseMessage.cpp
-
     CoordinatorCycleReservationRequestMessage.h
     CoordinatorCycleReservationRequestMessage.cpp
-
     CoordinatorCycleReservationResponseMessage.h
     CoordinatorCycleReservationResponseMessage.cpp
-
     IntermediateNodeCycleReservationRequestMessage.h
     IntermediateNodeCycleReservationRequestMessage.cpp
-
     IntermediateNodeCycleReservationResponseMessage.h
     IntermediateNodeCycleReservationResponseMessage.cpp
-
     ParticipantsVotesMessage.cpp
     ParticipantsVotesMessage.h
-
     VotesStatusRequestMessage.hpp
-
     FinalPathConfigurationMessage.cpp
     FinalPathConfigurationMessage.h
-
     FinalPathCycleConfigurationMessage.h
     FinalPathCycleConfigurationMessage.cpp
-
     TTLProlongationRequestMessage.h
     TTLProlongationRequestMessage.cpp
-
     FinalAmountsConfigurationMessage.h
     FinalAmountsConfigurationMessage.cpp
-
     FinalAmountsConfigurationResponseMessage.h
     FinalAmountsConfigurationResponseMessage.cpp
-
     TTLProlongationResponseMessage.h
     TTLProlongationResponseMessage.cpp
-
     ParticipantsPublicKeysMessage.h
     ParticipantsPublicKeysMessage.cpp
-
     ParticipantVoteMessage.h
     ParticipantVoteMessage.cpp
-
     TransactionPublicKeyHashMessage.h
     TransactionPublicKeyHashMessage.cpp)
 
-add_library(messages__payments ${SOURCE_FILES})
+target_include_directories(messages__payments
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(messages__payments
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(messages__payments
-
-    messages__base__transaction
-
-    common
-    exceptions)
+    PUBLIC
+        messages__base__transaction
+        common
+        exceptions)

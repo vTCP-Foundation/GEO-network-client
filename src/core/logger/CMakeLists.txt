@@ -1,11 +1,22 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        Logger.h
-        Logger.cpp
-        FileLogger.h
-        LoggerMixin.hpp)
+add_library(logger
+    Logger.h
+    Logger.cpp
+    FileLogger.h
+    LoggerMixin.hpp)
 
-add_library(logger ${SOURCE_FILES})
+target_include_directories(logger
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(logger
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(logger
-        common)
+    PUBLIC
+        common
+)

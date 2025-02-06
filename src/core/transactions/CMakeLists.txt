@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
+# Add all transaction subdirectories
 add_subdirectory(transactions/trust_lines)
 add_subdirectory(transactions/regular/payments)
-
 add_subdirectory(transactions/result)
 add_subdirectory(transactions/base)
 add_subdirectory(transactions/cycles)
@@ -16,17 +16,25 @@ add_subdirectory(transactions/gateway_notification)
 add_subdirectory(transactions/general)
 add_subdirectory(transactions/trust_line_channel)
 
-set(SOURCE_FILES
-        manager/TransactionsManager.h
-        manager/TransactionsManager.cpp
+add_library(transactions
+    manager/TransactionsManager.h
+    manager/TransactionsManager.cpp
+    scheduler/TransactionsScheduler.h
+    scheduler/TransactionsScheduler.cpp
+    transactions/base/TransactionUUID.h)
 
-        scheduler/TransactionsScheduler.h
-        scheduler/TransactionsScheduler.cpp
-        
-        transactions/base/TransactionUUID.h)
+target_include_directories(transactions
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-add_library(transactions ${SOURCE_FILES})
+target_compile_features(transactions
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(transactions
+    PUBLIC
         transactions__trustlines
         transactions__max_flow_calculation
         transactions__payments
@@ -40,7 +48,6 @@ target_link_libraries(transactions
         transactions__gateway_notification
         transactions__general
         transactions__channels
-
         common
         exceptions
         equivalents)

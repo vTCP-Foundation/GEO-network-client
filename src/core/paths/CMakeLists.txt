@@ -1,12 +1,22 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
 add_subdirectory(lib)
 
-set(SOURCE_FILES
-        PathsManager.h
-        PathsManager.cpp)
+add_library(paths
+    PathsManager.h
+    PathsManager.cpp)
 
-add_library(paths ${SOURCE_FILES})
+target_include_directories(paths
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(paths
+    PRIVATE
+        cxx_std_20
+)
 
 target_link_libraries(paths
-        slib_paths)
+    PRIVATE
+        slib_paths
+)

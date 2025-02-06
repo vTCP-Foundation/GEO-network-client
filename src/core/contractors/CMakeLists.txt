@@ -1,18 +1,27 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        Contractor.h
-        Contractor.cpp
-        ContractorsManager.h
-        ContractorsManager.cpp
+add_library(contractors
+    Contractor.h
+    Contractor.cpp
+    ContractorsManager.h
+    ContractorsManager.cpp
+    addresses/BaseAddress.h
+    addresses/BaseAddress.cpp
+    addresses/IPv4WithPortAddress.h
+    addresses/IPv4WithPortAddress.cpp
+    addresses/GNSAddress.h
+    addresses/GNSAddress.cpp)
 
-        addresses/BaseAddress.h
-        addresses/BaseAddress.cpp
-        addresses/IPv4WithPortAddress.h
-        addresses/IPv4WithPortAddress.cpp
-        addresses/GNSAddress.h
-        addresses/GNSAddress.cpp)
+target_include_directories(contractors
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-add_library(contractors ${SOURCE_FILES})
+target_compile_features(contractors
+    PRIVATE
+        cxx_std_20
+)
+
 target_link_libraries(contractors
+    PUBLIC
         common)

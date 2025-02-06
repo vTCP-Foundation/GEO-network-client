@@ -1,16 +1,23 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        NoEquivalentTransaction.h
-        NoEquivalentTransaction.cpp
+add_library(transactions__general
+    NoEquivalentTransaction.h
+    NoEquivalentTransaction.cpp
+    PongReactionTransaction.h
+    PongReactionTransaction.cpp
+    RemoveOutdatedCryptoDataTransaction.h
+    RemoveOutdatedCryptoDataTransaction.cpp)
 
-        PongReactionTransaction.h
-        PongReactionTransaction.cpp
+target_include_directories(transactions__general
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        RemoveOutdatedCryptoDataTransaction.h
-        RemoveOutdatedCryptoDataTransaction.cpp)
-
-add_library(transactions__general ${SOURCE_FILES})
+target_compile_features(transactions__general
+    PRIVATE
+        cxx_std_20
+)
 
 target_link_libraries(transactions__general
+    PUBLIC
         transactions__base)

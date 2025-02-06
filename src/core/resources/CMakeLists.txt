@@ -1,15 +1,23 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        manager/ResourcesManager.h
-        manager/ResourcesManager.cpp
-        resources/BaseResource.h
-        resources/BaseResource.cpp
-        resources/PathsResource.h
-        resources/PathsResource.cpp
-        resources/BlockNumberRecourse.h
-        resources/BlockNumberRecourse.cpp)
+add_library(resources_manager
+    manager/ResourcesManager.h
+    manager/ResourcesManager.cpp
+    resources/BaseResource.h
+    resources/BaseResource.cpp
+    resources/PathsResource.h
+    resources/PathsResource.cpp
+    resources/BlockNumberRecourse.h
+    resources/BlockNumberRecourse.cpp)
 
-add_library(resources_manager ${SOURCE_FILES})
+target_include_directories(resources_manager
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(resources_manager
+    PRIVATE
+        cxx_std_20
+)
 
 target_link_libraries(resources_manager)

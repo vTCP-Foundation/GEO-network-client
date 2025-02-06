@@ -1,18 +1,26 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        Exception.cpp
-        Exception.h
-        CommandParsingError.h
-        ConflictError.h
-        IndexError.h
-        IOError.h
-        MemoryError.h
-        NotFoundError.h
-        OverflowError.h
-        PreconditionFailedError.h
-        RuntimeError.h
-        ValueError.h
-        CallChainBreakException.h)
+add_library(exceptions
+    Exception.cpp
+    Exception.h
+    CommandParsingError.h
+    ConflictError.h
+    IndexError.h
+    IOError.h
+    MemoryError.h
+    NotFoundError.h
+    OverflowError.h
+    PreconditionFailedError.h
+    RuntimeError.h
+    ValueError.h
+    CallChainBreakException.h)
 
-add_library(exceptions ${SOURCE_FILES})
+target_include_directories(exceptions
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_compile_features(exceptions
+    PRIVATE
+        cxx_std_20
+)

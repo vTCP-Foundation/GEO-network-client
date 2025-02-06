@@ -1,21 +1,27 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        TopologyTrustLine.h
-        TopologyTrustLine.cpp
-        manager/TopologyTrustLineWithPtr.h
-        manager/TopologyTrustLineWithPtr.cpp
-        manager/TopologyTrustLinesManager.h
-        manager/TopologyTrustLinesManager.cpp
+add_library(topology
+    TopologyTrustLine.h
+    TopologyTrustLine.cpp
+    manager/TopologyTrustLineWithPtr.h
+    manager/TopologyTrustLineWithPtr.cpp
+    manager/TopologyTrustLinesManager.h
+    manager/TopologyTrustLinesManager.cpp
+    cache/TopologyCache.h
+    cache/TopologyCache.cpp
+    cache/TopologyCacheManager.h
+    cache/TopologyCacheManager.cpp
+    cache/MaxFlowCache.h
+    cache/MaxFlowCache.cpp
+    cache/MaxFlowCacheManager.h
+    cache/MaxFlowCacheManager.cpp)
 
-        cache/TopologyCache.h
-        cache/TopologyCache.cpp
-        cache/TopologyCacheManager.h
-        cache/TopologyCacheManager.cpp
+target_include_directories(topology
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        cache/MaxFlowCache.h
-        cache/MaxFlowCache.cpp
-        cache/MaxFlowCacheManager.h
-        cache/MaxFlowCacheManager.cpp)
-
-add_library(topology ${SOURCE_FILES})
+target_compile_features(topology
+    PRIVATE
+        cxx_std_20
+)

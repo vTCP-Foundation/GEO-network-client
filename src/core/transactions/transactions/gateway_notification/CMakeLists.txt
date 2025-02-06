@@ -1,14 +1,22 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        GatewayNotificationSenderTransaction.h
-        GatewayNotificationSenderTransaction.cpp
+add_library(transactions__gateway_notification
+    GatewayNotificationSenderTransaction.h
+    GatewayNotificationSenderTransaction.cpp
+    GatewayNotificationReceiverTransaction.h
+    GatewayNotificationReceiverTransaction.cpp)
 
-        GatewayNotificationReceiverTransaction.h
-        GatewayNotificationReceiverTransaction.cpp
+target_include_directories(transactions__gateway_notification
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        )
+target_compile_features(transactions__gateway_notification
+    PRIVATE
+        cxx_std_20
+)
 
-add_library(transactions__gateway_notification ${SOURCE_FILES})
-
-target_link_libraries(transactions__gateway_notification)
+target_link_libraries(transactions__gateway_notification
+    PUBLIC
+        transactions__base
+        messages__gateway_notification_and_routing_tables)

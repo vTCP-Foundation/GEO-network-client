@@ -1,35 +1,39 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.14)
 
-set(SOURCE_FILES
-        TrustLineInitialMessage.h
-        TrustLineInitialMessage.cpp
+add_library(messages__trust_lines
+    TrustLineInitialMessage.h
+    TrustLineInitialMessage.cpp
+    PublicKeysSharingInitMessage.h
+    PublicKeysSharingInitMessage.cpp
+    PublicKeyMessage.h
+    PublicKeyMessage.cpp
+    TrustLineConfirmationMessage.h
+    TrustLineConfirmationMessage.cpp
+    PublicKeyHashConfirmation.h
+    PublicKeyHashConfirmation.cpp
+    AuditMessage.h
+    AuditMessage.cpp
+    AuditResponseMessage.h
+    AuditResponseMessage.cpp
+    ConflictResolverMessage.h
+    ConflictResolverMessage.cpp
+    ConflictResolverResponseMessage.h
+    ConflictResolverResponseMessage.cpp
+    TrustLineResetMessage.h
+    TrustLineResetMessage.cpp)
 
-        PublicKeysSharingInitMessage.h
-        PublicKeysSharingInitMessage.cpp
-        PublicKeyMessage.h
-        PublicKeyMessage.cpp
+target_include_directories(messages__trust_lines
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-        TrustLineConfirmationMessage.h
-        TrustLineConfirmationMessage.cpp
+target_compile_features(messages__trust_lines
+    PRIVATE
+        cxx_std_20
+)
 
-        PublicKeyHashConfirmation.h
-        PublicKeyHashConfirmation.cpp
-
-        AuditMessage.h
-        AuditMessage.cpp
-        AuditResponseMessage.h
-        AuditResponseMessage.cpp
-
-        ConflictResolverMessage.h
-        ConflictResolverMessage.cpp
-        ConflictResolverResponseMessage.h
-        ConflictResolverResponseMessage.cpp
-
-        TrustLineResetMessage.h
-        TrustLineResetMessage.cpp)
-
-add_library(messages__trust_lines ${SOURCE_FILES})
 target_link_libraries(messages__trust_lines
+    PUBLIC
         common
         exceptions)
 
