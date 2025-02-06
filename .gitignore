@@ -1,14 +1,19 @@
 .idea/*
 uuid2address/
 bin/
+build/
+cmake/
 cmake-build-debug/
+cmake-build-release/
+CMakeFiles/
+compile_commands.json
 
 *.cmake
 *.a
 *Makefile
 *.cbp
 *.cpp.o
+CMakeCache.txt
+settings.json
 
 tests/*
-
-geo_network_client
