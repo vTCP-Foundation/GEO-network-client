@@ -10,9 +10,9 @@ using namespace std;
 /*
  * Byte
  */
-typedef uint8_t byte;
-typedef std::shared_ptr<byte> BytesShared;
-typedef std::shared_ptr<const byte> ConstBytesShared;
+typedef uint8_t byte_t; // todo: switch to std::byte_t (refactoring required)
+typedef std::shared_ptr<byte_t> BytesShared;
+typedef std::shared_ptr<const byte_t> ConstBytesShared;
 
 /*
  * Trust lines types
@@ -43,9 +43,9 @@ typedef uint16_t PaymentNodeID;
 
 typedef uint16_t ConfirmationID;
 
-//equivalents
+// equivalents
 typedef uint32_t SerializedEquivalent;
-typedef byte SerializedProtocolVersion;
+typedef byte_t SerializedProtocolVersion;
 
 typedef uint32_t ContractorID;
 
@@ -58,4 +58,4 @@ typedef uint32_t ProviderParticipantID;
 
 typedef uint16_t SerializedEventType;
 
-#endif //GEO_NETWORK_CLIENT_TYPES_H
+#endif // GEO_NETWORK_CLIENT_TYPES_H
