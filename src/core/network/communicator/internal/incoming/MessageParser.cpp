@@ -306,7 +306,7 @@ pair<bool, Message::Shared> MessagesParser::messageCollected(
 string MessagesParser::logHeader()
 noexcept
 {
-    return "[MessagesParser]";
+    return "MessagesParser";
 }
 
 LoggerStream MessagesParser::warning() const

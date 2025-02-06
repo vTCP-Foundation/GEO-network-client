@@ -531,7 +531,7 @@ const char* CommandsInterface::FIFOName() const
 string CommandsInterface::logHeader()
 noexcept
 {
-    return "[CommandsInterface]";
+    return "CommandsInterface";
 }
 
 LoggerStream CommandsInterface::error() const
@@ -543,7 +543,7 @@ noexcept
 string CommandsParser::logHeader()
 noexcept
 {
-    return "[CommandsParser]";
+    return "CommandsParser";
 }
 
 LoggerStream CommandsParser::error() const

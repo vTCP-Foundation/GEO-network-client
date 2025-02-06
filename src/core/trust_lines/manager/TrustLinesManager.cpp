@@ -1343,7 +1343,7 @@ const string TrustLinesManager::logHeader() const
 noexcept
 {
     stringstream s;
-    s << "[TrustLinesManager: " << mEquivalent << "] ";
+    s << "TrustLinesManager: " << mEquivalent << " ";
     return s.str();
 }
 

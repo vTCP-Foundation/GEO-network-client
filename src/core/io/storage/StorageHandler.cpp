@@ -121,6 +121,6 @@ LoggerStream StorageHandler::error() const
 const string StorageHandler::logHeader() const
 {
     stringstream s;
-    s << "[StorageHandler]";
+    s << "StorageHandler ";
     return s.str();
 }

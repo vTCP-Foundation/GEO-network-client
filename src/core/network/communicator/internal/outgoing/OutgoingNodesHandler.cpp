@@ -215,7 +215,7 @@ noexcept
 string OutgoingNodesHandler::logHeader()
 noexcept
 {
-    return "[OutgoingNodesHandler]";
+    return "OutgoingNodesHandler";
 }
 
 LoggerStream OutgoingNodesHandler::debug() const

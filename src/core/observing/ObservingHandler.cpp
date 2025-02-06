@@ -415,5 +415,5 @@ void ObservingHandler::getActualBlockNumber()
 
 const string ObservingHandler::logHeader() const
 {
-    return "[ObservingHandler]";
+    return "ObservingHandler";
 }

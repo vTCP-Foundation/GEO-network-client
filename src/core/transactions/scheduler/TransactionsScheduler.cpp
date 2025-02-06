@@ -512,7 +512,7 @@ const BaseTransaction::Shared TransactionsScheduler::paymentTransactionByCommand
 string TransactionsScheduler::logHeader()
 noexcept
 {
-    return "[TransactionsScheduler]";
+    return "TransactionsScheduler";
 }
 
 LoggerStream TransactionsScheduler::error() const

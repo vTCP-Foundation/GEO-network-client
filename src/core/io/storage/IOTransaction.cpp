@@ -233,7 +233,7 @@ LoggerStream IOTransaction::warning() const
 const string IOTransaction::logHeader() const
 {
     stringstream s;
-    s << "[IOTransaction]";
+    s << "IOTransaction ";
     return s.str();
 }
 

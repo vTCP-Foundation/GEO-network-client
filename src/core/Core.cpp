@@ -12,6 +12,20 @@ Core::~Core()
 
 int Core::run()
 {
+    if (isatty(STDOUT_FILENO)) {
+        std::cout << endl << endl;
+        std::cout << "       _____              _________  " << endl;
+        std::cout << "___   ___  /____________________  /  " << endl;
+        std::cout << "__ | / /  __/  ___/__  __ \\  __  /  " << endl;
+        std::cout << "__ |/ // /_ / /__ __  /_/ / /_/ /    " << endl;
+        std::cout << "_____/ \\__/ \\___/ _  .___/\\__,_/  " << endl;
+        std::cout << "                  /_/                " << endl;
+        std::cout << endl << endl;
+        std::cout << "\033[1m  vTCP Network node daemon / v0.1.0 \033[0m" << endl;
+        std::cout << "\033[1m  https://github.com/vTCP-Foundation\033[0m" << endl;
+        std::cout << endl << endl;
+    }
+
     auto initCode = initSubsystems();
     if (initCode != 0) {
         error() << "Core can't be initialised. Process will now be stopped.";
@@ -24,7 +38,6 @@ int Core::run()
     try {
         mCommunicator->beginAcceptMessages();
         mCommandsInterface->beginAcceptCommands();
-
         info() << "Processing started.";
         mIOService.run();
         return 0;
@@ -164,13 +177,11 @@ int Core::initSettings()
 {
     try {
         mSettings = make_unique<Settings>();
-        // Logger was not initialized yet
-        cerr << utc_now() <<" : SUCCESS\tCORE\tSettings are successfully initialised." << endl;
         return 0;
 
     } catch (const std::exception &e) {
         // Logger was not initialized yet
-        cerr << utc_now() <<" : FATAL\tCORE\t" <<  e.what() << "." << endl;
+        cerr << "\033[31m" << utc_now() <<" : ERR  \t[CORE]\t" <<  e.what() << "." << "\033[0m" << endl;
         return -1;
     }
 }
@@ -182,7 +193,7 @@ int Core::initLogger()
         return 0;
 
     } catch (...) {
-        cerr << utc_now() <<" : FATAL\tCORE\tLogger cannot be initialized." << endl;
+        cerr << utc_now() <<" : FATAL\t[CORE]\tLogger cannot be initialized." << endl;
         return -1;
     }
 }
@@ -959,7 +970,7 @@ void Core::updateProcessName()
 string Core::logHeader()
 noexcept
 {
-    return "[CORE]";
+    return "CORE";
 }
 
 LoggerStream Core::error() const

@@ -220,6 +220,6 @@ LoggerStream TransactionsHandler::warning() const
 const string TransactionsHandler::logHeader() const
 {
     stringstream s;
-    s << "[TransactionsHandler]";
+    s << "TransactionsHandler ";
     return s.str();
 }

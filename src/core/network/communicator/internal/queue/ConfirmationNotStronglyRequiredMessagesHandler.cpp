@@ -172,5 +172,5 @@ void ConfirmationNotStronglyRequiredMessagesHandler::sendPostponedMessages()
 const string ConfirmationNotStronglyRequiredMessagesHandler::logHeader() const
 noexcept
 {
-    return "[ConfirmationNotStronglyRequiredMessagesHandler]";
+    return "ConfirmationNotStronglyRequiredMessagesHandler";
 }

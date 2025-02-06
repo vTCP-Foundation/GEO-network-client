@@ -440,6 +440,6 @@ LoggerStream SubsystemsController::warning() const
 const string SubsystemsController::logHeader() const
 {
     stringstream s;
-    s << "[SubsystemsController]";
+    s << "SubsystemsController";
     return s.str();
 }

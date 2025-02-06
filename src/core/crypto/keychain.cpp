@@ -82,7 +82,7 @@ LoggerStream Keystore::warning() const
 const string Keystore::logHeader() const
 {
     stringstream s;
-    s << "[Keystore] ";
+    s << "Keystore ";
     return s.str();
 }
 
@@ -767,7 +767,7 @@ LoggerStream TrustLineKeychain::warning() const
 const string TrustLineKeychain::logHeader() const
 {
     stringstream s;
-    s << "[TrustLineKeychain: " << mTrustLineID << "] ";
+    s << "TrustLineKeychain: " << mTrustLineID << " ";
     return s.str();
 }
 

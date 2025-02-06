@@ -333,7 +333,7 @@ void Communicator::onClearTopologyCache(
 string Communicator::logHeader()
 noexcept
 {
-    return "[Communicator]";
+    return "Communicator";
 }
 
 LoggerStream Communicator::info() const

@@ -2897,7 +2897,7 @@ void TransactionsManager::onSerializeTransaction(
 string TransactionsManager::logHeader()
 noexcept
 {
-    return "[TransactionsManager]";
+    return "TransactionsManager";
 }
 
 LoggerStream TransactionsManager::error() const

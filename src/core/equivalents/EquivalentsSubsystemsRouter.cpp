@@ -336,7 +336,7 @@ void EquivalentsSubsystemsRouter::setMeAsGateway()
 
 string EquivalentsSubsystemsRouter::logHeader() const
 {
-    return "[EquivalentsSubsystemsRouter]";
+    return "EquivalentsSubsystemsRouter";
 }
 
 LoggerStream EquivalentsSubsystemsRouter::error() const

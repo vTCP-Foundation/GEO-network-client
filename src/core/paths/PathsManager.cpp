@@ -356,6 +356,6 @@ const string
 PathsManager::logHeader() const
 {
     stringstream s;
-    s << "[PathsManager: " << mEquivalent << "] ";
+    s << "PathsManager: " << mEquivalent << " ";
     return s.str();
 }

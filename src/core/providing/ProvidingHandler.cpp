@@ -169,5 +169,5 @@ void ProvidingHandler::clearCachedAddresses()
 
 const string ProvidingHandler::logHeader() const
 {
-    return "[ProvidingHandler]";
+    return "ProvidingHandler";
 }

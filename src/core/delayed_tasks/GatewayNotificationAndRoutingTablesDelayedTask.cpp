@@ -81,6 +81,6 @@ LoggerStream GatewayNotificationAndRoutingTablesDelayedTask::warning() const
 const string GatewayNotificationAndRoutingTablesDelayedTask::logHeader() const
 {
     stringstream s;
-    s << "[GatewayNotificationAndRoutingTablesDelayedTask]";
+    s << "GatewayNotificationAndRoutingTablesDelayedTask";
     return s.str();
 }

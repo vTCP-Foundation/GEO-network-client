@@ -230,6 +230,6 @@ LoggerStream PaymentTransactionsHandler::warning() const
 const string PaymentTransactionsHandler::logHeader() const
 {
     stringstream s;
-    s << "[PaymentTransactionsHandler]";
+    s << "PaymentTransactionsHandler ";
     return s.str();
 }

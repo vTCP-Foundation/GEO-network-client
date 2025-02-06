@@ -7,7 +7,10 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <iomanip>
+#include <csignal>
+#include <chrono>
+#include <fstream>
 
 using namespace std;
 
@@ -68,6 +71,16 @@ class Logger
 
 public:
     Logger();
+    ~Logger();
+
+    static void setupSignalHandlers();
+    static void signalHandler(int signal);
+    static Logger* getInstance()
+    {
+        return instance;
+    }
+
+    void cleanup();
 
     void logException(
         const string &subsystem,
@@ -87,6 +100,7 @@ public:
 
 protected:
     const uint32_t maxRotateLimit = 500000;
+    const std::chrono::seconds FLUSH_INTERVAL{3}; // Flush every 3 seconds
 
 protected:
     const string formatMessage(
@@ -109,9 +123,27 @@ protected:
 
     void calculateOperationsLogFileLinesNumber();
 
+    string escapeJsonString(const string& input);
+
+    /**
+     * @brief Handles TTY-specific output formatting
+     */
+    void outputToTTY(
+        const string &group,
+        const string &subsystem,
+        const string &message);
+
+    /**
+     * @brief Removes ANSI escape sequences from a string
+     */
+    string stripAnsiSequences(const string& input);
+
 private:
+    static Logger* instance;
     std::ofstream mOperationsLogFile;
     uint32_t mOperationsLogFileLinesNumber;
     string mOperationLogFileName;
+    bool mIsTTYMode;
+    std::chrono::steady_clock::time_point mLastFlushTime;
 };
 #endif //VTCPD_LOGGER_H

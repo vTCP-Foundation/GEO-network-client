@@ -240,6 +240,6 @@ LoggerStream TrustLinesInfluenceController::warning() const
 const string TrustLinesInfluenceController::logHeader() const
 {
     stringstream s;
-    s << "[TrustLinesInfluenceController]";
+    s << "TrustLinesInfluenceController";
     return s.str();
 }

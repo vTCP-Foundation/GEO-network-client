@@ -166,7 +166,7 @@ noexcept
 string IncomingMessagesHandler::logHeader()
 noexcept
 {
-    return "[IncomingMessagesHandler]";
+    return "IncomingMessagesHandler";
 }
 
 LoggerStream IncomingMessagesHandler::info() const

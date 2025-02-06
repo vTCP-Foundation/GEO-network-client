@@ -43,7 +43,7 @@ void RoutingTableManager::printRT()
 string RoutingTableManager::logHeader() const
 {
     stringstream s;
-    s << "[RoutingTableManager: " << mEquivalent << "] ";
+    s << "RoutingTableManager: " << mEquivalent << " ";
     return s.str();
 }
 

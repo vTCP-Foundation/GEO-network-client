@@ -89,6 +89,6 @@ LoggerStream TailManager::warning() const
 const string TailManager::logHeader() const
 {
     stringstream s;
-    s << "[TailManager] ";
+    s << "TailManager ";
     return s.str();
 }

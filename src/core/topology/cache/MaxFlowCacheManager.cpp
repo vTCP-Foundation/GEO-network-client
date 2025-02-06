@@ -113,6 +113,6 @@ LoggerStream MaxFlowCacheManager::warning() const
 const string MaxFlowCacheManager::logHeader() const
 {
     stringstream s;
-    s << "[MaxFlowCacheManager: " << mEquivalent << "] ";
+    s << "MaxFlowCacheManager: " << mEquivalent << " ";
     return s.str();
 }

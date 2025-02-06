@@ -120,5 +120,5 @@ void ConfirmationResponseMessagesHandler::clearLegacyCacheMessages()
 const string ConfirmationResponseMessagesHandler::logHeader() const
 noexcept
 {
-    return "[ConfirmationResponseMessagesHandler]";
+    return "ConfirmationResponseMessagesHandler";
 }

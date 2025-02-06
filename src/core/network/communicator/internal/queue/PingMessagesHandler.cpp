@@ -136,5 +136,5 @@ void PingMessagesHandler::delayedRescheduleResending()
 const string PingMessagesHandler::logHeader() const
 noexcept
 {
-    return "[PingMessagesHandler]";
+    return "PingMessagesHandler";
 }

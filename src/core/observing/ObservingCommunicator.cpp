@@ -70,7 +70,7 @@ BytesShared ObservingCommunicator::sendRequestToObserver(
 
 string ObservingCommunicator::logHeader()
 {
-    return "[ObservingCommunicator]";
+    return "ObservingCommunicator";
 }
 
 LoggerStream ObservingCommunicator::error() const

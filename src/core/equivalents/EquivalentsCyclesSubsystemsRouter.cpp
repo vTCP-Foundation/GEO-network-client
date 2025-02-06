@@ -169,7 +169,7 @@ void EquivalentsCyclesSubsystemsRouter::onCloseCycleSlot(
 
 string EquivalentsCyclesSubsystemsRouter::logHeader() const
 {
-    return "[EquivalentsCyclesSubsystemsRouter]";
+    return "EquivalentsCyclesSubsystemsRouter";
 }
 
 LoggerStream EquivalentsCyclesSubsystemsRouter::error() const

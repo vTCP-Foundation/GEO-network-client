@@ -319,5 +319,5 @@ void ConfirmationRequiredMessagesHandler::delayedRescheduleResendingAfterDeseria
 const string ConfirmationRequiredMessagesHandler::logHeader() const
 noexcept
 {
-    return "[ConfirmationRequiredMessagesHandler]";
+    return "ConfirmationRequiredMessagesHandler";
 }

@@ -85,5 +85,5 @@ void FeaturesManager::runSignalNotify(
 
 const string FeaturesManager::logHeader() const
 {
-    return "[FeaturesManager]";
+    return "FeaturesManager";
 }

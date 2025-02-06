@@ -392,6 +392,6 @@ LoggerStream TrustLineHandler::warning() const
 const string TrustLineHandler::logHeader() const
 {
     stringstream s;
-    s << "[TrustLineHandler]";
+    s << "TrustLineHandler ";
     return s.str();
 }

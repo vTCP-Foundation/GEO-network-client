@@ -354,7 +354,7 @@ const string ContractorsManager::logHeader() const
 noexcept
 {
     stringstream s;
-    s << "[ContractorsManager] ";
+    s << "ContractorsManager ";
     return s.str();
 }
 
