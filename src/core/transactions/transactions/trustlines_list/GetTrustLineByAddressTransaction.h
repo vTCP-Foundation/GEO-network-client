@@ -7,7 +7,8 @@
 #include "../../../trust_lines/manager/TrustLinesManager.h"
 
 class GetTrustLineByAddressTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GetTrustLineByAddressTransaction> Shared;
@@ -18,7 +19,7 @@ public:
         ContractorsManager *contractorsManager,
         TrustLinesManager *trustLinesManager,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     TransactionResult::SharedConst run() override;
 

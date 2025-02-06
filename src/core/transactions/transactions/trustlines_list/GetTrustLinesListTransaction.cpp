@@ -5,7 +5,7 @@ GetTrustLinesListTransaction::GetTrustLinesListTransaction(
     TrustLinesManager *trustLinesManager,
     ContractorsManager *contractorsManager,
     Logger &logger)
-    noexcept:
+noexcept:
     BaseTransaction(
         BaseTransaction::TrustLinesList,
         command->equivalent(),
@@ -50,8 +50,8 @@ TransactionResult::SharedConst GetTrustLinesListTransaction::run()
     ss << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 const string GetTrustLinesListTransaction::logHeader() const

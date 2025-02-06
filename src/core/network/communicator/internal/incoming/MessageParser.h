@@ -76,12 +76,13 @@
 
 using namespace std;
 
-class MessagesParser {
+class MessagesParser
+{
 public:
     MessagesParser(
         ContractorsManager *contractorsManager,
         Logger *logger)
-        noexcept;
+    noexcept;
 
     pair<bool, Message::Shared> processBytesSequence(
         BytesShared buffer,
@@ -89,7 +90,7 @@ public:
 
     MessagesParser& operator= (
         const MessagesParser &other)
-        noexcept;
+    noexcept;
 
 protected:
     const size_t kMessageIdentifierSize = 2;

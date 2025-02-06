@@ -5,7 +5,8 @@
 #include "../../../io/storage/record/audit/AuditRecord.h"
 #include "../../../io/storage/record/audit/ReceiptRecord.h"
 
-class ConflictResolverMessage : public TransactionMessage {
+class ConflictResolverMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ConflictResolverMessage> Shared;

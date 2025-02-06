@@ -9,7 +9,8 @@
 #include "../../../network/messages/base/transaction/ConfirmationMessage.h"
 #include "../../../network/messages/gateway_notification_and_routing_tables/RoutingTableResponseMessage.h"
 
-class GatewayNotificationReceiverTransaction : public BaseTransaction {
+class GatewayNotificationReceiverTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GatewayNotificationReceiverTransaction> Shared;

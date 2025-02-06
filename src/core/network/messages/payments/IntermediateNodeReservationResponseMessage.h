@@ -7,7 +7,8 @@
 
 
 class IntermediateNodeReservationResponseMessage:
-    public ResponseMessage {
+    public ResponseMessage
+{
 
 public:
     typedef shared_ptr<IntermediateNodeReservationResponseMessage> Shared;

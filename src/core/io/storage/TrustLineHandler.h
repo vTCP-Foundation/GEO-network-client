@@ -10,7 +10,8 @@
 
 #include <vector>
 
-class TrustLineHandler {
+class TrustLineHandler
+{
 
 public:
     TrustLineHandler(

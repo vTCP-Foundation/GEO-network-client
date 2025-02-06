@@ -4,15 +4,18 @@
 using namespace io::routing_tables;
 
 
-class DirectionUpdateOperationsTests {
+class DirectionUpdateOperationsTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkSerialization();
         checkDeserialization();
         checkRollbackOperationGeneration();
     }
 
-    void checkSerialization() {
+    void checkSerialization()
+    {
         {
             TrustLineDirection dir(Incoming);
             TrustLineDirection dirBackup(Outgoing);
@@ -54,12 +57,14 @@ public:
         }
     }
 
-    void checkDeserialization() {
+    void checkDeserialization()
+    {
         // see: OperationsLogTests.cpp.
         // In that tests implicit deserialization test logic is present.
     }
 
-    void checkRollbackOperationGeneration() {
+    void checkRollbackOperationGeneration()
+    {
         TrustLineDirection dir(Both);
         TrustLineDirection dirBackup(Outgoing);
         AbstractRecordsHandler::RecordNumber recN(1);

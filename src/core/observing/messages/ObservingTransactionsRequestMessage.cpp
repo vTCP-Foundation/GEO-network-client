@@ -5,13 +5,11 @@ ObservingTransactionsRequestMessage::ObservingTransactionsRequestMessage(
     mTransactions(transactions)
 {}
 
-const ObservingMessage::MessageType ObservingTransactionsRequestMessage::typeID() const
-{
+const ObservingMessage::MessageType ObservingTransactionsRequestMessage::typeID() const {
     return ObservingMessage::Observing_TransactionsRequest;
 }
 
-BytesShared ObservingTransactionsRequestMessage::serializeToBytes() const
-{
+BytesShared ObservingTransactionsRequestMessage::serializeToBytes() const {
     const auto parentBytesAndCount = ObservingMessage::serializeToBytes();
 
     BytesShared buffer = tryMalloc(serializedSize());
@@ -31,7 +29,8 @@ BytesShared ObservingTransactionsRequestMessage::serializeToBytes() const
         sizeof(SerializedRecordsCount));
     dataBytesOffset += sizeof(SerializedRecordsCount);
 
-    for (const auto &transaction : mTransactions) {
+    for (const auto &transaction : mTransactions)
+    {
         memcpy(
             buffer.get() + dataBytesOffset,
             &transaction.second,
@@ -48,9 +47,8 @@ BytesShared ObservingTransactionsRequestMessage::serializeToBytes() const
     return buffer;
 }
 
-size_t ObservingTransactionsRequestMessage::serializedSize() const
-{
+size_t ObservingTransactionsRequestMessage::serializedSize() const {
     return ObservingMessage::serializedSize()
-           + sizeof(SerializedRecordsCount)
-           + mTransactions.size() * (TransactionUUID::kBytesSize + sizeof(BlockNumber));
+    + sizeof(SerializedRecordsCount)
+    + mTransactions.size() * (TransactionUUID::kBytesSize + sizeof(BlockNumber));
 }

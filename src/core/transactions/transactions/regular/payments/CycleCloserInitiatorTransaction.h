@@ -4,7 +4,8 @@
 #include "base/BasePaymentTransaction.h"
 #include "../../../../cycles/CyclesManager.h"
 
-class CycleCloserInitiatorTransaction : public BasePaymentTransaction {
+class CycleCloserInitiatorTransaction : public BasePaymentTransaction
+{
 
 public:
     typedef shared_ptr<CycleCloserInitiatorTransaction> Shared;
@@ -119,7 +120,7 @@ protected:
      */
     TransactionResult::SharedConst askRemoteNodeToApproveReservation(
         BaseAddress::Shared remoteNode,
-        const byte remoteNodePosition,
+        const byte_t remoteNodePosition,
         BaseAddress::Shared nextNodeAfterRemote);
 
     /**
@@ -197,4 +198,4 @@ private:
     const uint16_t kWaitingForReleasingAmountMSec = 50;
 };
 
-#endif //GEO_NETWORK_CLIENT_CYCLECLOSERINITIATORTRANSACTION_H
+#endif // GEO_NETWORK_CLIENT_CYCLECLOSERINITIATORTRANSACTION_H

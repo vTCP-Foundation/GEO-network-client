@@ -26,16 +26,18 @@ using namespace std;
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class ObservingHandler : protected LoggerMixin {
+class ObservingHandler : protected LoggerMixin
+{
 
 public:
     typedef signals::signal<void(
-            const TransactionUUID&,
-            BlockNumber,
-            map<PaymentNodeID, lamport::Signature::Shared>)> ParticipantsVotesSignal;
-    typedef signals::signal<void(const TransactionUUID&, BlockNumber)> RejectTransactionSignal;
-    typedef signals::signal<void(const TransactionUUID&, BlockNumber)> UncertainTransactionSignal;
-    typedef signals::signal<void(const TransactionUUID&, BlockNumber)> CancelTransactionSignal;
+        const TransactionUUID &,
+        BlockNumber,
+        map<PaymentNodeID, lamport::Signature::Shared>)>
+    ParticipantsVotesSignal;
+    typedef signals::signal<void(const TransactionUUID &, BlockNumber)> RejectTransactionSignal;
+    typedef signals::signal<void(const TransactionUUID &, BlockNumber)> UncertainTransactionSignal;
+    typedef signals::signal<void(const TransactionUUID &, BlockNumber)> CancelTransactionSignal;
     typedef signals::signal<void(bool)> AllowPaymentTransactionsSignal;
 
 public:
@@ -50,11 +52,11 @@ public:
         ObservingClaimAppendRequestMessage::Shared request);
 
     void addTransactionForChecking(
-        const TransactionUUID& transactionUUID,
+        const TransactionUUID &transactionUUID,
         BlockNumber maxBlockNumberForClaiming);
 
     void requestActualBlockNumber(
-        const TransactionUUID& transactionUUID);
+        const TransactionUUID &transactionUUID);
 
 protected:
     const string logHeader() const override;
@@ -92,19 +94,19 @@ protected:
         ObservingTransaction::Shared observingTransaction);
 
     bool getParticipantsVotes(
-        const TransactionUUID& transactionUUID,
+        const TransactionUUID &transactionUUID,
         BlockNumber maximalClaimingBlockNumber);
 
     void runTransactionsChecking(
         const boost::system::error_code &errorCode);
 
     void responseActualBlockNumber(
-        const TransactionUUID& transactionUUID);
+        const TransactionUUID &transactionUUID);
 
     void getActualBlockNumber();
 
     bool sendParticipantsVoteMessageToObservers(
-        const TransactionUUID& transactionUUID,
+        const TransactionUUID &transactionUUID,
         BlockNumber maximalClaimingBlockNumber);
 
 public:
@@ -129,14 +131,15 @@ private:
 #endif
 
     // block number updating period
-    static const byte kBlockNumberUpdateHours = 1;
-    static const byte kBlockNumberUpdateMinutes = 0;
-    static const byte kBlockNumberUpdateSeconds = 0;
-    static Duration& kBlockNumberUpdateDuration() {
+    static const byte_t kBlockNumberUpdateHours = 1;
+    static const byte_t kBlockNumberUpdateMinutes = 0;
+    static const byte_t kBlockNumberUpdateSeconds = 0;
+    static Duration &kBlockNumberUpdateDuration()
+    {
         static auto duration = Duration(
-            kBlockNumberUpdateHours,
-            kBlockNumberUpdateMinutes,
-            kBlockNumberUpdateSeconds);
+                                   kBlockNumberUpdateHours,
+                                   kBlockNumberUpdateMinutes,
+                                   kBlockNumberUpdateSeconds);
         return duration;
     }
 
@@ -164,5 +167,4 @@ private:
     ResourcesManager *mResourcesManager;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_OBSERVINGHANDLER_H
+#endif // GEO_NETWORK_CLIENT_OBSERVINGHANDLER_H

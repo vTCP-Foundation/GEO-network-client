@@ -38,15 +38,15 @@ TransactionMessage::TransactionMessage(
 
     SenderMessage(buffer),
     mTransactionUUID([&buffer](const size_t parentOffset) -> const TransactionUUID {
-        TransactionUUID tu;
+                         TransactionUUID tu;
 
-        memcpy(
-            tu.data,
-            buffer.get() + parentOffset,
-            TransactionUUID::kBytesSize);
+                         memcpy(
+                             tu.data,
+                             buffer.get() + parentOffset,
+                             TransactionUUID::kBytesSize);
 
-        return tu;
-    }(SenderMessage::kOffsetToInheritedBytes()))
+                         return tu;
+                     }(SenderMessage::kOffsetToInheritedBytes()))
 {}
 
 const bool TransactionMessage::isTransactionMessage() const
@@ -84,14 +84,14 @@ pair<BytesShared, size_t> TransactionMessage::serializeToBytes() const
         TransactionUUID::kBytesSize);
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const size_t TransactionMessage::kOffsetToInheritedBytes() const
 {
     const auto kOffset =
-          SenderMessage::kOffsetToInheritedBytes()
+        SenderMessage::kOffsetToInheritedBytes()
         + TransactionUUID::kBytesSize;
 
     return kOffset;

@@ -10,7 +10,8 @@
 #include "../../../contractors/ContractorsManager.h"
 
 
-class ResetTrustLineDestinationTransaction : public BaseTransaction {
+class ResetTrustLineDestinationTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<ResetTrustLineDestinationTransaction> Shared;

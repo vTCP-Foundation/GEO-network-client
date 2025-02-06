@@ -36,10 +36,10 @@ TransactionResult::SharedConst TotalBalancesTransaction::run()
     }
 
     return resultOk(
-        totalIncomingTrust,
-        totalTrustUsedByContractor,
-        totalOutgoingTrust,
-        totalTrustUsedBySelf);
+               totalIncomingTrust,
+               totalTrustUsedByContractor,
+               totalOutgoingTrust,
+               totalTrustUsedBySelf);
 }
 
 TransactionResult::SharedConst TotalBalancesTransaction::resultOk(
@@ -53,8 +53,8 @@ TransactionResult::SharedConst TotalBalancesTransaction::resultOk(
       << kTokensSeparator << totalOutgoingTrust << kTokensSeparator << totalTrustUsedBySelf;
     string totalBalancesStrResult = s.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            totalBalancesStrResult));
+               mCommand->resultOk(
+                   totalBalancesStrResult));
 }
 
 const string TotalBalancesTransaction::logHeader() const

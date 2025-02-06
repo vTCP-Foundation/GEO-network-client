@@ -5,7 +5,8 @@
 #include "../../../../interface/events_interface/interface/EventsInterfaceManager.h"
 
 class ReceiverPaymentTransaction:
-    public BasePaymentTransaction {
+    public BasePaymentTransaction
+{
 
 public:
     typedef shared_ptr<ReceiverPaymentTransaction> Shared;

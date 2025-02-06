@@ -24,7 +24,8 @@ namespace uuids = boost::uuids;
 
 using namespace std;
 
-class OperationsHistoryStorageTest {
+class OperationsHistoryStorageTest
+{
 
 public:
     OperationsHistoryStorageTest();

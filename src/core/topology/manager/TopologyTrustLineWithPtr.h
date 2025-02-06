@@ -4,7 +4,8 @@
 #include "../TopologyTrustLine.h"
 #include <unordered_set>
 
-class TopologyTrustLineWithPtr {
+class TopologyTrustLineWithPtr
+{
 
 public:
     TopologyTrustLineWithPtr(

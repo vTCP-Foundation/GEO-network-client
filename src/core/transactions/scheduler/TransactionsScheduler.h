@@ -39,7 +39,8 @@ namespace as = boost::asio;
 namespace signals = boost::signals2;
 
 
-class TransactionsScheduler {
+class TransactionsScheduler
+{
 public:
     typedef signals::signal<void(CommandResult::SharedConst)> CommandResultSignal;
     typedef signals::signal<void(BaseTransaction::Shared)> SerializeTransactionSignal;

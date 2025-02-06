@@ -6,12 +6,14 @@
 
 #include "../common/time/TimeUtils.h"
 
-class ObservingTransaction {
+class ObservingTransaction
+{
 
 public:
     typedef shared_ptr<ObservingTransaction> Shared;
 
-    enum ObservingResponseType {
+    enum ObservingResponseType
+    {
         NoInfo = 0,
         ClaimInPool = 1,
         ClaimInBlock = 2,
@@ -20,7 +22,7 @@ public:
         ClaimTimeExpired = 4,
         RejectedByObserving = 5,
     };
-    typedef byte SerializedObservingResponseType;
+    typedef byte_t SerializedObservingResponseType;
 
     ObservingTransaction(
         ObservingClaimAppendRequestMessage::Shared observingRequestMessage);
@@ -35,7 +37,7 @@ public:
     void setObservingResponseType(
         ObservingResponseType observingResponseType);
 
-    const TransactionUUID& transactionUUID() const;
+    const TransactionUUID &transactionUUID() const;
 
     IPv4WithPortAddress::Shared requestedObserver() const;
 
@@ -66,5 +68,4 @@ private:
     DateTime mNextActionDateTime;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_OBSERVINGTRANSACTION_H
+#endif // GEO_NETWORK_CLIENT_OBSERVINGTRANSACTION_H

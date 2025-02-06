@@ -10,12 +10,14 @@
  * Used for amount locking on trust lines in payment operations
  * and cycles overlapping operations.
  */
-class AmountReservation {
+class AmountReservation
+{
 public:
     typedef shared_ptr<const AmountReservation> ConstShared;
 
 public:
-    enum ReservationDirection {
+    enum ReservationDirection
+    {
         Outgoing,
         Incoming
     };

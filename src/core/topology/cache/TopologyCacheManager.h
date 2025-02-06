@@ -9,7 +9,8 @@
 #include <map>
 #include <unordered_map>
 
-class TopologyCacheManager {
+class TopologyCacheManager
+{
 
 public:
     TopologyCacheManager(
@@ -43,27 +44,29 @@ public:
         BaseAddress::Shared nodeAddress);
 
 private:
-    static const byte kResetSenderCacheHours = 0;
-    static const byte kResetSenderCacheMinutes = 10;
-    static const byte kResetSenderCacheSeconds = 0;
+    static const byte_t kResetSenderCacheHours = 0;
+    static const byte_t kResetSenderCacheMinutes = 10;
+    static const byte_t kResetSenderCacheSeconds = 0;
 
-    static Duration& kResetSenderCacheDuration() {
+    static Duration &kResetSenderCacheDuration()
+    {
         static auto duration = Duration(
-            kResetSenderCacheHours,
-            kResetSenderCacheMinutes,
-            kResetSenderCacheSeconds);
+                                   kResetSenderCacheHours,
+                                   kResetSenderCacheMinutes,
+                                   kResetSenderCacheSeconds);
         return duration;
     }
 
-    static const byte kResetInitiatorCacheHours = 0;
-    static const byte kResetInitiatorCacheMinutes = 0;
-    static const byte kResetInitiatorCacheSeconds = 30;
+    static const byte_t kResetInitiatorCacheHours = 0;
+    static const byte_t kResetInitiatorCacheMinutes = 0;
+    static const byte_t kResetInitiatorCacheSeconds = 30;
 
-    static Duration& kResetInitiatorCacheDuration() {
+    static Duration &kResetInitiatorCacheDuration()
+    {
         static auto duration = Duration(
-            kResetInitiatorCacheHours,
-            kResetInitiatorCacheMinutes,
-            kResetInitiatorCacheSeconds);
+                                   kResetInitiatorCacheHours,
+                                   kResetInitiatorCacheMinutes,
+                                   kResetInitiatorCacheSeconds);
         return duration;
     }
 
@@ -80,7 +83,7 @@ private:
     unordered_map<string, TopologyCache::Shared> mCaches;
     map<DateTime, BaseAddress::Shared> msCache;
 
-    typedef shared_ptr<pair<ContractorID, DateTime> > FirstLvShared;
+    typedef shared_ptr<pair<ContractorID, DateTime>> FirstLvShared;
     map<ContractorID, list<FirstLvShared>::iterator> mFirstLvCache;
     list<FirstLvShared> mFirstLvCacheList;
 
@@ -89,5 +92,4 @@ private:
     Logger &mLog;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_TOPOLOGYCACHEMANAGER_H
+#endif // GEO_NETWORK_CLIENT_TOPOLOGYCACHEMANAGER_H

@@ -8,7 +8,7 @@ HistoryPaymentsCommand::HistoryPaymentsCommand(
         uuid,
         identifier())
 {
-    uint32_t flagLow = 0, flagHigh = 0, flag4 = 0, flag8 =0 , flag12 = 0;
+    uint32_t flagLow = 0, flagHigh = 0, flag4 = 0, flag8 =0, flag12 = 0;
     std::string lowBoundaryAmount, highBoundaryAmount, paymentRecordCommandUUID;
     auto check = [&](auto &ctx) {
         if(_attr(ctx) == kCommandsSeparator || _attr(ctx) == kTokensSeparator) {
@@ -59,7 +59,7 @@ HistoryPaymentsCommand::HistoryPaymentsCommand(
             throw ValueError("HistoryPaymentsCommand: amount contains leading zero.");
         }
     };
-    auto paymentRecordUUIDNull = [&](auto &ctx){
+    auto paymentRecordUUIDNull = [&](auto &ctx) {
         mIsPaymentRecordCommandUUIDPresent = false;
     };
     auto addUUID8Digits = [&](auto &ctx) {
@@ -85,7 +85,9 @@ HistoryPaymentsCommand::HistoryPaymentsCommand(
             throw ValueError("HistoryPaymentsCommand: UUID expect 12 digits.");
         } else if(_attr(ctx) == kTokensSeparator) {
             return;
-        } else { paymentRecordCommandUUID += _attr(ctx);}
+        } else {
+            paymentRecordCommandUUID += _attr(ctx);
+        }
     };
     auto equivalentParse = [&](auto &ctx) {
         mEquivalent = _attr(ctx);
@@ -122,23 +124,23 @@ HistoryPaymentsCommand::HistoryPaymentsCommand(
                 >(
                     parserString::string("null")[paymentRecordUUIDNull] |
                     UUIDLexeme<
-                        decltype(addUUID8Digits),
-                        decltype(addUUID4Digits),
-                        decltype(addUUID12Digits)>(
-                            addUUID8Digits,
-                            addUUID4Digits,
-                            addUUID12Digits))
+                    decltype(addUUID8Digits),
+                    decltype(addUUID4Digits),
+                    decltype(addUUID12Digits)>(
+                        addUUID8Digits,
+                        addUUID4Digits,
+                        addUUID12Digits))
                 > char_(kTokensSeparator)
                 > *(int_[equivalentParse])
                 > eol > eoi));
 
-        if(mIsLowBoundaryAmountPresent){
+        if(mIsLowBoundaryAmountPresent) {
             mLowBoundaryAmount = TrustLineAmount(lowBoundaryAmount);
         }
-        if(mIsHighBoundaryAmountPresent){
+        if(mIsHighBoundaryAmountPresent) {
             mHighBoundaryAmount = TrustLineAmount(highBoundaryAmount);
         }
-        if(mIsPaymentRecordCommandUUIDPresent){
+        if(mIsPaymentRecordCommandUUIDPresent) {
             mPaymentRecordCommandUUID = boost::lexical_cast<uuids::uuid>(paymentRecordCommandUUID);
         }
 
@@ -221,9 +223,9 @@ const SerializedEquivalent HistoryPaymentsCommand::equivalent() const
 CommandResult::SharedConst HistoryPaymentsCommand::resultOk(string &historyPaymentsStr) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            historyPaymentsStr));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   historyPaymentsStr));
 }

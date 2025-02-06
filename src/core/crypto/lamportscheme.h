@@ -7,25 +7,24 @@
 #include <cstring>
 #include <memory>
 
-
 namespace crypto {
 namespace lamport {
 
 using namespace std;
 
-
-class Signature {
+class Signature
+{
 public:
     typedef shared_ptr<Signature> Shared;
 
 public:
     explicit Signature(
-        byte *data,
+        byte_t* data,
         size_t dataSize,
         PrivateKey *pKey);
 
     Signature(
-        byte *data);
+        byte_t* data);
 
     ~Signature();
 
@@ -33,28 +32,25 @@ public:
 
 public:
     bool check(
-        byte *data,
+        byte_t* data,
         size_t dataSize,
-        PublicKey::Shared pubKey)
-        noexcept;
+        PublicKey::Shared pubKey) noexcept;
 
-    const byte* data() const;
+    const byte_t* data() const;
 
 protected:
     void collectSignature(
-        byte *key,
-        byte *sign,
-        byte *messageHash)
-        noexcept;
+        byte_t* key,
+        byte_t* sign,
+        byte_t* messageHash) noexcept;
 
 public:
     static const size_t kSize =
         PrivateKey::kRandomNumberSize * PrivateKey::kRandomNumbersCount / 2;
 
 protected:
-    unsigned char *mData;
+    unsigned char* mData;
 };
-
 
 }
 }

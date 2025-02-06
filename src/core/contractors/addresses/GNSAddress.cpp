@@ -5,44 +5,44 @@ GNSAddress::GNSAddress(
 {
     string gnsPureAddress;
     size_t addressSeparatorPos = fullAddress.find(
-        kAddressSeparator);
+                                     kAddressSeparator);
     if (addressSeparatorPos == string::npos) {
         mPort = 0;
         gnsPureAddress = fullAddress;
     } else {
         auto mPortStr = fullAddress.substr(
-            addressSeparatorPos + 1,
-            fullAddress.size() - addressSeparatorPos - 1);
+                            addressSeparatorPos + 1,
+                            fullAddress.size() - addressSeparatorPos - 1);
         try {
             mPort = (uint16_t)std::stoul(mPortStr);
         } catch (...) {
             throw ValueError(
-                    "GNSAddress: can't parse address. "
-                    "Error occurred while parsing 'port' token.");
+                "GNSAddress: can't parse address. "
+                "Error occurred while parsing 'port' token.");
         }
         gnsPureAddress = fullAddress.substr(
-            0,
-            addressSeparatorPos);
+                             0,
+                             addressSeparatorPos);
     }
 
     addressSeparatorPos = gnsPureAddress.find(
-        kGNSAddressSeparator);
+                              kGNSAddressSeparator);
     if (addressSeparatorPos == string::npos) {
         throw ValueError(
             "GNSAddress: can't parse address. There are no separator");
     }
 
     mName = gnsPureAddress.substr(
-        0,
-        addressSeparatorPos);
+                0,
+                addressSeparatorPos);
 
     mProvider = gnsPureAddress.substr(
-        addressSeparatorPos + 1,
-        fullAddress.size() - addressSeparatorPos - 1);
+                    addressSeparatorPos + 1,
+                    fullAddress.size() - addressSeparatorPos - 1);
 }
 
 GNSAddress::GNSAddress(
-    byte* buffer)
+    byte_t* buffer)
 {
     size_t bytesBufferOffset = sizeof(SerializedType);
 
@@ -52,23 +52,23 @@ GNSAddress::GNSAddress(
     }
     bytesBufferOffset += sizeof(uint16_t);
     string gnsAddress = string(
-        buffer + bytesBufferOffset,
-        buffer + bytesBufferOffset + *addressLength);
+                            buffer + bytesBufferOffset,
+                            buffer + bytesBufferOffset + *addressLength);
 
     size_t addressSeparatorPos = gnsAddress.find(
-            kGNSAddressSeparator);
+                                     kGNSAddressSeparator);
     if (addressSeparatorPos == string::npos) {
         throw ValueError(
-                "GNSAddress: can't parse address. There are no separator");
+            "GNSAddress: can't parse address. There are no separator");
     }
 
     mName = gnsAddress.substr(
-        0,
-        addressSeparatorPos);
+                0,
+                addressSeparatorPos);
 
     mProvider = gnsAddress.substr(
-        addressSeparatorPos + 1,
-        gnsAddress.size() - addressSeparatorPos - 1);
+                    addressSeparatorPos + 1,
+                    gnsAddress.size() - addressSeparatorPos - 1);
 }
 
 const string GNSAddress::host() const
@@ -126,32 +126,32 @@ size_t GNSAddress::serializedSize() const
     // 1 bytes - address type
     // 2 bytes - address length
     // rest bytes - address
-    return sizeof(byte) + sizeof(uint16_t) + mName.size() + 1 + mProvider.size();
+    return sizeof(byte_t) + sizeof(uint16_t) + mName.size() + 1 + mProvider.size();
 }
 
 void GNSAddress::setIPAndPort(
     const string &providerData)
 {
     size_t addressSeparatorPos = providerData.find(
-        kAddressSeparator);
+                                     kAddressSeparator);
     if (addressSeparatorPos == string::npos) {
         throw ValueError(
             "GNSAddress: can't parse provider data. There are no separator");
     }
 
     mHost = providerData.substr(
-        0,
-        addressSeparatorPos);
+                0,
+                addressSeparatorPos);
 
     auto mPortStr = providerData.substr(
-        addressSeparatorPos + 1,
-        providerData.size() - addressSeparatorPos - 1);
+                        addressSeparatorPos + 1,
+                        providerData.size() - addressSeparatorPos - 1);
     try {
         mPort = (uint16_t)std::stoul(mPortStr);
     } catch (...) {
         throw ValueError(
-                "GNSAddress: can't parse address. "
-                "Error occurred while parsing 'port' token.");
+            "GNSAddress: can't parse address. "
+            "Error occurred while parsing 'port' token.");
     }
 }
 

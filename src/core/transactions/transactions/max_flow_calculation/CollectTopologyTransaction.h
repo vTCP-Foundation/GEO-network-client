@@ -11,7 +11,8 @@
 #include "../../../network/messages/max_flow_calculation/InitiateMaxFlowCalculationMessage.h"
 #include "../../../network/messages/max_flow_calculation/MaxFlowCalculationSourceFstLevelMessage.h"
 
-class CollectTopologyTransaction : public BaseTransaction {
+class CollectTopologyTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<CollectTopologyTransaction> Shared;

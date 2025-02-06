@@ -32,18 +32,18 @@ TransactionResult::SharedConst FindPathByMaxFlowTransaction::sendRequestForColle
         vector<BaseAddress::Shared> contractors;
         contractors.push_back(mContractorAddress);
         mContractorID = mTopologyTrustLineManager->getID(
-            mContractorAddress);
+                            mContractorAddress);
         info() << "ContractorID " << mContractorID;
         const auto kTransaction = make_shared<CollectTopologyTransaction>(
-            mEquivalent,
-            contractors,
-            mContractorsManager,
-            mTrustLinesManager,
-            mTopologyTrustLineManager,
-            mTopologyCacheManager,
-            mMaxFlowCacheManager,
-            mIamGateway,
-            mLog);
+                                      mEquivalent,
+                                      contractors,
+                                      mContractorsManager,
+                                      mTrustLinesManager,
+                                      mTopologyTrustLineManager,
+                                      mTopologyCacheManager,
+                                      mMaxFlowCacheManager,
+                                      mIamGateway,
+                                      mLog);
 
         mTopologyTrustLineManager->setPreventDeleting(true);
         launchSubsidiaryTransaction(kTransaction);
@@ -53,7 +53,7 @@ TransactionResult::SharedConst FindPathByMaxFlowTransaction::sendRequestForColle
 
     mCountProcessCollectingTopologyRun = 0;
     return resultAwakeAfterMilliseconds(
-        kTopologyCollectingMillisecondsTimeout);
+               kTopologyCollectingMillisecondsTimeout);
 }
 
 TransactionResult::SharedConst FindPathByMaxFlowTransaction::processCollectingTopology()
@@ -63,7 +63,7 @@ TransactionResult::SharedConst FindPathByMaxFlowTransaction::processCollectingTo
     mCountProcessCollectingTopologyRun++;
     if (contextSize > 0 && mCountProcessCollectingTopologyRun <= kCountRunningProcessCollectingTopologyStage) {
         return resultAwakeAfterMilliseconds(
-            kTopologyCollectingAgainMillisecondsTimeout);
+                   kTopologyCollectingAgainMillisecondsTimeout);
     }
 
     mPathsManager->buildPaths(

@@ -61,18 +61,18 @@ TransactionResult::SharedConst OpenTrustLineTransaction::run()
 {
     info() << "step " << mStep;
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::NextAttempt: {
-            return runNextAttemptStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: "
-                "wrong value of mStep");
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::NextAttempt: {
+        return runNextAttemptStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep");
     }
 }
 
@@ -195,8 +195,8 @@ TransactionResult::SharedConst OpenTrustLineTransaction::runNextAttemptStage()
 
     mStep = ResponseProcessing;
     return resultWaitForMessageTypes(
-        {Message::TrustLines_Confirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_Confirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst OpenTrustLineTransaction::runResponseProcessingStage()
@@ -213,8 +213,8 @@ TransactionResult::SharedConst OpenTrustLineTransaction::runResponseProcessingSt
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::TrustLines_Confirmation},
-                kWaitMillisecondsForResponse);
+            {Message::TrustLines_Confirmation},
+            kWaitMillisecondsForResponse);
         }
         info() << "Transaction will be closed and send ping";
         sendMessage<PingMessage>(
@@ -289,33 +289,33 @@ TransactionResult::SharedConst OpenTrustLineTransaction::runResponseProcessingSt
 TransactionResult::SharedConst OpenTrustLineTransaction::resultOK()
 {
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOK(),
-        {Message::TrustLines_Confirmation},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOK(),
+    {Message::TrustLines_Confirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst OpenTrustLineTransaction::resultForbiddenRun()
 {
     return transactionResultFromCommand(
-        mCommand->responseForbiddenRunTransaction());
+               mCommand->responseForbiddenRunTransaction());
 }
 
 TransactionResult::SharedConst OpenTrustLineTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst OpenTrustLineTransaction::resultTrustLineAlreadyExist()
 {
     return transactionResultFromCommand(
-        mCommand->responseAlreadyCreated());
+               mCommand->responseAlreadyCreated());
 }
 
 TransactionResult::SharedConst OpenTrustLineTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string OpenTrustLineTransaction::logHeader() const
@@ -331,10 +331,10 @@ void OpenTrustLineTransaction::populateHistory(
 {
 #ifndef TESTS
     auto record = make_shared<TrustLineRecord>(
-        mTransactionUUID,
-        operationType,
-        mContractorsManager->contractor(mContractorID),
-        0);
+                      mTransactionUUID,
+                      operationType,
+                      mContractorsManager->contractor(mContractorID),
+                      0);
 
     ioTransaction->historyStorage()->saveTrustLineRecord(
         record,

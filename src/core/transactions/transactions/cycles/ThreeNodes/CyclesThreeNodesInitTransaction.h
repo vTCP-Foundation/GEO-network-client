@@ -11,7 +11,8 @@
 
 
 class CyclesThreeNodesInitTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     CyclesThreeNodesInitTransaction(
@@ -26,7 +27,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         CollectDataAndSendMessage = 1,
         ParseMessageAndCreateCycles
     };

@@ -24,14 +24,14 @@ TransactionResult::SharedConst ResetTrustLineSourceTransaction::run()
 {
     info() << "step " << mStep;
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: wrong value of mStep");
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: wrong value of mStep");
     }
 }
 
@@ -50,12 +50,12 @@ TransactionResult::SharedConst ResetTrustLineSourceTransaction::runInitializatio
     }
 
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     auto ioTransaction = mStorageHandler->beginTransaction();
 
     try {
         auto actualAudit = keyChain.actualFullAudit(
-            ioTransaction);
+                               ioTransaction);
         if (actualAudit->auditNumber() >= mCommand->auditNumber()) {
             warning() << "Attempt to set invalid audit number " << mCommand->auditNumber()
                       << ". Actual audit number is " << actualAudit->auditNumber();
@@ -115,8 +115,8 @@ TransactionResult::SharedConst ResetTrustLineSourceTransaction::runResponseProce
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::TrustLines_Confirmation},
-                kWaitMillisecondsForResponse);
+            {Message::TrustLines_Confirmation},
+            kWaitMillisecondsForResponse);
         }
         info() << "Transaction will be closed";
         return resultDone();
@@ -150,21 +150,21 @@ TransactionResult::SharedConst ResetTrustLineSourceTransaction::runResponseProce
 TransactionResult::SharedConst ResetTrustLineSourceTransaction::resultOK()
 {
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOK(),
-        {Message::TrustLines_Confirmation},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOK(),
+    {Message::TrustLines_Confirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst ResetTrustLineSourceTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst ResetTrustLineSourceTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string ResetTrustLineSourceTransaction::logHeader() const

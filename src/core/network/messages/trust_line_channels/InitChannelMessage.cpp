@@ -83,6 +83,6 @@ pair<BytesShared, size_t> InitChannelMessage::serializeToBytes() const
         mPublicKey->kBytesSize);
     //----------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

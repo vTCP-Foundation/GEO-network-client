@@ -40,15 +40,15 @@ CloseIncomingTrustLineTransaction::CloseIncomingTrustLineTransaction(
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::run()
 {
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: "
-                "wrong value of mStep " + to_string(mStep));
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep " + to_string(mStep));
     }
 }
 
@@ -120,7 +120,7 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runInitializat
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
 
     try {
         // note: io transaction would commit automatically on destructor call.
@@ -128,12 +128,12 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runInitializat
         auto ownPublicKeysHash = keyChain.ownPublicKeysHash(ioTransaction);
         auto contractorPublicKeysHash = keyChain.contractorPublicKeysHash(ioTransaction);
         auto serializedAuditData = getOwnSerializedAuditData(
-            ownPublicKeysHash,
-            contractorPublicKeysHash);
+                                       ownPublicKeysHash,
+                                       contractorPublicKeysHash);
         mOwnSignatureAndKeyNumber = keyChain.sign(
-            ioTransaction,
-            serializedAuditData.first,
-            serializedAuditData.second);
+                                        ioTransaction,
+                                        serializedAuditData.first,
+                                        serializedAuditData.second);
 
         keyChain.saveOwnAuditPart(
             ioTransaction,
@@ -204,7 +204,7 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runResponsePro
         // check if audit was cancelled
         auto ioTransaction = mStorageHandler->beginTransaction();
         auto keyChain = mKeysStore->keychain(
-            mTrustLines->trustLineID(mContractorID));
+                            mTrustLines->trustLineID(mContractorID));
         try {
             if (keyChain.isAuditWasCancelled(ioTransaction, mAuditNumber)) {
                 info() << "Audit was cancelled by other audit transaction";
@@ -230,8 +230,8 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runResponsePro
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::TrustLines_AuditConfirmation},
-                kWaitMillisecondsForResponse);
+            {Message::TrustLines_AuditConfirmation},
+            kWaitMillisecondsForResponse);
         }
         sendMessage<PingMessage>(
             mContractorID,
@@ -256,13 +256,13 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runResponsePro
         // message on communicator queue, wait for audit response after reservations committing or cancelling
         // todo add timeout or count failed attempts for running conflict resolver TA
         return resultWaitForMessageTypes(
-            {Message::TrustLines_AuditConfirmation},
-            kWaitMillisecondsForResponse);
+        {Message::TrustLines_AuditConfirmation},
+        kWaitMillisecondsForResponse);
     }
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
 
         // todo process ConfirmationMessage::OwnKeysAbsent and ConfirmationMessage::ContractorKeysAbsent
@@ -285,14 +285,14 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runResponsePro
 #endif
 
         auto contractorSerializedAuditData = getContractorSerializedAuditData(
-            keyChain.ownPublicKeysHash(ioTransaction),
-            keyChain.contractorPublicKeysHash(ioTransaction));
+                keyChain.ownPublicKeysHash(ioTransaction),
+                keyChain.contractorPublicKeysHash(ioTransaction));
         if (!keyChain.checkSign(
-                ioTransaction,
-                contractorSerializedAuditData.first,
-                contractorSerializedAuditData.second,
-                message->signature(),
-                message->keyNumber())) {
+                    ioTransaction,
+                    contractorSerializedAuditData.first,
+                    contractorSerializedAuditData.second,
+                    message->signature(),
+                    message->keyNumber())) {
             warning() << "Contractor didn't sign message correct by key number " << message->keyNumber();
             mTrustLines->setTrustLineState(
                 mContractorID,
@@ -371,33 +371,33 @@ TransactionResult::SharedConst CloseIncomingTrustLineTransaction::runResponsePro
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::resultOK()
 {
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOK(),
-        {Message::TrustLines_AuditConfirmation},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOK(),
+    {Message::TrustLines_AuditConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::resultForbiddenRun()
 {
     return transactionResultFromCommand(
-        mCommand->responseForbiddenRunTransaction());
+               mCommand->responseForbiddenRunTransaction());
 }
 
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::resultKeysError()
 {
     return transactionResultFromCommand(
-        mCommand->responseThereAreNoKeys());
+               mCommand->responseThereAreNoKeys());
 }
 
 TransactionResult::SharedConst CloseIncomingTrustLineTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string CloseIncomingTrustLineTransaction::logHeader() const
@@ -413,9 +413,9 @@ void CloseIncomingTrustLineTransaction::populateHistory(
 {
 #ifndef TESTS
     auto record = make_shared<TrustLineRecord>(
-        mTransactionUUID,
-        operationType,
-        mContractorsManager->contractor(mContractorID));
+                      mTransactionUUID,
+                      operationType,
+                      mContractorsManager->contractor(mContractorID));
 
     ioTransaction->historyStorage()->saveTrustLineRecord(
         record,

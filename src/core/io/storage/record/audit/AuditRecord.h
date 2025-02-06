@@ -9,7 +9,8 @@
 
 using namespace crypto;
 
-class AuditRecord {
+class AuditRecord
+{
 public:
     typedef shared_ptr<AuditRecord> Shared;
 
@@ -33,15 +34,15 @@ public:
         lamport::KeyHash::Shared contractorKeysSetHash);
 
     AuditRecord(
-        byte* buffer);
+        byte_t* buffer);
 
     const AuditNumber auditNumber() const;
 
-    const TrustLineAmount& incomingAmount() const;
+    const TrustLineAmount &incomingAmount() const;
 
-    const TrustLineAmount& outgoingAmount() const;
+    const TrustLineAmount &outgoingAmount() const;
 
-    const TrustLineBalance& balance() const;
+    const TrustLineBalance &balance() const;
 
     const lamport::KeyHash::Shared ownKeyHash() const;
 
@@ -89,5 +90,4 @@ private:
     lamport::KeyHash::Shared mContractorKeysSetHash;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_AUDITRECORD_H
+#endif // GEO_NETWORK_CLIENT_AUDITRECORD_H

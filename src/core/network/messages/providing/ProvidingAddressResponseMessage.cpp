@@ -5,12 +5,12 @@ ProvidingAddressResponseMessage::ProvidingAddressResponseMessage(
     mBuffer(buffer)
 {}
 
-const Message::MessageType ProvidingAddressResponseMessage::typeID() const 
+const Message::MessageType ProvidingAddressResponseMessage::typeID() const
 {
     return Message::ProvidingAddressResponse;
 }
 
-BytesShared ProvidingAddressResponseMessage::buffer() const 
+BytesShared ProvidingAddressResponseMessage::buffer() const
 {
     return mBuffer;
 }

@@ -68,8 +68,8 @@ pair<BytesShared, size_t> ConfirmationMessage::serializeToBytes() const
         sizeof(SerializedOperationState));
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const size_t ConfirmationMessage::kOffsetToInheritedBytes() const

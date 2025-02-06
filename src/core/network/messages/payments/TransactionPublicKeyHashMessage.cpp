@@ -14,7 +14,8 @@ TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
     mPaymentNodeID(paymentNodeID),
     mTransactionPublicKeyHash(transactionPublicKeyHash),
     mIsReceiptContains(false)
-{}
+{
+}
 
 TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
     const SerializedEquivalent equivalent,
@@ -34,11 +35,11 @@ TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
     mIsReceiptContains(true),
     mPublicKeyNumber(publicKeyNumber),
     mSignature(signature)
-{}
+{
+}
 
 TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
-    BytesShared buffer) :
-    TransactionMessage(buffer)
+    BytesShared buffer) : TransactionMessage(buffer)
 {
     auto bytesBufferOffset = TransactionMessage::kOffsetToInheritedBytes();
 
@@ -49,16 +50,16 @@ TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
     bytesBufferOffset += sizeof(PaymentNodeID);
 
     mTransactionPublicKeyHash = make_shared<lamport::KeyHash>(
-        buffer.get() + bytesBufferOffset);
+                                    buffer.get() + bytesBufferOffset);
     bytesBufferOffset += lamport::KeyHash::kBytesSize;
 
     memcpy(
         &mIsReceiptContains,
         buffer.get() + bytesBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
 
     if (mIsReceiptContains) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             &mPublicKeyNumber,
             buffer.get() + bytesBufferOffset,
@@ -66,7 +67,7 @@ TransactionPublicKeyHashMessage::TransactionPublicKeyHashMessage(
         bytesBufferOffset += sizeof(KeyNumber);
 
         auto signature = make_shared<lamport::Signature>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         mSignature = signature;
     }
 }
@@ -106,13 +107,9 @@ pair<BytesShared, size_t> TransactionPublicKeyHashMessage::serializeToBytes() co
     const auto parentBytesAndCount = TransactionMessage::serializeToBytes();
 
     auto kBufferSize =
-            parentBytesAndCount.second
-            + sizeof(PaymentNodeID)
-            + lamport::KeyHash::kBytesSize
-            + sizeof(byte);
+        parentBytesAndCount.second + sizeof(PaymentNodeID) + lamport::KeyHash::kBytesSize + sizeof(byte_t);
     if (mIsReceiptContains) {
-        kBufferSize += (sizeof(KeyNumber)
-                + lamport::Signature::signatureSize());
+        kBufferSize += (sizeof(KeyNumber) + lamport::Signature::signatureSize());
     }
 
     BytesShared buffer = tryMalloc(kBufferSize);
@@ -139,10 +136,10 @@ pair<BytesShared, size_t> TransactionPublicKeyHashMessage::serializeToBytes() co
     memcpy(
         buffer.get() + dataBytesOffset,
         &mIsReceiptContains,
-        sizeof(byte));
+        sizeof(byte_t));
 
     if (mIsReceiptContains) {
-        dataBytesOffset += sizeof(byte);
+        dataBytesOffset += sizeof(byte_t);
         memcpy(
             buffer.get() + dataBytesOffset,
             &mPublicKeyNumber,
@@ -156,6 +153,6 @@ pair<BytesShared, size_t> TransactionPublicKeyHashMessage::serializeToBytes() co
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

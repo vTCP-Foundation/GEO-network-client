@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class GetTrustLineByAddressCommand : public BaseUserCommand {
+class GetTrustLineByAddressCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<GetTrustLineByAddressCommand> Shared;

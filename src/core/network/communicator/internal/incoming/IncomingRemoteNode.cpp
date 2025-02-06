@@ -1,22 +1,21 @@
 #include "IncomingRemoteNode.h"
 
-
 IncomingRemoteNode::IncomingRemoteNode(
     const UDPEndpoint &endpoint,
     MessagesParser &messagesParser,
     TailManager *tailManager,
-    Logger &logger)
-    noexcept:
+    Logger &logger) noexcept :
 
     mEndpoint(endpoint),
     mMessagesParser(messagesParser),
     mTailManager(tailManager),
     mLog(logger)
-{}
+{
+}
 
 // ToDo: implement me correct
-bool IncomingRemoteNode::isBanned () const
-    noexcept
+bool IncomingRemoteNode::isBanned() const
+noexcept
 {
     return false;
 }
@@ -52,7 +51,6 @@ void IncomingRemoteNode::dropOutdatedChannels()
     const auto kNow = chrono::steady_clock::now();
     static const auto kMaxTTL = chrono::seconds(5);
 
-
     // Forward list is used to not to remove elements of the map while iterating it.
     // All the obsolete channels would be removed at once after scanning;
     forward_list<PacketHeader::ChannelIndex> outdatedChannelsIndexes;
@@ -77,7 +75,6 @@ void IncomingRemoteNode::dropOutdatedChannels()
         // it would much more efficient to clear whole map at once
         // (with only one memory reallocation)
         mChannels.clear();
-
     } else {
         // Prevent elements reallocation on removing.
         mChannels.reserve(mChannels.size());
@@ -89,20 +86,19 @@ void IncomingRemoteNode::dropOutdatedChannels()
 }
 
 const UDPEndpoint &IncomingRemoteNode::endpoint() const
-    noexcept
+noexcept
 {
     return mEndpoint;
 }
 
-const TimePoint& IncomingRemoteNode::lastUpdated() const
+const TimePoint &IncomingRemoteNode::lastUpdated() const
 {
     return mLastUpdated;
 }
 
-void IncomingRemoteNode::processIncomingBytesSequence (
-    const byte *bytes,
-    const size_t count)
-    noexcept
+void IncomingRemoteNode::processIncomingBytesSequence(
+    const byte_t* bytes,
+    const size_t count) noexcept
 {
     if (count == 0) {
         return;
@@ -135,16 +131,14 @@ void IncomingRemoteNode::processIncomingBytesSequence (
         // Other OS types should go here
         // ...
 
-
         // Default reservation
         mBuffer.reserve(
             mBuffer.capacity() + 1024);
     }
 
-
     // Appending received data to the previously received
     mBuffer.resize(mBuffer.size() + count);
-    memcpy(&mBuffer[mBuffer.size() - count], bytes, count * sizeof(byte));
+    memcpy(&mBuffer[mBuffer.size() - count], bytes, count * sizeof(byte_t));
 
     size_t totalMessagesCollected = 0;
     while (true) {
@@ -166,7 +160,7 @@ void IncomingRemoteNode::processIncomingBytesSequence (
  * Returns "true" if packet was collected and one more collect attempt may be done.
  * Otherwise - returns "false";
  */
-bool IncomingRemoteNode::tryCollectNextPacket ()
+bool IncomingRemoteNode::tryCollectNextPacket()
 {
     if (mBuffer.size() < Packet::kMinSize) {
         return false;
@@ -175,28 +169,27 @@ bool IncomingRemoteNode::tryCollectNextPacket ()
     // Header parsing
     const PacketHeader::PacketSize kHeaderAndBodyBytesCount =
         *(reinterpret_cast<PacketHeader::PacketSize*>(
-            mBuffer.data()));
+              mBuffer.data()));
 
     const PacketHeader::ChannelIndex kChannelIndex =
         *(reinterpret_cast<PacketHeader::ChannelIndex*>(
-            mBuffer.data() + PacketHeader::kChannelIndexOffset));
+              mBuffer.data() + PacketHeader::kChannelIndexOffset));
 
     const PacketHeader::PacketIndex kPacketIndex =
         *(reinterpret_cast<PacketHeader::PacketIndex*>(
-            mBuffer.data() + PacketHeader::kPacketIndexOffset));
+              mBuffer.data() + PacketHeader::kPacketIndexOffset));
 
     const PacketHeader::TotalPacketsCount kTotalPacketsCount =
         *(reinterpret_cast<PacketHeader::TotalPacketsCount*>(
-            mBuffer.data() + PacketHeader::kPacketsCountOffset));
+              mBuffer.data() + PacketHeader::kPacketsCountOffset));
 
     debug()
-        << "Packet received. Remote endpoint - " << mEndpoint
-        << "; Channel index - " << int(kChannelIndex)
-        << "; Packet index - " << int(kPacketIndex)
-        << "; Total packets count in message - " << int(kTotalPacketsCount);
+            << "Packet received. Remote endpoint - " << mEndpoint
+            << "; Channel index - " << int(kChannelIndex)
+            << "; Packet index - " << int(kPacketIndex)
+            << "; Total packets count in message - " << int(kTotalPacketsCount);
 
-    if (kHeaderAndBodyBytesCount < Packet::kMinSize
-        || kHeaderAndBodyBytesCount > Packet::kMaxSize) {
+    if (kHeaderAndBodyBytesCount < Packet::kMinSize || kHeaderAndBodyBytesCount > Packet::kMaxSize) {
 
         // Packet bytes count field can't be less than minimal header size,
         // and can't be greater than max packet size.
@@ -216,8 +209,7 @@ bool IncomingRemoteNode::tryCollectNextPacket ()
         return false;
     }
 
-    if (kTotalPacketsCount == 0
-        || kPacketIndex > kTotalPacketsCount) {
+    if (kTotalPacketsCount == 0 || kPacketIndex > kTotalPacketsCount) {
 
         // Invalid bytes flow occurred.
         dropEntireIncomingFlow();
@@ -248,7 +240,7 @@ bool IncomingRemoteNode::tryCollectNextPacket ()
     if (kFlagAndMessage.first) {
         debug() << "Collected message of type " << kFlagAndMessage.second->typeID();
         if (kFlagAndMessage.second->typeID() == Message::MaxFlow_ResultMaxFlowCalculation or
-            kFlagAndMessage.second->typeID() == Message::MaxFlow_ResultMaxFlowCalculationFromGateway) {
+                kFlagAndMessage.second->typeID() == Message::MaxFlow_ResultMaxFlowCalculationFromGateway) {
             mTailManager->getFlowTail().push_back(kFlagAndMessage.second);
             mCollectedMessages.push_back(kFlagAndMessage.second);
         } else if (kFlagAndMessage.second->typeID() == Message::Cycles_FiveNodesBoundary) {
@@ -280,7 +272,7 @@ void IncomingRemoteNode::dropEntireIncomingFlow()
     mBuffer.shrink_to_fit();
 }
 
-IncomingChannel* IncomingRemoteNode::findChannel(
+IncomingChannel *IncomingRemoteNode::findChannel(
     const PacketHeader::ChannelIndex index)
 {
     if (mChannels.count(index) == 0)
@@ -295,7 +287,7 @@ IncomingChannel* IncomingRemoteNode::findChannel(
 }
 
 LoggerStream IncomingRemoteNode::debug() const
-    noexcept
+noexcept
 {
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
     return mLog.debug("Communicator / IncomingRemoteNode");

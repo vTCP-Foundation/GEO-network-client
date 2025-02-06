@@ -46,7 +46,8 @@ namespace as = boost::asio;
  * and them would know that it's time to try to send postponed messages once more.
  */
 class ConfirmationRequiredMessagesHandler:
-    protected LoggerMixin {
+    protected LoggerMixin
+{
 
 public:
     /**
@@ -62,7 +63,7 @@ public:
         IOService &ioService,
         CommunicatorStorageHandler *communicatorStorageHandler,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     /**
      * Checks "message" type, and in case if this message must be confirmed, -
@@ -89,7 +90,7 @@ public:
 
 protected:
     const string logHeader() const
-        noexcept;
+    noexcept;
 
     /**
      * @returns timestamp, when next timer awakeness must be performed.
@@ -97,7 +98,7 @@ protected:
      * between now and queue timeout.
      */
     const DateTime closestQueueSendingTimestamp() const
-        noexcept;
+    noexcept;
 
     /**
      * Schedules timer for next awakeness.

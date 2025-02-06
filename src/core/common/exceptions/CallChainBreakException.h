@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class CallChainBreakException: public Exception {
+class CallChainBreakException: public Exception
+{
     using Exception::Exception;
 };
 

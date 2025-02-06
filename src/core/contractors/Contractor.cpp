@@ -8,7 +8,8 @@ Contractor::Contractor(
     mCryptoKey(cryptoKey),
     mAddresses(addresses),
     mIsConfirmed(false)
-{}
+{
+}
 
 Contractor::Contractor(
     ContractorID id,
@@ -19,29 +20,31 @@ Contractor::Contractor(
     mOwnIdOnContractorSide(idOnContractorSide),
     mCryptoKey(cryptoKey),
     mIsConfirmed(isConfirmed)
-{}
+{
+}
 
 Contractor::Contractor(
-    vector<BaseAddress::Shared> addresses):
+    vector<BaseAddress::Shared> addresses) :
     mAddresses(addresses)
-{}
+{
+}
 
 Contractor::Contractor(
-    byte* buffer)
+    byte_t* buffer)
 {
     size_t bufferDataOffset = 0;
 
-    byte addressesCount;
+    byte_t addressesCount;
     memcpy(
         &addressesCount,
         buffer + bufferDataOffset,
-        sizeof(byte));
-    bufferDataOffset += sizeof(byte);
+        sizeof(byte_t));
+    bufferDataOffset += sizeof(byte_t);
     mAddresses.reserve(addressesCount);
 
     for (size_t idx = 0; idx < addressesCount; idx++) {
         auto address = deserializeAddress(
-            buffer + bufferDataOffset);
+                           buffer + bufferDataOffset);
         mAddresses.push_back(address);
         bufferDataOffset += address->serializedSize();
     }
@@ -140,8 +143,8 @@ BytesShared Contractor::serializeToBytes() const
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         &addressesCount,
-        sizeof(byte));
-    dataBytesOffset += sizeof(byte);
+        sizeof(byte_t));
+    dataBytesOffset += sizeof(byte_t);
 
     for (const auto &address : mAddresses) {
         auto serializedAddress = address->serializeToBytes();
@@ -156,7 +159,7 @@ BytesShared Contractor::serializeToBytes() const
 
 size_t Contractor::serializedSize() const
 {
-    size_t result = sizeof(byte);
+    size_t result = sizeof(byte_t);
     for (const auto &address : mAddresses) {
         result += address->serializedSize();
     }
@@ -188,7 +191,7 @@ string Contractor::outputString() const
     return ss.str();
 }
 
-bool operator== (
+bool operator==(
     Contractor::Shared contractor1,
     Contractor::Shared contractor2)
 {
@@ -203,7 +206,7 @@ bool operator== (
     return true;
 }
 
-bool operator!= (
+bool operator!=(
     Contractor::Shared contractor1,
     Contractor::Shared contractor2)
 {

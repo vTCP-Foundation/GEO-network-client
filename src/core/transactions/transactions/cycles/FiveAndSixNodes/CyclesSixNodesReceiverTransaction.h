@@ -8,7 +8,8 @@
 #include "../../../../network/messages/cycles/SixAndFiveNodes/CyclesSixNodesBoundaryMessage.hpp"
 
 class CyclesSixNodesReceiverTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 public:
     CyclesSixNodesReceiverTransaction(
         CyclesSixNodesInBetweenMessage::Shared message,

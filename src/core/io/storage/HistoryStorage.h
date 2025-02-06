@@ -17,7 +17,8 @@
 #include <vector>
 #include <memory>
 
-class HistoryStorage {
+class HistoryStorage
+{
 
 public:
     HistoryStorage(

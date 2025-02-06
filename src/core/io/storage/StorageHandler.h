@@ -13,7 +13,8 @@
 
 namespace fs = boost::filesystem;
 
-class StorageHandler {
+class StorageHandler
+{
 
 public:
     StorageHandler(

@@ -1,27 +1,24 @@
 #include "IncomingChannel.h"
 
-
 IncomingChannel::IncomingChannel(
     MessagesParser &messagesParser,
     TimePoint &nodeHandlerLastUpdate,
-    Logger &logger)
-    noexcept :
+    Logger &logger) noexcept :
 
     mLastRemoteNodeHandlerUpdated(nodeHandlerLastUpdate),
     mMessagesParser(messagesParser),
     mLog(logger),
     mExpectedPacketsCount(0)
-{}
+{
+}
 
-IncomingChannel::~IncomingChannel()
-    noexcept
+IncomingChannel::~IncomingChannel() noexcept
 {
     clear();
 }
 
 void IncomingChannel::reservePacketsSlots(
-    const PacketHeader::TotalPacketsCount count)
-    noexcept(false)
+    const PacketHeader::TotalPacketsCount count) noexcept(false)
 {
     // Note:
     // Theoretically, it is possible,
@@ -47,9 +44,8 @@ void IncomingChannel::reservePacketsSlots(
  */
 void IncomingChannel::addPacket(
     const PacketHeader::PacketIndex index,
-    byte *bytes,
-    const PacketHeader::PacketSize bytesCount)
-    noexcept(false)
+    byte_t* bytes,
+    const PacketHeader::PacketSize bytesCount) noexcept(false)
 {
     auto buffer = malloc(bytesCount);
     if (buffer == nullptr) {
@@ -65,7 +61,7 @@ void IncomingChannel::addPacket(
     //
     //
     // To prevent memory leak - previous packet must be dropped.
-    if (mPackets.count(index) > 0){
+    if (mPackets.count(index) > 0) {
         free(mPackets[index].first);
     }
 
@@ -75,8 +71,8 @@ void IncomingChannel::addPacket(
         bytesCount);
 
     mPackets[index] = make_pair(
-        buffer,
-        bytesCount);
+                          buffer,
+                          bytesCount);
 
     mLastPacketReceived = chrono::steady_clock::now();
     mLastRemoteNodeHandlerUpdated = mLastPacketReceived;
@@ -90,7 +86,7 @@ pair<bool, Message::Shared> IncomingChannel::tryCollectMessage()
 
     size_t totalBytesReceived = 0;
     for (const auto &kPacketIndexAndData : mPackets) {
-         totalBytesReceived += kPacketIndexAndData.second.second;
+        totalBytesReceived += kPacketIndexAndData.second.second;
     }
 
     if (totalBytesReceived <= Packet::kMaxSize - PacketHeader::kSize) {
@@ -105,7 +101,7 @@ pair<bool, Message::Shared> IncomingChannel::tryCollectMessage()
     auto buffer = tryMalloc(totalBytesReceived);
 
     size_t currentBufferOffset = 0;
-    for (PacketHeader::TotalPacketsCount index=0; index<receivedPacketsCount(); ++index) {
+    for (PacketHeader::TotalPacketsCount index = 0; index < receivedPacketsCount(); ++index) {
         const auto &kPacketBytesAndBytesCount = mPackets[index];
         memcpy(
             buffer.get() + currentBufferOffset,
@@ -123,7 +119,7 @@ pair<bool, Message::Shared> IncomingChannel::tryCollectMessage()
 
     uint32_t calculatedCRC = crc.checksum();
     uint32_t receivedCRC = *(reinterpret_cast<uint32_t*>(
-        buffer.get() + totalBytesReceived - sizeof(uint32_t)));
+                                 buffer.get() + totalBytesReceived - sizeof(uint32_t)));
 
     if (receivedCRC != calculatedCRC) {
 
@@ -136,16 +132,15 @@ pair<bool, Message::Shared> IncomingChannel::tryCollectMessage()
     }
 
     return mMessagesParser.processBytesSequence(
-        buffer,
-        totalBytesReceived - Packet::kCRCChecksumBytesCount);
+               buffer,
+               totalBytesReceived - Packet::kCRCChecksumBytesCount);
 }
 
 /**
  * Removes all packets of the channel and frees the memory.
  */
-void IncomingChannel::clear()
-    noexcept
-{    
+void IncomingChannel::clear() noexcept
+{
     for (const auto &kIndexAndPacketData : mPackets) {
         free(kIndexAndPacketData.second.first);
     }
@@ -153,19 +148,19 @@ void IncomingChannel::clear()
 }
 
 Packet::Size IncomingChannel::receivedPacketsCount() const
-    noexcept
+noexcept
 {
     return static_cast<Packet::Size>(mPackets.size());
 }
 
 Packet::Size IncomingChannel::expectedPacketsCount() const
-    noexcept
+noexcept
 {
     return mExpectedPacketsCount;
 }
 
 const TimePoint &IncomingChannel::lastUpdated() const
-    noexcept
+noexcept
 {
     return mLastPacketReceived;
 }

@@ -85,6 +85,6 @@ size_t ObservingClaimAppendRequestMessage::serializedSize() const
            + TransactionUUID::kBytesSize
            + sizeof(SerializedRecordsCount)
            + mParticipantsPublicKeys.size()
-             * (sizeof(PaymentNodeID) + lamport::PublicKey::keySize());
+           * (sizeof(PaymentNodeID) + lamport::PublicKey::keySize());
     // todo : add hash size
 }

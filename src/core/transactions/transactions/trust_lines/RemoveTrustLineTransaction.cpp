@@ -9,8 +9,8 @@ RemoveTrustLineTransaction::RemoveTrustLineTransaction(
     Logger &logger) :
     BaseTransaction(
         BaseTransaction::RemoveTrustLineTransactionType,
-            command->equivalent(),
-            logger),
+        command->equivalent(),
+        logger),
     mCommand(command),
     mContractorID(command->contractorID()),
     mContractorsManager(contractorsManager),
@@ -40,7 +40,7 @@ TransactionResult::SharedConst RemoveTrustLineTransaction::run()
     }
 
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
 
     auto ioTransaction = mStorageHandler->beginTransaction();
 
@@ -62,13 +62,13 @@ TransactionResult::SharedConst RemoveTrustLineTransaction::run()
 TransactionResult::SharedConst RemoveTrustLineTransaction::resultOK()
 {
     return transactionResultFromCommand(
-        mCommand->responseOK());
+               mCommand->responseOK());
 }
 
 TransactionResult::SharedConst RemoveTrustLineTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 const string RemoveTrustLineTransaction::logHeader() const

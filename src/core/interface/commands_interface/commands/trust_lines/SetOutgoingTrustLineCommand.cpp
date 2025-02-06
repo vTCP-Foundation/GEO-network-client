@@ -19,7 +19,7 @@ SetOutgoingTrustLineCommand::SetOutgoingTrustLineCommand(
         mContractorID = _attr(ctx);
     };
     auto amountAddNumber = [&](auto &ctx) {
-        if(amount.front() == '0' && isdigit(amount.back())){
+        if(amount.front() == '0' && isdigit(amount.back())) {
             throw ValueError("SetOutgoingTrustLineCommand: amount contains leading zero.");
         }
         amount += _attr(ctx);
@@ -41,9 +41,9 @@ SetOutgoingTrustLineCommand::SetOutgoingTrustLineCommand(
             command.begin(),
             command.end(),
             *(int_[contractorIDParse])
-                > char_(kTokensSeparator)
-                > *(digit [amountAddNumber] > !alpha > !punct)
-                > char_(kTokensSeparator)  > int_[equivalentParse] > eol > eoi );
+            > char_(kTokensSeparator)
+            > *(digit [amountAddNumber] > !alpha > !punct)
+            > char_(kTokensSeparator)  > int_[equivalentParse] > eol > eoi );
         mAmount = TrustLineAmount(amount);
     } catch(...) {
         throw ValueError("SetOutgoingTrustLineCommand : cannot parse command.");

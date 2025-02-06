@@ -3,15 +3,15 @@
 
 #include "TransactionMessage.h"
 
-
-class ConfirmationMessage:
-    public TransactionMessage {
+class ConfirmationMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ConfirmationMessage> Shared;
 
 public:
-    enum OperationState {
+    enum OperationState
+    {
         OK = 1,
         ErrorShouldBeRemovedFromQueue = 2,
         ContractorBanned = 3,
@@ -52,7 +52,7 @@ protected:
     const size_t kOffsetToInheritedBytes() const override;
 
 private:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
 private:
     OperationState mState;

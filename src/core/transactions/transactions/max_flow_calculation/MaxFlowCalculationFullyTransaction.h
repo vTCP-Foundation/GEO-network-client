@@ -6,7 +6,8 @@
 
 #include "CollectTopologyTransaction.h"
 
-class MaxFlowCalculationFullyTransaction : public BaseCollectTopologyTransaction {
+class MaxFlowCalculationFullyTransaction : public BaseCollectTopologyTransaction
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationFullyTransaction> Shared;
@@ -37,25 +38,25 @@ private:
     TrustLineAmount calculateOneNode(
         ContractorID nodeID,
         const TrustLineAmount &currentFlow,
-        byte level);
+        byte_t level);
 
     TransactionResult::SharedConst resultOk();
 
     TransactionResult::SharedConst resultProtocolError();
 
 private:
-    static const byte kMaxPathLength = 6;
+    static const byte_t kMaxPathLength = 6;
     static const uint32_t kWaitMillisecondsForCalculatingMaxFlow = 4000;
     static const uint32_t kWaitMillisecondsForCalculatingMaxFlowAgain = 500;
     static const uint32_t kMaxWaitMillisecondsForCalculatingMaxFlow = 15000;
     static const uint16_t kCountRunningProcessCollectingTopologyStage =
-            (kMaxWaitMillisecondsForCalculatingMaxFlow - kWaitMillisecondsForCalculatingMaxFlow) /
-            kWaitMillisecondsForCalculatingMaxFlowAgain;
+        (kMaxWaitMillisecondsForCalculatingMaxFlow - kWaitMillisecondsForCalculatingMaxFlow) /
+        kWaitMillisecondsForCalculatingMaxFlowAgain;
 
 private:
     InitiateMaxFlowCalculationFullyCommand::Shared mCommand;
     vector<ContractorID> mForbiddenNodeIDs;
-    byte mCurrentPathLength;
+    byte_t mCurrentPathLength;
     TrustLineAmount mCurrentMaxFlow;
     ContractorID mCurrentContractor;
     size_t mCountProcessCollectingTopologyRun;
@@ -66,5 +67,4 @@ private:
     bool mIamGateway;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_MAXFLOWCALCULATIONFULLYTRANSACTION_H
+#endif // GEO_NETWORK_CLIENT_MAXFLOWCALCULATIONFULLYTRANSACTION_H

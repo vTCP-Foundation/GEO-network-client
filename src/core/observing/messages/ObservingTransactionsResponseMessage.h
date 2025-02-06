@@ -4,7 +4,8 @@
 #include "base/ObservingResponseMessage.h"
 #include <vector>
 
-class ObservingTransactionsResponseMessage : public ObservingResponseMessage {
+class ObservingTransactionsResponseMessage : public ObservingResponseMessage
+{
 
 public:
     typedef shared_ptr<ObservingTransactionsResponseMessage> Shared;

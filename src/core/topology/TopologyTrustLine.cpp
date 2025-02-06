@@ -13,7 +13,7 @@ TopologyTrustLine::TopologyTrustLine(
 {
     if (*amount.get() < TrustLine::kZeroAmount()) {
         throw ValueError("TopologyTrustLine::TopologyTrustLine: "
-                             "Amount can't be negative value.");
+                         "Amount can't be negative value.");
     }
 }
 
@@ -35,8 +35,8 @@ ConstSharedTrustLineAmount TopologyTrustLine::amount() const
 ConstSharedTrustLineAmount TopologyTrustLine::freeAmount()
 {
     return ConstSharedTrustLineAmount(
-        new TrustLineAmount(
-            *mAmount.get() - *mUsedAmount.get()));
+               new TrustLineAmount(
+                   *mAmount.get() - *mUsedAmount.get()));
 }
 
 void TopologyTrustLine::addUsedAmount(

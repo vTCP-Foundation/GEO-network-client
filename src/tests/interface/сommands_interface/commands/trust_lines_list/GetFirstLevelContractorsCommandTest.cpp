@@ -5,8 +5,7 @@ TEST_CASE("Testing GetFirstLevelContractorsCommand")
 {
     REQUIRE_NOTHROW(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\n"));
 
-    SECTION("No input")
-    {
+    SECTION("No input") {
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, ""));
 
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n"));
@@ -24,8 +23,7 @@ TEST_CASE("Testing GetFirstLevelContractorsCommand")
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t\t\n"));
     }
 
-    SECTION("Double separaotor")
-    {
+    SECTION("Double separaotor") {
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t1\n"));
 
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t\n"));
@@ -35,13 +33,11 @@ TEST_CASE("Testing GetFirstLevelContractorsCommand")
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t1\t\n"));
     }
 
-    SECTION("Character instead of integer")
-    {
+    SECTION("Character instead of integer") {
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "ddf\n"));
     }
 
-    SECTION("No EOL & character after EOL")
-    {
+    SECTION("No EOL & character after EOL") {
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "333"));
 
         REQUIRE_THROWS(GetFirstLevelContractorsCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\n\t"));

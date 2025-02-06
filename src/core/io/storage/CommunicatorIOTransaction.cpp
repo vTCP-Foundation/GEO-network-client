@@ -22,7 +22,7 @@ CommunicatorMessagesQueueHandler* CommunicatorIOTransaction::communicatorMessage
 {
     if (!mIsTransactionBegin) {
         throw IOError("CommunicatorIOTransaction::communicatorMessagesQueueHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mCommunicatorMessagesQueueHandler;
 }
@@ -95,7 +95,8 @@ const string CommunicatorIOTransaction::logHeader() const
     return s.str();
 }
 
-void CommunicatorIOTransaction::beginTransactionQuery() {
+void CommunicatorIOTransaction::beginTransactionQuery()
+{
 #ifdef STORAGE_HANDLER_DEBUG_LOG
     info() << "beginTransactionQuery";
 #endif

@@ -23,26 +23,26 @@ TransactionResult::SharedConst CheckTrustLineTransaction::run()
         return resultDone();
     }
     auto action = mTrustLinesManager->checkTrustLineAfterTransaction(
-        mContractorID,
-        mIsActionInitiator);
+                      mContractorID,
+                      mIsActionInitiator);
     switch (action) {
-        case TrustLinesManager::Audit: {
-            info() << "Audit action";
-            auditSignal(
-                mContractorID,
-                mEquivalent);
-            break;
-        }
-        case TrustLinesManager::KeysSharing: {
-            info() << "Keys sharing action";
-            publicKeysSharingSignal(
-                mContractorID,
-                mEquivalent);
-            break;
-        }
-        default: {
-            info() << "No actions";
-        }
+    case TrustLinesManager::Audit: {
+        info() << "Audit action";
+        auditSignal(
+            mContractorID,
+            mEquivalent);
+        break;
+    }
+    case TrustLinesManager::KeysSharing: {
+        info() << "Keys sharing action";
+        publicKeysSharingSignal(
+            mContractorID,
+            mEquivalent);
+        break;
+    }
+    default: {
+        info() << "No actions";
+    }
     }
     return resultDone();
 }

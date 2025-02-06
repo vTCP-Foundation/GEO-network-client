@@ -11,7 +11,8 @@
 #include <vector>
 
 class CyclesThreeNodesReceiverTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     CyclesThreeNodesReceiverTransaction(

@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class IOError: public Exception {
+class IOError: public Exception
+{
     using Exception::Exception;
 };
 

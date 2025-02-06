@@ -4,7 +4,8 @@
 #include "../BaseUserCommand.h"
 
 class SubsystemsInfluenceCommand:
-    public BaseUserCommand {
+    public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<SubsystemsInfluenceCommand> Shared;

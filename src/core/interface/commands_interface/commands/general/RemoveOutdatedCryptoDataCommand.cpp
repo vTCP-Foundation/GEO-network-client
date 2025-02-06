@@ -2,7 +2,7 @@
 
 RemoveOutdatedCryptoDataCommand::RemoveOutdatedCryptoDataCommand(
     const CommandUUID &uuid,
-    const string &commandBuffer):
+    const string &commandBuffer) :
 
     BaseUserCommand(
         uuid,
@@ -17,10 +17,10 @@ RemoveOutdatedCryptoDataCommand::RemoveOutdatedCryptoDataCommand(
 
     try {
         parse(
-            command.begin(),
-            command.end(),
-            *(int_[vacuumParse]> eol > eoi));
-    } catch(...) {
+            commandBuffer.begin(),
+            commandBuffer.end(),
+            *(int_[vacuumParse] > eol > eoi));
+    } catch (...) {
         throw ValueError("RemoveOutdatedCryptoDataCommand: cannot parse command.");
     }
 }

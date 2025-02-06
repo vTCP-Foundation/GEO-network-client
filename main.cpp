@@ -34,7 +34,8 @@
 #endif
 
 #ifndef INTERNAL_TESTS
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 
     return Core(argv[0]).run();
 

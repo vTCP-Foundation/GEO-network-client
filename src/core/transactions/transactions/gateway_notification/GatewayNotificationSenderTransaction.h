@@ -10,7 +10,8 @@
 
 #include <set>
 
-class GatewayNotificationSenderTransaction : public BaseTransaction {
+class GatewayNotificationSenderTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GatewayNotificationSenderTransaction> Shared;
@@ -26,7 +27,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         GatewayNotificationStage = 1,
         UpdateRoutingTableStage
     };
@@ -48,19 +50,21 @@ private:
     static const uint32_t kMinutesMax = 0;
     static const uint32_t kSecondsMax = 0;
 
-    static Duration& kMaxDurationBetweenSteps() {
+    static Duration& kMaxDurationBetweenSteps()
+    {
         static auto duration = Duration(
-            kHoursBetweenSteps,
-            kMinutesBetweenSteps,
-            kSecondsBetweenSteps);
+                                   kHoursBetweenSteps,
+                                   kMinutesBetweenSteps,
+                                   kSecondsBetweenSteps);
         return duration;
     }
 
-    static Duration& kMaxTransactionDuration() {
+    static Duration& kMaxTransactionDuration()
+    {
         static auto duration = Duration(
-            kHoursMax,
-            kMinutesMax,
-            kSecondsMax);
+                                   kHoursMax,
+                                   kMinutesMax,
+                                   kSecondsMax);
         return duration;
     }
 

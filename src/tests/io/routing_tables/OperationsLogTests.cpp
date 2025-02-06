@@ -5,11 +5,13 @@ using namespace io::routing_tables;
 namespace f = boost::filesystem;
 
 
-class OperationsLogTests {
+class OperationsLogTests
+{
 public:
     // Testable class, that allows acces to the private methods and fields.
     class TOperationsLog:
-        public OperationsLog {
+        public OperationsLog
+    {
         friend class OperationsLogTests;
     public:
         using OperationsLog::OperationsLog;
@@ -18,15 +20,18 @@ public:
 
     // Returns path to the directory,
     // into which all the tests must be done.
-    const f::path path() const {
+    const f::path path() const
+    {
         return f::path("tests/io/routing_tables/operations_log/");
     }
 
-    void clean() {
+    void clean()
+    {
         f::remove_all(path());
     }
 
-    void run() {
+    void run()
+    {
         checkLogFileCreation();
         checkSetOperationsSerialization();
         checkRemoveOperationsSerialization();
@@ -38,7 +43,8 @@ public:
         clean();
     };
 
-    void checkLogFileCreation() {
+    void checkLogFileCreation()
+    {
         clean();
         TOperationsLog log(path());
 
@@ -53,7 +59,8 @@ public:
      * This test tries to serialize and write several "SetOperation" transactions to the log.
      * All transactions should be written sequentially.
      */
-    void checkSetOperationsSerialization() {
+    void checkSetOperationsSerialization()
+    {
         clean();
 
         TOperationsLog log(path());
@@ -97,7 +104,8 @@ public:
         assert(operation->direction() == dir);
     }
 
-    void checkRemoveOperationsSerialization() {
+    void checkRemoveOperationsSerialization()
+    {
         clean();
 
         OperationsLog log(path());
@@ -145,7 +153,8 @@ public:
         assert(operation->recordNumber() == recN1);
     }
 
-    void checkDirectionUpdateOperationsSerialization() {
+    void checkDirectionUpdateOperationsSerialization()
+    {
         clean();
 
         OperationsLog log(path());
@@ -192,7 +201,8 @@ public:
      * This is the same as truncate, seprate test cases is created only
      * to be able to extend it in the future, in case when commit operations will change the logic (if so).
      */
-    void checkCommit() {
+    void checkCommit()
+    {
         clean();
 
         OperationsLog log(path());
@@ -214,7 +224,8 @@ public:
     /*
      * Truncate oprations should clear the log.
      */
-    void checkTruncateOperations() {
+    void checkTruncateOperations()
+    {
         clean();
 
         OperationsLog log(path());

@@ -15,14 +15,13 @@
 #include <utility>
 #include <limits>
 
-
 using namespace std;
-
 
 /**
  * Collects incoming packets from the remote node.
  */
-class IncomingChannel {
+class IncomingChannel
+{
 public:
     using Unique = unique_ptr<IncomingChannel>;
 
@@ -30,35 +29,30 @@ public:
     IncomingChannel(
         MessagesParser &messageParser,
         TimePoint &nodeHandlerLastUpdate,
-        Logger &logger)
-        noexcept;
+        Logger &logger) noexcept;
 
-    ~IncomingChannel()
-        noexcept;
+    ~IncomingChannel() noexcept;
 
-    void clear()
-        noexcept;
+    void clear() noexcept;
 
     void reservePacketsSlots(
-        const Packet::Count count)
-        noexcept(false);
+        const Packet::Count count) noexcept(false);
 
     void addPacket(
         const PacketHeader::PacketIndex index,
-        byte* bytes,
-        const PacketHeader::PacketSize count)
-        noexcept(false);
+        byte_t* bytes,
+        const PacketHeader::PacketSize count) noexcept(false);
 
     pair<bool, Message::Shared> tryCollectMessage();
 
     Packet::Size receivedPacketsCount() const
-        noexcept;
+    noexcept;
 
     Packet::Size expectedPacketsCount() const
-        noexcept;
+    noexcept;
 
-    const TimePoint& lastUpdated() const
-        noexcept;
+    const TimePoint &lastUpdated() const
+    noexcept;
 
 protected:
     TimePoint mLastPacketReceived;
@@ -71,5 +65,4 @@ protected:
     boost::unordered_map<PacketHeader::PacketIndex, pair<void*, PacketHeader::PacketSize>> mPackets;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_INCOMINGCHANNEL_H
+#endif // GEO_NETWORK_CLIENT_INCOMINGCHANNEL_H

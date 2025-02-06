@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class IndexError: public Exception {
+class IndexError: public Exception
+{
     using Exception::Exception;
 };
 

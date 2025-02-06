@@ -19,8 +19,8 @@ CommandResult::SharedConst ContractorListCommand::resultOk(
     string &contractors) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        contractors);
+               identifier(),
+               UUID(),
+               200,
+               contractors);
 }

@@ -17,13 +17,13 @@ TransactionResult::SharedConst HistoryTrustLinesTransaction::run()
 {
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto const trustLineRecords = ioTransaction->historyStorage()->allTrustLineRecords(
-        mCommand->equivalent(),
-        mCommand->historyCount(),
-        mCommand->historyFrom(),
-        mCommand->timeFrom(),
-        mCommand->isTimeFromPresent(),
-        mCommand->timeTo(),
-        mCommand->isTimeToPresent());
+                                      mCommand->equivalent(),
+                                      mCommand->historyCount(),
+                                      mCommand->historyFrom(),
+                                      mCommand->timeFrom(),
+                                      mCommand->isTimeFromPresent(),
+                                      mCommand->timeTo(),
+                                      mCommand->isTimeToPresent());
     return resultOk(trustLineRecords);
 }
 
@@ -80,8 +80,8 @@ TransactionResult::SharedConst HistoryTrustLinesTransaction::resultOk(
 
     auto result = stream.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            result));
+               mCommand->resultOk(
+                   result));
 }
 
 const string HistoryTrustLinesTransaction::logHeader() const

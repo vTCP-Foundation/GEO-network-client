@@ -9,7 +9,7 @@ MsgEncryptor::KeyTrio::Shared MsgEncryptor::generateKeyTrio(
     keyTrio->publicKey = keyPair->publicKey;
     keyTrio->secretKey = keyPair->secretKey;
 
-    if(!outputKey.empty()) {
+    if (!outputKey.empty()) {
         keyTrio->contractorPublicKey = std::make_shared<PublicKey>(outputKey);
     } else {
         keyTrio->contractorPublicKey = ByteEncryptor::generateUndefinedKey();
@@ -25,7 +25,7 @@ MsgEncryptor::KeyTrio::Shared MsgEncryptor::generateKeyTrio(
     keyTrio->publicKey = keyPair->publicKey;
     keyTrio->secretKey = keyPair->secretKey;
 
-    if(contractorPublicKey) {
+    if (contractorPublicKey) {
         keyTrio->contractorPublicKey = contractorPublicKey;
     }
     return keyTrio;
@@ -36,9 +36,9 @@ ByteEncryptor::Buffer MsgEncryptor::encrypt(
 {
     auto bytesAndBytesCount = message->serializeToBytes();
     auto pair = ByteEncryptor::encrypt(
-        bytesAndBytesCount.first.get() + Message::UnencryptedHeaderSize,
-        bytesAndBytesCount.second - Message::UnencryptedHeaderSize,
-        Message::UnencryptedHeaderSize);
+                    bytesAndBytesCount.first.get() + Message::UnencryptedHeaderSize,
+                    bytesAndBytesCount.second - Message::UnencryptedHeaderSize,
+                    Message::UnencryptedHeaderSize);
     memcpy(
         pair.first.get(),
         bytesAndBytesCount.first.get(),
@@ -51,10 +51,10 @@ ByteEncryptor::Buffer MsgEncryptor::decrypt(
     const size_t count)
 {
     auto pair = ByteEncryptor::decrypt(
-        buffer.get() + Message::UnencryptedHeaderSize,
-        count - Message::UnencryptedHeaderSize,
-        Message::UnencryptedHeaderSize);
-    if(!pair.first)
+                    buffer.get() + Message::UnencryptedHeaderSize,
+                    count - Message::UnencryptedHeaderSize,
+                    Message::UnencryptedHeaderSize);
+    if (!pair.first)
         return pair;
     memcpy(
         pair.first.get(),
@@ -64,10 +64,10 @@ ByteEncryptor::Buffer MsgEncryptor::decrypt(
 }
 
 void MsgEncryptor::KeyTrio::serialize(
-    vector<byte> &out) const
+    vector<byte_t> &out) const
 {
     out.resize(PublicKey::kBytesSize * 2 + SecretKey::kBytesSize);
-    byte *p = &out[0];
+    byte_t* p = &out[0];
     mempcpy(
         p,
         publicKey->key,
@@ -78,7 +78,7 @@ void MsgEncryptor::KeyTrio::serialize(
         secretKey->key,
         SecretKey::kBytesSize);
     p += SecretKey::kBytesSize;
-    if(contractorPublicKey) {
+    if (contractorPublicKey) {
         mempcpy(
             p,
             contractorPublicKey->key,
@@ -95,9 +95,9 @@ MsgEncryptor::KeyTrio::KeyTrio(
 {
     std::string p1 = str;
     std::string p2 = ByteEncryptor_parsePar(p1, "_");
-    if(!p2.empty()) {
+    if (!p2.empty()) {
         std::string p3 = ByteEncryptor_parsePar(p2, "_");
-        if(!p3.empty()) {
+        if (!p3.empty()) {
             contractorPublicKey = std::make_shared<PublicKey>(p3);
         }
         secretKey = std::make_shared<SecretKey>(p2);
@@ -105,17 +105,17 @@ MsgEncryptor::KeyTrio::KeyTrio(
     publicKey = std::make_shared<PublicKey>(p1);
 }
 
-MsgEncryptor::KeyTrio::KeyTrio(vector<byte> &in)
+MsgEncryptor::KeyTrio::KeyTrio(vector<byte_t> &in)
 {
     deserialize(in);
 }
 
 void MsgEncryptor::KeyTrio::deserialize(
-    vector<byte> &in)
+    vector<byte_t> &in)
 {
     uint32_t pairSize = PublicKey::kBytesSize + SecretKey::kBytesSize;
-    const byte *p = &in[0];
-    if(in.size() >= PublicKey::kBytesSize) {
+    const byte_t* p = &in[0];
+    if (in.size() >= PublicKey::kBytesSize) {
         publicKey = std::make_shared<PublicKey>();
         mempcpy(
             publicKey->key,
@@ -123,7 +123,7 @@ void MsgEncryptor::KeyTrio::deserialize(
             PublicKey::kBytesSize);
         p += PublicKey::kBytesSize;
     }
-    if(in.size() >= pairSize) {
+    if (in.size() >= pairSize) {
         secretKey = std::make_shared<SecretKey>();
         mempcpy(
             secretKey->key,
@@ -131,7 +131,7 @@ void MsgEncryptor::KeyTrio::deserialize(
             SecretKey::kBytesSize);
         p += SecretKey::kBytesSize;
     }
-    if(in.size() >= (pairSize + PublicKey::kBytesSize)) {
+    if (in.size() >= (pairSize + PublicKey::kBytesSize)) {
         contractorPublicKey = std::make_shared<PublicKey>();
         mempcpy(
             contractorPublicKey->key,
@@ -140,12 +140,13 @@ void MsgEncryptor::KeyTrio::deserialize(
     }
 }
 
-std::ostream &operator<< (
+std::ostream &operator<<(
     std::ostream &out,
     const MsgEncryptor::KeyTrio &t)
 {
     out << (const MsgEncryptor::KeyPair &)t;
-    if(!t.contractorPublicKey) return out;
+    if (!t.contractorPublicKey)
+        return out;
     out << "_"
         << *t.contractorPublicKey;
     return out;

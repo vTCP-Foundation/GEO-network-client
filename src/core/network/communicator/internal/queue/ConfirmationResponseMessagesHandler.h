@@ -12,7 +12,8 @@
 using namespace std;
 namespace as = boost::asio;
 
-class ConfirmationResponseMessagesHandler : LoggerMixin {
+class ConfirmationResponseMessagesHandler : LoggerMixin
+{
 
 public:
     ConfirmationResponseMessagesHandler(

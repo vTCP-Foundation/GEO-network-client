@@ -5,17 +5,19 @@
 
 class Message;
 
-class MsgEncryptor : public ByteEncryptor {
+class MsgEncryptor : public ByteEncryptor
+{
 public:
     typedef shared_ptr<Message> MessageShared;
 
-    struct KeyTrio : KeyPair {
+    struct KeyTrio : KeyPair
+    {
         typedef std::shared_ptr<KeyTrio> Shared;
         KeyTrio() = default;
         explicit KeyTrio(const string &str);
-        explicit KeyTrio(vector<byte> &in);
-        void serialize(vector<byte> &out) const;
-        void deserialize(vector<byte> &in);
+        explicit KeyTrio(vector<byte_t> &in);
+        void serialize(vector<byte_t> &out) const;
+        void deserialize(vector<byte_t> &in);
         PublicKey::Shared contractorPublicKey = nullptr;
     };
 
@@ -36,7 +38,6 @@ public:
         const size_t count);
 };
 
-std::ostream &operator<< (std::ostream &out, const MsgEncryptor::KeyTrio &t);
+std::ostream &operator<<(std::ostream &out, const MsgEncryptor::KeyTrio &t);
 
-
-#endif //GEO_NETWORK_CLIENT_MSGENCRYPTOR_H
+#endif // GEO_NETWORK_CLIENT_MSGENCRYPTOR_H

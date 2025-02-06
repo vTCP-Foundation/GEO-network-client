@@ -9,7 +9,8 @@
 #include "../../../network/messages/max_flow_calculation/ResultMaxFlowCalculationGatewayMessage.h"
 #include "../../../topology/cache/TopologyCacheManager.h"
 
-class MaxFlowCalculationSourceFstLevelTransaction : public BaseTransaction  {
+class MaxFlowCalculationSourceFstLevelTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationSourceFstLevelTransaction> Shared;

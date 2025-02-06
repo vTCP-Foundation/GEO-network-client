@@ -5,7 +5,8 @@
 #include <vector>
 
 class RoutingTableResponseMessage :
-    public ConfirmationMessage {
+    public ConfirmationMessage
+{
 
 public:
     typedef shared_ptr<RoutingTableResponseMessage> Shared;

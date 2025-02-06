@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class PreconditionFailedError: public Exception {
+class PreconditionFailedError: public Exception
+{
     using Exception::Exception;
 };
 

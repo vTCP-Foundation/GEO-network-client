@@ -7,7 +7,8 @@
 
 using namespace std;
 
-class TrustLinesManagerTest {
+class TrustLinesManagerTest
+{
 
 public:
     NodeUUID contractor1;

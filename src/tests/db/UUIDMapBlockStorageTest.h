@@ -6,48 +6,48 @@
 #include "../../core/db/uuid_map_block_storage/UUIDMapBlockStorage.h"
 
 namespace db {
-    namespace uuid_map_block_storage {
+namespace uuid_map_block_storage {
 
-        using namespace std;
+using namespace std;
 
-        typedef uint8_t byte;
+typedef uint8_t byte_t;
 
-        class UUIDMapBlockStorageTest{
-        public:
+class UUIDMapBlockStorageTest
+{
+public:
+    uuids::uuid u1;
+    uuids::uuid u2;
+    uuids::uuid u3;
+    uuids::uuid u4;
+    uuids::uuid u5;
 
-            uuids::uuid u1;
-            uuids::uuid u2;
-            uuids::uuid u3;
-            uuids::uuid u4;
-            uuids::uuid u5;
+    const size_t itemSize = 16;
 
-            const size_t itemSize = 16;
+    UUIDMapBlockStorage *mMapBlockStorage;
 
-            UUIDMapBlockStorage *mMapBlockStorage;
+public:
+    UUIDMapBlockStorageTest();
 
-        public:
-            UUIDMapBlockStorageTest();
+    ~UUIDMapBlockStorageTest();
 
-            ~UUIDMapBlockStorageTest();
+    void initializeNewPointer();
 
-            void initializeNewPointer();
+    void deletePointerToStorage();
 
-            void deletePointerToStorage();
+    void writeTestCase();
 
-            void writeTestCase();
+    void readFromFile();
 
-            void readFromFile();
+    void readFirstIndex();
 
-            void readFirstIndex();
+    void readSecondIndex();
 
-            void readSecondIndex();
+    void readThirdIndex();
 
-            void readThirdIndex();
+    void start();
+};
 
-            void start();
-        };
-
-    }
+}
 }
 
-#endif //GEO_NETWORK_CLIENT_UUIDMAPBLOCKSTORAGETEST_H
+#endif // GEO_NETWORK_CLIENT_UUIDMAPBLOCKSTORAGETEST_H

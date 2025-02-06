@@ -9,7 +9,8 @@
 #include "../../../trust_lines/manager/TrustLinesManager.h"
 #include "../../../topology/cache/TopologyCacheManager.h"
 
-class MaxFlowCalculationTargetFstLevelTransaction : public BaseTransaction {
+class MaxFlowCalculationTargetFstLevelTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationTargetFstLevelTransaction> Shared;

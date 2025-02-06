@@ -31,7 +31,7 @@ CyclesThreeNodesBalancesRequestMessage::CyclesThreeNodesBalancesRequestMessage(
 
     for (SerializedRecordNumber idx = 0; idx < neighborsCount; idx++) {
         auto stepAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
         bytesBufferOffset += stepAddress->serializedSize();
         mNeighbors.push_back(stepAddress);
     }
@@ -72,8 +72,8 @@ pair<BytesShared, size_t> CyclesThreeNodesBalancesRequestMessage::serializeToByt
     }
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType CyclesThreeNodesBalancesRequestMessage::typeID() const

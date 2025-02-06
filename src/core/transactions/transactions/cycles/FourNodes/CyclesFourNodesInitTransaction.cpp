@@ -23,16 +23,16 @@ CyclesFourNodesInitTransaction::CyclesFourNodesInitTransaction(
 TransactionResult::SharedConst CyclesFourNodesInitTransaction::run()
 {
     switch (mStep) {
-        case Stages::CollectDataAndSendMessage:
-            return runCollectDataAndSendMessageStage();
+    case Stages::CollectDataAndSendMessage:
+        return runCollectDataAndSendMessageStage();
 
-        case Stages::ParseMessageAndCreateCycles:
-            return runParseMessageAndCreateCyclesStage();
+    case Stages::ParseMessageAndCreateCycles:
+        return runParseMessageAndCreateCyclesStage();
 
-        default:
-            throw RuntimeError(
-                "CyclesFourNodesInitTransaction::run(): "
-                "Invalid transaction step.");
+    default:
+        throw RuntimeError(
+            "CyclesFourNodesInitTransaction::run(): "
+            "Invalid transaction step.");
     }
 }
 
@@ -58,13 +58,13 @@ TransactionResult::SharedConst CyclesFourNodesInitTransaction::runCollectDataAnd
     }
 
     auto creditorNeighbors = mRoutingTable->secondLevelContractorsForNode(
-        mContractorID);
+                                 mContractorID);
 
     bool sendMessageToAtLeastOneNode = false;
     for (const auto &creditorNodeNeighbor : creditorNeighbors) {
         auto commonNodes = getCommonNodes(
-            creditorNodeNeighbor,
-            suitableNeighbors);
+                               creditorNodeNeighbor,
+                               suitableNeighbors);
         if (!commonNodes.empty()) {
             if (mNegativeContractorBalance) {
                 sendMessage<CyclesFourNodesNegativeBalanceRequestMessage>(
@@ -94,8 +94,8 @@ TransactionResult::SharedConst CyclesFourNodesInitTransaction::runCollectDataAnd
 
     mStep = Stages::ParseMessageAndCreateCycles;
     return resultWaitForMessageTypesAndAwakeAfterMilliseconds(
-        {Message::MessageType::Cycles_FourNodesBalancesResponse},
-        mkWaitingForResponseTime);
+    {Message::MessageType::Cycles_FourNodesBalancesResponse},
+    mkWaitingForResponseTime);
 }
 
 TransactionResult::SharedConst CyclesFourNodesInitTransaction::runParseMessageAndCreateCyclesStage()
@@ -130,7 +130,7 @@ TransactionResult::SharedConst CyclesFourNodesInitTransaction::runParseMessageAn
             }
 
             const auto cyclePath = make_shared<Path>(
-                stepPath);
+                                       stepPath);
             mCyclesManager->addCycle(
                 cyclePath);
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING

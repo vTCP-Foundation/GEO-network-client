@@ -23,7 +23,7 @@ TransactionResult::SharedConst CyclesSixNodesInitTransaction::runCollectDataAndS
     vector<BaseAddress::Shared> path;
     path.push_back(
         mContractorsManager->selfContractor()->mainAddress());
-    for(const auto &neighborID: mTrustLinesManager->firstLevelNeighborsWithNoneZeroBalance()){
+    for(const auto &neighborID: mTrustLinesManager->firstLevelNeighborsWithNoneZeroBalance()) {
         sendMessage<CyclesSixNodesInBetweenMessage>(
             neighborID,
             mEquivalent,
@@ -129,26 +129,27 @@ TransactionResult::SharedConst CyclesSixNodesInitTransaction::runParseMessageAnd
     for(const auto &debtorPackage : debtors) {
         auto nodeAddressAndPathRange = creditors.equal_range(debtorPackage.first);
         for (auto nodeAddressAndPathIt = nodeAddressAndPathRange.first;
-            nodeAddressAndPathIt != nodeAddressAndPathRange.second; ++nodeAddressAndPathIt) {
+                nodeAddressAndPathIt != nodeAddressAndPathRange.second; ++nodeAddressAndPathIt) {
             if ((nodeAddressAndPathIt->second[2] == debtorPackage.second[1]) or
-                (nodeAddressAndPathIt->second[1] == debtorPackage.second[2]) or
-                (nodeAddressAndPathIt->second[1] == debtorPackage.second[1]) or
-                (nodeAddressAndPathIt->second[2] == debtorPackage.second[2])) {
+                    (nodeAddressAndPathIt->second[1] == debtorPackage.second[2]) or
+                    (nodeAddressAndPathIt->second[1] == debtorPackage.second[1]) or
+                    (nodeAddressAndPathIt->second[2] == debtorPackage.second[2])) {
                 continue;
             }
             //  Find minMax flow between 3 value. 1 in map. 1 in boundaryNodes. 1 we get from creditor first node in path
             vector<BaseAddress::Shared> stepCyclePath = {
-                    debtorPackage.second[1],
-                    debtorPackage.second[2],
-                    // todo adapt for all types of address
-                    make_shared<IPv4WithPortAddress>(
-                        debtorPackage.first),
-                    (nodeAddressAndPathIt->second)[2],
-                    (nodeAddressAndPathIt->second)[1]};
+                debtorPackage.second[1],
+                debtorPackage.second[2],
+                // todo adapt for all types of address
+                make_shared<IPv4WithPortAddress>(
+                debtorPackage.first),
+                (nodeAddressAndPathIt->second)[2],
+                (nodeAddressAndPathIt->second)[1]
+            };
             const auto cyclePath = make_shared<Path>(
-                stepCyclePath);
+                                       stepCyclePath);
             mCyclesManager->addCycle(
-               cyclePath);
+                cyclePath);
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING
             resultCycles.push_back(cyclePath);
 #endif
@@ -156,7 +157,7 @@ TransactionResult::SharedConst CyclesSixNodesInitTransaction::runParseMessageAnd
     }
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING
     debug() << "ResultCyclesCount " << resultCycles.size();
-    for (auto &cyclePath: resultCycles){
+    for (auto &cyclePath: resultCycles) {
         debug() << "CyclePath " << cyclePath->toString();
     }
 #endif

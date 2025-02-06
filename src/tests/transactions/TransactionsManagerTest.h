@@ -4,7 +4,8 @@
 
 #include "../../core/transactions/manager/TransactionsManager.h"
 
-class TransactionsManagerTest {
+class TransactionsManagerTest
+{
 
 public:
     TransactionsManager *mTransactionsManager;
@@ -12,10 +13,10 @@ public:
 
 public:
     TransactionsManagerTest(
-            as::io_service &IOService,
-            TrustLinesManager *trustLinesManager,
-            ResultsInterface *resultsInterface,
-            Logger *logger);
+        as::io_service &IOService,
+        TrustLinesManager *trustLinesManager,
+        ResultsInterface *resultsInterface,
+        Logger *logger);
 
     ~TransactionsManagerTest();
 

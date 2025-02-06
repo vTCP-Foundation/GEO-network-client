@@ -4,7 +4,8 @@
 #include "../../common/Types.h"
 #include "../../common/time/TimeUtils.h"
 
-class MaxFlowCache {
+class MaxFlowCache
+{
 public:
     typedef shared_ptr<MaxFlowCache> Shared;
 

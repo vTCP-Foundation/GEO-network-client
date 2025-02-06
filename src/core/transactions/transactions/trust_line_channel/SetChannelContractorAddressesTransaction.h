@@ -6,7 +6,8 @@
 
 #include "../../../contractors/ContractorsManager.h"
 
-class SetChannelContractorAddressesTransaction : public BaseTransaction {
+class SetChannelContractorAddressesTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<SetChannelContractorAddressesTransaction> Shared;

@@ -26,18 +26,16 @@ CoordinatorReservationRequestMessage::CoordinatorReservationRequestMessage(
     mNextPathNode = deserializeAddress(buffer.get() + parentMessageOffset);
 }
 
-BaseAddress::Shared CoordinatorReservationRequestMessage::nextNodeInPath() const
-{
+BaseAddress::Shared CoordinatorReservationRequestMessage::nextNodeInPath() const {
     return mNextPathNode;
 }
 
-const Message::MessageType CoordinatorReservationRequestMessage::typeID() const
-{
+const Message::MessageType CoordinatorReservationRequestMessage::typeID() const {
     return Message::Payments_CoordinatorReservationRequest;
 }
 
 pair<BytesShared, size_t> CoordinatorReservationRequestMessage::serializeToBytes() const
-{    
+{
     auto parentBytesAndCount = RequestMessageWithReservations::serializeToBytes();
     size_t totalBytesCount =
         + parentBytesAndCount.second
@@ -56,6 +54,6 @@ pair<BytesShared, size_t> CoordinatorReservationRequestMessage::serializeToBytes
         mNextPathNode->serializedSize());
 
     return make_pair(
-        buffer,
-        totalBytesCount);
+               buffer,
+               totalBytesCount);
 }

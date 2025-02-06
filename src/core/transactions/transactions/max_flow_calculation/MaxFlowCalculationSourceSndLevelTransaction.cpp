@@ -37,7 +37,7 @@ TransactionResult::SharedConst MaxFlowCalculationSourceSndLevelTransaction::run(
 void MaxFlowCalculationSourceSndLevelTransaction::sendResultToInitiator()
 {
     TopologyCache::Shared maxFlowCalculationCachePtr = mTopologyCacheManager->cacheByAddress(
-        mMessage->targetAddresses().at(0));
+            mMessage->targetAddresses().at(0));
     if (maxFlowCalculationCachePtr != nullptr) {
         sendCachedResultToInitiator(
             maxFlowCalculationCachePtr);
@@ -51,7 +51,7 @@ void MaxFlowCalculationSourceSndLevelTransaction::sendResultToInitiator()
     auto initiatorID = mContractorsManager->contractorIDByAddress(mMessage->targetAddresses().at(0));
     if (initiatorID != ContractorsManager::kNotFoundContractorID) {
         if (mTrustLinesManager->trustLineIsPresent(initiatorID) and
-            *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
+                *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
             isSourceFirstLevelNode = true;
         }
     }
@@ -102,7 +102,7 @@ void MaxFlowCalculationSourceSndLevelTransaction::sendCachedResultToInitiator(
     auto initiatorID = mContractorsManager->contractorIDByAddress(mMessage->targetAddresses().at(0));
     if (initiatorID != ContractorsManager::kNotFoundContractorID) {
         if (mTrustLinesManager->trustLineIsPresent(initiatorID) and
-            *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
+                *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
             isSourceFirstLevelNode = true;
         }
     }
@@ -141,7 +141,7 @@ void MaxFlowCalculationSourceSndLevelTransaction::sendCachedResultToInitiator(
 void MaxFlowCalculationSourceSndLevelTransaction::sendGatewayResultToInitiator()
 {
     TopologyCache::Shared maxFlowCalculationCachePtr = mTopologyCacheManager->cacheByAddress(
-        mMessage->targetAddresses().at(0));
+            mMessage->targetAddresses().at(0));
     if (maxFlowCalculationCachePtr != nullptr) {
         sendCachedGatewayResultToInitiator(
             maxFlowCalculationCachePtr);
@@ -155,7 +155,7 @@ void MaxFlowCalculationSourceSndLevelTransaction::sendGatewayResultToInitiator()
     auto initiatorID = mContractorsManager->contractorIDByAddress(mMessage->targetAddresses().at(0));
     if (initiatorID != ContractorsManager::kNotFoundContractorID) {
         if (mTrustLinesManager->trustLineIsPresent(initiatorID) and
-            *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
+                *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
             isSourceFirstLevelNode = true;
         }
     }
@@ -207,7 +207,7 @@ void MaxFlowCalculationSourceSndLevelTransaction::sendCachedGatewayResultToIniti
     auto initiatorID = mContractorsManager->contractorIDByAddress(mMessage->targetAddresses().at(0));
     if (initiatorID != ContractorsManager::kNotFoundContractorID) {
         if (mTrustLinesManager->trustLineIsPresent(initiatorID) and
-            *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
+                *mTrustLinesManager->incomingFlow(initiatorID).second > TrustLine::kZeroAmount()) {
             isSourceFirstLevelNode = true;
         }
     }

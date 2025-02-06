@@ -4,7 +4,8 @@
 #include "base/BasePaymentTransaction.h"
 
 class IntermediateNodePaymentTransaction:
-    public BasePaymentTransaction {
+    public BasePaymentTransaction
+{
 
 public:
     typedef shared_ptr<IntermediateNodePaymentTransaction> Shared;

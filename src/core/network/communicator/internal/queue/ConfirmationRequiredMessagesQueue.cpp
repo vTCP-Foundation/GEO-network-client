@@ -4,26 +4,26 @@
 ConfirmationRequiredMessagesQueue::ConfirmationRequiredMessagesQueue(
     const SerializedEquivalent equivalent,
     ContractorID contractorID)
-    noexcept:
+noexcept:
     mEquivalent(equivalent),
     mContractorID(contractorID)
 {
     resetInternalTimeout();
     mNextSendingAttemptDateTime = utc_now() + boost::posix_time::seconds(
-        mNextTimeoutSeconds);
+                                      mNextTimeoutSeconds);
 }
 
 bool ConfirmationRequiredMessagesQueue::enqueue(
     TransactionMessage::Shared message)
 {
     switch (message->typeID()) {
-        case Message::GatewayNotification: {
-            updateGatewayNotificationInTheQueue(
-                message);
-            break;
-        }
-        default:
-            return false;
+    case Message::GatewayNotification: {
+        updateGatewayNotificationInTheQueue(
+            message);
+        break;
+    }
+    default:
+        return false;
     }
     resetInternalTimeout();
     mNextSendingAttemptDateTime = utc_now() + boost::posix_time::seconds(mNextTimeoutSeconds);
@@ -44,13 +44,13 @@ bool ConfirmationRequiredMessagesQueue::tryProcessConfirmation(
 }
 
 const DateTime &ConfirmationRequiredMessagesQueue::nextSendingAttemptDateTime()
-    noexcept
+noexcept
 {
     return mNextSendingAttemptDateTime;
 }
 
 const map<TransactionUUID, TransactionMessage::Shared> &ConfirmationRequiredMessagesQueue::messages()
-    noexcept
+noexcept
 {
     // Exponentially increase re-sending timeout up to 10+ minutes.
     if (mNextTimeoutSeconds < 60 * 10) {
@@ -63,13 +63,13 @@ const map<TransactionUUID, TransactionMessage::Shared> &ConfirmationRequiredMess
 }
 
 const size_t ConfirmationRequiredMessagesQueue::size() const
-    noexcept
+noexcept
 {
     return mMessages.size();
 }
 
 void ConfirmationRequiredMessagesQueue::resetInternalTimeout()
-    noexcept
+noexcept
 {
     mNextTimeoutSeconds = 4;
 }

@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class InitChannelCommand : public BaseUserCommand {
+class InitChannelCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<InitChannelCommand> Shared;

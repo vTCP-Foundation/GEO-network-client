@@ -16,7 +16,8 @@ FinalPathCycleConfigurationMessage::FinalPathCycleConfigurationMessage(
     mPaymentParticipants(paymentParticipants),
     mMaximalClaimingBlockNumber(maximalClaimingBlockNumber),
     mIsReceiptContains(false)
-{}
+{
+}
 
 FinalPathCycleConfigurationMessage::FinalPathCycleConfigurationMessage(
     const SerializedEquivalent equivalent,
@@ -40,12 +41,13 @@ FinalPathCycleConfigurationMessage::FinalPathCycleConfigurationMessage(
     mPublicKeyNumber(publicKeyNumber),
     mSignature(signature),
     mTransactionPublicKeyHash(transactionPublicKeyHash)
-{}
+{
+}
 
 FinalPathCycleConfigurationMessage::FinalPathCycleConfigurationMessage(
-    BytesShared buffer):
+    BytesShared buffer) :
 
-RequestCycleMessage(buffer)
+    RequestCycleMessage(buffer)
 {
     auto parentMessageOffset = RequestCycleMessage::kOffsetToInheritedBytes();
     auto bytesBufferOffset = buffer.get() + parentMessageOffset;
@@ -75,10 +77,10 @@ RequestCycleMessage(buffer)
     memcpy(
         &mIsReceiptContains,
         bytesBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
     //----------------------------------------------------
     if (mIsReceiptContains) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             &mPublicKeyNumber,
             bytesBufferOffset,
@@ -86,12 +88,12 @@ RequestCycleMessage(buffer)
         bytesBufferOffset += sizeof(KeyNumber);
 
         auto signature = make_shared<lamport::Signature>(
-            bytesBufferOffset);
+                             bytesBufferOffset);
         mSignature = signature;
         bytesBufferOffset += lamport::Signature::signatureSize();
 
         mTransactionPublicKeyHash = make_shared<lamport::KeyHash>(
-            bytesBufferOffset);
+                                        bytesBufferOffset);
     }
 }
 
@@ -100,7 +102,7 @@ const Message::MessageType FinalPathCycleConfigurationMessage::typeID() const
     return Message::Payments_FinalPathCycleConfiguration;
 }
 
-const map<PaymentNodeID, Contractor::Shared>& FinalPathCycleConfigurationMessage::paymentParticipants() const
+const map<PaymentNodeID, Contractor::Shared> &FinalPathCycleConfigurationMessage::paymentParticipants() const
 {
     return mPaymentParticipants;
 }
@@ -133,17 +135,12 @@ const lamport::KeyHash::Shared FinalPathCycleConfigurationMessage::transactionPu
 pair<BytesShared, size_t> FinalPathCycleConfigurationMessage::serializeToBytes() const
 {
     auto parentBytesAndCount = RequestCycleMessage::serializeToBytes();
-    size_t bytesCount = parentBytesAndCount.second
-            + sizeof(SerializedRecordsCount)
-            + sizeof(BlockNumber)
-            + sizeof(byte);
+    size_t bytesCount = parentBytesAndCount.second + sizeof(SerializedRecordsCount) + sizeof(BlockNumber) + sizeof(byte_t);
     for (const auto &participant : mPaymentParticipants) {
         bytesCount += sizeof(PaymentNodeID) + participant.second->serializedSize();
     }
     if (mIsReceiptContains) {
-        bytesCount += sizeof(KeyNumber)
-                + lamport::Signature::signatureSize()
-                + lamport::KeyHash::kBytesSize;
+        bytesCount += sizeof(KeyNumber) + lamport::Signature::signatureSize() + lamport::KeyHash::kBytesSize;
     }
 
     BytesShared buffer = tryMalloc(bytesCount);
@@ -186,10 +183,10 @@ pair<BytesShared, size_t> FinalPathCycleConfigurationMessage::serializeToBytes()
     memcpy(
         bytesBufferOffset,
         &mIsReceiptContains,
-        sizeof(byte));
+        sizeof(byte_t));
     //----------------------------------------------------
     if (mIsReceiptContains) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             bytesBufferOffset,
             &mPublicKeyNumber,
@@ -209,6 +206,6 @@ pair<BytesShared, size_t> FinalPathCycleConfigurationMessage::serializeToBytes()
     }
     //----------------------------------------------------
     return make_pair(
-        buffer,
-        bytesCount);
+               buffer,
+               bytesCount);
 }

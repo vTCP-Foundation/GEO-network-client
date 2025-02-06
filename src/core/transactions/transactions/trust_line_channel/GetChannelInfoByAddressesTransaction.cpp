@@ -33,14 +33,14 @@ TransactionResult::SharedConst GetChannelInfoByAddressesTransaction::run()
 
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 TransactionResult::SharedConst GetChannelInfoByAddressesTransaction::resultChannelIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 const string GetChannelInfoByAddressesTransaction::logHeader() const

@@ -59,7 +59,7 @@ void PathStats::shortageMaxFlow(
     else
         throw ValueError(
             "PathStats::setMaxFlow: "
-                "attempt to increase max flow occurred.");
+            "attempt to increase max flow occurred.");
 }
 
 const Path::Shared PathStats::path () const
@@ -83,12 +83,12 @@ const pair<BaseAddress::Shared, SerializedPositionInPath> PathStats::currentInte
 {
     for (SerializedPositionInPath idx = 0; idx < mIntermediateNodesStates.size(); ++idx)
         if (mIntermediateNodesStates[idx] != PathStats::ReservationApproved &&
-            mIntermediateNodesStates[idx] != PathStats::ReservationRejected)
+                mIntermediateNodesStates[idx] != PathStats::ReservationRejected)
             return make_pair(mPath->intermediates()[idx], idx);
 
     throw NotFoundError(
         "PathStats::currentIntermediateNodeAndPos: "
-            "no unprocessed nodes are left.");
+        "no unprocessed nodes are left.");
 }
 
 /**
@@ -104,7 +104,7 @@ const pair<BaseAddress::Shared, SerializedPositionInPath> PathStats::nextInterme
 {
     for (SerializedPositionInPath idx = 0; idx < mIntermediateNodesStates.size(); ++idx) {
         if (0 == idx &&
-            mIntermediateNodesStates[idx] == PathStats::NeighbourReservationApproved) {
+                mIntermediateNodesStates[idx] == PathStats::NeighbourReservationApproved) {
             return make_pair(mPath->intermediates()[idx], idx);
         }
 
@@ -115,13 +115,13 @@ const pair<BaseAddress::Shared, SerializedPositionInPath> PathStats::nextInterme
 
     throw NotFoundError(
         "PathStats::nextIntermediateNodeAndPos: "
-            "no unprocessed nodes are left.");
+        "no unprocessed nodes are left.");
 }
 
 const bool PathStats::reservationRequestSentToAllNodes() const
 {
     return mIntermediateNodesStates.at(
-        mIntermediateNodesStates.size()-1) != ReservationRequestDoesntSent;
+               mIntermediateNodesStates.size()-1) != ReservationRequestDoesntSent;
 }
 
 const bool PathStats::isNeighborAmountReserved() const
@@ -166,20 +166,20 @@ const bool PathStats::isReadyToSendNextReservationRequest() const
 const bool PathStats::isLastIntermediateNodeProcessed() const
 {
     return
-            mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
-                    PathStats::ReservationRequestDoesntSent &&
-            mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
-                    PathStats::NeighbourReservationRequestSent &&
-            mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
-                    PathStats::NeighbourReservationApproved;
+        mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
+        PathStats::ReservationRequestDoesntSent &&
+        mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
+        PathStats::NeighbourReservationRequestSent &&
+        mIntermediateNodesStates[mIntermediateNodesStates.size()-1] !=
+        PathStats::NeighbourReservationApproved;
 }
 
 const bool PathStats::isLastIntermediateNodeApproved() const
 {
     return mIntermediateNodesStates[mIntermediateNodesStates.size()-1] ==
-                   PathStats::NeighbourReservationApproved ||
+           PathStats::NeighbourReservationApproved ||
            mIntermediateNodesStates[mIntermediateNodesStates.size()-1] ==
-                   PathStats::ReservationApproved;
+           PathStats::ReservationApproved;
 }
 
 const bool PathStats::isValid() const

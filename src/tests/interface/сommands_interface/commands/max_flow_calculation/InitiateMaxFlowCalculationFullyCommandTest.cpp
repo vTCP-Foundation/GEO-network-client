@@ -5,13 +5,11 @@ TEST_CASE("Testing InitiateMaxFlowFullyCalculationsCommand")
 {
     REQUIRE_NOTHROW(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t12\t127.0.0.1:2100\t2\n"));
 
-    SECTION("Two addresses")
-    {
+    SECTION("Two addresses") {
         REQUIRE_NOTHROW(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"2\t12\t127.0.0.1:2007\t12\t127.0.0.1:2007\t3\n"));
     }
 
-    SECTION("Double separator")
-    {
+    SECTION("Double separator") {
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t\t12\t127.0.0.1:2100\t2\n"));
 
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t\t12\t127.0.0.1:2100\t2\n"));
@@ -29,13 +27,11 @@ TEST_CASE("Testing InitiateMaxFlowFullyCalculationsCommand")
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n\t"));
     }
 
-    SECTION("Second address without type")
-    {
+    SECTION("Second address without type") {
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"2\t12\t127.0.0.1:2007\t127.0.0.1:2007\t3\n"));
     }
 
-    SECTION("Charater instead of int in number of addresses")
-    {
+    SECTION("Charater instead of int in number of addresses") {
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"s\t12\t127.0.0.1:2007\t3\n"));
 
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"s\t12\t127.0.0.1:2007\t3\n"));
@@ -65,8 +61,7 @@ TEST_CASE("Testing InitiateMaxFlowFullyCalculationsCommand")
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1!12!127.0.0.1:2007!3\n"));
     }
 
-    SECTION("No input")
-    {
+    SECTION("No input") {
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,""));
 
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"\n"));
@@ -74,8 +69,7 @@ TEST_CASE("Testing InitiateMaxFlowFullyCalculationsCommand")
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"\t"));
     }
 
-    SECTION("Characters instead of input & after EOL")
-    {
+    SECTION("Characters instead of input & after EOL") {
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"dfsfdfsf\n"));
 
         REQUIRE_THROWS(InitiateMaxFlowCalculationFullyCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t12\t127.0.0.1:2100\t2\n\t"));

@@ -27,7 +27,7 @@ TransactionResult::SharedConst GetFirstLevelContractorsTransaction::run()
     ss << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(kResultInfo));
+               mCommand->resultOk(kResultInfo));
 }
 
 const string GetFirstLevelContractorsTransaction::logHeader() const

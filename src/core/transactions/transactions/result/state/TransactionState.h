@@ -14,7 +14,8 @@
 using namespace std;
 
 
-class TransactionState {
+class TransactionState
+{
 public:
     typedef shared_ptr<TransactionState> Shared;
     typedef shared_ptr<const TransactionState> SharedConst;

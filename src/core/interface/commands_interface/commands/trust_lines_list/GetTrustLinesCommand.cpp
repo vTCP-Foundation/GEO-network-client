@@ -13,7 +13,7 @@ GetTrustLinesCommand::GetTrustLinesCommand(
             throw ValueError("GetTrustLinesCommand: there is no input ");
         }
     };
-    auto trustLinesFromParse = [&](auto &ctx){
+    auto trustLinesFromParse = [&](auto &ctx) {
         mFrom = _attr(ctx);
     };
     auto trustLinesCountParse = [&](auto &ctx) {
@@ -67,8 +67,8 @@ CommandResult::SharedConst GetTrustLinesCommand::resultOk(
     string &neighbors) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        neighbors);
+               identifier(),
+               UUID(),
+               200,
+               neighbors);
 }

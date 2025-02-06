@@ -5,7 +5,8 @@
 
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class RequestCycleMessage : public TransactionMessage {
+class RequestCycleMessage : public TransactionMessage
+{
 
 public:
     RequestCycleMessage(

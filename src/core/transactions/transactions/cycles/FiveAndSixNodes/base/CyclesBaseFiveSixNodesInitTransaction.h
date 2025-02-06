@@ -7,7 +7,8 @@
 #include "../../../../../cycles/CyclesManager.h"
 
 class CyclesBaseFiveSixNodesInitTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     typedef shared_ptr<CyclesBaseFiveSixNodesInitTransaction> Shared;

@@ -45,7 +45,7 @@ AuditResponseMessage::AuditResponseMessage(
         bytesBufferOffset += sizeof(KeyNumber);
 
         mSignature = make_shared<lamport::Signature>(
-            buffer.get() + bytesBufferOffset);
+                         buffer.get() + bytesBufferOffset);
     }
 }
 
@@ -96,6 +96,6 @@ pair<BytesShared, size_t> AuditResponseMessage::serializeToBytes() const
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

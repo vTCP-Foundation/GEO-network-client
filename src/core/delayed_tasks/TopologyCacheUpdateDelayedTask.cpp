@@ -16,7 +16,7 @@ TopologyCacheUpdateDelayedTask::TopologyCacheUpdateDelayedTask(
     mLog(logger)
 {
     mTopologyCacheUpdateTimer = make_unique<as::steady_timer>(
-        mIOService);
+                                    mIOService);
 
     Duration microsecondsDelay = minimalAwakeningTimestamp() - utc_now();
     mTopologyCacheUpdateTimer->expires_from_now(
@@ -24,8 +24,8 @@ TopologyCacheUpdateDelayedTask::TopologyCacheUpdateDelayedTask(
             microsecondsDelay.total_milliseconds()));
     mTopologyCacheUpdateTimer->async_wait(boost::bind(
             &TopologyCacheUpdateDelayedTask::runSignalTopologyCacheUpdate,
-        this,
-        as::placeholders::error));
+            this,
+            as::placeholders::error));
 }
 
 void TopologyCacheUpdateDelayedTask::runSignalTopologyCacheUpdate(
@@ -45,8 +45,8 @@ void TopologyCacheUpdateDelayedTask::runSignalTopologyCacheUpdate(
             microsecondsDelay.total_milliseconds()));
     mTopologyCacheUpdateTimer->async_wait(boost::bind(
             &TopologyCacheUpdateDelayedTask::runSignalTopologyCacheUpdate,
-        this,
-        as::placeholders::error));
+            this,
+            as::placeholders::error));
     mTopologyTrustLineManager->setPreventDeleting(false);
 }
 

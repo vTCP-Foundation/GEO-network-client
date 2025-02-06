@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 // todo: replace with ValueError
-class CommandParsingError : public Exception {
+class CommandParsingError : public Exception
+{
     using Exception::Exception;
 };
 

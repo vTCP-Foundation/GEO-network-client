@@ -13,7 +13,8 @@
  * To remove trust line — this command must be issued with 0 amount.
  */
 class SetOutgoingTrustLineCommand:
-    public BaseUserCommand {
+    public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<SetOutgoingTrustLineCommand> Shared;

@@ -19,8 +19,8 @@ CommandResult::SharedConst EquivalentListCommand::resultOk(
     string& equivalents) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        equivalents);
+               identifier(),
+               UUID(),
+               200,
+               equivalents);
 }

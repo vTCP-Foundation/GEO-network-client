@@ -1,42 +1,46 @@
 #include "OperationsHistoryStorageTest.h"
 
-OperationsHistoryStorageTest::OperationsHistoryStorageTest() {
+OperationsHistoryStorageTest::OperationsHistoryStorageTest()
+{
 
     mStorage = unique_ptr<st::OperationsHistoryStorage>(new st::OperationsHistoryStorage(
-        "io",
-        "operations_history.dat"));
+                   "io",
+                   "operations_history.dat"));
 }
 
 st::Record::Shared OperationsHistoryStorageTest::createTrustLineRecord(
     st::TrustLineRecord::TrustLineOperationType operationType,
-    TrustLineAmount amount) {
+    TrustLineAmount amount)
+{
 
     uuids::uuid operationUUID;
     NodeUUID contractorUUID;
 
     return dynamic_pointer_cast<st::Record>(
-        make_shared<st::TrustLineRecord>(
-            operationUUID,
-            operationType,
-            contractorUUID,
-            amount));
+               make_shared<st::TrustLineRecord>(
+                   operationUUID,
+                   operationType,
+                   contractorUUID,
+                   amount));
 }
 
 st::Record::Shared OperationsHistoryStorageTest::createPaymentRecord(st::PaymentRecord::PaymentOperationType operationType,
-                                                                     TrustLineAmount amount) {
+        TrustLineAmount amount)
+{
 
     uuids::uuid operationUUID;
     NodeUUID contractorUUID;
 
     return dynamic_pointer_cast<st::Record>(
-        make_shared<st::PaymentRecord>(
-            operationUUID,
-            operationType,
-            contractorUUID,
-            amount));
+               make_shared<st::PaymentRecord>(
+                   operationUUID,
+                   operationType,
+                   contractorUUID,
+                   amount));
 }
 
-void OperationsHistoryStorageTest::compareDataTestCase() {
+void OperationsHistoryStorageTest::compareDataTestCase()
+{
 
     for (uint8_t number = 1; number <= 10; ++number) {
 
@@ -45,32 +49,32 @@ void OperationsHistoryStorageTest::compareDataTestCase() {
         if (number <= 3) {
 
             record = createTrustLineRecord(
-                st::TrustLineRecord::TrustLineOperationType::Opening,
-                TrustLineAmount(500 + number));
+                         st::TrustLineRecord::TrustLineOperationType::Opening,
+                         TrustLineAmount(500 + number));
 
         }
 
         if (number > 3 && number <= 6) {
 
             record = createPaymentRecord(
-                st::PaymentRecord::PaymentOperationType::IncomingPaymentType,
-                TrustLineAmount(500 + number));
+                         st::PaymentRecord::PaymentOperationType::IncomingPaymentType,
+                         TrustLineAmount(500 + number));
 
         }
 
         if (number > 6 && number <= 8) {
 
             record = createTrustLineRecord(
-                st::TrustLineRecord::TrustLineOperationType::Closing,
-                TrustLineAmount(500 + number));
+                         st::TrustLineRecord::TrustLineOperationType::Closing,
+                         TrustLineAmount(500 + number));
 
         }
 
         if (number > 8 && number <= 10) {
 
             record = createPaymentRecord(
-                st::PaymentRecord::PaymentOperationType::OutgoingPaymentType,
-                TrustLineAmount(500 + number));
+                         st::PaymentRecord::PaymentOperationType::OutgoingPaymentType,
+                         TrustLineAmount(500 + number));
 
         }
 
@@ -82,14 +86,14 @@ void OperationsHistoryStorageTest::compareDataTestCase() {
     }
 
     auto trustLineRecords = mStorage->recordsStack(
-        st::Record::RecordType::TrustLineRecordType,
-        5,
-        0);
+                                st::Record::RecordType::TrustLineRecordType,
+                                5,
+                                0);
 
     auto paymentRecords = mStorage->recordsStack(
-        st::Record::RecordType::PaymentRecordType,
-        5,
-        0);
+                              st::Record::RecordType::PaymentRecordType,
+                              5,
+                              0);
 
     assert(trustLineRecords.size() == 5);
     assert(paymentRecords.size() == 5);
@@ -126,7 +130,8 @@ void OperationsHistoryStorageTest::compareDataTestCase() {
 
 }
 
-void OperationsHistoryStorageTest::run() {
+void OperationsHistoryStorageTest::run()
+{
 
     compareDataTestCase();
 }

@@ -6,7 +6,8 @@
 
 using namespace crypto;
 
-class PublicKeyMessage : public TransactionMessage {
+class PublicKeyMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<PublicKeyMessage> Shared;

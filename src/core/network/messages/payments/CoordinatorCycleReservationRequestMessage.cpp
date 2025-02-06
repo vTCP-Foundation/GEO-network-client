@@ -57,6 +57,6 @@ pair<BytesShared, size_t> CoordinatorCycleReservationRequestMessage::serializeTo
         mNextPathNodeAddress->serializedSize());
 
     return make_pair(
-        buffer,
-        totalBytesCount);
+               buffer,
+               totalBytesCount);
 }

@@ -17,7 +17,8 @@
  * But for now, it's simply enough to inherit TransactionUUID from NodeUUID.
  */
 class TransactionUUID:
-    public NodeUUID {
+    public NodeUUID
+{
 
 public:
     using NodeUUID::NodeUUID;

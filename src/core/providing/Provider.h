@@ -4,7 +4,8 @@
 #include "../contractors/addresses/IPv4WithPortAddress.h"
 #include "../crypto/ProviderMsgEncryptor.h"
 
-class Provider {
+class Provider
+{
 
 public:
     typedef shared_ptr<Provider> Shared;

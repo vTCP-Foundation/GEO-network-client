@@ -14,7 +14,8 @@
 
 using namespace crypto;
 
-class PaymentParticipantsVotesHandler {
+class PaymentParticipantsVotesHandler
+{
 
 public:
     PaymentParticipantsVotesHandler(

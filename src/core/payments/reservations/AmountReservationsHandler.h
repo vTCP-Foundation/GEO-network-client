@@ -9,7 +9,8 @@
 
 #include <map>
 
-class AmountReservationsHandler {
+class AmountReservationsHandler
+{
 public:
     AmountReservation::ConstShared reserve(
         ContractorID trustLineContractor,

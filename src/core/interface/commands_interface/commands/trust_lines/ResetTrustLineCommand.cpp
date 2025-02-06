@@ -23,7 +23,7 @@ ResetTrustLineCommand::ResetTrustLineCommand(
         mAuditNumber = _attr(ctx);
     };
     auto incomingAmountAddNumber = [&](auto &ctx) {
-        if(incomingAmount.front() == '0' && isdigit(incomingAmount.back())){
+        if(incomingAmount.front() == '0' && isdigit(incomingAmount.back())) {
             throw ValueError("ResetTrustLineCommand: incomingAmount contains leading zero.");
         }
         incomingAmount += _attr(ctx);
@@ -33,7 +33,7 @@ ResetTrustLineCommand::ResetTrustLineCommand(
         }
     };
     auto outgoingAmountAddNumber = [&](auto &ctx) {
-        if(outgoingAmount.front() == '0' && isdigit(outgoingAmount.back())){
+        if(outgoingAmount.front() == '0' && isdigit(outgoingAmount.back())) {
             throw ValueError("ResetTrustLineCommand: outgoingAmount contains leading zero.");
         }
         outgoingAmount += _attr(ctx);
@@ -52,7 +52,7 @@ ResetTrustLineCommand::ResetTrustLineCommand(
         isBalanceNegative = true;
     };
     auto balanceAddNumber = [&](auto &ctx) {
-        if(balance.front() == '0' && isdigit(balance.back())){
+        if(balance.front() == '0' && isdigit(balance.back())) {
             throw ValueError("ResetTrustLineCommand: balance contains leading zero.");
         }
         balance += _attr(ctx);

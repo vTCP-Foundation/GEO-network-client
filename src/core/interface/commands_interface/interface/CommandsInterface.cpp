@@ -27,7 +27,7 @@ void CommandsParser::appendReadData(
     }
 
     // TODO: check if using buffer->data() doesn't leads to the buffer overflow.
-    const char *data = as::buffer_cast<const char*>(buffer->data());
+    const char* data = as::buffer_cast<const char*>(buffer->data());
     for (size_t i = 0; i < receivedBytesCount; ++i) {
         mBuffer.push_back(*data++);
     }
@@ -64,18 +64,18 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryDeserializeCommand()
     if (mBuffer.size() < kMinCommandSize) {
         cutBufferUpToNextCommand();
         return commandError(
-            CommandUUID::empty(),
-            "",
-            "command length is less than: " + std::to_string(kMinCommandSize) + ".");
+                   CommandUUID::empty(),
+                   "",
+                   "command length is less than: " + std::to_string(kMinCommandSize) + ".");
     }
 
     size_t nextCommandSeparatorIndex = mBuffer.find(kCommandsSeparator);
     if (nextCommandSeparatorIndex == string::npos) {
         cutBufferUpToNextCommand();
         return commandError(
-            CommandUUID::empty(),
-            "",
-            "command must contain at leas one separator.");
+                   CommandUUID::empty(),
+                   "",
+                   "command must contain at leas one separator.");
     }
 
     CommandUUID commandUUID;
@@ -86,9 +86,9 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryDeserializeCommand()
     } catch (...) {
         cutBufferUpToNextCommand();
         return commandError(
-            CommandUUID::empty(),
-            "",
-            "failed to parse CommandUUID.");
+                   CommandUUID::empty(),
+                   "",
+                   "failed to parse CommandUUID.");
     }
 
     string commandIdentifier;
@@ -109,9 +109,9 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryDeserializeCommand()
     if (commandIdentifier.empty()) {
         cutBufferUpToNextCommand();
         return commandError(
-            commandUUID,
-            "",
-            "command identifier is void.");
+                   commandUUID,
+                   "",
+                   "command identifier is void.");
     }
 
     try {
@@ -121,11 +121,11 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryDeserializeCommand()
         }
 
         auto command = tryParseCommand(
-            commandUUID,
-            commandIdentifier,
-            mBuffer.substr(
-                nextTokenOffset,
-                nextCommandBegin - nextTokenOffset + 1));
+                           commandUUID,
+                           commandIdentifier,
+                           mBuffer.substr(
+                               nextTokenOffset,
+                               nextCommandBegin - nextTokenOffset + 1));
 
         cutBufferUpToNextCommand();
         return command;
@@ -133,9 +133,9 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryDeserializeCommand()
     } catch (std::exception &e) {
         cutBufferUpToNextCommand();
         return commandError(
-            commandUUID,
-            commandIdentifier,
-            e.what());
+                   commandUUID,
+                   commandIdentifier,
+                   e.what());
     }
 }
 
@@ -293,51 +293,51 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::tryParseCommand(
 
         } else if (identifier == SubsystemsInfluenceCommand::identifier()) {
             return newCommand<SubsystemsInfluenceCommand>(
-                uuid,
-                buffer);
+                       uuid,
+                       buffer);
 
         } else if (identifier == TrustLinesInfluenceCommand::identifier()) {
             return newCommand<TrustLinesInfluenceCommand>(
-                uuid,
-                buffer);
+                       uuid,
+                       buffer);
 
         } else if (identifier == PaymentTransactionByCommandUUIDCommand::identifier()) {
             return newCommand<PaymentTransactionByCommandUUIDCommand>(
-                uuid,
-                buffer);
+                       uuid,
+                       buffer);
 
         } else if (identifier == RemoveOutdatedCryptoDataCommand::identifier()) {
             return newCommand<RemoveOutdatedCryptoDataCommand>(
-                uuid,
-                buffer);
+                       uuid,
+                       buffer);
 
         } else {
             return commandError(
-                uuid,
-                identifier,
-                "unexpected command identifier received. " + identifier);
+                       uuid,
+                       identifier,
+                       "unexpected command identifier received. " + identifier);
         }
 
     } catch (bad_alloc &) {
-        const char *err = "tryParseCommand: Memory allocation error occurred on command instance creation. ";
+        const char* err = "tryParseCommand: Memory allocation error occurred on command instance creation. ";
         error() << err << "Command was dropped. ";
 
         return commandError(
-            uuid,
-            buffer,
-            err);
+                   uuid,
+                   buffer,
+                   err);
 
-    } catch (exception &e){
+    } catch (exception &e) {
         mLog.logException("CommandsParser", e);
         return commandError(
-            uuid,
-            identifier,
-            e.what());
+                   uuid,
+                   identifier,
+                   e.what());
     }
 
     return make_pair(
-        true,
-        BaseUserCommand::Shared(command));
+               true,
+               BaseUserCommand::Shared(command));
 }
 
 /*!
@@ -367,12 +367,12 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::commandError(
     const string &str)
 {
     return make_pair(
-        false,
-        BaseUserCommand::Shared(
-            new ErrorUserCommand(
-                uuid,
-                identifier,
-                str)));
+               false,
+               BaseUserCommand::Shared(
+                   new ErrorUserCommand(
+                       uuid,
+                       identifier,
+                       str)));
 }
 
 CommandsInterface::CommandsInterface(
@@ -395,34 +395,34 @@ CommandsInterface::CommandsInterface(
     }
 
     mFIFODescriptor = open(
-        FIFOFilePath().c_str(),
-        O_RDONLY | O_NONBLOCK);
+                          FIFOFilePath().c_str(),
+                          O_RDONLY | O_NONBLOCK);
 
     if (mFIFODescriptor == -1) {
         throw IOError("CommandsInterface::CommandsInterface: "
-                          "Can't open FIFO file.");
+                      "Can't open FIFO file.");
     }
 
     try {
         mFIFOStreamDescriptor = make_unique<as::posix::stream_descriptor>(
-            mIOService,
-            mFIFODescriptor);
+                                    mIOService,
+                                    mFIFODescriptor);
         mFIFOStreamDescriptor->non_blocking(true);
 
     } catch (std::bad_alloc &) {
         throw MemoryError("CommandsInterface::CommandsInterface: "
-                              "Can not allocate enough memory for fifo stream descriptor.");
+                          "Can not allocate enough memory for fifo stream descriptor.");
     }
 
     try {
         mReadTimeoutTimer = make_unique<as::deadline_timer>(
-            mIOService,
-            boost::posix_time::seconds(2));
+                                mIOService,
+                                boost::posix_time::seconds(2));
 
     } catch (std::bad_alloc &) {
         throw MemoryError(
             "CommandsInterface::CommandsInterface: "
-                "Can not allocate enough memory for fifo read timer.");
+            "Can not allocate enough memory for fifo read timer.");
     }
 
     try {
@@ -431,7 +431,7 @@ CommandsInterface::CommandsInterface(
     } catch (std::bad_alloc &) {
         throw MemoryError(
             "CommandsInterface::CommandsInterface: "
-                "Can not allocate enough memory for commands parser.");
+            "Can not allocate enough memory for commands parser.");
     }
 
     mCommandBuffer.prepare(kCommandBufferSize);
@@ -482,7 +482,7 @@ void CommandsInterface::handleReceivedInfo(
 
         while (true) {
             auto flagAndCommand = mCommandsParser->processReceivedCommands();
-            if (flagAndCommand.second){
+            if (flagAndCommand.second) {
                 commandReceivedSignal(flagAndCommand.first, flagAndCommand.second);
             } else {
                 break;
@@ -505,9 +505,9 @@ void CommandsInterface::handleReceivedInfo(
             mReadTimeoutTimer->expires_from_now(boost::posix_time::minutes(10));
             mReadTimeoutTimer->async_wait(
                 boost::bind(
-                &CommandsInterface::handleTimeout,
-                this,
-                as::placeholders::error));
+                    &CommandsInterface::handleTimeout,
+                    this,
+                    as::placeholders::error));
         }
     }
 }
@@ -522,31 +522,32 @@ void CommandsInterface::handleTimeout(
     asyncReceiveNextCommand();
 }
 
-const char *CommandsInterface::FIFOName() const {
+const char* CommandsInterface::FIFOName() const
+{
 
     return kFIFOName;
 }
 
 string CommandsInterface::logHeader()
-    noexcept
+noexcept
 {
     return "[CommandsInterface]";
 }
 
 LoggerStream CommandsInterface::error() const
-    noexcept
+noexcept
 {
     return mLog.error(logHeader());
 }
 
 string CommandsParser::logHeader()
-    noexcept
+noexcept
 {
     return "[CommandsParser]";
 }
 
 LoggerStream CommandsParser::error() const
-    noexcept
+noexcept
 {
     return mLog.error(logHeader());
 }

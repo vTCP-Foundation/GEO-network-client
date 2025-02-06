@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class GetChannelInfoByAddressesCommand : public BaseUserCommand {
+class GetChannelInfoByAddressesCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<GetChannelInfoByAddressesCommand> Shared;
@@ -18,7 +19,7 @@ public:
     vector<BaseAddress::Shared> contractorAddresses() const;
 
     CommandResult::SharedConst resultOk(
-            string &neighbor) const;
+        string &neighbor) const;
 
 private:
     vector<BaseAddress::Shared> mContractorAddresses;

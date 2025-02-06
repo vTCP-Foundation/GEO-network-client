@@ -9,7 +9,8 @@
 
 #include <vector>
 
-class AddressHandler {
+class AddressHandler
+{
 
 public:
     AddressHandler(

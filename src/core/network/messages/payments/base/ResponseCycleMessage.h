@@ -3,10 +3,12 @@
 
 #include "../../base/transaction/TransactionMessage.h"
 
-class ResponseCycleMessage : public TransactionMessage {
+class ResponseCycleMessage : public TransactionMessage
+{
 
 public:
-    enum OperationState {
+    enum OperationState
+    {
         Accepted = 1,
         Rejected = 2,
         RejectedDueOwnKeysAbsence = 3,
@@ -28,7 +30,7 @@ public:
     const OperationState state() const;
 
 protected:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
     const size_t kOffsetToInheritedBytes() const override;
 
@@ -38,5 +40,4 @@ private:
     OperationState mState;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_RESPONSECYCLEMESSAGE_H
+#endif // GEO_NETWORK_CLIENT_RESPONSECYCLEMESSAGE_H

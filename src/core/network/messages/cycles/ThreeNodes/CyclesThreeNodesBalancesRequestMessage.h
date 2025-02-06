@@ -6,7 +6,8 @@
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
 class CyclesThreeNodesBalancesRequestMessage:
-    public TransactionMessage {
+    public TransactionMessage
+{
 
 public:
     typedef shared_ptr<CyclesThreeNodesBalancesRequestMessage> Shared;

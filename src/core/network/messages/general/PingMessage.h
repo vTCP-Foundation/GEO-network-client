@@ -3,7 +3,8 @@
 
 #include "../SenderMessage.h"
 
-class PingMessage : public SenderMessage {
+class PingMessage : public SenderMessage
+{
 
 public:
     typedef shared_ptr<PingMessage> Shared;

@@ -22,13 +22,13 @@ CommunicatorMessagesQueueHandler::CommunicatorMessagesQueueHandler(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("CommunicatorMessagesQueueHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
     sqlite3_reset(stmt);
     sqlite3_finalize(stmt);
@@ -50,43 +50,43 @@ void CommunicatorMessagesQueueHandler::saveRecord(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, contractorID);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of ContractorID; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, equivalent);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of Equivalent; sqlite error: " + to_string(rc));
+                      "Bad binding of Equivalent; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 3, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 4, (int)messageType);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of MessageType bytes count; sqlite error: " + to_string(rc));
+                      "Bad binding of MessageType bytes count; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 5, message.get(), (int)messageBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of Message; sqlite error: " + to_string(rc));
+                      "Bad binding of Message; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 6, (int)messageBytesCount);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of Message bytes count; sqlite error: " + to_string(rc));
+                      "Bad binding of Message bytes count; sqlite error: " + to_string(rc));
     }
     GEOEpochTimestamp timestamp = microsecondsSinceGEOEpoch(utc_now());
     rc = sqlite3_bind_int64(stmt, 7, timestamp);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Bad binding of Timestamp; sqlite error: " + to_string(rc));
+                      "Bad binding of Timestamp; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -101,7 +101,7 @@ void CommunicatorMessagesQueueHandler::saveRecord(
 #endif
     } else {
         throw IOError("CommunicatorMessagesQueueHandler::insert: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -116,22 +116,22 @@ void CommunicatorMessagesQueueHandler::deleteRecord(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, contractorID);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad binding of ContractorID; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, equivalent);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad binding of Equivalent; sqlite error: " + to_string(rc));
+                      "Bad binding of Equivalent; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 3, (int)messageType);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad binding of MessageType; sqlite error: " + to_string(rc));
+                      "Bad binding of MessageType; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -142,7 +142,7 @@ void CommunicatorMessagesQueueHandler::deleteRecord(
 #endif
     } else {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -155,17 +155,17 @@ void CommunicatorMessagesQueueHandler::deleteRecord(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, contractorID);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad binding of ContractorID; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -176,7 +176,7 @@ void CommunicatorMessagesQueueHandler::deleteRecord(
 #endif
     } else {
         throw IOError("CommunicatorMessagesQueueHandler::delete: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -184,10 +184,10 @@ vector<tuple<ContractorID, BytesShared, Message::SerializedType>> CommunicatorMe
 {
     string queryCount = "SELECT count(*) FROM " + mTableName;
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, queryCount.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, queryCount.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::allMessages: "
-                          "Bad count query; sqlite error: " + to_string(rc));
+                      "Bad count query; sqlite error: " + to_string(rc));
     }
     sqlite3_step(stmt);
     auto rowCount = (uint32_t)sqlite3_column_int(stmt, 0);
@@ -200,7 +200,7 @@ vector<tuple<ContractorID, BytesShared, Message::SerializedType>> CommunicatorMe
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, 0);
     if (rc != SQLITE_OK) {
         throw IOError("CommunicatorMessagesQueueHandler::allMessages: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     while (sqlite3_step(stmt) == SQLITE_ROW) {
 

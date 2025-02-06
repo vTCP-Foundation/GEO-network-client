@@ -12,10 +12,11 @@ ResultMaxFlowCalculationMessage::ResultMaxFlowCalculationMessage(
         0),
     mOutgoingFlows(outgoingFlows),
     mIncomingFlows(incomingFlows)
-{}
+{
+}
 
 ResultMaxFlowCalculationMessage::ResultMaxFlowCalculationMessage(
-    BytesShared buffer):
+    BytesShared buffer) :
 
     MaxFlowCalculationConfirmationMessage(buffer)
 {
@@ -27,10 +28,10 @@ ResultMaxFlowCalculationMessage::ResultMaxFlowCalculationMessage(
     mOutgoingFlows.reserve(*trustLinesOutCount);
     for (SerializedRecordNumber idx = 0; idx < *trustLinesOutCount; idx++) {
         auto address = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                           buffer.get() + bytesBufferOffset);
         bytesBufferOffset += address->serializedSize();
         //---------------------------------------------------
-        vector<byte> bufferTrustLineAmount(
+        vector<byte_t> bufferTrustLineAmount(
             buffer.get() + bytesBufferOffset,
             buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
         bytesBufferOffset += kTrustLineAmountBytesCount;
@@ -48,10 +49,10 @@ ResultMaxFlowCalculationMessage::ResultMaxFlowCalculationMessage(
     mIncomingFlows.reserve(*trustLinesInCount);
     for (SerializedRecordNumber idx = 0; idx < *trustLinesInCount; idx++) {
         auto address = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                           buffer.get() + bytesBufferOffset);
         bytesBufferOffset += address->serializedSize();
         //---------------------------------------------------
-        vector<byte> bufferTrustLineAmount(
+        vector<byte_t> bufferTrustLineAmount(
             buffer.get() + bytesBufferOffset,
             buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
         bytesBufferOffset += kTrustLineAmountBytesCount;
@@ -77,9 +78,7 @@ const bool ResultMaxFlowCalculationMessage::isAddToConfirmationNotStronglyRequir
 pair<BytesShared, size_t> ResultMaxFlowCalculationMessage::serializeToBytes() const
 {
     auto parentBytesAndCount = MaxFlowCalculationConfirmationMessage::serializeToBytes();
-    size_t bytesCount = parentBytesAndCount.second
-                        + sizeof(SerializedRecordsCount)
-                        + sizeof(SerializedRecordsCount);
+    size_t bytesCount = parentBytesAndCount.second + sizeof(SerializedRecordsCount) + sizeof(SerializedRecordsCount);
     for (const auto &outgoingFlow : mOutgoingFlows) {
         bytesCount += outgoingFlow.first->serializedSize() + kTrustLineAmountBytesCount;
     }
@@ -112,7 +111,7 @@ pair<BytesShared, size_t> ResultMaxFlowCalculationMessage::serializeToBytes() co
             outgoingFlow.first->serializedSize());
         dataBytesOffset += outgoingFlow.first->serializedSize();
         //------------------------------------------------
-        vector<byte> buffer = trustLineAmountToBytes(*outgoingFlow.second.get());
+        vector<byte_t> buffer = trustLineAmountToBytes(*outgoingFlow.second.get());
         memcpy(
             dataBytesShared.get() + dataBytesOffset,
             buffer.data(),
@@ -135,7 +134,7 @@ pair<BytesShared, size_t> ResultMaxFlowCalculationMessage::serializeToBytes() co
             incomingFlow.first->serializedSize());
         dataBytesOffset += incomingFlow.first->serializedSize();
         //------------------------------------------------
-        vector<byte> buffer = trustLineAmountToBytes(*incomingFlow.second.get());
+        vector<byte_t> buffer = trustLineAmountToBytes(*incomingFlow.second.get());
         memcpy(
             dataBytesShared.get() + dataBytesOffset,
             buffer.data(),
@@ -144,12 +143,11 @@ pair<BytesShared, size_t> ResultMaxFlowCalculationMessage::serializeToBytes() co
     }
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
-const vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> ResultMaxFlowCalculationMessage::outgoingFlows() const
-{
+const vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> ResultMaxFlowCalculationMessage::outgoingFlows() const {
     return mOutgoingFlows;
 }
 

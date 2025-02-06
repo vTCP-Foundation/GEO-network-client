@@ -10,7 +10,8 @@
 #include "../../../network/messages/trust_lines/TrustLineResetMessage.h"
 #include "../../../network/messages/trust_lines/TrustLineConfirmationMessage.h"
 
-class ResetTrustLineSourceTransaction : public BaseTransaction  {
+class ResetTrustLineSourceTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<ResetTrustLineSourceTransaction> Shared;
@@ -27,7 +28,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         ResponseProcessing = 2,
     };

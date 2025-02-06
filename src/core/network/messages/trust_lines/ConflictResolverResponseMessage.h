@@ -3,7 +3,8 @@
 
 #include "../base/transaction/ConfirmationMessage.h"
 
-class ConflictResolverResponseMessage : public ConfirmationMessage {
+class ConflictResolverResponseMessage : public ConfirmationMessage
+{
 
 public:
     typedef shared_ptr<ConflictResolverResponseMessage> Shared;

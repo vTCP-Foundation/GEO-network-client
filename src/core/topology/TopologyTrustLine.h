@@ -5,7 +5,8 @@
 #include "../trust_lines/TrustLine.h"
 #include "../common/time/TimeUtils.h"
 
-class TopologyTrustLine {
+class TopologyTrustLine
+{
 
 public:
     typedef shared_ptr<TopologyTrustLine> Shared;

@@ -1,13 +1,11 @@
 #include "BytesSerializer.h"
 
-
 /**
  * @param bytesCount - specifies how many bytes must be reserved in to the memory
- *      for the object serialzation.
+ *      for the object serialization.
  */
-BytesSerializer::BaseSerializationRecord::BaseSerializationRecord (
-    const size_t bytesCount)
-    noexcept :
+BytesSerializer::BaseSerializationRecord::BaseSerializationRecord(
+    const size_t bytesCount) noexcept :
 
     mBytesCount(bytesCount)
 {
@@ -21,40 +19,38 @@ BytesSerializer::BaseSerializationRecord::~BaseSerializationRecord()
     // Empty virtual descructor is needed, because class contains virtual methods.
 }
 
-size_t BytesSerializer::BaseSerializationRecord::bytesCount () const
-    noexcept
+size_t BytesSerializer::BaseSerializationRecord::bytesCount() const
+noexcept
 {
     return mBytesCount;
 }
 
-
-BytesSerializer::DelayedRecord::DelayedRecord (
+BytesSerializer::DelayedRecord::DelayedRecord(
     const void* src,
-    const size_t bytesCount)
-    noexcept :
+    const size_t bytesCount) noexcept :
 
     BaseSerializationRecord(bytesCount),
     mSrc(src)
-{}
+{
+}
 
-void* BytesSerializer::DelayedRecord::pointer () const
-    noexcept
+void* BytesSerializer::DelayedRecord::pointer() const
+noexcept
 {
     return const_cast<void*>(mSrc);
 }
 
-
-BytesSerializer::InlineRecord::InlineRecord (
+BytesSerializer::InlineRecord::InlineRecord(
     BytesShared bytes,
-    const size_t bytesCount)
-    noexcept :
+    const size_t bytesCount) noexcept :
 
     BaseSerializationRecord(bytesCount),
     mBytes(bytes)
-{}
+{
+}
 
-void* BytesSerializer::InlineRecord::pointer () const
-    noexcept
+void* BytesSerializer::InlineRecord::pointer() const
+noexcept
 {
     return mBytes.get();
 }
@@ -64,10 +60,9 @@ void* BytesSerializer::InlineRecord::pointer () const
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::enqueue (
-    const void *src,
-    const size_t bytesCount)
-    noexcept(false)
+void BytesSerializer::enqueue(
+    const void* src,
+    const size_t bytesCount) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(bytesCount > 0);
@@ -85,10 +80,9 @@ void BytesSerializer::enqueue (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::enqueue (
+void BytesSerializer::enqueue(
     const BytesShared bytes,
-    const size_t bytesCount)
-    noexcept(false)
+    const size_t bytesCount) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(bytesCount > 0);
@@ -109,9 +103,8 @@ void BytesSerializer::enqueue (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::enqueue (
-    pair<BytesShared, size_t> bytesAndSize)
-    noexcept(false)
+void BytesSerializer::enqueue(
+    pair<BytesShared, size_t> bytesAndSize) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(bytesAndSize.second > 0);
@@ -127,9 +120,8 @@ void BytesSerializer::enqueue (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    const uint16_t value)
-    noexcept(false)
+void BytesSerializer::copy(
+    const uint16_t value) noexcept(false)
 {
     mRecords.push_back(
         new InlineUInt16TRecord(value));
@@ -140,9 +132,8 @@ void BytesSerializer::copy (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    const uint32_t value)
-    noexcept(false)
+void BytesSerializer::copy(
+    const uint32_t value) noexcept(false)
 {
     mRecords.push_back(
         new InlineUInt32TRecord(value));
@@ -153,9 +144,8 @@ void BytesSerializer::copy (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    const size_t value)
-    noexcept(false)
+void BytesSerializer::copy(
+    const size_t value) noexcept(false)
 {
     mRecords.push_back(
         new InlineSizeTRecord(value));
@@ -166,9 +156,8 @@ void BytesSerializer::copy (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    const bool value)
-    noexcept(false)
+void BytesSerializer::copy(
+    const bool value) noexcept(false)
 {
     mRecords.push_back(
         new InlineBoolRecord(value));
@@ -180,8 +169,7 @@ void BytesSerializer::copy (
  * @throws bad_alloc;
  */
 void BytesSerializer::copy(
-    const NodeUUID &nodeUUID)
-    noexcept(false)
+    const NodeUUID &nodeUUID) noexcept(false)
 {
     copy(
         nodeUUID.data,
@@ -193,9 +181,8 @@ void BytesSerializer::copy(
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    byte value)
-    noexcept(false)
+void BytesSerializer::copy(
+    byte_t value) noexcept(false)
 {
     mRecords.push_back(
         new InlineByteRecord(value));
@@ -204,9 +191,8 @@ void BytesSerializer::copy (
 /**
  * @throws bad_alloc;
  */
-void BytesSerializer::enqueue (
-    const NodeUUID &nodeUUID)
-    noexcept(false)
+void BytesSerializer::enqueue(
+    const NodeUUID &nodeUUID) noexcept(false)
 {
     enqueue(
         nodeUUID.data,
@@ -216,10 +202,9 @@ void BytesSerializer::enqueue (
 /**
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    const void *src,
-    const size_t bytesCount)
-    noexcept(false)
+void BytesSerializer::copy(
+    const void* src,
+    const size_t bytesCount) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(bytesCount > 0);
@@ -239,9 +224,8 @@ void BytesSerializer::copy (
 /**
  * @throws bad_alloc;
  */
-void BytesSerializer::copy (
-    vector<byte> &bytes)
-    noexcept(false)
+void BytesSerializer::copy(
+    vector<byte_t> &bytes) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(bytes.size() > 0);
@@ -258,9 +242,8 @@ void BytesSerializer::copy (
  *
  * @throws bad_alloc;
  */
-void BytesSerializer::merge (
-    BytesSerializer &otherContainer)
-    noexcept(false)
+void BytesSerializer::merge(
+    BytesSerializer &otherContainer) noexcept(false)
 {
 #ifdef INTERNAL_ARGUMENTS_VALIDATION
     assert(otherContainer.mRecords.size() > 0);
@@ -282,8 +265,8 @@ void BytesSerializer::merge (
  *
  * @throws bad_alloc;
  */
-const pair<BytesShared, size_t> BytesSerializer::collect () const
-    noexcept(false)
+const pair<BytesShared, size_t> BytesSerializer::collect() const
+noexcept(false)
 {
     if (mRecords.size() == 0)
         throw NotFoundError(
@@ -294,7 +277,6 @@ const pair<BytesShared, size_t> BytesSerializer::collect () const
     for (const auto kRecord : mRecords) {
         totalBytesCount += kRecord->bytesCount();
     }
-
 
     auto buffer = tryMalloc(totalBytesCount);
     auto currentBufferOffset = buffer.get();
@@ -310,6 +292,6 @@ const pair<BytesShared, size_t> BytesSerializer::collect () const
     }
 
     return make_pair(
-        buffer,
-        totalBytesCount);
+               buffer,
+               totalBytesCount);
 }

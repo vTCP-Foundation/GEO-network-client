@@ -52,18 +52,18 @@ ConflictResolverInitiatorTransaction::ConflictResolverInitiatorTransaction(
 TransactionResult::SharedConst ConflictResolverInitiatorTransaction::run()
 {
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        case Stages::Recovery: {
-            return runRecoveryStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: "
-                    "wrong value of mStep " + to_string(mStep));
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    case Stages::Recovery: {
+        return runRecoveryStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep " + to_string(mStep));
     }
 }
 
@@ -93,18 +93,18 @@ TransactionResult::SharedConst ConflictResolverInitiatorTransaction::runInitiali
         ioTransaction);
 
     auto keyChain = mKeysStore->keychain(
-        mTrustLinesManager->trustLineID(
-            mContractorID));
+                        mTrustLinesManager->trustLineID(
+                            mContractorID));
 
     auto auditRecord = keyChain.actualFullAudit(
-        ioTransaction);
+                           ioTransaction);
 
     auto incomingReceipts = keyChain.incomingReceipts(
-        ioTransaction,
-        mTrustLinesManager->auditNumber(mContractorID));
+                                ioTransaction,
+                                mTrustLinesManager->auditNumber(mContractorID));
     auto outgoingReceipts = keyChain.outgoingReceipts(
-        ioTransaction,
-        mTrustLinesManager->auditNumber(mContractorID));
+                                ioTransaction,
+                                mTrustLinesManager->auditNumber(mContractorID));
 
     sendMessage<ConflictResolverMessage>(
         mContractorID,
@@ -119,8 +119,8 @@ TransactionResult::SharedConst ConflictResolverInitiatorTransaction::runInitiali
 
     mStep = Stages::ResponseProcessing;
     return resultWaitForMessageTypes(
-        {Message::TrustLines_ConflictResolverConfirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_ConflictResolverConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst ConflictResolverInitiatorTransaction::runResponseProcessingStage()
@@ -137,33 +137,33 @@ TransactionResult::SharedConst ConflictResolverInitiatorTransaction::runResponse
     }
     processConfirmationMessage(response);
     switch (response->state()) {
-        case ConfirmationMessage::Audit_Reject: {
-            info() << "Audit was rejected. Wait for contractor audit";
-            // todo add checking if TL is become conflicted, maybe add new response state
-            return resultDone();
-        }
-        case ConfirmationMessage::Audit_Invalid: {
-            warning() << "Contractor send invalid audit response.";
-            // todo : need correct reaction
-            return resultDone();
-        }
-        case ConfirmationMessage::Audit_KeyNotFound: {
-            warning() << "Contractor lost keys and can't accept audit";
-            // todo : need correct reaction
-            return resultDone();
-        }
-        case ConfirmationMessage::OK: {
-            info() << "Contractor accept audit";
-            auto ioTransaction = mStorageHandler->beginTransaction();
-            mTrustLinesManager->setTrustLineState(
-                mContractorID,
-                TrustLine::Active,
-                ioTransaction);
-            return resultDone();
-        }
-        default:
-            warning() << "Invalid response state " << response->state();
-            return resultDone();
+    case ConfirmationMessage::Audit_Reject: {
+        info() << "Audit was rejected. Wait for contractor audit";
+        // todo add checking if TL is become conflicted, maybe add new response state
+        return resultDone();
+    }
+    case ConfirmationMessage::Audit_Invalid: {
+        warning() << "Contractor send invalid audit response.";
+        // todo : need correct reaction
+        return resultDone();
+    }
+    case ConfirmationMessage::Audit_KeyNotFound: {
+        warning() << "Contractor lost keys and can't accept audit";
+        // todo : need correct reaction
+        return resultDone();
+    }
+    case ConfirmationMessage::OK: {
+        info() << "Contractor accept audit";
+        auto ioTransaction = mStorageHandler->beginTransaction();
+        mTrustLinesManager->setTrustLineState(
+            mContractorID,
+            TrustLine::Active,
+            ioTransaction);
+        return resultDone();
+    }
+    default:
+        warning() << "Invalid response state " << response->state();
+        return resultDone();
     }
 }
 
@@ -204,8 +204,8 @@ pair<BytesShared, size_t> ConflictResolverInitiatorTransaction::serializeToBytes
         sizeof(ContractorID));
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const string ConflictResolverInitiatorTransaction::logHeader() const

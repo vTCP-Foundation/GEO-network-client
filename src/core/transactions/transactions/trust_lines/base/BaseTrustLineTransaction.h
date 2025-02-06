@@ -16,7 +16,8 @@
 
 #include "../ConflictResolverInitiatorTransaction.h"
 
-class BaseTrustLineTransaction : public BaseTransaction {
+class BaseTrustLineTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<BaseTrustLineTransaction> Shared;
@@ -46,7 +47,8 @@ public:
         Logger &log);
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         NextAttempt = 2,
         ResponseProcessing = 3,

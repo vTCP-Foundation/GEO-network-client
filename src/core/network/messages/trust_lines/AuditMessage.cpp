@@ -8,11 +8,9 @@ AuditMessage::AuditMessage(
     const TrustLineAmount &incomingAmount,
     const TrustLineAmount &outgoingAmount,
     const KeyNumber keyNumber,
-    const lamport::Signature::Shared signature):
-    TransactionMessage(
-        equivalent,
-        contractor->ownIdOnContractorSide(),
-        transactionUUID),
+    const lamport::Signature::Shared signature) : TransactionMessage(equivalent,
+                contractor->ownIdOnContractorSide(),
+                transactionUUID),
     mAuditNumber(auditNumber),
     mIncomingAmount(incomingAmount),
     mOutgoingAmount(outgoingAmount),
@@ -23,8 +21,7 @@ AuditMessage::AuditMessage(
 }
 
 AuditMessage::AuditMessage(
-    BytesShared buffer) :
-    TransactionMessage(buffer)
+    BytesShared buffer) : TransactionMessage(buffer)
 {
     auto bytesBufferOffset = TransactionMessage::kOffsetToInheritedBytes();
 
@@ -34,13 +31,13 @@ AuditMessage::AuditMessage(
         sizeof(AuditNumber));
     bytesBufferOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBytes(
+    vector<byte_t> incomingAmountBytes(
         buffer.get() + bytesBufferOffset,
         buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
     mIncomingAmount = bytesToTrustLineAmount(incomingAmountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBytes(
+    vector<byte_t> outgoingAmountBytes(
         buffer.get() + bytesBufferOffset,
         buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
     mOutgoingAmount = bytesToTrustLineAmount(outgoingAmountBytes);
@@ -53,7 +50,7 @@ AuditMessage::AuditMessage(
     bytesBufferOffset += sizeof(KeyNumber);
 
     mSignature = make_shared<lamport::Signature>(
-        buffer.get() + bytesBufferOffset);
+                     buffer.get() + bytesBufferOffset);
 }
 
 const Message::MessageType AuditMessage::typeID() const
@@ -66,12 +63,12 @@ const AuditNumber AuditMessage::auditNumber() const
     return mAuditNumber;
 }
 
-const TrustLineAmount& AuditMessage::incomingAmount() const
+const TrustLineAmount &AuditMessage::incomingAmount() const
 {
     return mIncomingAmount;
 }
 
-const TrustLineAmount& AuditMessage::outgoingAmount() const
+const TrustLineAmount &AuditMessage::outgoingAmount() const
 {
     return mOutgoingAmount;
 }
@@ -94,12 +91,7 @@ const bool AuditMessage::isCheckCachedResponse() const
 pair<BytesShared, size_t> AuditMessage::serializeToBytes() const
 {
     const auto parentBytesAndCount = TransactionMessage::serializeToBytes();
-    auto kBufferSize = parentBytesAndCount.second
-                       + sizeof(AuditNumber)
-                       + kTrustLineAmountBytesCount
-                       + kTrustLineAmountBytesCount
-                       + sizeof(KeyNumber)
-                       + mSignature->signatureSize();
+    auto kBufferSize = parentBytesAndCount.second + sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + sizeof(KeyNumber) + mSignature->signatureSize();
     BytesShared buffer = tryMalloc(kBufferSize);
 
     size_t dataBytesOffset = 0;
@@ -116,14 +108,14 @@ pair<BytesShared, size_t> AuditMessage::serializeToBytes() const
         sizeof(AuditNumber));
     dataBytesOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBuffer = trustLineAmountToBytes(mIncomingAmount);
+    vector<byte_t> incomingAmountBuffer = trustLineAmountToBytes(mIncomingAmount);
     memcpy(
         buffer.get() + dataBytesOffset,
         incomingAmountBuffer.data(),
         incomingAmountBuffer.size());
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBuffer = trustLineAmountToBytes(mOutgoingAmount);
+    vector<byte_t> outgoingAmountBuffer = trustLineAmountToBytes(mOutgoingAmount);
     memcpy(
         buffer.get() + dataBytesOffset,
         outgoingAmountBuffer.data(),
@@ -142,18 +134,13 @@ pair<BytesShared, size_t> AuditMessage::serializeToBytes() const
         mSignature->signatureSize());
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }
 
 const size_t AuditMessage::kOffsetToInheritedBytes() const
 {
     const auto kOffset =
-            TransactionMessage::kOffsetToInheritedBytes()
-            + sizeof(AuditNumber)
-            + kTrustLineAmountBytesCount
-            + kTrustLineAmountBytesCount
-            + sizeof(KeyNumber)
-            + mSignature->signatureSize();
+        TransactionMessage::kOffsetToInheritedBytes() + sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + sizeof(KeyNumber) + mSignature->signatureSize();
     return kOffset;
 }

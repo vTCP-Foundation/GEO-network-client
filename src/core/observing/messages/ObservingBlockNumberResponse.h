@@ -3,7 +3,8 @@
 
 #include "base/ObservingResponseMessage.h"
 
-class ObservingBlockNumberResponse : public ObservingResponseMessage {
+class ObservingBlockNumberResponse : public ObservingResponseMessage
+{
 
 public:
     typedef shared_ptr<ObservingBlockNumberResponse> Shared;

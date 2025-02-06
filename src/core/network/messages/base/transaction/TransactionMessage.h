@@ -7,7 +7,8 @@
 
 
 class TransactionMessage:
-    public SenderMessage {
+    public SenderMessage
+{
 
 public:
     typedef shared_ptr<TransactionMessage> Shared;

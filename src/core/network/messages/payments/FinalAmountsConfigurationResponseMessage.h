@@ -6,10 +6,12 @@
 
 using namespace crypto;
 
-class FinalAmountsConfigurationResponseMessage : public TransactionMessage {
+class FinalAmountsConfigurationResponseMessage : public TransactionMessage
+{
 
 public:
-    enum OperationState {
+    enum OperationState
+    {
         Accepted = 1,
         Rejected = 2,
     };
@@ -41,7 +43,7 @@ public:
     const lamport::PublicKey::Shared publicKey() const;
 
 protected:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
     pair<BytesShared, size_t> serializeToBytes() const override;
 
@@ -50,5 +52,4 @@ private:
     lamport::PublicKey::Shared mPublicKey;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_FINALAMOUNTSCONFIGURATIONRESPONSEMESSAGE_H
+#endif // GEO_NETWORK_CLIENT_FINALAMOUNTSCONFIGURATIONRESPONSEMESSAGE_H

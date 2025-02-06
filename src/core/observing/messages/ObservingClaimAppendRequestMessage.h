@@ -9,7 +9,8 @@
 
 using namespace crypto;
 
-class ObservingClaimAppendRequestMessage : public ObservingMessage {
+class ObservingClaimAppendRequestMessage : public ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingClaimAppendRequestMessage> Shared;

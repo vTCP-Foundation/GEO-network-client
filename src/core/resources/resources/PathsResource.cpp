@@ -8,9 +8,10 @@ PathsResource::PathsResource(
         BaseResource::ResourceType::Paths,
         transactionUUID),
 
-    mPathsCollection(pathsCollection){}
+    mPathsCollection(pathsCollection) {}
 
-PathsCollection::Shared PathsResource::pathCollection() const {
+PathsCollection::Shared PathsResource::pathCollection() const
+{
 
     return mPathsCollection;
 }

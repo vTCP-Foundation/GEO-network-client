@@ -29,14 +29,14 @@ TransactionResult::SharedConst ConfirmChannelTransaction::run()
     }
 
     if (mContractorsManager->selfContractor()->containsAtLeastOneAddress(
-        mMessage->senderAddresses)) {
+                mMessage->senderAddresses)) {
         warning() << "Contractor's addresses contain at least one address is equal to own address";
         // todo : send reply
         return resultDone();
     }
 
     auto contractorID = mContractorsManager->contractorIDByAddresses(
-        mMessage->senderAddresses);
+                            mMessage->senderAddresses);
     if (contractorID == ContractorsManager::kNotFoundContractorID) {
         warning() << "There is no contractor for requested addresses";
         // todo send reply

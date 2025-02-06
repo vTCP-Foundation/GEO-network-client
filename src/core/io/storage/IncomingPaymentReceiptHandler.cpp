@@ -19,44 +19,48 @@ IncomingPaymentReceiptHandler::IncomingPaymentReceiptHandler(
                    "contractor_signature BLOB NOT NULL, "
                    "FOREIGN KEY(trust_line_id) REFERENCES trust_lines(id) ON DELETE CASCADE ON UPDATE CASCADE, "
                    "FOREIGN KEY(contractor_public_key_hash) REFERENCES contractor_keys(hash) ON DELETE CASCADE ON UPDATE CASCADE);";
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("IncomingPaymentReceiptHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
-    query = "CREATE UNIQUE INDEX IF NOT EXISTS " + mTableName
-            + "_trust_line_id_audit_number_key_hash_idx on " + mTableName + "(trust_line_id, audit_number, contractor_public_key_hash);";
+    query = "CREATE UNIQUE INDEX IF NOT EXISTS " + mTableName + "_trust_line_id_audit_number_key_hash_idx on " + mTableName + "(trust_line_id, audit_number, contractor_public_key_hash);";
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::creating  index for TrustLineID and AuditNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("IncomingPaymentReceiptHandler::creating index for TrustLineID and AuditNumber: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
-    query = "CREATE INDEX IF NOT EXISTS " + mTableName
-            + "_transaction_uuid_idx on " + mTableName + "(transaction_uuid);";
+    query = "CREATE INDEX IF NOT EXISTS " + mTableName + "_transaction_uuid_idx on " + mTableName + "(transaction_uuid);";
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::creating  index for TransactionUUID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("IncomingPaymentReceiptHandler::creating index for TransactionUUID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
     sqlite3_reset(stmt);
@@ -78,41 +82,48 @@ void IncomingPaymentReceiptHandler::saveRecord(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 3, transactionUUID.data,
                            (int)TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 4, contractorPublicKeyHash->data(),
                            (int)KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of ContractorPublicKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorPublicKeyHash; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> amountBufferBytes = trustLineAmountToBytes(amount);
+    vector<byte_t> amountBufferBytes = trustLineAmountToBytes(amount);
     rc = sqlite3_bind_blob(stmt, 5, amountBufferBytes.data(), kTrustLineAmountBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of Amount; sqlite error: " + to_string(rc));
+                      "Bad binding of Amount; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 6, contractorSignature->data(),
                            (int)contractorSignature->signatureSize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Bad binding of ContractorSignature; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorSignature; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -124,7 +135,8 @@ void IncomingPaymentReceiptHandler::saveRecord(
 #endif
     } else {
         throw IOError("IncomingPaymentReceiptHandler::saveRecord: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -138,28 +150,31 @@ vector<pair<TransactionUUID, TrustLineAmount>> IncomingPaymentReceiptHandler::au
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::auditAmounts: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::auditAmounts: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::auditAmounts: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
-    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
 
-        TransactionUUID transactionUUID((byte*)sqlite3_column_blob(stmt, 0));
+        TransactionUUID transactionUUID((byte_t*)sqlite3_column_blob(stmt, 0));
 
-        auto amountBytes = (byte*)sqlite3_column_blob(stmt, 1);
-        vector<byte> amountBufferBytes(
+        auto amountBytes = (byte_t*)sqlite3_column_blob(stmt, 1);
+        vector<byte_t> amountBufferBytes(
             amountBytes,
             amountBytes + kTrustLineAmountBytesCount);
         auto amount = bytesToTrustLineAmount(
-            amountBufferBytes);
+                          amountBufferBytes);
 
         result.emplace_back(
             transactionUUID,
@@ -176,45 +191,47 @@ vector<ReceiptRecord::Shared> IncomingPaymentReceiptHandler::receiptsByAuditNumb
 {
     vector<ReceiptRecord::Shared> result;
     sqlite3_stmt *stmt;
-    string query = "SELECT amount, transaction_uuid, contractor_public_key_hash, contractor_signature FROM "
-                   + mTableName + " WHERE trust_line_id = ? AND audit_number = ?";
+    string query = "SELECT amount, transaction_uuid, contractor_public_key_hash, contractor_signature FROM " + mTableName + " WHERE trust_line_id = ? AND audit_number = ?";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsByAuditNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsByAuditNumber: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsByAuditNumber: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
-    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
 
-        auto amountBytes = (byte*)sqlite3_column_blob(stmt, 0);
-        vector<byte> incomingAmountBufferBytes(
+        auto amountBytes = (byte_t*)sqlite3_column_blob(stmt, 0);
+        vector<byte_t> incomingAmountBufferBytes(
             amountBytes,
             amountBytes + kTrustLineAmountBytesCount);
 
         TransactionUUID transactionUUID((uint8_t*)sqlite3_column_blob(stmt, 1));
 
         auto contractorKeyHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 2));
+                                     (byte_t*)sqlite3_column_blob(stmt, 2));
 
         auto contractorSignature = make_shared<lamport::Signature>(
-            (byte*)sqlite3_column_blob(stmt, 3));
+                                       (byte_t*)sqlite3_column_blob(stmt, 3));
 
         result.push_back(make_shared<ReceiptRecord>(
-            auditNumber,
-            transactionUUID,
-            bytesToTrustLineAmount(
-                incomingAmountBufferBytes),
-            contractorKeyHash,
-            contractorSignature));
+                             auditNumber,
+                             transactionUUID,
+                             bytesToTrustLineAmount(
+                                 incomingAmountBufferBytes),
+                             contractorKeyHash,
+                             contractorSignature));
     }
     sqlite3_reset(stmt);
     sqlite3_finalize(stmt);
@@ -227,45 +244,47 @@ vector<ReceiptRecord::Shared> IncomingPaymentReceiptHandler::receiptsLessEqualTh
 {
     vector<ReceiptRecord::Shared> result;
     sqlite3_stmt *stmt;
-    string query = "SELECT amount, transaction_uuid, contractor_public_key_hash, contractor_signature FROM "
-                   + mTableName + " WHERE trust_line_id = ? AND audit_number <= ?";
+    string query = "SELECT amount, transaction_uuid, contractor_public_key_hash, contractor_signature FROM " + mTableName + " WHERE trust_line_id = ? AND audit_number <= ?";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsLessEqualThanAuditNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsLessEqualThanAuditNumber: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::receiptsLessEqualThanAuditNumber: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
-    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
 
-        auto amountBytes = (byte*)sqlite3_column_blob(stmt, 0);
-        vector<byte> incomingAmountBufferBytes(
+        auto amountBytes = (byte_t*)sqlite3_column_blob(stmt, 0);
+        vector<byte_t> incomingAmountBufferBytes(
             amountBytes,
             amountBytes + kTrustLineAmountBytesCount);
 
         TransactionUUID transactionUUID((uint8_t*)sqlite3_column_blob(stmt, 1));
 
         auto contractorKeyHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 2));
+                                     (byte_t*)sqlite3_column_blob(stmt, 2));
 
         auto contractorSignature = make_shared<lamport::Signature>(
-            (byte*)sqlite3_column_blob(stmt, 3));
+                                       (byte_t*)sqlite3_column_blob(stmt, 3));
 
         result.push_back(make_shared<ReceiptRecord>(
-            auditNumber,
-            transactionUUID,
-            bytesToTrustLineAmount(
-                incomingAmountBufferBytes),
-            contractorKeyHash,
-            contractorSignature));
+                             auditNumber,
+                             transactionUUID,
+                             bytesToTrustLineAmount(
+                                 incomingAmountBufferBytes),
+                             contractorKeyHash,
+                             contractorSignature));
     }
     sqlite3_reset(stmt);
     sqlite3_finalize(stmt);
@@ -277,22 +296,24 @@ uint32_t IncomingPaymentReceiptHandler::countReceiptsByNumber(
     const AuditNumber auditNumber)
 {
     sqlite3_stmt *stmt;
-    string query = "SELECT COUNT(transaction_uuid) FROM "
-                   + mTableName + " WHERE trust_line_id = ? AND audit_number = ?";
+    string query = "SELECT COUNT(transaction_uuid) FROM " + mTableName + " WHERE trust_line_id = ? AND audit_number = ?";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::countReceiptsByNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::countReceiptsByNumber: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::countReceiptsByNumber: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
     sqlite3_step(stmt);
     auto countReceipts = (uint32_t)sqlite3_column_int(stmt, 0);
@@ -307,15 +328,17 @@ void IncomingPaymentReceiptHandler::deleteRecords(
 {
     string query = "DELETE FROM " + mTableName + " WHERE transaction_uuid = ?";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecords: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecords: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -326,7 +349,8 @@ void IncomingPaymentReceiptHandler::deleteRecords(
 #endif
     } else {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecords: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -335,15 +359,17 @@ void IncomingPaymentReceiptHandler::deleteRecords(
 {
     string query = "DELETE FROM " + mTableName + " WHERE trust_line_id = ?";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecordsByTrustLineID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecordsByTrustLineID: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -354,7 +380,8 @@ void IncomingPaymentReceiptHandler::deleteRecords(
 #endif
     } else {
         throw IOError("IncomingPaymentReceiptHandler::deleteRecordsByTrustLineID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -362,18 +389,19 @@ bool IncomingPaymentReceiptHandler::isContainsKeyHash(
     KeyHash::Shared keyHash) const
 {
     sqlite3_stmt *stmt;
-    string query = "SELECT contractor_public_key_hash FROM "
-                   + mTableName + " WHERE contractor_public_key_hash = ? LIMIT 1";
+    string query = "SELECT contractor_public_key_hash FROM " + mTableName + " WHERE contractor_public_key_hash = ? LIMIT 1";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::isContainsKeyHash: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, keyHash->data(),
                            (int)KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::isContainsKeyHash: "
-                          "Bad binding of ContractorPublicKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorPublicKeyHash; sqlite error: " +
+                      to_string(rc));
     }
     sqlite3_step(stmt);
     auto result = (rc == SQLITE_ROW);
@@ -387,17 +415,18 @@ bool IncomingPaymentReceiptHandler::isContainsTransaction(
     const TransactionUUID &transactionUUID) const
 {
     sqlite3_stmt *stmt;
-    string query = "SELECT transaction_uuid FROM "
-                   + mTableName + " WHERE transaction_uuid = ? LIMIT 1";
+    string query = "SELECT transaction_uuid FROM " + mTableName + " WHERE transaction_uuid = ? LIMIT 1";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::isContainsTransaction: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("IncomingPaymentReceiptHandler::isContainsTransaction: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
     auto result = (sqlite3_step(stmt) == SQLITE_ROW);
 

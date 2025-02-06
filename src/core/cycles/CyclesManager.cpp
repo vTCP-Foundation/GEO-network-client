@@ -22,7 +22,7 @@ CyclesManager::CyclesManager(
     timeStarted = kSignalStartTimeSecondsTests;
 #endif
     mFiveNodesCycleTimer = make_unique<as::steady_timer>(
-        mIOService);
+                               mIOService);
     mFiveNodesCycleTimer->expires_from_now(
         std::chrono::seconds(
             timeStarted));
@@ -37,7 +37,7 @@ CyclesManager::CyclesManager(
     timeStarted = kSignalStartTimeSecondsTests;
 #endif
     mSixNodesCycleTimer = make_unique<as::steady_timer>(
-        mIOService);
+                              mIOService);
     mSixNodesCycleTimer->expires_from_now(
         std::chrono::seconds(
             timeStarted));
@@ -48,7 +48,7 @@ CyclesManager::CyclesManager(
             as::placeholders::error));
 
     mUpdatingTimer = make_unique<as::steady_timer>(
-        mIOService);
+                         mIOService);
     mUpdatingTimer->expires_from_now(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));
@@ -67,25 +67,25 @@ void CyclesManager::addCycle(
         return;
     }
     switch (cycle->length()) {
-        case 2:
-            debug() << "add three nodes cycle";
-            mThreeNodesCycles.push_back(cycle);
-            break;
-        case 3:
-            debug() << "add four nodes cycle";
-            mFourNodesCycles.push_back(cycle);
-            break;
-        case 4:
-            debug() << "add five nodes cycle";
-            mFiveNodesCycles.push_back(cycle);
-            break;
-        case 5:
-            debug() << "add six nodes cycle";
-            mSixNodesCycles.push_back(cycle);
-            break;
-        default:
-            throw ValueError("CyclesManager::addCycle: "
-                                 "illegal length of cycle");
+    case 2:
+        debug() << "add three nodes cycle";
+        mThreeNodesCycles.push_back(cycle);
+        break;
+    case 3:
+        debug() << "add four nodes cycle";
+        mFourNodesCycles.push_back(cycle);
+        break;
+    case 4:
+        debug() << "add five nodes cycle";
+        mFiveNodesCycles.push_back(cycle);
+        break;
+    case 5:
+        debug() << "add six nodes cycle";
+        mSixNodesCycles.push_back(cycle);
+        break;
+    default:
+        throw ValueError("CyclesManager::addCycle: "
+                         "illegal length of cycle");
     }
 }
 
@@ -116,7 +116,7 @@ void CyclesManager::closeOneCycle(
     CycleClosingState currentCycleClosingState = mCurrentCycleClosingState;
     do {
         auto cycles = cyclesVector(
-            mCurrentCycleClosingState);
+                          mCurrentCycleClosingState);
         if (!cycles->empty()) {
             auto cycle = *cycles->begin();
             cycles->erase(cycles->begin());
@@ -132,38 +132,38 @@ void CyclesManager::closeOneCycle(
     mIsCycleInProcess = false;
 }
 
-vector<Path::Shared>* CyclesManager::cyclesVector(
+vector<Path::Shared> *CyclesManager::cyclesVector(
     CycleClosingState currentCycleClosingState)
 {
     switch (currentCycleClosingState) {
-        case CycleClosingState::ThreeNodes:
-            return &mThreeNodesCycles;
-        case CycleClosingState::FourNodes:
-            return &mFourNodesCycles;
-        case CycleClosingState::FiveNodes:
-            return &mFiveNodesCycles;
-        case CycleClosingState::SixNodes:
-            return &mSixNodesCycles;
-        default:
-            throw ValueError("Unexpected Cycle closing state " + to_string(currentCycleClosingState));
+    case CycleClosingState::ThreeNodes:
+        return &mThreeNodesCycles;
+    case CycleClosingState::FourNodes:
+        return &mFourNodesCycles;
+    case CycleClosingState::FiveNodes:
+        return &mFiveNodesCycles;
+    case CycleClosingState::SixNodes:
+        return &mSixNodesCycles;
+    default:
+        throw ValueError("Unexpected Cycle closing state " + to_string(currentCycleClosingState));
     }
 }
 
 void CyclesManager::incrementCurrentCycleClosingState()
 {
     switch (mCurrentCycleClosingState) {
-        case CycleClosingState::ThreeNodes:
-            mCurrentCycleClosingState = CycleClosingState::FourNodes;
-            break;
-        case CycleClosingState::FourNodes:
-            mCurrentCycleClosingState = CycleClosingState::FiveNodes;
-            break;
-        case CycleClosingState::FiveNodes:
-            mCurrentCycleClosingState = CycleClosingState::SixNodes;
-            break;
-        case CycleClosingState::SixNodes:
-            mCurrentCycleClosingState = CycleClosingState::ThreeNodes;
-            break;
+    case CycleClosingState::ThreeNodes:
+        mCurrentCycleClosingState = CycleClosingState::FourNodes;
+        break;
+    case CycleClosingState::FourNodes:
+        mCurrentCycleClosingState = CycleClosingState::FiveNodes;
+        break;
+    case CycleClosingState::FiveNodes:
+        mCurrentCycleClosingState = CycleClosingState::SixNodes;
+        break;
+    case CycleClosingState::SixNodes:
+        mCurrentCycleClosingState = CycleClosingState::ThreeNodes;
+        break;
     }
 }
 
@@ -225,8 +225,7 @@ bool CyclesManager::isChallengerTransactionWinReservation(
             << " votesCheckingStage: " << reservedTransaction->isVotingStage()
             << " cycle length: " << to_string(reservedTransaction->cycleLength())
             << " coordinator: " << reservedTransaction->coordinatorAddress()->fullAddress();
-    if (reservedTransaction->transactionType() != BaseTransaction::TransactionType::Payments_CycleCloserInitiatorTransaction
-        && reservedTransaction->transactionType() != BaseTransaction::TransactionType::Payments_CycleCloserIntermediateNodeTransaction) {
+    if (reservedTransaction->transactionType() != BaseTransaction::TransactionType::Payments_CycleCloserInitiatorTransaction && reservedTransaction->transactionType() != BaseTransaction::TransactionType::Payments_CycleCloserIntermediateNodeTransaction) {
         debug() << "isChallengerTransactionWinReservation false: reserved is not cycle transaction";
         return false;
     }
@@ -252,15 +251,15 @@ bool CyclesManager::resolveReservationConflict(
     debug() << "resolveReservationConflict";
     try {
         auto challengerTransaction = static_pointer_cast<BasePaymentTransaction>(
-            mTransactionScheduler->cycleClosingTransactionByUUID(
-                challengerTransactionUUID));
+                                         mTransactionScheduler->cycleClosingTransactionByUUID(
+                                             challengerTransactionUUID));
         auto reservedTransaction = static_pointer_cast<BasePaymentTransaction>(
-            mTransactionScheduler->cycleClosingTransactionByUUID(
-                reservedTransactionUUID));
+                                       mTransactionScheduler->cycleClosingTransactionByUUID(
+                                           reservedTransactionUUID));
         debug() << "conflict between  " << challengerTransactionUUID << " and " << reservedTransactionUUID;
         if (isChallengerTransactionWinReservation(
-                challengerTransaction,
-                reservedTransaction)) {
+                    challengerTransaction,
+                    reservedTransaction)) {
             reservedTransaction->setTransactionState(
                 BasePaymentTransaction::Common_RollbackByOtherTransaction);
             mTransactionScheduler->awakeTransaction(
@@ -295,9 +294,9 @@ void CyclesManager::addClosedTrustLine(
 {
     mClosedTrustLines.insert(
         make_pair(utc_now(),
-            make_pair(
-                source,
-                destination)));
+                  make_pair(
+                      source,
+                      destination)));
 }
 
 void CyclesManager::addOfflineNode(
@@ -317,8 +316,8 @@ void CyclesManager::removeCyclesWithClosedTrustLine(
     auto itCycle = cycles.begin();
     while (itCycle != cycles.end()) {
         if ((*itCycle)->containsTrustLine(
-            sourceClosed,
-            destinationClosed)) {
+                    sourceClosed,
+                    destinationClosed)) {
             cycles.erase(
                 itCycle);
         } else {
@@ -334,7 +333,7 @@ void CyclesManager::removeCyclesWithOfflineNode(
     auto itCycle = cycles.begin();
     while (itCycle != cycles.end()) {
         if ((*itCycle)->positionOfNode(
-            offlineNode) >= 0) {
+                    offlineNode) >= 0) {
             cycles.erase(
                 itCycle);
         } else {
@@ -435,11 +434,10 @@ uint32_t CyclesManager::randomInitializer() const
 {
     NodeUUID randomInitializator;
     uint32_t result = 0;
-    for (int i=0; i < NodeUUID::kBytesSize; i++) {
+    for (int i = 0; i < NodeUUID::kBytesSize; i++) {
         result = result << 2;
-        byte tmp = (byte)(randomInitializator.data[i] * mEquivalent);
+        byte_t tmp = (byte_t)(randomInitializator.data[i] * mEquivalent);
         result |= (tmp & 0x3);
-
     }
     return result;
 }

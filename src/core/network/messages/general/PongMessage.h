@@ -3,7 +3,8 @@
 
 #include "../SenderMessage.h"
 
-class PongMessage : public SenderMessage {
+class PongMessage : public SenderMessage
+{
 
 public:
     typedef shared_ptr<PongMessage> Shared;

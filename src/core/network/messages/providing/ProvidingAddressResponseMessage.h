@@ -3,7 +3,8 @@
 
 #include "../Message.hpp"
 
-class ProvidingAddressResponseMessage : public Message {
+class ProvidingAddressResponseMessage : public Message
+{
 
 public:
     typedef shared_ptr<ProvidingAddressResponseMessage> Shared;
@@ -18,7 +19,7 @@ public:
 
 public:
     static const size_t UnencryptedHeaderSize =
-            Message::UnencryptedHeaderSize + sizeof(Message::SerializedType);
+        Message::UnencryptedHeaderSize + sizeof(Message::SerializedType);
 
 private:
     BytesShared mBuffer;

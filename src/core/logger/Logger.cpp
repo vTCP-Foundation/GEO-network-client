@@ -90,7 +90,7 @@ LoggerStream Logger::info(
 }
 
 LoggerStream Logger::warning(
-        const string &subsystem)
+    const string &subsystem)
 {
     return LoggerStream(this, "WARNING", subsystem);
 }
@@ -152,7 +152,7 @@ void Logger::logRecord(
     mOperationsLogFile.flush();
 
     mOperationsLogFileLinesNumber++;
-    if(mOperationsLogFileLinesNumber >= maxRotateLimit){
+    if(mOperationsLogFileLinesNumber >= maxRotateLimit) {
         rotate();
         mOperationsLogFileLinesNumber = 0;
     }
@@ -177,10 +177,10 @@ void Logger::calculateOperationsLogFileLinesNumber()
 {
     ifstream kOperationLogFile(mOperationLogFileName);
     std::string line;
-    while (std::getline(kOperationLogFile , line)){
+    while (std::getline(kOperationLogFile, line)) {
         ++mOperationsLogFileLinesNumber;
     }
-    if (kOperationLogFile.is_open()){
+    if (kOperationLogFile.is_open()) {
         kOperationLogFile.close();
     }
 }

@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class ConflictError: public Exception {
+class ConflictError: public Exception
+{
     using Exception::Exception;
 };
 

@@ -32,8 +32,8 @@ TransactionResult::SharedConst PaymentTransactionByCommandUUIDTransaction::resul
     string &transactionUUIDStr)
 {
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            transactionUUIDStr));
+               mCommand->resultOk(
+                   transactionUUIDStr));
 }
 
 const string PaymentTransactionByCommandUUIDTransaction::logHeader() const

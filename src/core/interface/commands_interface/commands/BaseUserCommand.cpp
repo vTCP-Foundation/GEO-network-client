@@ -27,115 +27,115 @@ CommandResult::SharedConst BaseUserCommand::makeResult(
     const uint16_t code) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        code);
+               identifier(),
+               UUID(),
+               code);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseOK() const
-    noexcept
+noexcept
 {
     return makeResult(200);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseCreated() const
-    noexcept
+noexcept
 {
     return makeResult(201);
 }
 
 CommandResult::SharedConst BaseUserCommand::responsePostponedByReservations() const
-    noexcept
+noexcept
 {
     return makeResult(203);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseProtocolError() const
-    noexcept
+noexcept
 {
     return makeResult(401);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseAlreadyCreated() const
-    noexcept
+noexcept
 {
     return makeResult(402);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseTrustLineIsAbsent() const
-    noexcept
+noexcept
 {
     return makeResult(405);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseThereAreNoKeys() const
-    noexcept
+noexcept
 {
     return makeResult(406);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseNoConsensus() const
-    noexcept
+noexcept
 {
     return makeResult(409);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseInsufficientFunds() const
-    noexcept
+noexcept
 {
     return makeResult(412);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseInsufficientFundsDueToKeysAbsent() const
-    noexcept
+noexcept
 {
     return makeResult(413);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseInsufficientFundsDueToParticipantsKeysAbsent() const
-    noexcept
+noexcept
 {
     return makeResult(414);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseConflictWithOtherOperation() const
-    noexcept
+noexcept
 {
     return makeResult(429);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseRemoteNodeIsInaccessible() const
-    noexcept
+noexcept
 {
     return makeResult(444);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseNoRoutes() const
-    noexcept
+noexcept
 {
     return makeResult(462);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseUnexpectedError() const
-    noexcept
+noexcept
 {
     return makeResult(501);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseForbiddenRunTransaction() const
-    noexcept
+noexcept
 {
     return makeResult(603);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseEquivalentIsAbsent() const
-    noexcept
+noexcept
 {
     return makeResult(604);
 }
 
 CommandResult::SharedConst BaseUserCommand::responseForbiddenRunDueObservingTransaction() const
-    noexcept
+noexcept
 {
     return makeResult(605);
 }

@@ -7,7 +7,8 @@
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
 class CyclesFiveNodesInitTransaction :
-    public CyclesBaseFiveSixNodesInitTransaction{
+    public CyclesBaseFiveSixNodesInitTransaction
+{
 
 public:
     CyclesFiveNodesInitTransaction(

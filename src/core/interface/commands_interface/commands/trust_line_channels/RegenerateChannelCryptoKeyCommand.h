@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class RegenerateChannelCryptoKeyCommand : public BaseUserCommand {
+class RegenerateChannelCryptoKeyCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<RegenerateChannelCryptoKeyCommand> Shared;

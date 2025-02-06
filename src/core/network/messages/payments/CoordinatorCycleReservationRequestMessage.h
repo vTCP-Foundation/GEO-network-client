@@ -4,7 +4,8 @@
 #include "base/RequestCycleMessage.h"
 
 class CoordinatorCycleReservationRequestMessage :
-    public RequestCycleMessage{
+    public RequestCycleMessage
+{
 
 public:
     typedef shared_ptr<CoordinatorCycleReservationRequestMessage> Shared;

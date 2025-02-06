@@ -6,12 +6,14 @@
 
 #include <memory>
 
-class BaseResource {
+class BaseResource
+{
 public:
     typedef shared_ptr<BaseResource> Shared;
 
 public:
-    enum ResourceType {
+    enum ResourceType
+    {
         Paths = 1,
         ObservingBlockNumber = 2,
     };

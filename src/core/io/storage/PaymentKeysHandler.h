@@ -12,7 +12,8 @@
 
 using namespace crypto::lamport;
 
-class PaymentKeysHandler {
+class PaymentKeysHandler
+{
 
 public:
     PaymentKeysHandler(

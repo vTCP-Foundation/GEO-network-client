@@ -48,7 +48,7 @@ TrustLineHandler* IOTransaction::trustLinesHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::trustLineHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mTrustLineHandler;
 }
@@ -57,7 +57,7 @@ HistoryStorage* IOTransaction::historyStorage()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::historyStorage: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mHistoryStorage;
 }
@@ -66,7 +66,7 @@ TransactionsHandler* IOTransaction::transactionHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::transactionHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mTransactionHandler;
 }
@@ -75,7 +75,7 @@ OwnKeysHandler* IOTransaction::ownKeysHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::ownKeysHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mOwnKeysHandler;
 }
@@ -84,7 +84,7 @@ ContractorKeysHandler* IOTransaction::contractorKeysHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::contractorKeysHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mContractorKeysHandler;
 }
@@ -93,7 +93,7 @@ AuditHandler* IOTransaction::auditHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::auditHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mAuditHandler;
 }
@@ -102,7 +102,7 @@ IncomingPaymentReceiptHandler* IOTransaction::incomingPaymentReceiptHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::incomingPaymentReceiptHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mIncomingPaymentReceiptHandler;
 }
@@ -111,7 +111,7 @@ OutgoingPaymentReceiptHandler* IOTransaction::outgoingPaymentReceiptHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::outgoingPaymentReceiptHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mOutgoingPaymentReceiptHandler;
 }
@@ -120,7 +120,7 @@ PaymentKeysHandler* IOTransaction::paymentKeysHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::PaymentKeysHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mPaymentKeysHandler;
 }
@@ -129,7 +129,7 @@ PaymentParticipantsVotesHandler* IOTransaction::paymentParticipantsVotesHandler(
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::paymentParticipantsVotesHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mPaymentParticipantsVotesHandler;
 }
@@ -138,7 +138,7 @@ PaymentTransactionsHandler* IOTransaction::paymentTransactionsHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::paymentTransactionsHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mPaymentTransactionsHandler;
 }
@@ -147,7 +147,7 @@ ContractorsHandler* IOTransaction::contractorsHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::contractorsHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mContractorsHandler;
 }
@@ -156,7 +156,7 @@ AddressHandler* IOTransaction::addressHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::addressHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mAddressHandler;
 }
@@ -165,7 +165,7 @@ FeaturesHandler* IOTransaction::featuresHandler()
 {
     if (!mIsTransactionBegin) {
         throw IOError("IOTransaction::featuresHandler: "
-                          "transaction was rollback, it can't be use now");
+                      "transaction was rollback, it can't be use now");
     }
     return mFeaturesHandler;
 }
@@ -237,7 +237,8 @@ const string IOTransaction::logHeader() const
     return s.str();
 }
 
-void IOTransaction::beginTransactionQuery() {
+void IOTransaction::beginTransactionQuery()
+{
 #ifdef STORAGE_HANDLER_DEBUG_LOG
     info() << "beginTransactionQuery";
 #endif

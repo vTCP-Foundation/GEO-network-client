@@ -3,7 +3,8 @@
 
 #include "EventsInterface.h"
 
-class EventsInterfaceManager {
+class EventsInterfaceManager
+{
 
 public:
     EventsInterfaceManager(

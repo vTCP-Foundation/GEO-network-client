@@ -12,8 +12,8 @@
 #include <vector>
 #include <forward_list>
 
-
-class IncomingRemoteNode {
+class IncomingRemoteNode
+{
 public:
     using Unique = unique_ptr<IncomingRemoteNode>;
 
@@ -22,36 +22,34 @@ public:
         const UDPEndpoint &endpoint,
         MessagesParser &messagesParser,
         TailManager *tailManager,
-        Logger &logger)
-        noexcept;
+        Logger &logger) noexcept;
 
     void processIncomingBytesSequence(
-        const byte *bytes,
-        const size_t count)
-        noexcept;
+        const byte_t* bytes,
+        const size_t count) noexcept;
 
     bool tryCollectNextPacket();
 
     void dropEntireIncomingFlow();
 
     bool isBanned() const
-        noexcept;
+    noexcept;
 
     Message::Shared popNextMessage();
 
     void dropOutdatedChannels();
 
-    const UDPEndpoint& endpoint() const
-        noexcept;
+    const UDPEndpoint &endpoint() const
+    noexcept;
 
-    const TimePoint& lastUpdated() const;
+    const TimePoint &lastUpdated() const;
 
 protected:
-    IncomingChannel* findChannel (
+    IncomingChannel *findChannel(
         const PacketHeader::ChannelIndex index);
 
     LoggerStream debug() const
-        noexcept;
+    noexcept;
 
 protected:
     const UDPEndpoint mEndpoint;
@@ -59,9 +57,8 @@ protected:
 
     boost::unordered_map<PacketHeader::ChannelIndex, IncomingChannel::Unique> mChannels;
 
-
     // todo: ensure reserve usage
-    vector<byte> mBuffer;
+    vector<byte_t> mBuffer;
 
     // It is expected, that incoming bytes flow from the network, may contains several messages at once.
     // There is non-zero probability, that whole bytes sequence would be processed in one read cycle,
@@ -75,5 +72,4 @@ protected:
     Logger &mLog;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_INCOMINGREMOTENODE_H
+#endif // GEO_NETWORK_CLIENT_INCOMINGREMOTENODE_H

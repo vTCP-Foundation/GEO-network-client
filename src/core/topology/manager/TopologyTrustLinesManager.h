@@ -9,10 +9,11 @@
 #include <set>
 #include <unordered_map>
 
-class TopologyTrustLinesManager {
+class TopologyTrustLinesManager
+{
 
 public:
-    typedef unordered_set<TopologyTrustLineWithPtr*> TrustLineWithPtrHashSet;
+    typedef unordered_set<TopologyTrustLineWithPtr *> TrustLineWithPtrHashSet;
 
 public:
     TopologyTrustLinesManager(
@@ -59,7 +60,7 @@ public:
     void makeFullyUsedTLsFromGatewaysToAllNodesExceptOne(
         ContractorID exceptedNode);
 
-    const TrustLineAmount& flowAmount(
+    const TrustLineAmount &flowAmount(
         ContractorID source,
         ContractorID destination);
 
@@ -73,27 +74,29 @@ public:
     static const ContractorID kCurrentNodeID = 0;
 
 private:
-    static const byte kResetTrustLinesHours = 0;
-    static const byte kResetTrustLinesMinutes = 12;
-    static const byte kResetTrustLinesSeconds = 0;
+    static const byte_t kResetTrustLinesHours = 0;
+    static const byte_t kResetTrustLinesMinutes = 12;
+    static const byte_t kResetTrustLinesSeconds = 0;
 
-    static Duration& kResetTrustLinesDuration() {
+    static Duration &kResetTrustLinesDuration()
+    {
         static auto duration = Duration(
-            kResetTrustLinesHours,
-            kResetTrustLinesMinutes,
-            kResetTrustLinesSeconds);
+                                   kResetTrustLinesHours,
+                                   kResetTrustLinesMinutes,
+                                   kResetTrustLinesSeconds);
         return duration;
     }
 
-    static const byte kClearTrustLinesHours = 0;
-    static const byte kClearTrustLinesMinutes = 30;
-    static const byte kClearTrustLinesSeconds = 0;
+    static const byte_t kClearTrustLinesHours = 0;
+    static const byte_t kClearTrustLinesMinutes = 30;
+    static const byte_t kClearTrustLinesSeconds = 0;
 
-    static Duration& kClearTrustLinesDuration() {
+    static Duration &kClearTrustLinesDuration()
+    {
         static auto duration = Duration(
-            kClearTrustLinesHours,
-            kClearTrustLinesMinutes,
-            kClearTrustLinesSeconds);
+                                   kClearTrustLinesHours,
+                                   kClearTrustLinesMinutes,
+                                   kClearTrustLinesSeconds);
         return duration;
     }
 
@@ -105,8 +108,8 @@ private:
     const string logHeader() const;
 
 private:
-    unordered_map<ContractorID, TrustLineWithPtrHashSet*> msTrustLines;
-    map<DateTime, TopologyTrustLineWithPtr*> mtTrustLines;
+    unordered_map<ContractorID, TrustLineWithPtrHashSet *> msTrustLines;
+    map<DateTime, TopologyTrustLineWithPtr *> mtTrustLines;
     vector<pair<BaseAddress::Shared, ContractorID>> mParticipantsAddresses;
     ContractorID mHigherFreeID;
     SerializedEquivalent mEquivalent;
@@ -116,4 +119,4 @@ private:
     DateTime mLastTrustLineTimeAdding;
 };
 
-#endif //GEO_NETWORK_CLIENT_TOPOLOGYTRUSTLINESMANAGER_H
+#endif // GEO_NETWORK_CLIENT_TOPOLOGYTRUSTLINESMANAGER_H

@@ -18,13 +18,13 @@ AuditRulesHandler::AuditRulesHandler(
     int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditRulesHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 
     query = "CREATE UNIQUE INDEX IF NOT EXISTS " + mTableName
@@ -32,13 +32,13 @@ AuditRulesHandler::AuditRulesHandler(
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::creating index for TrustLineID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditRulesHandler::creating index for TrustLineID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 
     sqlite3_reset(stmt);
@@ -55,18 +55,18 @@ void AuditRulesHandler::saveRule(
     int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveRule: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::saveRule: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditRuleType);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::saveRule: "
-                          "Bad binding of Rule Type; sqlite error: " + to_string(rc));
+                      "Bad binding of Rule Type; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -78,7 +78,7 @@ void AuditRulesHandler::saveRule(
 #endif
     } else {
         throw IOError("AuditRulesHandler::saveRule: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -91,12 +91,12 @@ const BaseAuditRule::AuditRuleType AuditRulesHandler::getRule(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::getRule: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::getRule: "
-                          "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
+                      "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -107,7 +107,7 @@ const BaseAuditRule::AuditRuleType AuditRulesHandler::getRule(
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         throw NotFoundError("AuditRulesHandler::getRule: "
-                                "There are no records with requested trust line id");
+                            "There are no records with requested trust line id");
     }
 }
 
@@ -119,12 +119,12 @@ void AuditRulesHandler::removeAuditRules(
     int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::removeAuditRules: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditRulesHandler::removeAuditRules: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -135,7 +135,7 @@ void AuditRulesHandler::removeAuditRules(
 #endif
     } else {
         throw IOError("AuditRulesHandler::removeAuditRules: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 

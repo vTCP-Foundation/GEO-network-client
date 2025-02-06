@@ -9,7 +9,8 @@
 using namespace crypto;
 
 class FinalPathCycleConfigurationMessage :
-    public RequestCycleMessage {
+    public RequestCycleMessage
+{
 
 public:
     typedef shared_ptr<FinalPathCycleConfigurationMessage> Shared;

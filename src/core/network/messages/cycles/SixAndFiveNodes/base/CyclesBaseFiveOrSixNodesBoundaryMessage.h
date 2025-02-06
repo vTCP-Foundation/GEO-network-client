@@ -4,7 +4,8 @@
 #include "CyclesBaseFiveOrSixNodesInBetweenMessage.h"
 
 class CyclesBaseFiveOrSixNodesBoundaryMessage:
-        public CycleBaseFiveOrSixNodesInBetweenMessage {
+    public CycleBaseFiveOrSixNodesInBetweenMessage
+{
 public:
     typedef shared_ptr<CyclesBaseFiveOrSixNodesBoundaryMessage> Shared;
 

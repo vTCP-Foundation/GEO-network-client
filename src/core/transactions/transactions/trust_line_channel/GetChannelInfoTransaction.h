@@ -5,7 +5,8 @@
 #include "../../../interface/commands_interface/commands/trust_line_channels/GetChannelInfoCommand.h"
 #include "../../../contractors/ContractorsManager.h"
 
-class GetChannelInfoTransaction : public BaseTransaction {
+class GetChannelInfoTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GetChannelInfoTransaction> Shared;

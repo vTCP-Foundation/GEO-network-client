@@ -12,19 +12,20 @@ json Settings::loadParsedJSON() const
     } catch (...) {
         throw IOError(
             "Settings::loadParsedJSON: "
-                "Can't read conf.json");
+            "Can't read conf.json");
     }
 }
 
 vector<pair<string, string>> Settings::addresses(
-    const json *conf) const
-{
-    if (conf == nullptr) {
+    const json *conf) const {
+    if (conf == nullptr)
+    {
         auto j = loadParsedJSON();
         conf = &j;
     }
     vector<pair<string, string>> result;
-    try {
+    try
+    {
         auto addresses = (*conf).at("addresses");
         for (const auto &address : addresses) {
             result.emplace_back(
@@ -32,29 +33,32 @@ vector<pair<string, string>> Settings::addresses(
                 address.at("address").get<string>());
         }
         return result;
-    } catch (...) {
+    } catch (...)
+    {
         // todo : throw RuntimeError
         return result;
     }
 }
 
 vector<pair<string, string>> Settings::observers(
-    const json *conf) const
-{
-    if (conf == nullptr) {
+    const json *conf) const {
+    if (conf == nullptr)
+    {
         auto j = loadParsedJSON();
         conf = &j;
     }
     vector<pair<string, string>> result;
-    try {
+    try
+    {
         auto addresses = (*conf).at("observers");
         for (const auto &address : addresses) {
             result.emplace_back(
-                    address.at("type").get<string>(),
-                    address.at("address").get<string>());
+                address.at("type").get<string>(),
+                address.at("address").get<string>());
         }
         return result;
-    } catch (...) {
+    } catch (...)
+    {
         // todo : throw RuntimeError
         return result;
     }
@@ -71,23 +75,25 @@ vector<SerializedEquivalent> Settings::iAmGateway(
     try {
         result = (*conf).at("gateway").get<vector<SerializedEquivalent>>();
         return result;
-    } catch (...) {
+    }
+    catch (...) {
         // todo : throw RuntimeError
         return result;
     }
 }
 
 string Settings::equivalentsRegistryAddress(
-    const json *conf) const
-{
-    if (conf == nullptr) {
+    const json *conf) const {
+    if (conf == nullptr)
+    {
         auto j = loadParsedJSON();
         conf = &j;
     }
     try {
         auto result = (*conf).at("equivalents_registry_address").get<string>();
         return result;
-    } catch (...) {
+    } catch (...)
+    {
         // todo : throw RuntimeError
         return "";
     }
@@ -106,8 +112,8 @@ pair<string, uint16_t> Settings::interface(
         auto address = interface.at("host").get<string>();
         auto port = (uint16_t)interface.at("port").get<int>();
         return make_pair(
-            address,
-            port);
+                   address,
+                   port);
     } catch (...) {
         // todo : throw RuntimeError
         return make_pair("", 0);

@@ -42,8 +42,8 @@ pair<BytesShared, size_t> PublicKeysSharingInitMessage::serializeToBytes() const
 {
     const auto parentBytesAndCount = PublicKeyMessage::serializeToBytes();
     const auto kBufferSize =
-            parentBytesAndCount.second
-            + sizeof(KeysCount);
+        parentBytesAndCount.second
+        + sizeof(KeysCount);
     BytesShared buffer = tryMalloc(kBufferSize);
 
     size_t dataBytesOffset = 0;
@@ -60,6 +60,6 @@ pair<BytesShared, size_t> PublicKeysSharingInitMessage::serializeToBytes() const
         sizeof(KeysCount));
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

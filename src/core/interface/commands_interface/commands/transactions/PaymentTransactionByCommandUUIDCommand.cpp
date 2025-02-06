@@ -8,7 +8,7 @@ PaymentTransactionByCommandUUIDCommand::PaymentTransactionByCommandUUIDCommand(
         commandUUID,
         identifier())
 {
-    uint32_t flag4 = 0, flag8 =0 , flag12 = 0;
+    uint32_t flag4 = 0, flag8 =0, flag12 = 0;
     std::string paymentRecordCommandUUID;
     auto check = [&](auto &ctx) {
         if(_attr(ctx) == kCommandsSeparator || _attr(ctx) == kTokensSeparator) {
@@ -35,7 +35,9 @@ PaymentTransactionByCommandUUIDCommand::PaymentTransactionByCommandUUIDCommand(
         flag12++;
         if(flag12 >13 || (_attr(ctx) == kCommandsSeparator && flag12 < 13)) {
             throw ValueError("PaymentTransactionByCommandUUIDCommand: UUID Expect 12 digits.");
-        } else if(_attr(ctx) == kCommandsSeparator ) { return; } else {
+        } else if(_attr(ctx) == kCommandsSeparator ) {
+            return;
+        } else {
             paymentRecordCommandUUID += _attr(ctx);
         }
     };
@@ -49,12 +51,12 @@ PaymentTransactionByCommandUUIDCommand::PaymentTransactionByCommandUUIDCommand(
             commandBuffer.begin(),
             commandBuffer.end(), (
                 UUIDLexeme<
-                    decltype(addUUID8Digits),
-                    decltype(addUUID4Digits),
-                    decltype(addUUID12Digits)>(
-                        addUUID8Digits,
-                        addUUID4Digits,
-                        addUUID12Digits) > eoi));
+                decltype(addUUID8Digits),
+                decltype(addUUID4Digits),
+                decltype(addUUID12Digits)>(
+                    addUUID8Digits,
+                    addUUID4Digits,
+                    addUUID12Digits) > eoi));
         mPaymentTransactionCommandUUID = boost::lexical_cast<uuids::uuid>(paymentRecordCommandUUID);
     } catch(...) {
         throw ValueError("PaymentTransactionByCommandUUIDCommand: cannot parse command.");
@@ -76,9 +78,9 @@ CommandResult::SharedConst PaymentTransactionByCommandUUIDCommand::resultOk(
     string &transactionUUIDStr) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            transactionUUIDStr));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   transactionUUIDStr));
 }

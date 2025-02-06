@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class RemoveTrustLineCommand : public BaseUserCommand {
+class RemoveTrustLineCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<RemoveTrustLineCommand> Shared;

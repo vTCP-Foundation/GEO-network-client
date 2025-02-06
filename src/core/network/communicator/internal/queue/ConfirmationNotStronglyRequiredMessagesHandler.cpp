@@ -3,7 +3,7 @@
 ConfirmationNotStronglyRequiredMessagesHandler::ConfirmationNotStronglyRequiredMessagesHandler(
     IOService &ioService,
     Logger &logger)
-    noexcept:
+noexcept:
 
     LoggerMixin(logger),
     mIOService(ioService),
@@ -25,19 +25,19 @@ void ConfirmationNotStronglyRequiredMessagesHandler::tryEnqueueMessage(
 #endif
     const auto equivalent = message->equivalent();
     const auto queueKey = make_pair(
-        equivalent,
-        contractorAddress->fullAddress());
+                              equivalent,
+                              contractorAddress->fullAddress());
     if (mQueues.count(queueKey) == 0) {
         auto newQueue = make_shared<ConfirmationNotStronglyRequiredMessagesQueue>(
-            equivalent,
-            contractorAddress,
-            mLog);
+                            equivalent,
+                            contractorAddress,
+                            mLog);
         mQueues[queueKey] = newQueue;
     }
 
     if (!mQueues[queueKey]->enqueue(
-        static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message),
-        mCurrentConfirmationID)) {
+                static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message),
+                mCurrentConfirmationID)) {
         warning() << "tryEnqueueMessage: can't enqueue message "
                   << message->typeID() << " with confirmation id " << mCurrentConfirmationID;
     } else {
@@ -49,7 +49,7 @@ void ConfirmationNotStronglyRequiredMessagesHandler::tryEnqueueMessage(
     mCurrentConfirmationID++;
 
     if (mQueues.size() == 1
-        and mQueues.begin()->second->size() == 1) {
+            and mQueues.begin()->second->size() == 1) {
 
         // First message was added for further re-sending.
         rescheduleResending();
@@ -60,8 +60,8 @@ void ConfirmationNotStronglyRequiredMessagesHandler::tryProcessConfirmation(
     const MaxFlowCalculationConfirmationMessage::Shared confirmationMessage)
 {
     const auto queueKey = make_pair(
-        confirmationMessage->equivalent(),
-        confirmationMessage->senderAddresses.at(0)->fullAddress());
+                              confirmationMessage->equivalent(),
+                              confirmationMessage->senderAddresses.at(0)->fullAddress());
     if (mQueues.count(queueKey) == 0) {
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
         warning() << "tryProcessConfirmation: no queue is present for contractor "
@@ -91,7 +91,7 @@ void ConfirmationNotStronglyRequiredMessagesHandler::tryProcessConfirmation(
 }
 
 const DateTime ConfirmationNotStronglyRequiredMessagesHandler::closestQueueSendingTimestamp() const
-    noexcept
+noexcept
 {
     if (mQueues.empty()) {
         return utc_now() + boost::posix_time::seconds(2);
@@ -170,7 +170,7 @@ void ConfirmationNotStronglyRequiredMessagesHandler::sendPostponedMessages()
 }
 
 const string ConfirmationNotStronglyRequiredMessagesHandler::logHeader() const
-    noexcept
+noexcept
 {
     return "[ConfirmationNotStronglyRequiredMessagesHandler]";
 }

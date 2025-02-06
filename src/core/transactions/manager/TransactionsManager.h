@@ -92,15 +92,16 @@ using namespace crypto;
 namespace signals = boost::signals2;
 
 
-class TransactionsManager {
+class TransactionsManager
+{
 public:
     signals::signal<void(Message::Shared, const ContractorID)> transactionOutgoingMessageReadySignal;
     signals::signal<void(Message::Shared, BaseAddress::Shared)> transactionOutgoingMessageToAddressReadySignal;
     signals::signal<void(
-            TransactionMessage::Shared,
-            ContractorID,
-            Message::MessageType,
-            uint32_t)> transactionOutgoingMessageWithCachingReadySignal;
+        TransactionMessage::Shared,
+        ContractorID,
+        Message::MessageType,
+        uint32_t)> transactionOutgoingMessageWithCachingReadySignal;
     signals::signal<void(ObservingClaimAppendRequestMessage::Shared)> observingClaimSignal;
     signals::signal<void(ConfirmationMessage::Shared)> processConfirmationMessageSignal;
     signals::signal<void(ContractorID)> processPongMessageSignal;

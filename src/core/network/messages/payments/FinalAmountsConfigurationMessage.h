@@ -8,7 +8,8 @@
 
 using namespace crypto;
 
-class FinalAmountsConfigurationMessage : public RequestMessageWithReservations {
+class FinalAmountsConfigurationMessage : public RequestMessageWithReservations
+{
 
 public:
     typedef shared_ptr<FinalAmountsConfigurationMessage> Shared;

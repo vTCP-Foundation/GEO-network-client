@@ -14,7 +14,8 @@
 
 using namespace crypto;
 
-class AuditHandler {
+class AuditHandler
+{
 
 public:
     AuditHandler(

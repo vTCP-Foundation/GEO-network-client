@@ -73,7 +73,8 @@ namespace signals = boost::signals2;
  *
  * todo: hsc: review this class
  */
-class CommandsParser {
+class CommandsParser
+{
     friend class CommandsParserTests;
 
 public:
@@ -114,11 +115,11 @@ protected:
         const string &buffer) const
     {
         return make_pair(
-            true,
-            static_pointer_cast<BaseUserCommand>(
-                make_shared<CommandType>(
-                    uuid,
-                    buffer)));
+                   true,
+                   static_pointer_cast<BaseUserCommand>(
+                       make_shared<CommandType>(
+                           uuid,
+                           buffer)));
     }
 
     static string logHeader()
@@ -140,7 +141,8 @@ private:
  * This class is used to asynchronously receive them, parse,
  * and transfer for the further execution.
  */
-class CommandsInterface: public BaseFIFOInterface {
+class CommandsInterface: public BaseFIFOInterface
+{
 public:
     signals::signal<void(bool, BaseUserCommand::Shared)> commandReceivedSignal;
 
@@ -172,7 +174,7 @@ protected:
     noexcept;
 
 public:
-    static const constexpr char *kFIFOName = "commands.fifo";
+    static const constexpr char* kFIFOName = "commands.fifo";
     static const constexpr unsigned int kPermissionsMask = 0755;
 
 protected:

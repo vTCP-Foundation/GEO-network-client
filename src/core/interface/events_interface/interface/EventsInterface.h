@@ -5,7 +5,8 @@
 #include "../events/Event.h"
 #include "../../../logger/Logger.h"
 
-class EventsInterface : public BaseFIFOInterface {
+class EventsInterface : public BaseFIFOInterface
+{
 
 public:
     explicit EventsInterface(

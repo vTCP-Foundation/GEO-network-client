@@ -55,18 +55,18 @@ PublicKeysSharingSourceTransaction::PublicKeysSharingSourceTransaction(
 TransactionResult::SharedConst PublicKeysSharingSourceTransaction::run()
 {
     switch (mStep) {
-        case Stages::Initialization: {
-            return runPublicKeysSharingInitializationStage();
-        }
-        case Stages::CommandInitialization: {
-            return runCommandPublicKeysSharingInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runPublicKeysSendNextKeyStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: "
-                    "wrong value of mStep");
+    case Stages::Initialization: {
+        return runPublicKeysSharingInitializationStage();
+    }
+    case Stages::CommandInitialization: {
+        return runCommandPublicKeysSharingInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runPublicKeysSendNextKeyStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep");
     }
 }
 
@@ -91,7 +91,7 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
         keyChain.removeUnusedOwnKeys(
             ioTransaction);
@@ -107,8 +107,8 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
 #endif
 
         mCurrentPublicKey = keyChain.publicKey(
-            ioTransaction,
-            mCurrentKeyNumber);
+                                ioTransaction,
+                                mCurrentKeyNumber);
         if (mCurrentPublicKey == nullptr) {
             warning() << "There are no data for keyNumber " << mCurrentKeyNumber;
             // todo run reset keys sharing TA
@@ -133,8 +133,8 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
 
     mStep = ResponseProcessing;
     return resultWaitForMessageTypes(
-        {Message::TrustLines_HashConfirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_HashConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runCommandPublicKeysSharingInitializationStage()
@@ -153,7 +153,7 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runCommandPub
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
         keyChain.removeUnusedOwnKeys(
             ioTransaction);
@@ -169,8 +169,8 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runCommandPub
 #endif
 
         mCurrentPublicKey = keyChain.publicKey(
-            ioTransaction,
-            mCurrentKeyNumber);
+                                ioTransaction,
+                                mCurrentKeyNumber);
         if (mCurrentPublicKey == nullptr) {
             warning() << "There are no data for keyNumber " << mCurrentKeyNumber;
             // todo run reset keys sharing TA
@@ -224,8 +224,8 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::TrustLines_HashConfirmation},
-                kWaitMillisecondsForResponse);
+            {Message::TrustLines_HashConfirmation},
+            kWaitMillisecondsForResponse);
         }
         info() << "Transaction will be closed";
         return resultDone();
@@ -264,7 +264,7 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
     info() << "Key number: " << mCurrentKeyNumber << " confirmed";
     mCurrentKeyNumber++;
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     if (mCurrentKeyNumber >= TrustLineKeychain::kDefaultKeysSetSize) {
         info() << "all keys confirmed";
         auto ioTransaction = mStorageHandler->beginTransaction();
@@ -296,8 +296,8 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
     auto ioTransaction = mStorageHandler->beginTransaction();
     try {
         mCurrentPublicKey = keyChain.publicKey(
-            ioTransaction,
-            mCurrentKeyNumber);
+                                ioTransaction,
+                                mCurrentKeyNumber);
         if (mCurrentPublicKey == nullptr) {
             warning() << "There are no data for keyNumber " << mCurrentKeyNumber;
             // todo run reset keys sharing TA
@@ -328,28 +328,28 @@ TransactionResult::SharedConst PublicKeysSharingSourceTransaction::runPublicKeys
     info() << "Send key number: " << mCurrentKeyNumber;
 
     return resultWaitForMessageTypes(
-        {Message::TrustLines_HashConfirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_HashConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst PublicKeysSharingSourceTransaction::resultOK()
 {
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOK(),
-        {Message::TrustLines_HashConfirmation},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOK(),
+    {Message::TrustLines_HashConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst PublicKeysSharingSourceTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst PublicKeysSharingSourceTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string PublicKeysSharingSourceTransaction::logHeader() const

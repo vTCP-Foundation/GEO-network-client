@@ -5,7 +5,8 @@
 #include "../../../interface/commands_interface/commands/total_balances/TotalBalancesCommand.h"
 #include "../../../trust_lines/manager/TrustLinesManager.h"
 
-class TotalBalancesTransaction : public BaseTransaction {
+class TotalBalancesTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<TotalBalancesTransaction> Shared;

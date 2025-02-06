@@ -16,7 +16,8 @@ using namespace std;
 
 
 class NodeUUID:
-    public uuid {
+    public uuid
+{
 
 public:
     static const size_t kHexSize = 36;
@@ -30,7 +31,7 @@ public:
     NodeUUID(NodeUUID &u);
     NodeUUID(const NodeUUID &u);
     NodeUUID(const string &hex);
-    explicit NodeUUID(const uint8_t *bytes);
+    explicit NodeUUID(const uint8_t* bytes);
 
     NodeUUID& operator=(
         const boost::uuids::uuid &u);

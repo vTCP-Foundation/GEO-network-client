@@ -7,12 +7,14 @@
 #include "../../../transactions/transactions/base/TransactionUUID.h"
 #include <string>
 
-class Event {
+class Event
+{
 
 public:
     typedef shared_ptr<Event> Shared;
 
-    enum EventType {
+    enum EventType
+    {
         Topology = 0,
         InitTrustLine = 1,
         CloseTrustLine = 2,

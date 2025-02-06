@@ -38,16 +38,16 @@ SubsystemsInfluenceCommand::SubsystemsInfluenceCommand(
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mForbiddenNodeAddress = make_shared<IPv4WithPortAddress>(address);
-                break;
-            }
-            case BaseAddress::GNS:
-                mForbiddenNodeAddress = make_shared<GNSAddress>(address);
-                break;
-            default:
-                throw ValueError("SubsystemsInfluenceCommand: cannot parse command. "
-                    "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mForbiddenNodeAddress = make_shared<IPv4WithPortAddress>(address);
+            break;
+        }
+        case BaseAddress::GNS:
+            mForbiddenNodeAddress = make_shared<GNSAddress>(address);
+            break;
+        default:
+            throw ValueError("SubsystemsInfluenceCommand: cannot parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
         address.erase();
     };
@@ -62,17 +62,17 @@ SubsystemsInfluenceCommand::SubsystemsInfluenceCommand(
             commandBuffer.end(), (
                 +(int_[flagsAdd])
                 > (eol | (char_(kTokensSeparator)
-                > addressLexeme<
-                    decltype(addressAddChar),
-                    decltype(addressAddNumber),
-                    decltype(addressTypeParse),
-                    decltype(addressAddToVector)>(
-                        1,
-                        addressAddChar,
-                        addressAddNumber,
-                        addressTypeParse,
-                        addressAddToVector)
-                    > -((digit [forbiddenAmountAdd] > !alpha > !punct) > eol)))
+                          > addressLexeme<
+                          decltype(addressAddChar),
+                          decltype(addressAddNumber),
+                          decltype(addressTypeParse),
+                          decltype(addressAddToVector)>(
+                              1,
+                              addressAddChar,
+                              addressAddNumber,
+                              addressTypeParse,
+                              addressAddToVector)
+                          > -((digit [forbiddenAmountAdd] > !alpha > !punct) > eol)))
                 > eoi));
 
         mForbiddenAmount = TrustLineAmount(forbiddenAmount);

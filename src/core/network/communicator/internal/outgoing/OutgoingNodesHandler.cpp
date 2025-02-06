@@ -5,7 +5,7 @@ OutgoingNodesHandler::OutgoingNodesHandler(
     IOService &ioService,
     UDPSocket &socket,
     Logger &logger)
-    noexcept:
+noexcept:
 
     mIOService(ioService),
     mSocket(socket),
@@ -17,16 +17,16 @@ OutgoingNodesHandler::OutgoingNodesHandler(
 
 OutgoingRemoteBaseNode *OutgoingNodesHandler::handler(
     const IPv4WithPortAddress::Shared address)
-    noexcept
+noexcept
 {
     // check if there is present OutgoingRemoteAddressNode with requested address
     // and if yes get it contractorID and if no create new one.
     if (0 == mNodes.count(address->fullAddress())) {
         mNodes[address->fullAddress()] = make_unique<OutgoingRemoteBaseNode>(
-            mSocket,
-            mIOService,
-            address,
-            mLog);
+                                             mSocket,
+                                             mIOService,
+                                             address,
+                                             mLog);
     }
 
     mLastAccessDateTimesNode[address->fullAddress()] = utc_now();
@@ -35,16 +35,16 @@ OutgoingRemoteBaseNode *OutgoingNodesHandler::handler(
 
 OutgoingRemoteBaseNode *OutgoingNodesHandler::providerHandler(
     const IPv4WithPortAddress::Shared address)
-    noexcept
+noexcept
 {
     // check if there is present OutgoingRemoteProvider with requested name
     // and if yes get it contractorID and if no create new one.
     if (0 == mProviders.count(address->fullAddress())) {
         mProviders[address->fullAddress()] = make_unique<OutgoingRemoteBaseNode>(
-            mSocket,
-            mIOService,
-            address,
-            mLog);
+                mSocket,
+                mIOService,
+                address,
+                mLog);
     }
 
     mLastAccessDateTimesProvider[address->fullAddress()] = utc_now();
@@ -56,7 +56,7 @@ OutgoingRemoteBaseNode *OutgoingNodesHandler::providerHandler(
  * @returns timeout that must be wait, before remote node handler would be considered as obsolete.
  */
 chrono::seconds OutgoingNodesHandler::kHandlersTTL()
-    noexcept
+noexcept
 {
     // By default, handler must be dropped, if not new messages has been arrived for 15m.
     static const chrono::seconds kTTL(15 * 60);
@@ -64,7 +64,7 @@ chrono::seconds OutgoingNodesHandler::kHandlersTTL()
 }
 
 void OutgoingNodesHandler::rescheduleCleaning()
-    noexcept
+noexcept
 {
     mCleaningTimer.expires_from_now(kHandlersTTL());
     mCleaningTimer.async_wait([this] (const boost::system::error_code&) {
@@ -75,7 +75,7 @@ void OutgoingNodesHandler::rescheduleCleaning()
 }
 
 void OutgoingNodesHandler::removeOutdatedNodeHandlers()
-    noexcept
+noexcept
 {
     if (mNodes.empty()) {
         return;
@@ -144,7 +144,7 @@ void OutgoingNodesHandler::removeOutdatedNodeHandlers()
 }
 
 void OutgoingNodesHandler::removeOutdatedProviderHandlers()
-    noexcept
+noexcept
 {
     if (mProviders.empty()) {
         return;
@@ -213,13 +213,13 @@ void OutgoingNodesHandler::removeOutdatedProviderHandlers()
 }
 
 string OutgoingNodesHandler::logHeader()
-    noexcept
+noexcept
 {
     return "[OutgoingNodesHandler]";
 }
 
 LoggerStream OutgoingNodesHandler::debug() const
-    noexcept
+noexcept
 {
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
     return mLog.debug(logHeader());

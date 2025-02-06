@@ -3,7 +3,8 @@
 
 #include "../base/max_flow_calculation/MaxFlowCalculationMessage.h"
 
-class MaxFlowCalculationSourceSndLevelMessage : public MaxFlowCalculationMessage {
+class MaxFlowCalculationSourceSndLevelMessage : public MaxFlowCalculationMessage
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationSourceSndLevelMessage> Shared;

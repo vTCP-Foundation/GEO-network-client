@@ -30,7 +30,7 @@ PublicKeyMessage::PublicKeyMessage(
     bytesBufferOffset += sizeof(KeyNumber);
 
     auto publicKey = make_shared<lamport::PublicKey>(
-        buffer.get() + bytesBufferOffset);
+                         buffer.get() + bytesBufferOffset);
     mPublicKey = publicKey;
 }
 
@@ -58,9 +58,9 @@ pair<BytesShared, size_t> PublicKeyMessage::serializeToBytes() const
 {
     const auto parentBytesAndCount = TransactionMessage::serializeToBytes();
     const auto kBufferSize =
-            parentBytesAndCount.second
-            + sizeof(KeyNumber)
-            + mPublicKey->keySize();
+        parentBytesAndCount.second
+        + sizeof(KeyNumber)
+        + mPublicKey->keySize();
     BytesShared buffer = tryMalloc(kBufferSize);
 
     size_t dataBytesOffset = 0;
@@ -83,15 +83,15 @@ pair<BytesShared, size_t> PublicKeyMessage::serializeToBytes() const
         mPublicKey->keySize());
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }
 
 const size_t PublicKeyMessage::kOffsetToInheritedBytes() const
 {
     const auto kOffset =
-            TransactionMessage::kOffsetToInheritedBytes()
-            + sizeof(KeyNumber)
-            + mPublicKey->keySize();
+        TransactionMessage::kOffsetToInheritedBytes()
+        + sizeof(KeyNumber)
+        + mPublicKey->keySize();
     return kOffset;
 }

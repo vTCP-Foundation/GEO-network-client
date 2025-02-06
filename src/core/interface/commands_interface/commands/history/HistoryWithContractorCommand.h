@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class HistoryWithContractorCommand : public BaseUserCommand {
+class HistoryWithContractorCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<HistoryWithContractorCommand> Shared;

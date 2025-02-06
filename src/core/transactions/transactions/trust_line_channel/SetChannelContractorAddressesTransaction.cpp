@@ -49,25 +49,25 @@ TransactionResult::SharedConst SetChannelContractorAddressesTransaction::run()
 TransactionResult::SharedConst SetChannelContractorAddressesTransaction::resultOK()
 {
     return transactionResultFromCommand(
-       mCommand->responseOK());
+               mCommand->responseOK());
 }
 
 TransactionResult::SharedConst SetChannelContractorAddressesTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst SetChannelContractorAddressesTransaction::resultContractorIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 TransactionResult::SharedConst SetChannelContractorAddressesTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string SetChannelContractorAddressesTransaction::logHeader() const

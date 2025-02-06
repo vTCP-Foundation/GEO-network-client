@@ -7,7 +7,8 @@
 
 
 class CoordinatorReservationResponseMessage:
-    public ResponseMessage {
+    public ResponseMessage
+{
 
 public:
     typedef shared_ptr<CoordinatorReservationResponseMessage> Shared;

@@ -20,14 +20,14 @@ TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::run()
 {
     info() << "step " << mStep;
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: wrong value of mStep");
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: wrong value of mStep");
     }
 }
 
@@ -67,7 +67,7 @@ TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::runInit
     }
 
     auto contractor = mContractorsManager->contractor(
-        mCommand->contractorChannelID());
+                          mCommand->contractorChannelID());
     sendMessage<InitChannelMessage>(
         contractor->getID(),
         mContractorsManager->ownAddresses(),
@@ -83,7 +83,7 @@ TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::runResp
         warning() << "Contractor don't send response.";
         if (mCountSendingAttempts < kMaxCountSendingAttempts) {
             auto contractor = mContractorsManager->contractor(
-                mCommand->contractorChannelID());
+                                  mCommand->contractorChannelID());
             sendMessage<InitChannelMessage>(
                 contractor->getID(),
                 mContractorsManager->ownAddresses(),
@@ -92,8 +92,8 @@ TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::runResp
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::Channel_Confirm},
-                kWaitMillisecondsForResponse);
+            {Message::Channel_Confirm},
+            kWaitMillisecondsForResponse);
         }
         info() << "Channel was not confirm";
         return resultDone();
@@ -107,27 +107,27 @@ TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::runResp
 TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::resultOKAndWaitResponse()
 {
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOK(),
-        {Message::Channel_Confirm},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOK(),
+    {Message::Channel_Confirm},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::resultContractorIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 TransactionResult::SharedConst SetChannelContractorCryptoKeyTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string SetChannelContractorCryptoKeyTransaction::logHeader() const

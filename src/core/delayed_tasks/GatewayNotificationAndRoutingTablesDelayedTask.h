@@ -13,7 +13,8 @@ using namespace std;
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class GatewayNotificationAndRoutingTablesDelayedTask {
+class GatewayNotificationAndRoutingTablesDelayedTask
+{
 
 public:
     typedef signals::signal<void()> GatewayNotificationSignal;

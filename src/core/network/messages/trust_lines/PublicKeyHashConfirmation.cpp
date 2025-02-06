@@ -46,7 +46,7 @@ PublicKeyHashConfirmation::PublicKeyHashConfirmation(
         bytesBufferOffset += sizeof(KeyNumber);
 
         mHashConfirmation = make_shared<lamport::KeyHash>(
-            buffer.get() + bytesBufferOffset);
+                                buffer.get() + bytesBufferOffset);
     }
 }
 
@@ -96,6 +96,6 @@ pair<BytesShared, size_t> PublicKeyHashConfirmation::serializeToBytes() const
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

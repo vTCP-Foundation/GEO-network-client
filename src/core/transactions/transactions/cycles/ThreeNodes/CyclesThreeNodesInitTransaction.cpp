@@ -22,17 +22,17 @@ CyclesThreeNodesInitTransaction::CyclesThreeNodesInitTransaction(
 
 TransactionResult::SharedConst CyclesThreeNodesInitTransaction::run()
 {
-    switch (mStep){
-        case Stages::CollectDataAndSendMessage:
-            return runCollectDataAndSendMessageStage();
+    switch (mStep) {
+    case Stages::CollectDataAndSendMessage:
+        return runCollectDataAndSendMessageStage();
 
-        case Stages::ParseMessageAndCreateCycles:
-            return runParseMessageAndCreateCyclesStage();
+    case Stages::ParseMessageAndCreateCycles:
+        return runParseMessageAndCreateCyclesStage();
 
-        default:
-            throw RuntimeError(
-                "CycleThreeNodesInitTransaction::run(): "
-                "invalid transaction step.");
+    default:
+        throw RuntimeError(
+            "CycleThreeNodesInitTransaction::run(): "
+            "invalid transaction step.");
     }
 }
 
@@ -44,7 +44,7 @@ TransactionResult::SharedConst CyclesThreeNodesInitTransaction::runCollectDataAn
         return resultDone();
     }
     auto commonNeighbors = getNeighborsWithContractor();
-    if(commonNeighbors.empty()){
+    if(commonNeighbors.empty()) {
         info() << "No common neighbors with: " << mContractorID;
         return resultDone();
     }
@@ -56,14 +56,14 @@ TransactionResult::SharedConst CyclesThreeNodesInitTransaction::runCollectDataAn
         commonNeighbors);
     mStep = Stages::ParseMessageAndCreateCycles;
     return resultWaitForMessageTypes(
-        {Message::Cycles_ThreeNodesBalancesResponse},
-        mkWaitingForResponseTime);
+    {Message::Cycles_ThreeNodesBalancesResponse},
+    mkWaitingForResponseTime);
 }
 
 TransactionResult::SharedConst CyclesThreeNodesInitTransaction::runParseMessageAndCreateCyclesStage()
 {
     debug() << "runParseMessageAndCreateCyclesStage";
-    if (mContext.empty()){
+    if (mContext.empty()) {
         info() << "No responses messages are present. Can't create cycles paths;";
         return resultDone();
     }
@@ -75,10 +75,11 @@ TransactionResult::SharedConst CyclesThreeNodesInitTransaction::runParseMessageA
         info() << "There are no suitable nodes in response";
         return resultDone();
     }
-    for(const auto &nodeAddress : message->commonNodes() ){
+    for(const auto &nodeAddress : message->commonNodes() ) {
         vector<BaseAddress::Shared> cycle = {
             nodeAddress,
-            mContractorsManager->contractorMainAddress(mContractorID)};
+            mContractorsManager->contractorMainAddress(mContractorID)
+        };
         if (mTrustLinesManager->balance(mContractorID) > TrustLine::kZeroBalance()) {
             reverse(
                 cycle.begin(),
@@ -86,17 +87,17 @@ TransactionResult::SharedConst CyclesThreeNodesInitTransaction::runParseMessageA
         }
         // Path object is common object.
         const auto cyclePath = make_shared<Path>(
-            cycle);
+                                   cycle);
         mCyclesManager->addCycle(
             cyclePath);
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING
-            resultCycles.push_back(cyclePath);
+        resultCycles.push_back(cyclePath);
 #endif
     }
 
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING
     debug() << "ResultCyclesCount " << resultCycles.size();
-    for (auto &cyclePath: resultCycles){
+    for (auto &cyclePath: resultCycles) {
         debug() << "CyclePath " << cyclePath->toString();
     }
 #endif
@@ -122,14 +123,13 @@ vector<BaseAddress::Shared> CyclesThreeNodesInitTransaction::getNeighborsWithCon
                 ownNeighbors.push_back(
                     mContractorsManager->contractorMainAddress(
                         kContractorIDAndTrustLine.first));
-        }
-        else if (kTL->balance() < TrustLine::kZeroBalance())
+        } else if (kTL->balance() < TrustLine::kZeroBalance())
             ownNeighbors.push_back(
                 mContractorsManager->contractorMainAddress(
                     kContractorIDAndTrustLine.first));
     }
     const auto contractorNeighbors = mRougingTable->secondLevelContractorsForNode(
-        mContractorID);
+                                         mContractorID);
 
     for (const auto &ownNeighbor : ownNeighbors) {
         for (const auto &contractorNeighbor : contractorNeighbors) {

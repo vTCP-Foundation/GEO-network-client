@@ -3,7 +3,8 @@
 
 #include "BaseAuditRule.h"
 
-class AuditRuleBoundaryOverflowed : public BaseAuditRule {
+class AuditRuleBoundaryOverflowed : public BaseAuditRule
+{
 public:
     typedef shared_ptr<AuditRuleBoundaryOverflowed> Shared;
 

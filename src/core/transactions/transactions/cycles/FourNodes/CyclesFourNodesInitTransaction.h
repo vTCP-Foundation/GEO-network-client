@@ -13,7 +13,8 @@
 #include <set>
 
 class CyclesFourNodesInitTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     CyclesFourNodesInitTransaction(
@@ -28,7 +29,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         CollectDataAndSendMessage = 1,
         ParseMessageAndCreateCycles
     };

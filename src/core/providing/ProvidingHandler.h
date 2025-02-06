@@ -12,12 +12,14 @@
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class ProvidingHandler : protected LoggerMixin {
+class ProvidingHandler : protected LoggerMixin
+{
 
 public:
     typedef signals::signal<void(Provider::Shared)> SendPingMessageSignal;
 
-    enum ProtocolVersion {
+    enum ProtocolVersion
+    {
         Latest = 0,
     };
 
@@ -60,15 +62,16 @@ private:
     static const uint16_t kStartingAddressPeriodSeconds = 5;
     static const uint16_t kUpdatingAddressPeriodSeconds = 60;
 
-    static const byte kResetCacheAddressHours = 0;
-    static const byte kResetCacheAddressMinutes = 0;
-    static const byte kResetCacheAddressSeconds = 10;
+    static const byte_t kResetCacheAddressHours = 0;
+    static const byte_t kResetCacheAddressMinutes = 0;
+    static const byte_t kResetCacheAddressSeconds = 10;
 
-    static Duration& kResetCacheAddressDuration() {
+    static Duration &kResetCacheAddressDuration()
+    {
         static auto duration = Duration(
-                kResetCacheAddressHours,
-                kResetCacheAddressMinutes,
-                kResetCacheAddressSeconds);
+                                   kResetCacheAddressHours,
+                                   kResetCacheAddressMinutes,
+                                   kResetCacheAddressSeconds);
         return duration;
     }
 
@@ -83,5 +86,4 @@ private:
     vector<pair<DateTime, string>> mTimesCache;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_PROVIDINGHANDLER_H
+#endif // GEO_NETWORK_CLIENT_PROVIDINGHANDLER_H

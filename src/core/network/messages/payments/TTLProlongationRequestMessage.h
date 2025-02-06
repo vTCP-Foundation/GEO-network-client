@@ -3,7 +3,8 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class TTLProlongationRequestMessage : public TransactionMessage {
+class TTLProlongationRequestMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<TTLProlongationRequestMessage> Shared;

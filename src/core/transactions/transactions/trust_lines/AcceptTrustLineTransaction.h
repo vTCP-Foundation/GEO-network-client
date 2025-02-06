@@ -12,7 +12,8 @@
 #include "../../../subsystems_controller/SubsystemsController.h"
 #include "../../../subsystems_controller/TrustLinesInfluenceController.h"
 
-class AcceptTrustLineTransaction : public BaseTransaction {
+class AcceptTrustLineTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<AcceptTrustLineTransaction> Shared;

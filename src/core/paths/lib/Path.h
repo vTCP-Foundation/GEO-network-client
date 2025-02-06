@@ -7,7 +7,8 @@
 #include <vector>
 #include <sstream>
 
-class Path {
+class Path
+{
 
 public:
     typedef shared_ptr<Path> Shared;

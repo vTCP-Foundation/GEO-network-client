@@ -25,7 +25,7 @@ CommunicatorStorageHandler::~CommunicatorStorageHandler()
 void CommunicatorStorageHandler::checkDirectory(
     const string &directory)
 {
-    if (!fs::is_directory(fs::path(directory))){
+    if (!fs::is_directory(fs::path(directory))) {
         fs::create_directories(
             fs::path(directory));
     }
@@ -43,7 +43,7 @@ sqlite3* CommunicatorStorageHandler::connection(
     if (rc == SQLITE_OK) {
     } else {
         throw IOError("CommunicatorStorageHandler::connection "
-                          "Can't open database " + dataBaseName);
+                      "Can't open database " + dataBaseName);
     }
     return mDBConnection;
 }
@@ -51,17 +51,17 @@ sqlite3* CommunicatorStorageHandler::connection(
 CommunicatorIOTransaction::Shared CommunicatorStorageHandler::beginTransaction()
 {
     return make_shared<CommunicatorIOTransaction>(
-        mDBConnection,
-        &mCommunicatorMessagesQueueHandler,
-        mLog);
+               mDBConnection,
+               &mCommunicatorMessagesQueueHandler,
+               mLog);
 }
 
 CommunicatorIOTransaction::Unique CommunicatorStorageHandler::beginTransactionUnique()
 {
     return make_unique<CommunicatorIOTransaction>(
-        mDBConnection,
-        &mCommunicatorMessagesQueueHandler,
-        mLog);
+               mDBConnection,
+               &mCommunicatorMessagesQueueHandler,
+               mLog);
 }
 
 LoggerStream CommunicatorStorageHandler::info() const

@@ -7,7 +7,8 @@
 #include "../../../trust_lines/manager/TrustLinesManager.h"
 #include "../../../crypto/keychain.h"
 
-class RemoveTrustLineTransaction : public BaseTransaction {
+class RemoveTrustLineTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<RemoveTrustLineTransaction> Shared;

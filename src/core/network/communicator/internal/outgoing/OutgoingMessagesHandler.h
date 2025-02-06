@@ -8,16 +8,15 @@
 
 #include "../common/Types.h"
 
-
-class OutgoingMessagesHandler {
+class OutgoingMessagesHandler
+{
 public:
     OutgoingMessagesHandler(
         IOService &ioService,
         UDPSocket &socket,
         ContractorsManager *contractorsManager,
         ProvidingHandler *providingHandler,
-        Logger &log)
-        noexcept;
+        Logger &log) noexcept;
 
     void sendMessage(
         const Message::Shared message,
@@ -50,14 +49,15 @@ private:
 private:
     static const uint16_t kPostponedMessagesClearingPeriodSeconds = 30;
 
-    static const byte kPostponedMessageTimeLiveHours = 0;
-    static const byte kPostponedMessageTimeLiveMinutes = 0;
-    static const byte kPostponedMessageTimeLiveSeconds = 10;
-    static Duration& kPostponedMessageTimeLiveDuration() {
+    static const byte_t kPostponedMessageTimeLiveHours = 0;
+    static const byte_t kPostponedMessageTimeLiveMinutes = 0;
+    static const byte_t kPostponedMessageTimeLiveSeconds = 10;
+    static Duration &kPostponedMessageTimeLiveDuration()
+    {
         static auto duration = Duration(
-            kPostponedMessageTimeLiveHours,
-            kPostponedMessageTimeLiveMinutes,
-            kPostponedMessageTimeLiveSeconds);
+                                   kPostponedMessageTimeLiveHours,
+                                   kPostponedMessageTimeLiveMinutes,
+                                   kPostponedMessageTimeLiveSeconds);
         return duration;
     }
 
@@ -71,5 +71,4 @@ protected:
     multimap<string, pair<MsgEncryptor::Buffer, DateTime>> mPostponedMessages;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_OUTGOINGMESSAGESHANDLER_H
+#endif // GEO_NETWORK_CLIENT_OUTGOINGMESSAGESHANDLER_H

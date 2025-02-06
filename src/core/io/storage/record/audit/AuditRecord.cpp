@@ -16,7 +16,8 @@ AuditRecord::AuditRecord(
     mContractorSignature(nullptr),
     mOwnKeysSetHash(nullptr),
     mContractorKeysSetHash(nullptr)
-{}
+{
+}
 
 AuditRecord::AuditRecord(
     AuditNumber auditNumber,
@@ -28,7 +29,7 @@ AuditRecord::AuditRecord(
     lamport::KeyHash::Shared contractorKeyHash,
     lamport::Signature::Shared contractorSignature,
     lamport::KeyHash::Shared ownKeysSetHash,
-    lamport::KeyHash::Shared contractorKeysSetHash):
+    lamport::KeyHash::Shared contractorKeysSetHash) :
 
     mAuditNumber(auditNumber),
     mIncomingAmount(incomingAmount),
@@ -40,10 +41,11 @@ AuditRecord::AuditRecord(
     mContractorSignature(contractorSignature),
     mOwnKeysSetHash(ownKeysSetHash),
     mContractorKeysSetHash(contractorKeysSetHash)
-{}
+{
+}
 
 AuditRecord::AuditRecord(
-    byte* buffer)
+    byte_t* buffer)
 {
     auto bytesBufferOffset = 0;
     memcpy(
@@ -52,38 +54,38 @@ AuditRecord::AuditRecord(
         sizeof(AuditNumber));
     bytesBufferOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBytes(
+    vector<byte_t> incomingAmountBytes(
         buffer + bytesBufferOffset,
         buffer + bytesBufferOffset + kTrustLineAmountBytesCount);
     mIncomingAmount = bytesToTrustLineAmount(incomingAmountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBytes(
+    vector<byte_t> outgoingAmountBytes(
         buffer + bytesBufferOffset,
         buffer + bytesBufferOffset + kTrustLineAmountBytesCount);
     mOutgoingAmount = bytesToTrustLineAmount(outgoingAmountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balanceBytes(
+    vector<byte_t> balanceBytes(
         buffer + bytesBufferOffset,
         buffer + bytesBufferOffset + kTrustLineBalanceSerializeBytesCount);
     mBalance = bytesToTrustLineBalance(balanceBytes);
     bytesBufferOffset += kTrustLineBalanceSerializeBytesCount;
 
     mOwnKeyHash = make_shared<lamport::KeyHash>(
-        buffer + bytesBufferOffset);
+                      buffer + bytesBufferOffset);
     bytesBufferOffset += lamport::KeyHash::kBytesSize;
 
     mOwnSignature = make_shared<lamport::Signature>(
-        buffer + bytesBufferOffset);
+                        buffer + bytesBufferOffset);
     bytesBufferOffset += lamport::Signature::signatureSize();
 
     mContractorKeyHash = make_shared<lamport::KeyHash>(
-        buffer + bytesBufferOffset);
+                             buffer + bytesBufferOffset);
     bytesBufferOffset += lamport::KeyHash::kBytesSize;
 
     mContractorSignature = make_shared<lamport::Signature>(
-        buffer + bytesBufferOffset);
+                               buffer + bytesBufferOffset);
 }
 
 const AuditNumber AuditRecord::auditNumber() const
@@ -91,17 +93,17 @@ const AuditNumber AuditRecord::auditNumber() const
     return mAuditNumber;
 }
 
-const TrustLineAmount& AuditRecord::incomingAmount() const
+const TrustLineAmount &AuditRecord::incomingAmount() const
 {
     return mIncomingAmount;
 }
 
-const TrustLineAmount& AuditRecord::outgoingAmount() const
+const TrustLineAmount &AuditRecord::outgoingAmount() const
 {
     return mOutgoingAmount;
 }
 
-const TrustLineBalance& AuditRecord::balance() const
+const TrustLineBalance &AuditRecord::balance() const
 {
     return mBalance;
 }
@@ -170,24 +172,24 @@ BytesShared AuditRecord::serializeToBytes()
         sizeof(AuditNumber));
     dataBytesOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(
-        mIncomingAmount);
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(
+            mIncomingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         incomingAmountBufferBytes.data(),
         kTrustLineAmountBytesCount);
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(
-        mOutgoingAmount);
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(
+            mOutgoingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         outgoingAmountBufferBytes.data(),
         kTrustLineAmountBytesCount);
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(
-        const_cast<TrustLineBalance&>(mBalance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(
+                                            const_cast<TrustLineBalance&>(mBalance));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         balanceBufferBytes.data(),
@@ -231,24 +233,24 @@ BytesShared AuditRecord::serializeToCheckSignatureByInitiator()
         sizeof(AuditNumber));
     dataBytesOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(
-        mIncomingAmount);
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(
+            mIncomingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         incomingAmountBufferBytes.data(),
         kTrustLineAmountBytesCount);
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(
-        mOutgoingAmount);
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(
+            mOutgoingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         outgoingAmountBufferBytes.data(),
         kTrustLineAmountBytesCount);
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(
-        const_cast<TrustLineBalance&>(mBalance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(
+                                            const_cast<TrustLineBalance&>(mBalance));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         balanceBufferBytes.data(),
@@ -268,16 +270,16 @@ BytesShared AuditRecord::serializeToCheckSignatureByContractor()
         sizeof(AuditNumber));
     dataBytesOffset += sizeof(AuditNumber);
 
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(
-        mOutgoingAmount);
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(
+            mOutgoingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         outgoingAmountBufferBytes.data(),
         kTrustLineAmountBytesCount);
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(
-        mIncomingAmount);
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(
+            mIncomingAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         incomingAmountBufferBytes.data(),
@@ -285,8 +287,8 @@ BytesShared AuditRecord::serializeToCheckSignatureByContractor()
     dataBytesOffset += kTrustLineAmountBytesCount;
 
     auto contractorBalance = -1 * mBalance;
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(
-        const_cast<TrustLineBalance&>(contractorBalance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(
+                                            const_cast<TrustLineBalance&>(contractorBalance));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         balanceBufferBytes.data(),
@@ -297,20 +299,10 @@ BytesShared AuditRecord::serializeToCheckSignatureByContractor()
 
 const size_t AuditRecord::recordSize()
 {
-    return sizeof(AuditNumber)
-           + kTrustLineAmountBytesCount
-           + kTrustLineAmountBytesCount
-           + kTrustLineBalanceSerializeBytesCount
-           + lamport::KeyHash::kBytesSize
-           + lamport::Signature::signatureSize()
-           + lamport::KeyHash::kBytesSize
-           + lamport::Signature::signatureSize();
+    return sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + kTrustLineBalanceSerializeBytesCount + lamport::KeyHash::kBytesSize + lamport::Signature::signatureSize() + lamport::KeyHash::kBytesSize + lamport::Signature::signatureSize();
 }
 
 const size_t AuditRecord::recordSizeForSignatureChecking()
 {
-    return sizeof(AuditNumber)
-           + kTrustLineAmountBytesCount
-           + kTrustLineAmountBytesCount
-           + kTrustLineBalanceSerializeBytesCount;
+    return sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + kTrustLineBalanceSerializeBytesCount;
 }

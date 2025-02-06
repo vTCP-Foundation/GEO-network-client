@@ -59,8 +59,8 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
         ioTransaction);
 
     auto keyChain = mKeysStore->keychain(
-        mTrustLinesManager->trustLineID(
-            mContractorID));
+                        mTrustLinesManager->trustLineID(
+                            mContractorID));
 
     if (mTrustLinesManager->auditNumber(mContractorID) > mMessage->auditRecord()->auditNumber()) {
         info() << "Our audit number is greater than contractor's";
@@ -75,14 +75,14 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
         if (!isConflictResolvingSecondTime) {
             info() << "run ConflictResolverInitiatorTransaction signal";
             auto conflictResolverInitiatorTransaction = make_shared<ConflictResolverInitiatorTransaction>(
-                mEquivalent,
-                mContractorID,
-                mContractorsManager,
-                mTrustLinesManager,
-                mStorageHandler,
-                mKeysStore,
-                mTrustLinesInfluenceController,
-                mLog);
+                    mEquivalent,
+                    mContractorID,
+                    mContractorsManager,
+                    mTrustLinesManager,
+                    mStorageHandler,
+                    mKeysStore,
+                    mTrustLinesInfluenceController,
+                    mLog);
 
             launchSubsidiaryTransaction(
                 conflictResolverInitiatorTransaction);
@@ -102,11 +102,11 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
         // check own signature
         try {
             if (!keyChain.checkOwnConflictedSignature(
-                    ioTransaction,
-                    mMessage->auditRecord()->serializeToCheckSignatureByContractor(),
-                    AuditRecord::recordSizeForSignatureChecking(),
-                    mMessage->auditRecord()->contractorSignature(),
-                    mMessage->auditRecord()->contractorKeyHash())) {
+                        ioTransaction,
+                        mMessage->auditRecord()->serializeToCheckSignatureByContractor(),
+                        AuditRecord::recordSizeForSignatureChecking(),
+                        mMessage->auditRecord()->contractorSignature(),
+                        mMessage->auditRecord()->contractorKeyHash())) {
                 warning() << "Own audit data sent by contractor is incorrect";
                 sendMessage<ConflictResolverResponseMessage>(
                     mContractorID,
@@ -132,11 +132,11 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
         // check contractor signature
         try {
             if (!keyChain.checkContractorConflictedSignature(
-                    ioTransaction,
-                    mMessage->auditRecord()->serializeToCheckSignatureByInitiator(),
-                    AuditRecord::recordSizeForSignatureChecking(),
-                    mMessage->auditRecord()->ownSignature(),
-                    mMessage->auditRecord()->ownKeyHash())) {
+                        ioTransaction,
+                        mMessage->auditRecord()->serializeToCheckSignatureByInitiator(),
+                        AuditRecord::recordSizeForSignatureChecking(),
+                        mMessage->auditRecord()->ownSignature(),
+                        mMessage->auditRecord()->ownKeyHash())) {
                 warning() << "Own audit data sent by contractor is incorrect";
                 sendMessage<ConflictResolverResponseMessage>(
                     mContractorID,
@@ -167,15 +167,15 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
                               << " sent by contractor has invalid audit number " << incomingReceipt->auditNumber();
                 }
                 auto serializedIncomingReceiptAndSize = getSerializedReceipt(
-                    mContractorsManager->idOnContractorSide(mContractorID),
-                    mContractorID,
-                    incomingReceipt);
+                        mContractorsManager->idOnContractorSide(mContractorID),
+                        mContractorID,
+                        incomingReceipt);
                 if (!keyChain.checkConflictedIncomingReceipt(
-                        ioTransaction,
-                        serializedIncomingReceiptAndSize.first,
-                        serializedIncomingReceiptAndSize.second,
-                        incomingReceipt->signature(),
-                        incomingReceipt->keyHash())) {
+                            ioTransaction,
+                            serializedIncomingReceiptAndSize.first,
+                            serializedIncomingReceiptAndSize.second,
+                            incomingReceipt->signature(),
+                            incomingReceipt->keyHash())) {
                     warning() << "Incoming receipt on TA " << incomingReceipt->transactionUUID()
                               << " sent by contractor is incorrect";
                     sendMessage<ConflictResolverResponseMessage>(
@@ -208,15 +208,15 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
                               << " sent by contractor has invalid audit number " << outgoingReceipt->auditNumber();
                 }
                 auto serializedIncomingReceiptAndSize = getSerializedReceipt(
-                    mContractorID,
-                    mContractorsManager->idOnContractorSide(mContractorID),
-                    outgoingReceipt);
+                        mContractorID,
+                        mContractorsManager->idOnContractorSide(mContractorID),
+                        outgoingReceipt);
                 if (!keyChain.checkConflictedOutgoingReceipt(
-                        ioTransaction,
-                        serializedIncomingReceiptAndSize.first,
-                        serializedIncomingReceiptAndSize.second,
-                        outgoingReceipt->signature(),
-                        outgoingReceipt->keyHash())) {
+                            ioTransaction,
+                            serializedIncomingReceiptAndSize.first,
+                            serializedIncomingReceiptAndSize.second,
+                            outgoingReceipt->signature(),
+                            outgoingReceipt->keyHash())) {
                     warning() << "Outgoing receipt on TA " << outgoingReceipt->transactionUUID()
                               << " sent by contractor is incorrect";
                     sendMessage<ConflictResolverResponseMessage>(
@@ -260,7 +260,7 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
 
     info() << "Contractor's audit number is the same as ours";
     auto ownAuditRecord = keyChain.actualFullAudit(
-        ioTransaction);
+                              ioTransaction);
 
     bool isRunConflictResolverInitiatorTransaction = false;
 
@@ -273,12 +273,12 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
     }
 
     auto incomingReceipts = keyChain.incomingReceipts(
-        ioTransaction,
-        mTrustLinesManager->auditNumber(mContractorID));
+                                ioTransaction,
+                                mTrustLinesManager->auditNumber(mContractorID));
 
     auto outgoingReceipts = keyChain.outgoingReceipts(
-        ioTransaction,
-        mTrustLinesManager->auditNumber(mContractorID));
+                                ioTransaction,
+                                mTrustLinesManager->auditNumber(mContractorID));
 
     // check incoming receipts
     auto cntCommonReceipts = 0;
@@ -341,7 +341,7 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
     if (isRunConflictResolverInitiatorTransaction) {
         info() << "Send Reject";
         sendMessage<ConflictResolverResponseMessage>(
-           mContractorID,
+            mContractorID,
             mEquivalent,
             mContractorsManager->idOnContractorSide(mContractorID),
             mTransactionUUID,
@@ -350,14 +350,14 @@ TransactionResult::SharedConst ConflictResolverContractorTransaction::run()
         if (!isConflictResolvingSecondTime) {
             info() << "run ConflictResolverInitiatorTransaction signal";
             auto conflictResolverInitiatorTransaction = make_shared<ConflictResolverInitiatorTransaction>(
-                mEquivalent,
-                mContractorID,
-                mContractorsManager,
-                mTrustLinesManager,
-                mStorageHandler,
-                mKeysStore,
-                mTrustLinesInfluenceController,
-                mLog);
+                    mEquivalent,
+                    mContractorID,
+                    mContractorsManager,
+                    mTrustLinesManager,
+                    mStorageHandler,
+                    mKeysStore,
+                    mTrustLinesInfluenceController,
+                    mLog);
             launchSubsidiaryTransaction(
                 conflictResolverInitiatorTransaction);
         } else {
@@ -431,8 +431,8 @@ pair<BytesShared, size_t> ConflictResolverContractorTransaction::getSerializedRe
         sizeof(AuditNumber));
 
     return make_pair(
-        serializedData,
-        serializedDataSize);
+               serializedData,
+               serializedDataSize);
 }
 
 void ConflictResolverContractorTransaction::acceptContractorAuditData(

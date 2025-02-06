@@ -12,7 +12,8 @@
 
 using namespace crypto::lamport;
 
-class OutgoingPaymentReceiptHandler {
+class OutgoingPaymentReceiptHandler
+{
 public:
     OutgoingPaymentReceiptHandler(
         sqlite3 *dbConnection,

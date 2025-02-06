@@ -3,7 +3,8 @@
 
 #include "base/ObservingResponseMessage.h"
 
-class ObservingClaimAppendResponseMessage : public ObservingResponseMessage {
+class ObservingClaimAppendResponseMessage : public ObservingResponseMessage
+{
 
 public:
     typedef shared_ptr<ObservingClaimAppendResponseMessage> Shared;

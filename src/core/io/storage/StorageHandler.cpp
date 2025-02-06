@@ -32,13 +32,13 @@ StorageHandler::StorageHandler(
     int rc = sqlite3_prepare_v2( mDBConnection, query.c_str(), -1, &stmt, 0);
     if (rc != SQLITE_OK) {
         throw IOError("StorageHandler::enabling foreign keys: "
-                              "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("StorageHandler::enabling foreign keys: "
-                              "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -52,7 +52,7 @@ StorageHandler::~StorageHandler()
 void StorageHandler::checkDirectory(
     const string &directory)
 {
-    if (!fs::is_directory(fs::path(directory))){
+    if (!fs::is_directory(fs::path(directory))) {
         fs::create_directories(
             fs::path(directory));
     }
@@ -70,7 +70,7 @@ sqlite3* StorageHandler::connection(
     if (rc == SQLITE_OK) {
     } else {
         throw IOError("StorageHandler::connection "
-                          "Can't open database " + dataBaseName);
+                      "Can't open database " + dataBaseName);
     }
     return mDBConnection;
 }
@@ -78,22 +78,22 @@ sqlite3* StorageHandler::connection(
 IOTransaction::Shared StorageHandler::beginTransaction()
 {
     return make_shared<IOTransaction>(
-        mDBConnection,
-        &mTrustLineHandler,
-        &mHistoryStorage,
-        &mTransactionHandler,
-        &mOwnKeysHandler,
-        &mContractorKeysHandler,
-        &mAuditHandler,
-        &mIncomingPaymentReceiptHandler,
-        &mOutgoingPaymentReceiptHandler,
-        &mPaymentKeysHandler,
-        &mPaymentParticipantsVotesHandler,
-        &mPaymentTransactionsHandler,
-        &mContractorsHandler,
-        &mAddressHandler,
-        &mFeaturesHandler,
-        mLog);
+               mDBConnection,
+               &mTrustLineHandler,
+               &mHistoryStorage,
+               &mTransactionHandler,
+               &mOwnKeysHandler,
+               &mContractorKeysHandler,
+               &mAuditHandler,
+               &mIncomingPaymentReceiptHandler,
+               &mOutgoingPaymentReceiptHandler,
+               &mPaymentKeysHandler,
+               &mPaymentParticipantsVotesHandler,
+               &mPaymentTransactionsHandler,
+               &mContractorsHandler,
+               &mAddressHandler,
+               &mFeaturesHandler,
+               mLog);
 }
 
 void StorageHandler::vacuum()

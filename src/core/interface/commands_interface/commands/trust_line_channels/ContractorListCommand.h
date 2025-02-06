@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class ContractorListCommand : public BaseUserCommand {
+class ContractorListCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<ContractorListCommand> Shared;

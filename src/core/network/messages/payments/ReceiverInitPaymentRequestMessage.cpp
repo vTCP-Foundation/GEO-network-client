@@ -25,8 +25,8 @@ ReceiverInitPaymentRequestMessage::ReceiverInitPaymentRequestMessage(
     if (*payloadLength > 0) {
         bytesBufferOffset += sizeof(PayloadLength);
         mPayload = string(
-            buffer.get() + bytesBufferOffset,
-            buffer.get() + bytesBufferOffset + *payloadLength);
+                       buffer.get() + bytesBufferOffset,
+                       buffer.get() + bytesBufferOffset + *payloadLength);
     } else {
         mPayload = "";
     }
@@ -46,9 +46,9 @@ pair<BytesShared, size_t> ReceiverInitPaymentRequestMessage::serializeToBytes() 
 {
     auto parentBytesAndCount = RequestMessage::serializeToBytes();
     size_t bytesCount =
-            + parentBytesAndCount.second
-            + sizeof(PayloadLength)
-            + mPayload.length();
+        + parentBytesAndCount.second
+        + sizeof(PayloadLength)
+        + mPayload.length();
 
     BytesShared buffer = tryMalloc(bytesCount);
     size_t bytesBufferOffset = 0;
@@ -73,6 +73,6 @@ pair<BytesShared, size_t> ReceiverInitPaymentRequestMessage::serializeToBytes() 
     }
 
     return make_pair(
-        buffer,
-        bytesCount);
+               buffer,
+               bytesCount);
 }

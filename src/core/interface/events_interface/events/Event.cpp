@@ -40,8 +40,8 @@ Event::Shared Event::topologyEvent(
         ss << kTokensSeparator << neighbor->fullAddress();
     }
     return make_shared<Event>(
-        EventType::Topology,
-        ss.str());
+               EventType::Topology,
+               ss.str());
 }
 
 Event::Shared Event::initTrustLineEvent(
@@ -52,8 +52,8 @@ Event::Shared Event::initTrustLineEvent(
     stringstream ss;
     ss << equivalent << kTokensSeparator << source->fullAddress() << kTokensSeparator << destination->fullAddress();
     return make_shared<Event>(
-        EventType::InitTrustLine,
-        ss.str());
+               EventType::InitTrustLine,
+               ss.str());
 }
 
 Event::Shared Event::closeTrustLineEvent(
@@ -64,8 +64,8 @@ Event::Shared Event::closeTrustLineEvent(
     stringstream ss;
     ss << equivalent << kTokensSeparator << source->fullAddress() << kTokensSeparator << destination->fullAddress();
     return make_shared<Event>(
-        EventType::CloseTrustLine,
-        ss.str());
+               EventType::CloseTrustLine,
+               ss.str());
 }
 
 Event::Shared Event::paymentEvent(
@@ -86,8 +86,8 @@ Event::Shared Event::paymentEvent(
         ss << kTokensSeparator << receiverAddress->fullAddress();
     }
     return make_shared<Event>(
-        EventType::Payment,
-        ss.str());
+               EventType::Payment,
+               ss.str());
 }
 
 Event::Shared Event::paymentIncomingEvent(
@@ -101,6 +101,6 @@ Event::Shared Event::paymentIncomingEvent(
     ss << equivalent << kTokensSeparator << coordinatorAddress->fullAddress() << kTokensSeparator
        << receiverAddress->fullAddress() << kTokensSeparator << amount << kTokensSeparator << payload;
     return make_shared<Event>(
-        EventType::PaymentIncoming,
-        ss.str());
+               EventType::PaymentIncoming,
+               ss.str());
 }

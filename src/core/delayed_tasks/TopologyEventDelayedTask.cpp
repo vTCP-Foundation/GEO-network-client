@@ -9,14 +9,14 @@ TopologyEventDelayedTask::TopologyEventDelayedTask(
     mLog(logger)
 {
     mTopologyEventTimer = make_unique<as::steady_timer>(
-        mIOService);
+                              mIOService);
 
     mTopologyEventTimer->expires_from_now(
         chrono::seconds(
             +kDelayedTaskTimeSec));
     mTopologyEventTimer->async_wait(boost::bind(
-        &TopologyEventDelayedTask::runTopologyEvent,
-        this));
+                                        &TopologyEventDelayedTask::runTopologyEvent,
+                                        this));
 }
 
 void TopologyEventDelayedTask::runTopologyEvent()

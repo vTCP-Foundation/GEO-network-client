@@ -4,7 +4,8 @@
 #include "base/ObservingMessage.hpp"
 #include "../../transactions/transactions/base/TransactionUUID.h"
 
-class ObservingParticipantsVotesRequestMessage : public ObservingMessage {
+class ObservingParticipantsVotesRequestMessage : public ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingParticipantsVotesRequestMessage> Shared;

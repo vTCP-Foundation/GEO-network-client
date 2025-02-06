@@ -8,7 +8,8 @@
 
 #include <vector>
 
-class TopologyCache {
+class TopologyCache
+{
 
 public:
     typedef shared_ptr<TopologyCache> Shared;

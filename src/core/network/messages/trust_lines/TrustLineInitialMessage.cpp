@@ -26,7 +26,7 @@ TrustLineInitialMessage::TrustLineInitialMessage(
     memcpy(
         &mIsContractorGateway,
         buffer.get() + bytesBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
 }
 
 
@@ -52,7 +52,7 @@ pair<BytesShared, size_t> TrustLineInitialMessage::serializeToBytes() const
     auto parentBytesAndCount = TransactionMessage::serializeToBytes();
 
     size_t bytesCount = parentBytesAndCount.second
-                        + sizeof(byte);
+                        + sizeof(byte_t);
 
     BytesShared dataBytesShared = tryCalloc(bytesCount);
     size_t dataBytesOffset = 0;
@@ -66,9 +66,9 @@ pair<BytesShared, size_t> TrustLineInitialMessage::serializeToBytes() const
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         &mIsContractorGateway,
-        sizeof(byte));
+        sizeof(byte_t));
     //----------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

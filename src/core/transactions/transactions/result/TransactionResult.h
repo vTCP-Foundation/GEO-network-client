@@ -10,13 +10,15 @@
 
 using namespace std;
 
-class TransactionResult {
+class TransactionResult
+{
 public:
     typedef shared_ptr<TransactionResult> Shared;
     typedef shared_ptr<const TransactionResult> SharedConst;
 
 public:
-    enum ResultType {
+    enum ResultType
+    {
         CommandResultType = 1,
         TransactionStateType = 2,
         HybridType = 3,

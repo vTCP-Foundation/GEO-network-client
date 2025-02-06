@@ -3,7 +3,7 @@
 MessagesParser::MessagesParser(
     ContractorsManager *contractorsManager,
     Logger *logger)
-    noexcept:
+noexcept:
 
     mContractorsManager(contractorsManager),
     mLog(logger)
@@ -19,7 +19,7 @@ pair<bool, Message::Shared> MessagesParser::processBytesSequence(
 
     try {
         const SerializedProtocolVersion kMessageProtocolVersion =
-            *(reinterpret_cast<SerializedProtocolVersion *>(buffer.get()));
+            *(reinterpret_cast<SerializedProtocolVersion*>(buffer.get()));
         if (kMessageProtocolVersion != Message::ProtocolVersion::Latest) {
             warning() << "processBytesSequence: Message with invalid protocol version occurred "
                       << (uint16_t)kMessageProtocolVersion << " current protocol version "
@@ -28,7 +28,7 @@ pair<bool, Message::Shared> MessagesParser::processBytesSequence(
         }
 
         ContractorID contractorID = *(reinterpret_cast<ContractorID*>(
-            buffer.get() + sizeof(SerializedProtocolVersion)));
+                                          buffer.get() + sizeof(SerializedProtocolVersion)));
         try {
             if (contractorID != std::numeric_limits<ContractorID>::max()) {
                 auto contractor = mContractorsManager->contractor(contractorID);
@@ -36,13 +36,13 @@ pair<bool, Message::Shared> MessagesParser::processBytesSequence(
                 debug() << "Message encrypted by contractor " << contractorID;
 #endif
                 auto pair = MsgEncryptor(
-                    contractor->cryptoKey()->publicKey,
-                    contractor->cryptoKey()->secretKey
-                ).decrypt(buffer, count);
+                                contractor->cryptoKey()->publicKey,
+                                contractor->cryptoKey()->secretKey
+                            ).decrypt(buffer, count);
                 buffer = pair.first;
                 if(!buffer) {
                     warning() << "processBytesSequence: "
-                        << "Message decryption error. Message dropped.";
+                              << "Message decryption error. Message dropped.";
                     return messageInvalidOrIncomplete();
                 }
             }
@@ -266,7 +266,7 @@ pair<bool, Message::Shared> MessagesParser::processBytesSequence(
 
         default: {
             warning() << "processBytesSequence: "
-                << "Unexpected message identifier occurred (" << kMessageIdentifier << "). Message dropped.";
+                      << "Unexpected message identifier occurred (" << kMessageIdentifier << "). Message dropped.";
             return messageInvalidOrIncomplete();
         }
 
@@ -280,7 +280,7 @@ pair<bool, Message::Shared> MessagesParser::processBytesSequence(
 
 MessagesParser &MessagesParser::operator=(
     const MessagesParser &other)
-    noexcept
+noexcept
 {
     mLog = other.mLog;
     return *this;
@@ -289,8 +289,8 @@ MessagesParser &MessagesParser::operator=(
 pair<bool, Message::Shared> MessagesParser::messageInvalidOrIncomplete()
 {
     return make_pair(
-        false,
-        Message::Shared(nullptr));
+               false,
+               Message::Shared(nullptr));
 }
 
 template <class CollectedMessageType>
@@ -298,25 +298,25 @@ pair<bool, Message::Shared> MessagesParser::messageCollected(
     CollectedMessageType message) const
 {
     return make_pair(
-        true,
-        static_pointer_cast<Message>(
-            make_shared<CollectedMessageType>(message)));
+               true,
+               static_pointer_cast<Message>(
+                   make_shared<CollectedMessageType>(message)));
 }
 
 string MessagesParser::logHeader()
-    noexcept
+noexcept
 {
     return "[MessagesParser]";
 }
 
 LoggerStream MessagesParser::warning() const
-    noexcept
+noexcept
 {
     return mLog->warning(logHeader());
 }
 
 LoggerStream MessagesParser::debug() const
-    noexcept
+noexcept
 {
     return mLog->debug(logHeader());
 }

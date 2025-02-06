@@ -4,7 +4,7 @@ GetTrustLineByIDTransaction::GetTrustLineByIDTransaction(
     GetTrustLineByIDCommand::Shared command,
     TrustLinesManager *trustLinesManager,
     Logger &logger)
-    noexcept:
+noexcept:
     BaseTransaction(
         BaseTransaction::TrustLineOneByID,
         command->equivalent(),
@@ -30,14 +30,14 @@ TransactionResult::SharedConst GetTrustLineByIDTransaction::run()
     ss << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 TransactionResult::SharedConst GetTrustLineByIDTransaction::resultTrustLineIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 const string GetTrustLineByIDTransaction::logHeader() const

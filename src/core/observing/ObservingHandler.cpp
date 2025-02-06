@@ -1,5 +1,8 @@
 #include "ObservingHandler.h"
 
+// todo: move to .h
+const BlockNumber ObservingHandler::kDefaultBlockNumber;
+
 ObservingHandler::ObservingHandler(
     vector<pair<string, string>> observersAddressesStr,
     IOService &ioService,
@@ -52,7 +55,7 @@ void ObservingHandler::initialObservingRequest()
 }
 
 const DateTime ObservingHandler::closestClaimPerformingTimestamp() const
-    noexcept
+noexcept
 {
     if (mClaims.empty()) {
         return utc_now() + boost::posix_time::seconds(2);
@@ -137,7 +140,7 @@ bool ObservingHandler::performOneClaim(
         observingTransaction->transactionUUID(),
         observingTransaction->observingRequestMessage()->maximalClaimingBlockNumber());
     auto claimCheck = make_shared<ObservingTransactionsRequestMessage>(
-        requestedTransactions);
+                          requestedTransactions);
 
     BytesShared observerResponse;
     for (const auto &observer : mObservers) {
@@ -147,8 +150,8 @@ bool ObservingHandler::performOneClaim(
         }
         try {
             observerResponse = mObservingCommunicator->sendRequestToObserver(
-                observer,
-                claimCheck);
+                                   observer,
+                                   claimCheck);
         } catch (std::exception &e) {
             this->warning() << "Can't send request to observer " << e.what();
             continue;
@@ -159,10 +162,10 @@ bool ObservingHandler::performOneClaim(
         ObservingTransaction::ObservingResponseType observingResponseType;
         try {
             auto actualTransactionStateResponse = make_shared<ObservingTransactionsResponseMessage>(
-                observerResponse);
+                    observerResponse);
             mLastUpdatedBlockNumber = make_pair(
-                actualTransactionStateResponse->actualBlockNumber(),
-                utc_now());
+                                          actualTransactionStateResponse->actualBlockNumber(),
+                                          utc_now());
 
             debug() << "Actual block number " << actualTransactionStateResponse->actualBlockNumber();
             debug() << "Observer response " << actualTransactionStateResponse->transactionsResponses().size();
@@ -182,11 +185,11 @@ bool ObservingHandler::performOneClaim(
             debug() << "No Info";
             // todo : need correct reaction
         } else if (observingResponseType == ObservingTransaction::ClaimInPool or
-                observingResponseType == ObservingTransaction::ClaimInBlock) {
+                   observingResponseType == ObservingTransaction::ClaimInBlock) {
             info() << "ClaimInBlock";
             observingTransaction->setObservingResponseType(observingResponseType);
             if (mLastUpdatedBlockNumber.first >
-                observingTransaction->observingRequestMessage()->maximalClaimingBlockNumber()) {
+                    observingTransaction->observingRequestMessage()->maximalClaimingBlockNumber()) {
                 info() << "Claiming time has expired, transaction rejected";
                 mRejectTransactionSignal(
                     observingTransaction->transactionUUID(),
@@ -202,8 +205,8 @@ bool ObservingHandler::performOneClaim(
         } else if (observingResponseType == ObservingTransaction::ParticipantsVotesPresent) {
             info() << "ParticipantsVotesPresent";
             if (!getParticipantsVotes(
-                    observingTransaction->transactionUUID(),
-                    observingTransaction->observingRequestMessage()->maximalClaimingBlockNumber())) {
+                        observingTransaction->transactionUUID(),
+                        observingTransaction->observingRequestMessage()->maximalClaimingBlockNumber())) {
                 observingTransaction->rescheduleNextActionSmallTime();
                 return false;
             }
@@ -227,8 +230,8 @@ void ObservingHandler::sendClaimAgain(
         BytesShared observingResponse;
         try {
             observingResponse = mObservingCommunicator->sendRequestToObserver(
-                observer,
-                observingTransaction->observingRequestMessage());
+                                    observer,
+                                    observingTransaction->observingRequestMessage());
         } catch (std::exception &e) {
             this->warning() << "Can't send request to observer " << e.what();
             continue;
@@ -238,7 +241,7 @@ void ObservingHandler::sendClaimAgain(
         }
         try {
             auto claimAppendResponse = make_shared<ObservingClaimAppendResponseMessage>(
-                observingResponse);
+                                           observingResponse);
             info() << "claimAppendResponse " << claimAppendResponse->observingResponse();
 
             if (claimAppendResponse->observingResponse() == ObservingTransaction::NoInfo) {
@@ -276,14 +279,14 @@ bool ObservingHandler::getParticipantsVotes(
 {
     info() << "getParticipantsVotes " << transactionUUID;
     auto getTSLRequest = make_shared<ObservingParticipantsVotesRequestMessage>(
-        transactionUUID,
-        maximalClaimingBlockNumber);
+                             transactionUUID,
+                             maximalClaimingBlockNumber);
     for (const auto &observer : mObservers) {
         BytesShared observerResponse;
         try {
             observerResponse = mObservingCommunicator->sendRequestToObserver(
-                observer,
-                getTSLRequest);
+                                   observer,
+                                   getTSLRequest);
         } catch (std::exception &e) {
             this->warning() << "Can't send request to observer " << e.what();
             continue;
@@ -293,14 +296,14 @@ bool ObservingHandler::getParticipantsVotes(
         }
         try {
             auto participantsVotesMessage = make_shared<ObservingParticipantsVotesResponseMessage>(
-                observerResponse);
+                                                observerResponse);
             if (!participantsVotesMessage->isParticipantsVotesPresent()) {
                 warning() << "ParticipantsVotes are absent";
                 continue;
             }
             info() << "Receive participants votes " << participantsVotesMessage->transactionUUID() << " "
-                    << participantsVotesMessage->maximalClaimingBlockNumber() << " "
-                    << participantsVotesMessage->participantsSignatures().size();
+                   << participantsVotesMessage->maximalClaimingBlockNumber() << " "
+                   << participantsVotesMessage->participantsSignatures().size();
             // todo : check if participantsVotesMessage is correct
             mParticipantsVotesSignal(
                 transactionUUID,
@@ -336,22 +339,22 @@ bool ObservingHandler::sendParticipantsVoteMessageToObservers(
     info() << "sendParticipantsVoteMessageToObservers " << transactionUUID << " " << maximalClaimingBlockNumber;
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto participantsSignatures = ioTransaction->paymentParticipantsVotesHandler()->participantsSignatures(
-        transactionUUID);
+                                      transactionUUID);
     if (participantsSignatures.empty()) {
         warning() << "Empty participants signatures";
         // todo : need correct reaction
         return false;
     }
     auto participantsVotesAppendRequest = make_shared<ObservingParticipantsVotesAppendRequestMessage>(
-        transactionUUID,
-        maximalClaimingBlockNumber,
-        participantsSignatures);
+            transactionUUID,
+            maximalClaimingBlockNumber,
+            participantsSignatures);
     BytesShared observerResponse;
     for (const auto &observer : mObservers) {
         try {
             observerResponse = mObservingCommunicator->sendRequestToObserver(
-                observer,
-                participantsVotesAppendRequest);
+                                   observer,
+                                   participantsVotesAppendRequest);
         } catch (std::exception &e) {
             this->warning() << "Can't send request to observers " << e.what();
             continue;
@@ -361,7 +364,7 @@ bool ObservingHandler::sendParticipantsVoteMessageToObservers(
         }
         try {
             auto participantsVotesAppendResponse = make_shared<ObservingParticipantsVotesAppendResponseMessage>(
-                observerResponse);
+                    observerResponse);
             info() << "participantsVotesAppendResponse " << participantsVotesAppendResponse->observingResponse();
             if (participantsVotesAppendResponse->observingResponse() == ObservingTransaction::ClaimInPool or
                     participantsVotesAppendResponse->observingResponse() == ObservingTransaction::ClaimInBlock) {

@@ -7,12 +7,14 @@
 #include "../../../../common/memory/MemoryUtils.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class PaymentRecord: public Record {
+class PaymentRecord: public Record
+{
 public:
     typedef shared_ptr<PaymentRecord> Shared;
 
 public:
-    enum PaymentOperationType {
+    enum PaymentOperationType
+    {
         OutgoingPaymentType = 1,
         IncomingPaymentType,
     };

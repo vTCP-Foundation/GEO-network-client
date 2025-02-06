@@ -8,7 +8,7 @@ GatewayNotificationAndRoutingTablesDelayedTask::GatewayNotificationAndRoutingTab
     mLog(logger)
 {
     mNotificationTimer = make_unique<as::steady_timer>(
-        mIOService);
+                             mIOService);
     // todo : rand() used for concurrent start of all nodes or some part of nodes (data center)
     // on decentralize network it is not necessary
     srand(randomInitializer());

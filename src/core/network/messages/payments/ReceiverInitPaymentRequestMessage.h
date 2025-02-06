@@ -4,7 +4,8 @@
 #include "base/RequestMessage.h"
 
 class ReceiverInitPaymentRequestMessage:
-    public RequestMessage {
+    public RequestMessage
+{
 
 public:
     typedef shared_ptr<ReceiverInitPaymentRequestMessage> Shared;

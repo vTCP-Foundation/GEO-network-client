@@ -8,7 +8,8 @@
 
 #include <set>
 
-class PathsManager {
+class PathsManager
+{
 
 public:
     PathsManager(
@@ -53,14 +54,14 @@ private:
     TrustLineAmount calculateOneNode(
         ContractorID nodeID,
         const TrustLineAmount &currentFlow,
-        byte level);
+        byte_t level);
 
     TrustLineAmount reBuildPathsOnOneLevel();
 
     TrustLineAmount calculateOneNodeForRebuildingPaths(
         ContractorID nodeID,
-        const TrustLineAmount& currentFlow,
-        byte level);
+        const TrustLineAmount &currentFlow,
+        byte_t level);
 
     vector<BaseAddress::Shared> addressesPath();
 
@@ -69,7 +70,7 @@ private:
     const string logHeader() const;
 
 private:
-    static const byte kMaxPathLength = 6;
+    static const byte_t kMaxPathLength = 6;
 
 private:
     TrustLinesManager *mTrustLinesManager;
@@ -81,9 +82,8 @@ private:
     ContractorID mContractorID;
 
     vector<ContractorID> mPassedNodeIDs;
-    byte mCurrentPathLength;
+    byte_t mCurrentPathLength;
     set<ContractorID> mInaccessibleNodes;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_PATHSMANAGER_H
+#endif // GEO_NETWORK_CLIENT_PATHSMANAGER_H

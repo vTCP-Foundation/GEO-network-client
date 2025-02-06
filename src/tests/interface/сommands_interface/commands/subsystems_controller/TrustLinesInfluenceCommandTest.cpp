@@ -5,8 +5,7 @@ TEST_CASE("Testing TrustLinesInfluenceCommnad")
 {
     REQUIRE_NOTHROW(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t2\t3\t4\n"));
 
-    SECTION("No input")
-    {
+    SECTION("No input") {
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, ""));
 
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n"));
@@ -14,8 +13,7 @@ TEST_CASE("Testing TrustLinesInfluenceCommnad")
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t"));
     }
 
-    SECTION("Double separator")
-    {
+    SECTION("Double separator") {
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t\t2\t3\t4\n"));
 
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t\t2\t3\t4\n"));
@@ -33,8 +31,7 @@ TEST_CASE("Testing TrustLinesInfluenceCommnad")
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n\t"));
     }
 
-    SECTION("Characters instead of input & after EOL")
-    {
+    SECTION("Characters instead of input & after EOL") {
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "dsfsfdd\n"));
 
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "dsfsfdd"));
@@ -44,8 +41,7 @@ TEST_CASE("Testing TrustLinesInfluenceCommnad")
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\t2\t3\t4\ndfsd"));
     }
 
-    SECTION("Characters instead of integer")
-    {
+    SECTION("Characters instead of integer") {
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "a\t2\t3\t4\n"));
 
         REQUIRE_THROWS(TrustLinesInfluenceCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1a2\t3\t4\n"));

@@ -24,18 +24,18 @@ BaseCollectTopologyTransaction::BaseCollectTopologyTransaction(
 TransactionResult::SharedConst BaseCollectTopologyTransaction::run()
 {
     switch (mStep) {
-        case Stages::SendRequestForCollectingTopology: {
-            mStep = Stages::ProcessCollectingTopology;
-            return sendRequestForCollectingTopology();
-        }
-        case Stages::ProcessCollectingTopology: {
-            return processCollectingTopology();
-        }
-        case Stages::CustomLogic:
-            return applyCustomLogic();
-        default:
-            throw ValueError(logHeader() + "::run: "
-                                 "wrong value of mStep");
+    case Stages::SendRequestForCollectingTopology: {
+        mStep = Stages::ProcessCollectingTopology;
+        return sendRequestForCollectingTopology();
+    }
+    case Stages::ProcessCollectingTopology: {
+        return processCollectingTopology();
+    }
+    case Stages::CustomLogic:
+        return applyCustomLogic();
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep");
     }
 }
 
@@ -55,7 +55,7 @@ void BaseCollectTopologyTransaction::fillTopology()
             debug() << "ConfirmationID " << kMessage->confirmationID();
 #endif
             auto topologyTrustLineManager = mEquivalentsSubsystemsRouter->topologyTrustLineManager(
-                kMessage->equivalent());
+                                                kMessage->equivalent());
             auto senderID = topologyTrustLineManager->getID(kMessage->senderAddresses.at(0));
             for (auto const &outgoingFlow : kMessage->outgoingFlows()) {
                 auto targetID = mTopologyTrustLineManager->getID(outgoingFlow.first);
@@ -73,8 +73,7 @@ void BaseCollectTopologyTransaction::fillTopology()
                         senderID,
                         incomingFlow.second));
             }
-        }
-        else if (mContext.front()->typeID() == Message::MaxFlow_ResultMaxFlowCalculationFromGateway) {
+        } else if (mContext.front()->typeID() == Message::MaxFlow_ResultMaxFlowCalculationFromGateway) {
             const auto kMessage = popNextMessage<ResultMaxFlowCalculationGatewayMessage>(mContext);
 #ifdef DEBUG_LOG_MAX_FLOW_CALCULATION
             debug() << "Equivalent " << kMessage->equivalent();
@@ -84,7 +83,7 @@ void BaseCollectTopologyTransaction::fillTopology()
             debug() << "ConfirmationID " << kMessage->confirmationID();
 #endif
             auto topologyTrustLineManager = mEquivalentsSubsystemsRouter->topologyTrustLineManager(
-                kMessage->equivalent());
+                                                kMessage->equivalent());
             auto senderID = topologyTrustLineManager->getID(kMessage->senderAddresses.at(0));
             topologyTrustLineManager->addGateway(senderID);
             for (auto const &outgoingFlow : kMessage->outgoingFlows()) {
@@ -108,8 +107,7 @@ void BaseCollectTopologyTransaction::fillTopology()
                 mGateways.insert(
                     senderID);
             }
-        }
-        else {
+        } else {
             warning() << "Invalid message type in context during fill topology";
             mContext.pop_front();
         }

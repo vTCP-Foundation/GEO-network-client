@@ -12,7 +12,8 @@
 
 using namespace crypto::lamport;
 
-class ContractorKeysHandler {
+class ContractorKeysHandler
+{
 
 public:
     ContractorKeysHandler(

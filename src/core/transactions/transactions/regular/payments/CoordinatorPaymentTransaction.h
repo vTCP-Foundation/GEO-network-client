@@ -1,7 +1,6 @@
 ﻿#ifndef GEO_NETWORK_CLIENT_COORDINATORPAYMENTTRANSCATION_H
 #define GEO_NETWORK_CLIENT_COORDINATORPAYMENTTRANSCATION_H
 
-
 #include "base/BasePaymentTransaction.h"
 #include "../../../../paths/PathsManager.h"
 #include "../../../../interface/events_interface/interface/EventsInterfaceManager.h"
@@ -17,8 +16,8 @@
  * It is makes sense to implement additional reservations shortage process,
  * that would free parts of reserved capabilities in parallel with amounts reservation stages.
  */
-class CoordinatorPaymentTransaction:
-    public BasePaymentTransaction {
+class CoordinatorPaymentTransaction : public BasePaymentTransaction
+{
 
 public:
     typedef shared_ptr<CoordinatorPaymentTransaction> Shared;
@@ -43,7 +42,7 @@ public:
 
     TransactionResult::SharedConst run() override;
 
-    const CommandUUID& commandUUID() const;
+    const CommandUUID &commandUUID() const;
 
 protected:
     // Stages handlers
@@ -101,7 +100,7 @@ protected:
     TransactionResult::SharedConst approve() override;
 
     TransactionResult::SharedConst reject(
-        const char *message) override;
+        const char* message) override;
 
 protected:
     // Results handlers
@@ -138,7 +137,7 @@ protected:
     /**
      * @return current processing path
      */
-    PathStats* currentAmountReservationPathStats();
+    PathStats *currentAmountReservationPathStats();
 
     /**
      * try switch to next path
@@ -153,7 +152,7 @@ protected:
      * @param pathID id of path on which amount reserved
      * @param pathStats path in which amount reserved
      */
-    TransactionResult::SharedConst tryReserveAmountDirectlyOnReceiver (
+    TransactionResult::SharedConst tryReserveAmountDirectlyOnReceiver(
         const PathID pathID,
         PathStats *pathStats);
 
@@ -161,7 +160,7 @@ protected:
      * try reserve available amount on next node on path
      * @param pathStats path on which trying reserve
      */
-    TransactionResult::SharedConst tryReserveNextIntermediateNodeAmount (
+    TransactionResult::SharedConst tryReserveNextIntermediateNodeAmount(
         PathStats *pathStats);
 
     /**
@@ -202,7 +201,7 @@ protected:
     TransactionResult::SharedConst askRemoteNodeToApproveReservation(
         PathStats *pathStats,
         BaseAddress::Shared remoteNode,
-        const byte remoteNodePosition,
+        const byte_t remoteNodePosition,
         BaseAddress::Shared nextNodeAfterRemote);
 
     /**
@@ -219,7 +218,7 @@ protected:
     // todo : refactor without pathID and pathStats, use inside mCurrentAmountReservingPathIdentifier
     void addFinalConfigurationOnPath(
         PathID pathID,
-        PathStats* pathStats);
+        PathStats *pathStats);
 
     /**
      * reduce amount reservation to node on specified path
@@ -247,15 +246,15 @@ protected:
         bool sendToLastProcessedNode = false);
 
     /**
-    * send message with final amounts configuration (final amount which should be reserved)
-    * on specified path to all participants of transaction
-    * @param pathStats path with nodes status, final amount configuration of which will be sent
-    * @param pathID id of path, final amount configuration of which will be sent
-    * @param finalPathAmount final amount which should be reserved on specified path
-    */
-// todo : refactor without pathStats and pathID, use inside mCurrentAmountReservingPathIdentifier
+     * send message with final amounts configuration (final amount which should be reserved)
+     * on specified path to all participants of transaction
+     * @param pathStats path with nodes status, final amount configuration of which will be sent
+     * @param pathID id of path, final amount configuration of which will be sent
+     * @param finalPathAmount final amount which should be reserved on specified path
+     */
+    // todo : refactor without pathStats and pathID, use inside mCurrentAmountReservingPathIdentifier
     void sendFinalPathConfiguration(
-        PathStats* pathStats,
+        PathStats *pathStats,
         PathID pathID,
         const TrustLineAmount &finalPathAmount);
 
@@ -322,7 +321,7 @@ protected:
     vector<PathID> mPathIDs;
 
     // Reservation stage contains it's own internal steps counter.
-    byte mReservationsStage;
+    byte_t mReservationsStage;
 
     // Contains all addresses of participants of current path.
     // Only main addresses are used for building paths.
@@ -360,4 +359,4 @@ protected:
 
     bool mIsPaymentTransactionsAllowedDueToObserving;
 };
-#endif //GEO_NETWORK_CLIENT_COORDINATORPAYMENTTRANSCATION_H
+#endif // GEO_NETWORK_CLIENT_COORDINATORPAYMENTTRANSCATION_H

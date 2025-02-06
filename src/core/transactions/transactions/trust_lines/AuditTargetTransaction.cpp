@@ -41,19 +41,19 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
     if (!mContractorsManager->contractorPresent(mContractorID)) {
         warning() << "There is no contractor with requested id";
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                   ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
     }
 
     if (!mTrustLines->trustLineIsPresent(mContractorID)) {
         warning() << "Trust line is absent.";
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                   ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
     }
 
     if (mTrustLines->trustLineState(mContractorID) == TrustLine::AuditPending) {
         warning() << "Simultaneous audit";
         if (mContractorsManager->selfContractor()->mainAddress()->fullAddress() >
-            mContractorsManager->contractorMainAddress(mContractorID)->fullAddress()) {
+                mContractorsManager->contractorMainAddress(mContractorID)->fullAddress()) {
             info() << "Current address greater than contractor's. Current transaction would be cancelled";
             return resultDone();
         } else {
@@ -61,7 +61,7 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
             auto ioTransaction = mStorageHandler->beginTransaction();
             try {
                 auto keyChain = mKeysStore->keychain(
-                    mTrustLines->trustLineID(mContractorID));
+                                    mTrustLines->trustLineID(mContractorID));
                 keyChain.removeCancelledOwnAuditPart(ioTransaction);
                 mTrustLines->updateTrustLineFromStorage(
                     mContractorID,
@@ -75,7 +75,7 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
                 warning() << "Attempt to remove previous audit from the node " << mContractorID << " failed. "
                           << e.what();
                 return sendAuditErrorConfirmation(
-                    ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                           ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
             } catch (IOError &e) {
                 warning() << "Attempt to remove previous audit from the node " << mContractorID << " failed. "
                           << "IO transaction can't be completed. "
@@ -89,24 +89,24 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
     }
 
     if (mTrustLines->trustLineState(mContractorID) != TrustLine::Active and
-        mTrustLines->trustLineState(mContractorID) != TrustLine::Reset) {
+            mTrustLines->trustLineState(mContractorID) != TrustLine::Reset) {
         warning() << "Invalid TL state " << mTrustLines->trustLineState(mContractorID);
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                   ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
     }
 
     // todo maybe check in storage (keyChain)
     if (!mTrustLines->trustLineOwnKeysPresent(mContractorID)) {
         warning() << "There are no own keys";
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::OwnKeysAbsent);
+                   ConfirmationMessage::OwnKeysAbsent);
     }
 
     // todo maybe check in storage (keyChain)
     if (!mTrustLines->trustLineContractorKeysPresent(mContractorID)) {
         warning() << "There are no contractor keys";
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::ContractorKeysAbsent);
+                   ConfirmationMessage::ContractorKeysAbsent);
     }
 
     if (mAuditNumber < mMessage->auditNumber()) {
@@ -117,7 +117,7 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
     if (mAuditNumber - mMessage->auditNumber() > 1) {
         warning() << "Contractor's audit number is deprecated " << mMessage->auditNumber();
         return sendAuditErrorConfirmation(
-           ConfirmationMessage::Audit_IncorrectNumber);
+                   ConfirmationMessage::Audit_IncorrectNumber);
     }
 
     // Trust line must be created (or updated) in the internal storage.
@@ -125,7 +125,7 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
     // Both writes must be done atomically, so the IO transaction is used.
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
 
     if (mAuditNumber - mMessage->auditNumber() == 1) {
         info() << "Contractor send current audit " << mMessage->auditNumber();
@@ -159,36 +159,36 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
         }
 
         if (mMessage->incomingAmount() == TrustLine::kZeroAmount()
-            and mTrustLines->outgoingTrustAmount(mContractorID) != TrustLine::kZeroAmount()) {
+                and mTrustLines->outgoingTrustAmount(mContractorID) != TrustLine::kZeroAmount()) {
             info() << "closeOutgoingTrustLine";
             closeOutgoingTrustLine(ioTransaction);
         }
 
         auto contractorSerializedAuditData = getContractorSerializedAuditData(
-            keyChain.ownPublicKeysHash(ioTransaction),
-            keyChain.contractorPublicKeysHash(ioTransaction));
+                keyChain.ownPublicKeysHash(ioTransaction),
+                keyChain.contractorPublicKeysHash(ioTransaction));
 
         if (!keyChain.checkSign(
-                ioTransaction,
-                contractorSerializedAuditData.first,
-                contractorSerializedAuditData.second,
-                mMessage->signature(),
-                mMessage->keyNumber())) {
+                    ioTransaction,
+                    contractorSerializedAuditData.first,
+                    contractorSerializedAuditData.second,
+                    mMessage->signature(),
+                    mMessage->keyNumber())) {
             warning() << "Contractor didn't sign message correct by key number " << mMessage->keyNumber();
             return sendAuditErrorConfirmation(
-                ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                       ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
         }
         info() << "Signature is correct";
 
         auto ownPublicKeysHash = keyChain.ownPublicKeysHash(ioTransaction);
         auto contractorPublicKeysHash = keyChain.contractorPublicKeysHash(ioTransaction);
         auto serializedAuditData = getOwnSerializedAuditData(
-            ownPublicKeysHash,
-            contractorPublicKeysHash);
+                                       ownPublicKeysHash,
+                                       contractorPublicKeysHash);
         mOwnSignatureAndKeyNumber = keyChain.sign(
-            ioTransaction,
-            serializedAuditData.first,
-            serializedAuditData.second);
+                                        ioTransaction,
+                                        serializedAuditData.first,
+                                        serializedAuditData.second);
 
         keyChain.saveFullAudit(
             ioTransaction,
@@ -241,7 +241,7 @@ TransactionResult::SharedConst AuditTargetTransaction::run()
         warning() << "Attempt to change trust line from the node " << mContractorID << " failed. "
                   << e.what();
         return sendAuditErrorConfirmation(
-            ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
+                   ConfirmationMessage::ErrorShouldBeRemovedFromQueue);
     } catch (IOError &e) {
         ioTransaction->rollback();
         mTrustLines->setIncoming(
@@ -287,43 +287,43 @@ void AuditTargetTransaction::setIncomingTrustLineAmount(
     IOTransaction::Shared ioTransaction)
 {
     auto kOperationResult = mTrustLines->setIncoming(
-        mContractorID,
-        mMessage->outgoingAmount());
+                                mContractorID,
+                                mMessage->outgoingAmount());
     switch (kOperationResult) {
-        case TrustLinesManager::TrustLineOperationResult::Updated: {
-            populateHistory(ioTransaction, TrustLineRecord::Updating);
-            mTopologyCacheManager->resetInitiatorCache();
-            mMaxFlowCacheManager->clearCashes();
-            info() << "Incoming trust line from the node " << mContractorID
-                   << " has been successfully set to " << mMessage->outgoingAmount();
-            break;
-        }
+    case TrustLinesManager::TrustLineOperationResult::Updated: {
+        populateHistory(ioTransaction, TrustLineRecord::Updating);
+        mTopologyCacheManager->resetInitiatorCache();
+        mMaxFlowCacheManager->clearCashes();
+        info() << "Incoming trust line from the node " << mContractorID
+               << " has been successfully set to " << mMessage->outgoingAmount();
+        break;
+    }
 
-        case TrustLinesManager::TrustLineOperationResult::Closed: {
-            populateHistory(ioTransaction, TrustLineRecord::Rejecting);
-            // remove this TL from Topology TrustLines Manager
-            mTopologyTrustLinesManager->addTrustLine(
-                make_shared<TopologyTrustLine>(
-                    0,
-                    mContractorID,
-                    make_shared<const TrustLineAmount>(0)));
-            mTopologyCacheManager->resetInitiatorCache();
-            mMaxFlowCacheManager->clearCashes();
-            info() << "Incoming trust line from the node " << mContractorID
-                   << " has been successfully closed.";
-            break;
-        }
+    case TrustLinesManager::TrustLineOperationResult::Closed: {
+        populateHistory(ioTransaction, TrustLineRecord::Rejecting);
+        // remove this TL from Topology TrustLines Manager
+        mTopologyTrustLinesManager->addTrustLine(
+            make_shared<TopologyTrustLine>(
+                0,
+                mContractorID,
+                make_shared<const TrustLineAmount>(0)));
+        mTopologyCacheManager->resetInitiatorCache();
+        mMaxFlowCacheManager->clearCashes();
+        info() << "Incoming trust line from the node " << mContractorID
+               << " has been successfully closed.";
+        break;
+    }
 
-        case TrustLinesManager::TrustLineOperationResult::NoChanges: {
-            // It is possible, that set trust line request will arrive twice or more times,
-            // but only first processed update must be written to the trust lines history.
-            info() << "Incoming trust line from the node " << mContractorID
-                   << " has not been changed.";
-            break;
-        }
-        default: {
-            warning() << "Invalid operation result " << kOperationResult << ". History wouldn't be recorded";
-        }
+    case TrustLinesManager::TrustLineOperationResult::NoChanges: {
+        // It is possible, that set trust line request will arrive twice or more times,
+        // but only first processed update must be written to the trust lines history.
+        info() << "Incoming trust line from the node " << mContractorID
+               << " has not been changed.";
+        break;
+    }
+    default: {
+        warning() << "Invalid operation result " << kOperationResult << ". History wouldn't be recorded";
+    }
     }
 }
 
@@ -347,15 +347,15 @@ void AuditTargetTransaction::populateHistory(
     TrustLineRecord::Shared record;
     if (operationType != TrustLineRecord::RejectingOutgoing) {
         record = make_shared<TrustLineRecord>(
-            mTransactionUUID,
-            operationType,
-            mContractorsManager->contractor(mContractorID),
-            mMessage->outgoingAmount());
+                     mTransactionUUID,
+                     operationType,
+                     mContractorsManager->contractor(mContractorID),
+                     mMessage->outgoingAmount());
     } else {
         record = make_shared<TrustLineRecord>(
-            mTransactionUUID,
-            operationType,
-            mContractorsManager->contractor(mContractorID));
+                     mTransactionUUID,
+                     operationType,
+                     mContractorsManager->contractor(mContractorID));
     }
 
     ioTransaction->historyStorage()->saveTrustLineRecord(

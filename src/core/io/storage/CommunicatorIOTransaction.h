@@ -6,7 +6,8 @@
 
 #include "../../../libs/sqlite3/sqlite3.h"
 
-class CommunicatorIOTransaction {
+class CommunicatorIOTransaction
+{
 
 public:
     typedef shared_ptr<CommunicatorIOTransaction> Shared;

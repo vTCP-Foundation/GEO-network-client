@@ -38,7 +38,8 @@ HistoryAdditionalPaymentsCommand::HistoryAdditionalPaymentsCommand(
         mTimeTo += pt::microseconds(_attr(ctx));
     };
     auto setLowBoundaryAmountNull = [&](auto &ctx) {
-        mIsLowBoundaryAmountPresent = false; };
+        mIsLowBoundaryAmountPresent = false;
+    };
     auto lowBoundaryAmountNumber = [&](auto &ctx) {
         lowBoundaryAmount += _attr(ctx);
         mIsLowBoundaryAmountPresent = true;
@@ -90,9 +91,8 @@ HistoryAdditionalPaymentsCommand::HistoryAdditionalPaymentsCommand(
                 > eol > eoi));
         mLowBoundaryAmount = TrustLineAmount(lowBoundaryAmount);
         mHighBoundaryAmount = TrustLineAmount(highBoundaryAmount);
-    }
-    catch(...) {
-       throw ValueError("HistoryAdditionalPaymentsCommand : cannot parse command.");
+    } catch(...) {
+        throw ValueError("HistoryAdditionalPaymentsCommand : cannot parse command.");
     }
 }
 
@@ -160,9 +160,9 @@ const SerializedEquivalent HistoryAdditionalPaymentsCommand::equivalent() const
 CommandResult::SharedConst HistoryAdditionalPaymentsCommand::resultOk(string &historyPaymentsStr) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            historyPaymentsStr));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   historyPaymentsStr));
 }

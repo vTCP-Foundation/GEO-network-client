@@ -3,14 +3,16 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class TTLProlongationResponseMessage : public TransactionMessage {
+class TTLProlongationResponseMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<TTLProlongationResponseMessage> Shared;
     typedef shared_ptr<const TTLProlongationResponseMessage> ConstShared;
 
 public:
-    enum OperationState {
+    enum OperationState
+    {
         Continue = 1,
         Finish = 2,
     };
@@ -30,7 +32,7 @@ public:
     const OperationState state() const;
 
 protected:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
     pair<BytesShared, size_t> serializeToBytes() const override;
 
@@ -38,5 +40,4 @@ protected:
     OperationState mState;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_TTLPROLONGATIONRESPONSEMESSAGE_H
+#endif // GEO_NETWORK_CLIENT_TTLPROLONGATIONRESPONSEMESSAGE_H

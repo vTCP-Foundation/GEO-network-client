@@ -7,9 +7,11 @@ namespace uuid_map {
 
 
 
-class BucketBlockRecordTests {
+class BucketBlockRecordTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkInsertInEmptyRecord();
         checkInsert();
         checkInsertDuplicate();
@@ -29,9 +31,10 @@ public:
     }
 
 private:
-    void checkInsertInEmptyRecord() {
+    void checkInsertInEmptyRecord()
+    {
         NodeUUID uuid;
-        
+
         AbstractRecordsHandler::RecordNumber recordNumber(100);
 
         BucketBlockRecord record(uuid);
@@ -42,7 +45,8 @@ private:
         assert(record.mRecordsNumbers[0] == recordNumber);
     }
 
-    void checkInsert() {
+    void checkInsert()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -57,7 +61,8 @@ private:
         }
     }
 
-    void checkInsertDuplicate() {
+    void checkInsertDuplicate()
+    {
         NodeUUID uuid;
 
         BucketBlockRecord record(uuid);
@@ -79,7 +84,8 @@ private:
         assert(record.mRecordsNumbers[0] == recordNumber);
     }
 
-    void checkRemoveFromEmptyRecord() {
+    void checkRemoveFromEmptyRecord()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
         AbstractRecordsHandler::RecordNumber recordNumber(100);
@@ -87,7 +93,8 @@ private:
         assert(!record.remove(recordNumber));
     }
 
-    void checkRemove() {
+    void checkRemove()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -102,7 +109,8 @@ private:
         assert(record.mRecordsNumbersCount == 0);
     }
 
-    void checkReverseRemove() {
+    void checkReverseRemove()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -117,7 +125,8 @@ private:
         assert(record.mRecordsNumbersCount == 0);
     }
 
-    void checkBinSearchWithZeroElements() {
+    void checkBinSearchWithZeroElements()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -131,7 +140,8 @@ private:
         }
     }
 
-    void checkBinSearchWithAbsentElement() {
+    void checkBinSearchWithAbsentElement()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
         record.insert(1);
@@ -147,7 +157,8 @@ private:
         }
     }
 
-    void checkBinSearchWithOneElement() {
+    void checkBinSearchWithOneElement()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -155,7 +166,8 @@ private:
         assert(record.indexOf(1) == 0);
     }
 
-    void checkBinSearchWithPairCountOfElements() {
+    void checkBinSearchWithPairCountOfElements()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -166,7 +178,8 @@ private:
         assert(record.indexOf(2) == 1);
     }
 
-    void checkBinSearchWithNonPairCountOfElements() {
+    void checkBinSearchWithNonPairCountOfElements()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
 
@@ -186,7 +199,8 @@ private:
         assert(record.indexOf(5) == 4);
     }
 
-    void checkModifiedAfterInsertion() {
+    void checkModifiedAfterInsertion()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
         assert(!record.isModified());
@@ -195,7 +209,8 @@ private:
         assert(record.isModified());
     }
 
-    void checkModifiedAfterRemoving() {
+    void checkModifiedAfterRemoving()
+    {
         NodeUUID uuid;
         BucketBlockRecord record(uuid);
         assert(!record.isModified());

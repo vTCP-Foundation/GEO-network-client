@@ -20,14 +20,14 @@ TransactionResult::SharedConst InitChannelTransaction::run()
 {
     info() << "step " << mStep;
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: wrong value of mStep");
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: wrong value of mStep");
     }
 }
 
@@ -42,7 +42,7 @@ TransactionResult::SharedConst InitChannelTransaction::runInitializationStage()
         return resultProtocolError();
     }
     if (mContractorsManager->selfContractor()->containsAtLeastOneAddress(
-        mCommand->contractorAddresses())) {
+                mCommand->contractorAddresses())) {
         warning() << "Contractor's addresses contain at least one address is equal to own address";
         return resultProtocolError();
     }
@@ -52,18 +52,18 @@ TransactionResult::SharedConst InitChannelTransaction::runInitializationStage()
         if (mCommand->cryptoKey().empty()) {
             info() << "Channel crypto key generation";
             mContractor = mContractorsManager->createContractor(
-                ioTransaction,
-                mCommand->contractorAddresses());
+                              ioTransaction,
+                              mCommand->contractorAddresses());
             info() << "Init channel to contractor with ID " << mContractor->getID()
                    << " and crypto key " << *mContractor->cryptoKey()->publicKey;
             return resultOK();
         } else {
             info() << "Channel crypto key: " << mCommand->cryptoKey();
             mContractor = mContractorsManager->createContractor(
-                ioTransaction,
-                mCommand->contractorAddresses(),
-                mCommand->cryptoKey(),
-                mCommand->contractorChannelID());
+                              ioTransaction,
+                              mCommand->contractorAddresses(),
+                              mCommand->cryptoKey(),
+                              mCommand->contractorChannelID());
             info() << "Init channel to contractor with ID " << mContractor->getID();
             info() << "Channel ID on contractor side " << mContractor->ownIdOnContractorSide();
             sendMessage<InitChannelMessage>(
@@ -97,8 +97,8 @@ TransactionResult::SharedConst InitChannelTransaction::runResponseProcessingStag
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::Channel_Confirm},
-                kWaitMillisecondsForResponse);
+            {Message::Channel_Confirm},
+            kWaitMillisecondsForResponse);
         }
         info() << "Channel was not confirm";
         return resultDone();
@@ -115,7 +115,7 @@ TransactionResult::SharedConst InitChannelTransaction::resultOK()
     ss << mContractor->getID() << kTokensSeparator << *mContractor->cryptoKey()->publicKey;
     auto channelInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->responseOk(channelInfo));
+               mCommand->responseOk(channelInfo));
 }
 
 TransactionResult::SharedConst InitChannelTransaction::resultOKAndWaitMessage()
@@ -124,27 +124,27 @@ TransactionResult::SharedConst InitChannelTransaction::resultOKAndWaitMessage()
     ss << mContractor->getID() << kTokensSeparator << *mContractor->cryptoKey()->publicKey;
     auto channelInfo = ss.str();
     return transactionResultFromCommandAndWaitForMessageTypes(
-        mCommand->responseOk(channelInfo),
-        {Message::Channel_Confirm},
-        kWaitMillisecondsForResponse);
+               mCommand->responseOk(channelInfo),
+    {Message::Channel_Confirm},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst InitChannelTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst InitChannelTransaction::resultChannelAlreadyExist()
 {
     return transactionResultFromCommand(
-        mCommand->responseAlreadyCreated());
+               mCommand->responseAlreadyCreated());
 }
 
 TransactionResult::SharedConst InitChannelTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string InitChannelTransaction::logHeader() const

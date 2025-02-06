@@ -59,6 +59,6 @@ pair<BytesShared, size_t> ResponseCycleMessage::serializeToBytes() const
         sizeof(SerializedOperationState));
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

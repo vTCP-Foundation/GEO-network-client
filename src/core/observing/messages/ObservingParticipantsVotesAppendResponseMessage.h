@@ -3,7 +3,8 @@
 
 #include "base/ObservingResponseMessage.h"
 
-class ObservingParticipantsVotesAppendResponseMessage : public ObservingResponseMessage {
+class ObservingParticipantsVotesAppendResponseMessage : public ObservingResponseMessage
+{
 
 public:
     typedef shared_ptr<ObservingParticipantsVotesAppendResponseMessage> Shared;

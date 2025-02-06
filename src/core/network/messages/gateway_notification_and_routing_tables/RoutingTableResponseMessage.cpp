@@ -32,7 +32,7 @@ RoutingTableResponseMessage::RoutingTableResponseMessage(
         neighborsAddresses.reserve(*neighborsNumber);
         for (SerializedRecordNumber idx = 0; idx < *neighborsNumber; idx++) {
             auto address = deserializeAddress(
-                buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
             bytesBufferOffset += address->serializedSize();
             neighborsAddresses.push_back(address);
         }
@@ -42,8 +42,7 @@ RoutingTableResponseMessage::RoutingTableResponseMessage(
     }
 }
 
-const Message::MessageType RoutingTableResponseMessage::typeID() const
-{
+const Message::MessageType RoutingTableResponseMessage::typeID() const {
     return Message::MessageType::RoutingTableResponse;
 }
 
@@ -98,11 +97,10 @@ pair<BytesShared, size_t> RoutingTableResponseMessage::serializeToBytes() const
         }
     }
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
-vector<pair<SerializedEquivalent, vector<BaseAddress::Shared>>> RoutingTableResponseMessage::neighborsByEquivalents() const
-{
+vector<pair<SerializedEquivalent, vector<BaseAddress::Shared>>> RoutingTableResponseMessage::neighborsByEquivalents() const {
     return mNeighbors;
 }

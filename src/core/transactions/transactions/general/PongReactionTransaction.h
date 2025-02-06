@@ -9,15 +9,16 @@
 
 namespace signals = boost::signals2;
 
-class PongReactionTransaction : public BaseTransaction {
+class PongReactionTransaction : public BaseTransaction
+{
 public:
     typedef shared_ptr<PongReactionTransaction> Shared;
 
 public:
     typedef signals::signal<void(
-            ContractorID,
-            const SerializedEquivalent,
-            const TransactionType)> ResumeTransactionSignal;
+        ContractorID,
+        const SerializedEquivalent,
+        const TransactionType)> ResumeTransactionSignal;
 
 public:
     PongReactionTransaction(

@@ -13,7 +13,8 @@
 #include "../../../network/messages/trust_lines/PublicKeyMessage.h"
 #include "../../../network/messages/trust_lines/PublicKeyHashConfirmation.h"
 
-class PublicKeysSharingTargetTransaction : public BaseTransaction {
+class PublicKeysSharingTargetTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<PublicKeysSharingTargetTransaction> Shared;
@@ -31,7 +32,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         NextKeyProcessing = 2,
     };

@@ -24,7 +24,8 @@
  * then outgoing trust line to this contractor would be closed.
  */
 class SetOutgoingTrustLineTransaction:
-    public BaseTrustLineTransaction {
+    public BaseTrustLineTransaction
+{
 
 public:
     typedef shared_ptr<SetOutgoingTrustLineTransaction> Shared;

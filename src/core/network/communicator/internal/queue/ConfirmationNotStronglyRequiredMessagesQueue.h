@@ -10,7 +10,8 @@
 
 #include <map>
 
-class ConfirmationNotStronglyRequiredMessagesQueue : protected LoggerMixin {
+class ConfirmationNotStronglyRequiredMessagesQueue : protected LoggerMixin
+{
 
 public:
     typedef shared_ptr<ConfirmationNotStronglyRequiredMessagesQueue> Shared;
@@ -20,7 +21,7 @@ public:
         const SerializedEquivalent equivalent,
         BaseAddress::Shared contractorAddress,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     /**
      * Checks message type, and in case if this message requires confirmation -
@@ -43,20 +44,20 @@ public:
      * @returns date time when next sending attempt must be scheduled.
      */
     const DateTime &nextSendingAttemptDateTime()
-        noexcept;
+    noexcept;
 
     /**
      * @returns messages, that are enqueued by this queue.
      * On each call, internal timer of next re-sending is exponentially increased.
      */
     const map<ConfirmationID, MaxFlowCalculationConfirmationMessage::Shared> &messages()
-        noexcept;
+    noexcept;
 
     /**
      * @returns messages count in the queue.
      */
     const size_t size() const
-        noexcept;
+    noexcept;
 
     bool checkIfNeedResendMessages();
 
@@ -65,10 +66,10 @@ protected:
      * Sets re-sending timeout to the default value.
      */
     void resetInternalTimeout()
-        noexcept;
+    noexcept;
 
     const string logHeader() const
-        noexcept;
+    noexcept;
 
 protected:
     const uint8_t kMaxCountResendingAttempts = 3;

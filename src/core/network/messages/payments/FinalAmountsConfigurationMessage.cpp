@@ -16,7 +16,8 @@ FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
     mPaymentParticipants(paymentParticipants),
     mMaximalClaimingBlockNumber(maximalClaimingBlockNumber),
     mIsReceiptContains(false)
-{}
+{
+}
 
 FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
     const SerializedEquivalent equivalent,
@@ -40,11 +41,11 @@ FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
     mPublicKeyNumber(publicKeyNumber),
     mSignature(signature),
     mTransactionPublicKeyHash(transactionPublicKeyHash)
-{}
+{
+}
 
 FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
-    BytesShared buffer):
-    RequestMessageWithReservations(buffer)
+    BytesShared buffer) : RequestMessageWithReservations(buffer)
 {
     auto parentMessageOffset = RequestMessageWithReservations::kOffsetToInheritedBytes();
     auto bytesBufferOffset = buffer.get() + parentMessageOffset;
@@ -74,10 +75,10 @@ FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
     memcpy(
         &mIsReceiptContains,
         bytesBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
     //----------------------------------------------------
     if (mIsReceiptContains) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             &mPublicKeyNumber,
             bytesBufferOffset,
@@ -85,12 +86,12 @@ FinalAmountsConfigurationMessage::FinalAmountsConfigurationMessage(
         bytesBufferOffset += sizeof(KeyNumber);
 
         auto signature = make_shared<lamport::Signature>(
-            bytesBufferOffset);
+                             bytesBufferOffset);
         mSignature = signature;
         bytesBufferOffset += lamport::Signature::signatureSize();
 
         mTransactionPublicKeyHash = make_shared<lamport::KeyHash>(
-            bytesBufferOffset);
+                                        bytesBufferOffset);
     }
 }
 
@@ -99,7 +100,7 @@ const Message::MessageType FinalAmountsConfigurationMessage::typeID() const
     return Message::Payments_FinalAmountsConfiguration;
 }
 
-const map<PaymentNodeID, Contractor::Shared>& FinalAmountsConfigurationMessage::paymentParticipants() const
+const map<PaymentNodeID, Contractor::Shared> &FinalAmountsConfigurationMessage::paymentParticipants() const
 {
     return mPaymentParticipants;
 }
@@ -132,17 +133,12 @@ const lamport::KeyHash::Shared FinalAmountsConfigurationMessage::transactionPubl
 pair<BytesShared, size_t> FinalAmountsConfigurationMessage::serializeToBytes() const
 {
     auto parentBytesAndCount = RequestMessageWithReservations::serializeToBytes();
-    size_t bytesCount = parentBytesAndCount.second
-                        + sizeof(SerializedRecordsCount)
-                        + sizeof(BlockNumber)
-                        + sizeof(byte);
+    size_t bytesCount = parentBytesAndCount.second + sizeof(SerializedRecordsCount) + sizeof(BlockNumber) + sizeof(byte_t);
     for (const auto &participant : mPaymentParticipants) {
         bytesCount += sizeof(PaymentNodeID) + participant.second->serializedSize();
     }
     if (mIsReceiptContains) {
-        bytesCount += sizeof(KeyNumber)
-                + lamport::Signature::signatureSize()
-                + lamport::KeyHash::kBytesSize;
+        bytesCount += sizeof(KeyNumber) + lamport::Signature::signatureSize() + lamport::KeyHash::kBytesSize;
     }
 
     BytesShared buffer = tryMalloc(bytesCount);
@@ -186,10 +182,10 @@ pair<BytesShared, size_t> FinalAmountsConfigurationMessage::serializeToBytes() c
     memcpy(
         bytesBufferOffset,
         &mIsReceiptContains,
-        sizeof(byte));
+        sizeof(byte_t));
     //----------------------------------------------------
     if (mIsReceiptContains) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             bytesBufferOffset,
             &mPublicKeyNumber,
@@ -209,6 +205,6 @@ pair<BytesShared, size_t> FinalAmountsConfigurationMessage::serializeToBytes() c
     }
     //----------------------------------------------------
     return make_pair(
-        buffer,
-        bytesCount);
+               buffer,
+               bytesCount);
 }

@@ -46,9 +46,9 @@ CommandResult::SharedConst GetFirstLevelContractorsCommand::resultOk(
     string& neighbors) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        neighbors);
+               identifier(),
+               UUID(),
+               200,
+               neighbors);
 }
 

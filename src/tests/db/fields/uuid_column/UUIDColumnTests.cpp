@@ -8,9 +8,11 @@ using namespace db::fields;
 namespace f = boost::filesystem;
 
 
-class UUIDColumnTests {
+class UUIDColumnTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkInternalFilesCreation();
         checkAtomicSet();
         checkNonAtomicSet();
@@ -27,7 +29,8 @@ public:
 protected:
     // Testable class, that allows acces to the private methods and fields.
     class TUUIDColumn:
-        public UUIDColumn {
+        public UUIDColumn
+    {
         friend class UUIDColumnTests;
 
     public:
@@ -37,15 +40,18 @@ protected:
 
     // Returns path to the directory,
     // into which all the tests must be done.
-    const f::path path() const {
+    const f::path path() const
+    {
         return f::path("tests/db/uuid_column/");
     }
 
-    void clean() {
+    void clean()
+    {
         f::remove_all(path());
     }
 
-    void checkInternalFilesCreation() {
+    void checkInternalFilesCreation()
+    {
         clean();
 
         // Ensure directory
@@ -81,7 +87,8 @@ protected:
         }
     }
 
-    void checkAtomicSet() {
+    void checkAtomicSet()
+    {
         clean();
 
         // Ensure directory
@@ -103,7 +110,8 @@ protected:
         }
     }
 
-    void checkNonAtomicSet() {
+    void checkNonAtomicSet()
+    {
         clean();
 
         // Ensure directory
@@ -130,7 +138,8 @@ protected:
     /*
      * This test tries to set one hundred record numbers associated with one uuid.
      */
-    void checkSetSeveralRecordNumbersIntoSameRecord() {
+    void checkSetSeveralRecordNumbersIntoSameRecord()
+    {
         clean();
 
         // Ensure directory
@@ -178,7 +187,8 @@ protected:
         }
     }
 
-    void checkAtomicRemoving() {
+    void checkAtomicRemoving()
+    {
         clean();
         f::create_directories(path());
 
@@ -201,7 +211,8 @@ protected:
      * This test case assigns 100 records to one uuid.
      * Than removes 50 of them and checks if rest 50 are stored correct.
      */
-    void checkAtomicRemovingTC2() {
+    void checkAtomicRemovingTC2()
+    {
         clean();
         f::create_directories(path());
 
@@ -235,7 +246,8 @@ protected:
         }
     }
 
-    void performanceOfWriting() {
+    void performanceOfWriting()
+    {
         clean();
         f::create_directories(path());
 

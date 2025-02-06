@@ -14,30 +14,33 @@ PaymentKeysHandler::PaymentKeysHandler(
                    " (transaction_uuid BLOB NOT NULL, "
                    "public_key BLOB NOT NULL, "
                    "private_key BLOB NOT NULL);";
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("PaymentKeysHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
-    query = "CREATE INDEX IF NOT EXISTS " + mTableName
-            + "_transaction_uuid_idx on " + mTableName + "(transaction_uuid);";
+    query = "CREATE INDEX IF NOT EXISTS " + mTableName + "_transaction_uuid_idx on " + mTableName + "(transaction_uuid);";
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::creating  index for TransactionUUID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("PaymentKeysHandler::creating index for TransactionUUID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
     sqlite3_reset(stmt);
@@ -56,19 +59,22 @@ void PaymentKeysHandler::saveOwnKey(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::saveOwnKey: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data,
                            TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::saveOwnKey: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, publicKey->data(),
                            (int)publicKey->keySize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::saveOwnKey: "
-                          "Bad binding of Public Key; sqlite error: " + to_string(rc));
+                      "Bad binding of Public Key; sqlite error: " +
+                      to_string(rc));
     }
 
     // todo encrypt private key data
@@ -82,10 +88,11 @@ void PaymentKeysHandler::saveOwnKey(
     }
     auto g = privateKey->data()->unlockAndInitGuard();
     rc = sqlite3_bind_blob(stmt, 3, buffer.get(),
-                       (int) privateKey->keySize(), SQLITE_STATIC);
+                           (int)privateKey->keySize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::saveOwnKey: "
-                          "Bad binding of Private Key; sqlite error: " + to_string(rc));
+                      "Bad binding of Private Key; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -97,30 +104,32 @@ void PaymentKeysHandler::saveOwnKey(
 #endif
     } else {
         throw IOError("PaymentKeysHandler::saveOwnKey: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
-PrivateKey* PaymentKeysHandler::getOwnPrivateKey(
+PrivateKey *PaymentKeysHandler::getOwnPrivateKey(
     const TransactionUUID &transactionUUID)
 {
-    string query = "SELECT private_key FROM " + mTableName
-                   + " WHERE transaction_uuid = ?;";
+    string query = "SELECT private_key FROM " + mTableName + " WHERE transaction_uuid = ?;";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::getOwnPrivateKey: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::getOwnPrivateKey: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_ROW) {
-        auto result = new PrivateKey((byte*)sqlite3_column_blob(stmt, 0));
+        auto result = new PrivateKey((byte_t*)sqlite3_column_blob(stmt, 0));
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         return result;
@@ -128,7 +137,7 @@ PrivateKey* PaymentKeysHandler::getOwnPrivateKey(
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         throw NotFoundError("PaymentKeysHandler::getOwnPrivateKey: "
-                                "There are now records with requested transactionUUID");
+                            "There are now records with requested transactionUUID");
     }
 }
 
@@ -137,15 +146,17 @@ void PaymentKeysHandler::deleteKeyByTransactionUUID(
 {
     string query = "DELETE FROM " + mTableName + " WHERE transaction_uuid = ?";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::deleteKeyByTransactionUUID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentKeysHandler::deleteKeyByTransactionUUID: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -156,7 +167,8 @@ void PaymentKeysHandler::deleteKeyByTransactionUUID(
 #endif
     } else {
         throw IOError("PaymentKeysHandler::deleteKeyByTransactionUUID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 

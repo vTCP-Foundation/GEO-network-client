@@ -65,51 +65,51 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::run()
 {
     try {
         switch (mStep) {
-            case Stages::IntermediateNode_PreviousNeighborRequestProcessing:
-                return runPreviousNeighborRequestProcessingStage();
+        case Stages::IntermediateNode_PreviousNeighborRequestProcessing:
+            return runPreviousNeighborRequestProcessingStage();
 
-            case Stages::IntermediateNode_CoordinatorRequestProcessing:
-                return runCoordinatorRequestProcessingStage();
+        case Stages::IntermediateNode_CoordinatorRequestProcessing:
+            return runCoordinatorRequestProcessingStage();
 
-            case Stages::IntermediateNode_NextNeighborResponseProcessing:
-                return runNextNeighborResponseProcessingStage();
+        case Stages::IntermediateNode_NextNeighborResponseProcessing:
+            return runNextNeighborResponseProcessingStage();
 
-            case Stages::Common_FinalPathConfigurationChecking:
-                return runFinalPathConfigurationProcessingStage();
+        case Stages::Common_FinalPathConfigurationChecking:
+            return runFinalPathConfigurationProcessingStage();
 
-            case Stages::IntermediateNode_ReservationProlongation:
-                return runReservationProlongationStage();
+        case Stages::IntermediateNode_ReservationProlongation:
+            return runReservationProlongationStage();
 
-            case Stages::Coordinator_FinalAmountsConfigurationConfirmation:
-                return runFinalAmountsConfigurationConfirmation();
+        case Stages::Coordinator_FinalAmountsConfigurationConfirmation:
+            return runFinalAmountsConfigurationConfirmation();
 
-            case Stages::Common_ObservingBlockNumberProcessing:
-                return runCheckObservingBlockNumber();
+        case Stages::Common_ObservingBlockNumberProcessing:
+            return runCheckObservingBlockNumber();
 
-            case Stages::Common_Voting:
-                return runVotesCheckingStageWithCoordinatorClarification();
+        case Stages::Common_Voting:
+            return runVotesCheckingStageWithCoordinatorClarification();
 
-            case Stages::Common_VotesChecking:
-                return runVotesConsistencyCheckingStage();
+        case Stages::Common_VotesChecking:
+            return runVotesConsistencyCheckingStage();
 
-            case Stages::Common_Recovery:
-                return runVotesRecoveryParentStage();
+        case Stages::Common_Recovery:
+            return runVotesRecoveryParentStage();
 
-            case Stages::Common_Observing:
-                return runObservingResultStage();
+        case Stages::Common_Observing:
+            return runObservingResultStage();
 
-            case Stages::Common_ObservingReject:
-                return runObservingRejectTransaction();
+        case Stages::Common_ObservingReject:
+            return runObservingRejectTransaction();
 
-            case Stages::Common_Uncertain: {
-                info() << "Uncertain stage";
-                return resultDone();
-            }
+        case Stages::Common_Uncertain: {
+            info() << "Uncertain stage";
+            return resultDone();
+        }
 
-            default:
-                throw RuntimeError(
-                    "IntermediateNodePaymentTransaction::run: "
-                        "unexpected stage occurred.");
+        default:
+            throw RuntimeError(
+                "IntermediateNodePaymentTransaction::run: "
+                "unexpected stage occurred.");
         }
     } catch (Exception &e) {
         warning() << e.what();
@@ -127,9 +127,9 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runPreviousNe
     if (mMessage->finalAmountsConfiguration().empty()) {
         warning() << "Not received reservation";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            0,                  // 0, because we don't know pathID
-            ResponseMessage::Closed);
+                   kNeighbor,
+                   0,                  // 0, because we don't know pathID
+                   ResponseMessage::Closed);
     }
 
     const auto kReservation = mMessage->finalAmountsConfiguration()[0];
@@ -140,55 +140,55 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runPreviousNe
     if (senderID == ContractorsManager::kNotFoundContractorID) {
         warning() << "Previous node is not a neighbor";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::Rejected);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::Rejected);
     }
     debug() << "Sender ID " << senderID;
 
     if (!mTrustLinesManager->trustLineIsPresent(senderID)) {
         warning() << "Path is not valid: there is no TL with previous node. Rejected.";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::Rejected);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::Rejected);
     }
 
     if (!mTrustLinesManager->trustLineIsActive(senderID)) {
         warning() << "Path is not valid: TL with previous node is not active. Rejected.";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::Rejected);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::Rejected);
     }
 
     // update local reservations during amounts from coordinator
     if (!updateReservations(vector<pair<PathID, ConstSharedTrustLineAmount>>(
-        mMessage->finalAmountsConfiguration().begin() + 1,
-        mMessage->finalAmountsConfiguration().end()))) {
+                                mMessage->finalAmountsConfiguration().begin() + 1,
+                                mMessage->finalAmountsConfiguration().end()))) {
         warning() << "Previous node send path configuration, which is absent on current node";
         // next loop is only logger info
         for (const auto &reservation : mMessage->finalAmountsConfiguration()) {
             debug() << "path: " << reservation.first << " amount: " << *reservation.second.get();
         }
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::Closed);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::Closed);
     }
     debug() << "All reservations were updated";
 
     if (!mTrustLinesManager->trustLineContractorKeysPresent(senderID)) {
         warning() << "There are no contractor keys on TL";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::RejectedDueContractorKeysAbsence);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::RejectedDueContractorKeysAbsence);
     }
 
     const auto kIncomingAmount = mTrustLinesManager->incomingTrustAmountConsideringReservations(senderID);
     TrustLineAmount kReservationAmount =
-            min(*kReservation.second.get(), *kIncomingAmount);
+        min(*kReservation.second.get(), *kIncomingAmount);
 
 #ifdef TESTS
     mSubsystemsController->testForbidSendResponseToIntNodeOnReservationStage(
@@ -201,9 +201,9 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runPreviousNe
     if (0 == kReservationAmount || ! reserveIncomingAmount(senderID, kReservationAmount, kReservation.first)) {
         warning() << "No amount reservation is possible.";
         return sendErrorMessageOnPreviousNodeRequest(
-            kNeighbor,
-            kReservation.first,
-            ResponseMessage::Rejected);
+                   kNeighbor,
+                   kReservation.first,
+                   ResponseMessage::Rejected);
     }
 
     debug() << "reserve locally " << kReservationAmount << " to node "
@@ -220,13 +220,13 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runPreviousNe
         kReservationAmount);
 
     mStep = Stages::IntermediateNode_CoordinatorRequestProcessing;
-    return resultWaitForMessageTypes(
-        {Message::Payments_CoordinatorReservationRequest,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_CoordinatorReservationRequest,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(4));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCoordinatorRequestProcessingStage()
@@ -253,7 +253,7 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCoordinato
     if (kMessage->finalAmountsConfiguration().empty()) {
         warning() << "Not received reservation";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::Closed);
+                   ResponseMessage::Closed);
     }
 
     const auto kReservation = kMessage->finalAmountsConfiguration()[0];
@@ -267,39 +267,39 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCoordinato
     if (nextNodeID == ContractorsManager::kNotFoundContractorID) {
         warning() << "Next node is not neighbor";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
     info() << "Next node ID " << nextNodeID;
     if (!mTrustLinesManager->trustLineIsPresent(nextNodeID)) {
         warning() << "Path is not valid: there is no TL with next node. Rolled back.";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
 
     if (!mTrustLinesManager->trustLineIsActive(nextNodeID)) {
         warning() << "Path is not valid: TL with next node is not active. Rolled back.";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
 
     // todo maybe check in storage (keyChain)
     if (!mTrustLinesManager->trustLineOwnKeysPresent(nextNodeID)) {
         warning() << "There are no own keys on TL";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::RejectedDueOwnKeysAbsence);
+                   ResponseMessage::RejectedDueOwnKeysAbsence);
     }
 
     // Note: copy of shared pointer is required
     const auto kOutgoingAmount = mTrustLinesManager->outgoingTrustAmountConsideringReservations(nextNodeID);
     debug() << "available outgoing amount to next node is " << *kOutgoingAmount;
     TrustLineAmount reservationAmount = min(
-        *kReservation.second.get(),
-        *kOutgoingAmount);
+                                            *kReservation.second.get(),
+                                            *kOutgoingAmount);
 
     if (0 == reservationAmount || ! reserveOutgoingAmount(nextNodeID, reservationAmount, kReservation.first)) {
         warning() << "No amount reservation is possible. Rolled back.";
         return sendErrorMessageOnCoordinatorRequest(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
 
 #ifdef TESTS
@@ -336,15 +336,15 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCoordinato
         reservations);
 
     mStep = Stages::IntermediateNode_NextNeighborResponseProcessing;
-    return resultWaitForMessageTypes(
-        {Message::Payments_IntermediateNodeReservationResponse,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_FinalPathConfiguration,
-         Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse,
-         Message::General_NoEquivalent},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_IntermediateNodeReservationResponse,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_FinalPathConfiguration,
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse,
+        Message::General_NoEquivalent},
+    maxNetworkDelay(2));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runNextNeighborResponseProcessingStage()
@@ -353,13 +353,13 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runNextNeighb
     if (mContext.empty()) {
         warning() << "No amount reservation response received. Rolled back.";
         return sendErrorMessageOnNextNodeResponse(
-            ResponseMessage::NextNodeInaccessible);
+                   ResponseMessage::NextNodeInaccessible);
     }
 
     if (contextIsValid(Message::General_NoEquivalent, false)) {
         warning() << "Neighbor hasn't TLs on requested equivalent. Rolled back.";
         return sendErrorMessageOnNextNodeResponse(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
 
     if (!contextIsValid(Message::Payments_IntermediateNodeReservationResponse)) {
@@ -389,20 +389,20 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runNextNeighb
         warning() << "Amount reservation rejected with further transaction closing by the Receiver node.";
         // Receiver reject reservation and Coordinator should close transaction
         return sendErrorMessageOnNextNodeResponse(
-            ResponseMessage::Closed);
+                   ResponseMessage::Closed);
     }
 
-    if (kMessage->state() == IntermediateNodeReservationResponseMessage::Rejected){
+    if (kMessage->state() == IntermediateNodeReservationResponseMessage::Rejected) {
         warning() << "Amount reservation rejected by the neighbor node.";
         return sendErrorMessageOnNextNodeResponse(
-            ResponseMessage::Rejected);
+                   ResponseMessage::Rejected);
     }
 
-    if (kMessage->state() == IntermediateNodeReservationResponseMessage::RejectedDueContractorKeysAbsence){
+    if (kMessage->state() == IntermediateNodeReservationResponseMessage::RejectedDueContractorKeysAbsence) {
         warning() << "Neighbor node doesn't approved reservation request due to contractor keys absence";
         // todo maybe set mOwnKeysPresent into false and initiate KeysSharing TA
         return sendErrorMessageOnNextNodeResponse(
-            ResponseMessage::RejectedDueContractorKeysAbsence);
+                   ResponseMessage::RejectedDueContractorKeysAbsence);
     }
 
     debug() << "Next node accepted amount reservation.";
@@ -429,13 +429,13 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runNextNeighb
         mLastReservedAmount);
 
     mStep = Stages::Common_FinalPathConfigurationChecking;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalPathConfiguration,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay((kMaxPathLength - 2) * 4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalPathConfiguration,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay((kMaxPathLength - 2) * 4));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalPathConfigurationProcessingStage()
@@ -469,12 +469,12 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalPathC
         kMessage->amount());
 
     mStep = Stages::IntermediateNode_ReservationProlongation;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay((kMaxPathLength - 2) * 4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay((kMaxPathLength - 2) * 4));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runReservationProlongationStage()
@@ -512,13 +512,13 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runReservatio
             }
             // we don't wait for Payments_FinalPathConfiguration message,
             // because it isn't critical for us
-            return resultWaitForMessageTypes(
-                {Message::Payments_TTLProlongationResponse,
-                 Message::Payments_FinalPathConfiguration,
-                 Message::Payments_FinalAmountsConfiguration,
-                 Message::Payments_TransactionPublicKeyHash,
-                 Message::Payments_IntermediateNodeReservationRequest},
-                maxNetworkDelay((kMaxPathLength - 2) * 4));
+            return resultWaitForMessageTypes( {
+                Message::Payments_TTLProlongationResponse,
+                Message::Payments_FinalPathConfiguration,
+                Message::Payments_FinalAmountsConfiguration,
+                Message::Payments_TransactionPublicKeyHash,
+                Message::Payments_IntermediateNodeReservationRequest},
+            maxNetworkDelay((kMaxPathLength - 2) * 4));
         }
         return reject("Coordinator send response with transaction finish state. Rolling Back");
     }
@@ -539,13 +539,13 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runReservatio
     mTTLRequestWasSend = true;
     // we don't wait for Payments_FinalPathConfiguration message,
     // because it isn't critical for us
-    return resultWaitForMessageTypes(
-        {Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_FinalPathConfiguration,
-         Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_FinalPathConfiguration,
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(2));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalAmountsConfigurationConfirmation()
@@ -567,11 +567,11 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalAmoun
             if (utc_now() - mTimeStarted > kMaxTransactionDuration()) {
                 return reject("Transaction duration time has expired. Rolling back");
             }
-            return resultWaitForMessageTypes(
-                {Message::Payments_TTLProlongationResponse,
-                 Message::Payments_FinalAmountsConfiguration,
-                 Message::Payments_TransactionPublicKeyHash},
-                maxNetworkDelay((kMaxPathLength - 1) * 4));
+            return resultWaitForMessageTypes( {
+                Message::Payments_TTLProlongationResponse,
+                Message::Payments_FinalAmountsConfiguration,
+                Message::Payments_TransactionPublicKeyHash},
+            maxNetworkDelay((kMaxPathLength - 1) * 4));
         }
         removeAllDataFromStorageConcerningTransaction();
         return reject("Coordinator send TTL message with transaction finish state. Rolling Back");
@@ -590,11 +590,11 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalAmoun
         currentTransactionUUID());
 
     mTTLRequestWasSend = true;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(2));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReservationsCoordinatorConfirmation()
@@ -614,7 +614,7 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
 
     // todo : check coordinator
     if (!updateReservations(
-        kMessage->finalAmountsConfiguration())) {
+                kMessage->finalAmountsConfiguration())) {
         sendErrorMessageOnFinalAmountsConfiguration();
         removeAllDataFromStorageConcerningTransaction();
         return reject("There are some final amounts, reservations for which are absent. Rejected");
@@ -658,31 +658,31 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
             return reject("Coordinator is not a neighbor. Rejected");
         }
         auto coordinatorTotalIncomingReservationAmount = totalReservedIncomingAmountToNode(
-            coordinatorID);
+                coordinatorID);
         auto keyChain = mKeysStore->keychain(
-            mTrustLinesManager->trustLineID(coordinatorID));
+                            mTrustLinesManager->trustLineID(coordinatorID));
         auto serializedIncomingReceiptData = getSerializedReceipt(
-            coordinatorID,
-            mContractorsManager->idOnContractorSide(coordinatorID),
-            coordinatorTotalIncomingReservationAmount,
-            false);
+                coordinatorID,
+                mContractorsManager->idOnContractorSide(coordinatorID),
+                coordinatorTotalIncomingReservationAmount,
+                false);
         if (!keyChain.checkSign(
-            ioTransaction,
-            serializedIncomingReceiptData.first,
-            serializedIncomingReceiptData.second,
-            kMessage->signature(),
-            kMessage->publicKeyNumber())) {
+                    ioTransaction,
+                    serializedIncomingReceiptData.first,
+                    serializedIncomingReceiptData.second,
+                    kMessage->signature(),
+                    kMessage->publicKeyNumber())) {
             removeAllDataFromStorageConcerningTransaction(ioTransaction);
             sendErrorMessageOnFinalAmountsConfiguration();
             return reject("Coordinator send invalid receipt signature. Rejected");
         }
         if (!keyChain.saveIncomingPaymentReceipt(
-            ioTransaction,
-            mTrustLinesManager->auditNumber(coordinatorID),
-            mTransactionUUID,
-            kMessage->publicKeyNumber(),
-            coordinatorTotalIncomingReservationAmount,
-            kMessage->signature())) {
+                    ioTransaction,
+                    mTrustLinesManager->auditNumber(coordinatorID),
+                    mTransactionUUID,
+                    kMessage->publicKeyNumber(),
+                    coordinatorTotalIncomingReservationAmount,
+                    kMessage->signature())) {
             removeAllDataFromStorageConcerningTransaction(ioTransaction);
             sendErrorMessageOnFinalAmountsConfiguration();
             return reject("Can't save coordinator receipt. Rejected.");
@@ -692,7 +692,7 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
         auto coordinatorID = mContractorsManager->contractorIDByAddress(coordinatorAddress);
         if (coordinatorID != ContractorsManager::kNotFoundContractorID) {
             auto coordinatorTotalIncomingReservationAmount = totalReservedIncomingAmountToNode(
-                coordinatorID);
+                    coordinatorID);
             if (coordinatorTotalIncomingReservationAmount != TrustLine::kZeroAmount()) {
                 removeAllDataFromStorageConcerningTransaction(ioTransaction);
                 sendErrorMessageOnFinalAmountsConfiguration();
@@ -708,10 +708,11 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
         mTransactionUUID);
     mBlockNumberObtainingInProcess = true;
     return resultWaitForResourceAndMessagesTypes(
-        {BaseResource::ObservingBlockNumber},
-        {Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(1));
+    {BaseResource::ObservingBlockNumber}, {
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse
+    },
+    maxNetworkDelay(1));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCheckObservingBlockNumber()
@@ -740,8 +741,8 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCheckObser
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     mPublicKey = mKeysStore->generateAndSaveKeyPairForPaymentTransaction(
-        ioTransaction,
-        currentTransactionUUID());
+                     ioTransaction,
+                     currentTransactionUUID());
     mParticipantsPublicKeysHashes.insert(
         make_pair(
             mContractorsManager->selfContractor()->mainAddress()->fullAddress(),
@@ -781,28 +782,28 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCheckObser
         auto nodeReservations = mReservations[participantID];
         if (nodeReservations.begin()->second->direction() == AmountReservation::Outgoing) {
             auto keyChain = mKeysStore->keychain(
-                mTrustLinesManager->trustLineID(participantID));
+                                mTrustLinesManager->trustLineID(participantID));
             auto outgoingReservedAmount = TrustLine::kZeroAmount();
             for (const auto &pathIDAndReservation : nodeReservations) {
                 // todo check if all reservations is outgoing
                 outgoingReservedAmount += pathIDAndReservation.second->amount();
             }
             auto serializedOutgoingReceiptData = getSerializedReceipt(
-                mContractorsManager->idOnContractorSide(participantID),
-                participantID,
-                outgoingReservedAmount,
-                true);
+                    mContractorsManager->idOnContractorSide(participantID),
+                    participantID,
+                    outgoingReservedAmount,
+                    true);
             auto signatureAndKeyNumber = keyChain.sign(
-                ioTransaction,
-                serializedOutgoingReceiptData.first,
-                serializedOutgoingReceiptData.second);
+                                             ioTransaction,
+                                             serializedOutgoingReceiptData.first,
+                                             serializedOutgoingReceiptData.second);
             if (!keyChain.saveOutgoingPaymentReceipt(
-                ioTransaction,
-                mTrustLinesManager->auditNumber(participantID),
-                mTransactionUUID,
-                signatureAndKeyNumber.second,
-                outgoingReservedAmount,
-                signatureAndKeyNumber.first)) {
+                        ioTransaction,
+                        mTrustLinesManager->auditNumber(participantID),
+                        mTransactionUUID,
+                        signatureAndKeyNumber.second,
+                        outgoingReservedAmount,
+                        signatureAndKeyNumber.first)) {
                 removeAllDataFromStorageConcerningTransaction(ioTransaction);
                 sendErrorMessageOnFinalAmountsConfiguration();
                 return reject("Can't save outgoing receipt. Rejected.");
@@ -851,17 +852,17 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runCheckObser
 
         mStep = Common_Voting;
         mTTLRequestWasSend = false;
-        return resultWaitForMessageTypes(
-            {Message::Payments_ParticipantsPublicKeys,
-             Message::Payments_TTLProlongationResponse},
-            maxNetworkDelay(5)); // todo : need discuss this parameter (5)
+        return resultWaitForMessageTypes( {
+            Message::Payments_ParticipantsPublicKeys,
+            Message::Payments_TTLProlongationResponse},
+        maxNetworkDelay(5)); // todo : need discuss this parameter (5)
     }
 
     mStep = Coordinator_FinalAmountsConfigurationConfirmation;
-    return resultWaitForMessageTypes(
-        {Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(2));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReservationsNeighborConfirmation()
@@ -872,8 +873,8 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
     debug() << "sender: " << senderAddress->fullAddress();
 
     mParticipantsPublicKeysHashes[senderAddress->fullAddress()] = make_pair(
-        kMessage->paymentNodeID(),
-        kMessage->transactionPublicKeyHash());
+            kMessage->paymentNodeID(),
+            kMessage->transactionPublicKeyHash());
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     if (kMessage->isReceiptContains()) {
@@ -885,31 +886,31 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
             return reject("Sender is not a neighbor. Rejected");
         }
         auto participantTotalIncomingReservationAmount = totalReservedIncomingAmountToNode(
-            senderID);
+                senderID);
         auto keyChain = mKeysStore->keychain(
-            mTrustLinesManager->trustLineID(senderID));
+                            mTrustLinesManager->trustLineID(senderID));
         auto serializedIncomingReceiptData = getSerializedReceipt(
-            senderID,
-            mContractorsManager->idOnContractorSide(senderID),
-            participantTotalIncomingReservationAmount,
-            false);
+                senderID,
+                mContractorsManager->idOnContractorSide(senderID),
+                participantTotalIncomingReservationAmount,
+                false);
         if (!keyChain.checkSign(
-            ioTransaction,
-            serializedIncomingReceiptData.first,
-            serializedIncomingReceiptData.second,
-            kMessage->signature(),
-            kMessage->publicKeyNumber())) {
+                    ioTransaction,
+                    serializedIncomingReceiptData.first,
+                    serializedIncomingReceiptData.second,
+                    kMessage->signature(),
+                    kMessage->publicKeyNumber())) {
             removeAllDataFromStorageConcerningTransaction(ioTransaction);
             sendErrorMessageOnFinalAmountsConfiguration();
             return reject("Sender send invalid receipt signature. Rejected");
         }
         if (!keyChain.saveIncomingPaymentReceipt(
-            ioTransaction,
-            mTrustLinesManager->auditNumber(senderID),
-            mTransactionUUID,
-            kMessage->publicKeyNumber(),
-            participantTotalIncomingReservationAmount,
-            kMessage->signature())) {
+                    ioTransaction,
+                    mTrustLinesManager->auditNumber(senderID),
+                    mTransactionUUID,
+                    kMessage->publicKeyNumber(),
+                    participantTotalIncomingReservationAmount,
+                    kMessage->signature())) {
             removeAllDataFromStorageConcerningTransaction(ioTransaction);
             sendErrorMessageOnFinalAmountsConfiguration();
             return reject("Can't save participant receipt. Rejected.");
@@ -919,7 +920,7 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
         auto senderID = mContractorsManager->contractorIDByAddress(senderAddress);
         if (senderID != ContractorsManager::kNotFoundContractorID) {
             auto participantTotalIncomingReservationAmount = totalReservedIncomingAmountToNode(
-                senderID);
+                    senderID);
             if (participantTotalIncomingReservationAmount != TrustLine::kZeroAmount()) {
                 removeAllDataFromStorageConcerningTransaction(ioTransaction);
                 sendErrorMessageOnFinalAmountsConfiguration();
@@ -932,18 +933,18 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
 
     // if coordinator don't sent final payment configuration yet
     if (mPaymentParticipants.empty()) {
-        return resultWaitForMessageTypes(
-            {Message::Payments_FinalAmountsConfiguration,
-             Message::Payments_TransactionPublicKeyHash,
-             Message::Payments_TTLProlongationResponse},
-            maxNetworkDelay(2));
+        return resultWaitForMessageTypes( {
+            Message::Payments_FinalAmountsConfiguration,
+            Message::Payments_TransactionPublicKeyHash,
+            Message::Payments_TTLProlongationResponse},
+        maxNetworkDelay(2));
     }
 
     if (mBlockNumberObtainingInProcess) {
         return resultWaitForResourceAndMessagesTypes(
-            {BaseResource::ObservingBlockNumber},
-            {Message::Payments_TransactionPublicKeyHash},
-            maxNetworkDelay(1));
+        {BaseResource::ObservingBlockNumber},
+        {Message::Payments_TransactionPublicKeyHash},
+        maxNetworkDelay(1));
     }
 
     // coordinator already sent final amounts configuration
@@ -968,17 +969,17 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runFinalReser
 
         mStep = Common_Voting;
         mTTLRequestWasSend = false;
-        return resultWaitForMessageTypes(
-            {Message::Payments_ParticipantsPublicKeys,
-             Message::Payments_TTLProlongationResponse},
-            maxNetworkDelay(5)); // todo : need discuss this parameter (5)
+        return resultWaitForMessageTypes( {
+            Message::Payments_ParticipantsPublicKeys,
+            Message::Payments_TTLProlongationResponse},
+        maxNetworkDelay(5)); // todo : need discuss this parameter (5)
     }
 
     // not all neighbors sent theirs reservations
-    return resultWaitForMessageTypes(
-        {Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(2));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::runVotesCheckingStageWithCoordinatorClarification()
@@ -1000,10 +1001,10 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runVotesCheck
         if (utc_now() - mTimeStarted > kMaxTransactionDuration()) {
             return reject("Transaction duration time has expired. Rolling back");
         }
-        return resultWaitForMessageTypes(
-            {Message::Payments_ParticipantsPublicKeys,
-             Message::Payments_TTLProlongationResponse},
-            maxNetworkDelay((kMaxPathLength - 2) * 4));
+        return resultWaitForMessageTypes( {
+            Message::Payments_ParticipantsPublicKeys,
+            Message::Payments_TTLProlongationResponse},
+        maxNetworkDelay((kMaxPathLength - 2) * 4));
     }
 
     if (mTTLRequestWasSend) {
@@ -1018,10 +1019,10 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::runVotesCheck
         mContractorsManager->ownAddresses(),
         currentTransactionUUID());
     mTTLRequestWasSend = true;
-    return resultWaitForMessageTypes(
-        {Message::Payments_ParticipantsPublicKeys,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay(2));
+    return resultWaitForMessageTypes( {
+        Message::Payments_ParticipantsPublicKeys,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay(2));
 }
 
 void IntermediateNodePaymentTransaction::shortageReservationsOnPath(
@@ -1047,7 +1048,7 @@ void IntermediateNodePaymentTransaction::shortageReservationsOnPath(
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::approve()
 {
     mCommittedAmount = totalReservedAmount(
-            AmountReservation::Outgoing);
+                           AmountReservation::Outgoing);
     BasePaymentTransaction::approve();
     BasePaymentTransaction::runThreeNodesCyclesTransactions();
     BasePaymentTransaction::runFourNodesCyclesTransactions();
@@ -1128,12 +1129,12 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::sendErrorMess
         return resultDone();
     }
     mStep = Stages::IntermediateNode_ReservationProlongation;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay((kMaxPathLength - 2) * 4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay((kMaxPathLength - 2) * 4));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::sendErrorMessageOnCoordinatorRequest(
@@ -1153,12 +1154,12 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::sendErrorMess
         return resultDone();
     }
     mStep = Stages::IntermediateNode_ReservationProlongation;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay((kMaxPathLength - 2) * 4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay((kMaxPathLength - 2) * 4));
 }
 
 TransactionResult::SharedConst IntermediateNodePaymentTransaction::sendErrorMessageOnNextNodeResponse(
@@ -1178,12 +1179,12 @@ TransactionResult::SharedConst IntermediateNodePaymentTransaction::sendErrorMess
         return resultDone();
     }
     mStep = Stages::IntermediateNode_ReservationProlongation;
-    return resultWaitForMessageTypes(
-        {Message::Payments_FinalAmountsConfiguration,
-         Message::Payments_TransactionPublicKeyHash,
-         Message::Payments_IntermediateNodeReservationRequest,
-         Message::Payments_TTLProlongationResponse},
-        maxNetworkDelay((kMaxPathLength - 2) * 4));
+    return resultWaitForMessageTypes( {
+        Message::Payments_FinalAmountsConfiguration,
+        Message::Payments_TransactionPublicKeyHash,
+        Message::Payments_IntermediateNodeReservationRequest,
+        Message::Payments_TTLProlongationResponse},
+    maxNetworkDelay((kMaxPathLength - 2) * 4));
 }
 
 void IntermediateNodePaymentTransaction::sendErrorMessageOnFinalAmountsConfiguration()

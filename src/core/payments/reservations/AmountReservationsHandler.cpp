@@ -24,9 +24,9 @@ AmountReservation::ConstShared AmountReservationsHandler::reserve(
             "AmountReservationsHandler::reserve: amount can't be 0.");
 
     const auto kReservation = make_shared<AmountReservation>(
-        transactionUUID,
-        amount,
-        direction);
+                                  transactionUUID,
+                                  amount,
+                                  direction);
 
     auto iterator = mReservations.find(trustLineContractor);
     if (iterator != mReservations.end()) {
@@ -76,16 +76,16 @@ AmountReservation::ConstShared AmountReservationsHandler::updateReservation(
     if (mReservations.count(trustLineContractor) == 0) {
         throw NotFoundError(
             "AmountReservationsHandler::updateReservation: "
-                "reservation with exact contractor was not found.");
+            "reservation with exact contractor was not found.");
     }
 
     const auto kNewReservation = make_shared<const AmountReservation>(
-        reservation->transactionUUID(),
-        newAmount,
-        reservation->direction());
+                                     reservation->transactionUUID(),
+                                     newAmount,
+                                     reservation->direction());
 
     auto reservations = mReservations.find(trustLineContractor)->second.get();
-    for (auto it=reservations->begin(); it!=reservations->end(); ++it){
+    for (auto it=reservations->begin(); it!=reservations->end(); ++it) {
         if (*it == reservation) {
             *it = kNewReservation;
             return kNewReservation;
@@ -94,7 +94,7 @@ AmountReservation::ConstShared AmountReservationsHandler::updateReservation(
 
     throw NotFoundError(
         "AmountReservationsHandler::updateReservation: "
-            "reservation with exact amount was not found.");
+        "reservation with exact amount was not found.");
 }
 
 void AmountReservationsHandler::free(
@@ -106,11 +106,11 @@ void AmountReservationsHandler::free(
         if (iterator == mReservations.end()) {
             throw NotFoundError(
                 "AmountReservationsHandler::free: "
-                    "reservation with exact contractor was not found.");
+                "reservation with exact contractor was not found.");
         }
 
         auto reservations = (*iterator).second.get();
-        for (auto it=reservations->cbegin(); it!=reservations->cend(); ++it){
+        for (auto it=reservations->cbegin(); it!=reservations->cend(); ++it) {
             if (*it == reservation) {
                 reservations->erase(it);
                 if (reservations->empty()) {
@@ -122,7 +122,7 @@ void AmountReservationsHandler::free(
 
         throw NotFoundError(
             "AmountReservationsHandler::free: "
-                "reservation with exact amount was not found.");
+            "reservation with exact amount was not found.");
 
     } catch (bad_alloc &) {
         throw MemoryError(
@@ -166,7 +166,7 @@ vector<AmountReservation::ConstShared> AmountReservationsHandler::reservations(
 {
     try {
         auto iterator = mReservations.find(trustLineContractor);
-        if (iterator == mReservations.end()){
+        if (iterator == mReservations.end()) {
             return vector<AmountReservation::ConstShared>();
         }
 
@@ -182,7 +182,7 @@ vector<AmountReservation::ConstShared> AmountReservationsHandler::reservations(
             filteredBlocksContainer.reserve(reservations->size());
 
             for (auto it=reservations->cbegin(); it!=reservations->cend(); ++it) {
-                if ((*it)->transactionUUID() == *transactionUUID){
+                if ((*it)->transactionUUID() == *transactionUUID) {
                     filteredBlocksContainer.push_back(*it);
                 }
             }
@@ -209,8 +209,8 @@ const vector<AmountReservation::ConstShared> AmountReservationsHandler::contract
 {
     vector<AmountReservation::ConstShared> result;
     auto reservationsVector = reservations(
-        trustLineContractorID,
-        nullptr);
+                                  trustLineContractorID,
+                                  nullptr);
     for (auto &lock : reservationsVector) {
         if (lock->direction() == direction)
             result.push_back(lock);

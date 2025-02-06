@@ -19,7 +19,7 @@ TransactionResult::SharedConst GetChannelInfoTransaction::run()
     }
     stringstream ss;
     auto contractor = mContractorsManager->contractor(
-        mCommand->contractorID());
+                          mCommand->contractorID());
     ss << contractor->getID() << kTokensSeparator
        << contractor->addresses().size() << kTokensSeparator;
     for (const auto &address : contractor->addresses()) {
@@ -30,14 +30,14 @@ TransactionResult::SharedConst GetChannelInfoTransaction::run()
        << *contractor->cryptoKey()->contractorPublicKey << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 TransactionResult::SharedConst GetChannelInfoTransaction::resultContractorIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 const string GetChannelInfoTransaction::logHeader() const

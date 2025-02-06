@@ -17,7 +17,8 @@
 using namespace std;
 namespace as = boost::asio;
 
-class PingMessagesHandler : protected LoggerMixin {
+class PingMessagesHandler : protected LoggerMixin
+{
 
 public:
     /**

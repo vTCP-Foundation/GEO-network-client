@@ -6,7 +6,8 @@
 
 #include "../../../contractors/ContractorsManager.h"
 
-class RegenerateChannelCryptoKeyTransaction : public BaseTransaction {
+class RegenerateChannelCryptoKeyTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<RegenerateChannelCryptoKeyTransaction> Shared;

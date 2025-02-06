@@ -8,7 +8,8 @@
 #include "../../../topology/cache/MaxFlowCacheManager.h"
 #include "../../../io/storage/record/trust_line/TrustLineRecord.h"
 
-class AuditTargetTransaction : public BaseTrustLineTransaction {
+class AuditTargetTransaction : public BaseTrustLineTransaction
+{
 
 public:
     typedef shared_ptr<AuditTargetTransaction> Shared;

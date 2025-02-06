@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class TotalBalancesCommand : public BaseUserCommand {
+class TotalBalancesCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<TotalBalancesCommand> Shared;

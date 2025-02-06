@@ -3,7 +3,8 @@
 
 #include "PublicKeyMessage.h"
 
-class PublicKeysSharingInitMessage : public PublicKeyMessage {
+class PublicKeysSharingInitMessage : public PublicKeyMessage
+{
 
 public:
     typedef shared_ptr<PublicKeysSharingInitMessage> Shared;

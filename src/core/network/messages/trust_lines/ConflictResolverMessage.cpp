@@ -24,7 +24,7 @@ ConflictResolverMessage::ConflictResolverMessage(
     auto bytesBufferOffset = TransactionMessage::kOffsetToInheritedBytes();
 
     mAuditRecord = make_shared<AuditRecord>(
-        buffer.get() + bytesBufferOffset);
+                       buffer.get() + bytesBufferOffset);
     bytesBufferOffset += AuditRecord::recordSize();
 
     auto *incomingReceiptsCount = new (buffer.get() + bytesBufferOffset) SerializedRecordsCount;
@@ -33,7 +33,7 @@ ConflictResolverMessage::ConflictResolverMessage(
 
     for (SerializedRecordNumber idx = 0; idx < *incomingReceiptsCount; idx++) {
         auto incomingReceiptRecord = make_shared<ReceiptRecord>(
-            buffer.get() + bytesBufferOffset);
+                                         buffer.get() + bytesBufferOffset);
         bytesBufferOffset += ReceiptRecord::recordSize();
         mIncomingReceipts.push_back(
             incomingReceiptRecord);
@@ -45,7 +45,7 @@ ConflictResolverMessage::ConflictResolverMessage(
 
     for (SerializedRecordNumber idx = 0; idx < *outgoingReceiptsCount; idx++) {
         auto outgoingReceiptRecord = make_shared<ReceiptRecord>(
-            buffer.get() + bytesBufferOffset);
+                                         buffer.get() + bytesBufferOffset);
         bytesBufferOffset += ReceiptRecord::recordSize();
         mOutgoingReceipts.push_back(
             outgoingReceiptRecord);
@@ -140,6 +140,6 @@ pair<BytesShared, size_t> ConflictResolverMessage::serializeToBytes() const
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

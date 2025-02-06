@@ -4,7 +4,8 @@
 #include "CyclesFourNodesNegativeBalanceRequestMessage.h"
 
 class CyclesFourNodesPositiveBalanceRequestMessage :
-        public CyclesFourNodesNegativeBalanceRequestMessage {
+    public CyclesFourNodesNegativeBalanceRequestMessage
+{
 
 public:
     typedef shared_ptr<CyclesFourNodesPositiveBalanceRequestMessage> Shared;

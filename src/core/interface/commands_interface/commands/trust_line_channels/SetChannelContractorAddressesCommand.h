@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class SetChannelContractorAddressesCommand : public BaseUserCommand {
+class SetChannelContractorAddressesCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<SetChannelContractorAddressesCommand> Shared;

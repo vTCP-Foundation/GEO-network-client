@@ -7,12 +7,12 @@
 #include "../../../../common/exceptions/ConflictError.h"
 
 #include <boost/asio/steady_timer.hpp>
-
+#include <boost/array.hpp>
 
 using namespace std;
 
-
-class IncomingMessagesHandler {
+class IncomingMessagesHandler
+{
 public:
     signals::signal<void(Message::Shared)> signalMessageParsed;
 
@@ -22,35 +22,30 @@ public:
         UDPSocket &socket,
         ContractorsManager *contractorsManager,
         TailManager *tailManager,
-        Logger &logger)
-        noexcept;
+        Logger &logger) noexcept;
 
-    void beginReceivingData()
-        noexcept;
+    void beginReceivingData() noexcept;
 
 protected:
     void handleReceivedInfo(
         const boost::system::error_code &error,
-        size_t bytesTransferred)
-        noexcept;
+        size_t bytesTransferred) noexcept;
 
-    void rescheduleCleaning()
-        noexcept;
+    void rescheduleCleaning() noexcept;
 
-    static string logHeader()
-        noexcept;
+    static string logHeader() noexcept;
 
     LoggerStream info() const
-        noexcept;
+    noexcept;
 
     LoggerStream error() const
-        noexcept;
+    noexcept;
 
     LoggerStream warning() const
-        noexcept;
+    noexcept;
 
     LoggerStream debug() const
-        noexcept;
+    noexcept;
 
 protected:
     static constexpr const size_t kMaxIncomingBufferSize = Packet::kMaxSize * 2;
@@ -61,7 +56,7 @@ protected:
     TailManager *mTailManager;
     Logger &mLog;
 
-    boost::array<byte, kMaxIncomingBufferSize> mIncomingBuffer;
+    boost::array<byte_t, kMaxIncomingBufferSize> mIncomingBuffer;
     UDPEndpoint mRemoteEndpointBuffer;
 
     MessagesParser mMessagesParser;
@@ -70,4 +65,4 @@ protected:
     boost::asio::deadline_timer mCleaningTimer;
 };
 
-#endif //GEO_NETWORK_CLIENT_INCOMINGCONNECTIONSHANDLER_H
+#endif // GEO_NETWORK_CLIENT_INCOMINGCONNECTIONSHANDLER_H

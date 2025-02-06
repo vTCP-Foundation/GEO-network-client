@@ -6,7 +6,8 @@
 #include "../logger/Logger.h"
 #include "../common/exceptions/IOError.h"
 
-class TrustLinesInfluenceController {
+class TrustLinesInfluenceController
+{
 
 public:
     TrustLinesInfluenceController(

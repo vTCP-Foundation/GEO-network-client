@@ -5,7 +5,8 @@
 #include "../../../interface/commands_interface/commands/BaseUserCommand.h"
 #include "../../../network/messages/general/NoEquivalentMessage.h"
 
-class NoEquivalentTransaction : public BaseTransaction {
+class NoEquivalentTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<NoEquivalentTransaction> Shared;

@@ -3,7 +3,8 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class TrustLineResetMessage : public TransactionMessage {
+class TrustLineResetMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<TrustLineResetMessage> Shared;

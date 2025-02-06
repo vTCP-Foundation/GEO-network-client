@@ -5,7 +5,7 @@ PaymentAdditionalRecord::PaymentAdditionalRecord(
     const PaymentAdditionalOperationType operationType,
     const TrustLineAmount &amount,
     vector<pair<ContractorID, TrustLineAmount>> &outgoingTransfers,
-    vector<pair<ContractorID, TrustLineAmount>> &incomingTransfers):
+    vector<pair<ContractorID, TrustLineAmount>> &incomingTransfers) :
 
     Record(
         Record::PaymentAdditionalRecordType,
@@ -15,29 +15,28 @@ PaymentAdditionalRecord::PaymentAdditionalRecord(
     mAmount(amount),
     mOutgoingTransfers(outgoingTransfers),
     mIncomingTransfers(incomingTransfers)
-{}
+{
+}
 
 PaymentAdditionalRecord::PaymentAdditionalRecord(
     const TransactionUUID &operationUUID,
     const GEOEpochTimestamp geoEpochTimestamp,
-    BytesShared recordBody) :
-    Record(
-        Record::PaymentAdditionalRecordType,
-        operationUUID,
-        geoEpochTimestamp)
+    BytesShared recordBody) : Record(
+            Record::PaymentAdditionalRecordType,
+            operationUUID,
+            geoEpochTimestamp)
 {
     size_t dataBufferOffset = 0;
-    auto operationType
-        = new (recordBody.get() + dataBufferOffset) PaymentAdditionalRecord::SerializedPaymentOperationType;
+    auto operationType = new (recordBody.get() + dataBufferOffset) PaymentAdditionalRecord::SerializedPaymentOperationType;
     dataBufferOffset += sizeof(
-        PaymentAdditionalRecord::SerializedPaymentOperationType);
+                            PaymentAdditionalRecord::SerializedPaymentOperationType);
     mPaymentOperationType = (PaymentAdditionalOperationType)*operationType;
 
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         recordBody.get() + dataBufferOffset,
         recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
     mAmount = bytesToTrustLineAmount(
-        amountBytes);
+                  amountBytes);
     dataBufferOffset += kTrustLineAmountBytesCount;
 
     uint16_t outgoingTransfersCount;
@@ -56,7 +55,7 @@ PaymentAdditionalRecord::PaymentAdditionalRecord(
             sizeof(ContractorID));
         dataBufferOffset += sizeof(ContractorID);
 
-        vector<byte> amountTransferBytes(
+        vector<byte_t> amountTransferBytes(
             recordBody.get() + dataBufferOffset,
             recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
         dataBufferOffset += kTrustLineAmountBytesCount;
@@ -83,7 +82,7 @@ PaymentAdditionalRecord::PaymentAdditionalRecord(
             sizeof(ContractorID));
         dataBufferOffset += sizeof(ContractorID);
 
-        vector<byte> amountTransferBytes(
+        vector<byte_t> amountTransferBytes(
             recordBody.get() + dataBufferOffset,
             recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
         dataBufferOffset += kTrustLineAmountBytesCount;
@@ -100,7 +99,7 @@ const PaymentAdditionalRecord::PaymentAdditionalOperationType PaymentAdditionalR
     return mPaymentOperationType;
 }
 
-const TrustLineAmount& PaymentAdditionalRecord::amount() const
+const TrustLineAmount &PaymentAdditionalRecord::amount() const
 {
     return mAmount;
 }
@@ -115,7 +114,7 @@ pair<BytesShared, size_t> PaymentAdditionalRecord::serializedHistoryRecordBody()
                             + (sizeof(ContractorID) + kTrustLineAmountBytesCount) * mIncomingTransfers.size();
 
     BytesShared bytesBuffer = tryCalloc(
-        recordBodySize);
+                                  recordBodySize);
     size_t bytesBufferOffset = 0;
 
     memcpy(
@@ -133,24 +132,24 @@ pair<BytesShared, size_t> PaymentAdditionalRecord::serializedHistoryRecordBody()
 
     auto outgoingTransfersCount = (uint16_t)mOutgoingTransfers.size();
     memcpy(
-            bytesBuffer.get() + bytesBufferOffset,
-            &outgoingTransfersCount,
-            sizeof(uint16_t));
+        bytesBuffer.get() + bytesBufferOffset,
+        &outgoingTransfersCount,
+        sizeof(uint16_t));
     bytesBufferOffset += sizeof(uint16_t);
 
     for (const auto &outgoingTransfer : mOutgoingTransfers) {
         auto contractorID = outgoingTransfer.first;
         memcpy(
-                bytesBuffer.get() + bytesBufferOffset,
-                &contractorID,
-                sizeof(ContractorID));
+            bytesBuffer.get() + bytesBufferOffset,
+            &contractorID,
+            sizeof(ContractorID));
         bytesBufferOffset += sizeof(ContractorID);
 
         auto transferAmountBytes = trustLineAmountToBytes(outgoingTransfer.second);
         memcpy(
-                bytesBuffer.get() + bytesBufferOffset,
-                transferAmountBytes.data(),
-                kTrustLineAmountBytesCount);
+            bytesBuffer.get() + bytesBufferOffset,
+            transferAmountBytes.data(),
+            kTrustLineAmountBytesCount);
         bytesBufferOffset += kTrustLineAmountBytesCount;
     }
 
@@ -178,6 +177,6 @@ pair<BytesShared, size_t> PaymentAdditionalRecord::serializedHistoryRecordBody()
     }
 
     return make_pair(
-        bytesBuffer,
-        recordBodySize);
+               bytesBuffer,
+               recordBodySize);
 }

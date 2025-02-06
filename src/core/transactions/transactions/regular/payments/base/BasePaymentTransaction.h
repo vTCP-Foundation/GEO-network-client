@@ -43,7 +43,8 @@ using namespace crypto;
 namespace signals = boost::signals2;
 
 class BasePaymentTransaction:
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     typedef shared_ptr<BasePaymentTransaction> Shared;
@@ -126,7 +127,8 @@ public:
         map<PaymentNodeID, lamport::Signature::Shared> participantsSignatures);
 
 public:
-    enum Stages {
+    enum Stages
+    {
         Coordinator_Initialization = 1,
         Coordinator_ReceiverResourceProcessing,
         Coordinator_ReceiverResponseProcessing,
@@ -158,7 +160,8 @@ public:
         Common_Uncertain
     };
 
-    enum VotesRecoveryStages {
+    enum VotesRecoveryStages
+    {
         Common_PrepareNodesListToCheckVotes,
         Common_CheckCoordinatorVotesStage,
         Common_CheckIntermediateNodeVotesStage
@@ -179,10 +182,10 @@ protected:
     virtual TransactionResult::SharedConst approve();
     // recovering of transaction
     virtual TransactionResult::SharedConst recover(
-        const char *message);
+        const char* message);
     // rejecting of transaction
     virtual TransactionResult::SharedConst reject(
-        const char *message);
+        const char* message);
 
     /**
      * starts recovery process
@@ -437,11 +440,12 @@ protected:
     static const uint32_t kMaxMinutesTransactionDuration = 0;
     static const uint32_t kMaxSecondsTransactionDuration = 30;
 
-    static Duration& kMaxTransactionDuration() {
+    static Duration& kMaxTransactionDuration()
+    {
         static auto duration = Duration(
-            kMaxHoursTransactionDuration,
-            kMaxMinutesTransactionDuration,
-            kMaxSecondsTransactionDuration);
+                                   kMaxHoursTransactionDuration,
+                                   kMaxMinutesTransactionDuration,
+                                   kMaxSecondsTransactionDuration);
         return duration;
     }
 

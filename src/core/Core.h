@@ -39,12 +39,13 @@ using namespace crypto;
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class Core {
+class Core
+{
 
 public:
     Core(
         char* pArgv)
-        noexcept;
+    noexcept;
 
     ~Core();
 

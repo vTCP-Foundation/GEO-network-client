@@ -8,7 +8,8 @@
 
 #include <string>
 
-class GNSAddress : public BaseAddress {
+class GNSAddress : public BaseAddress
+{
 
 public:
     typedef shared_ptr<GNSAddress> Shared;
@@ -18,7 +19,7 @@ public:
         const string &fullAddress);
 
     GNSAddress(
-        byte* buffer);
+        byte_t* buffer);
 
     const string host() const override;
 
@@ -33,7 +34,7 @@ public:
     size_t serializedSize() const override;
 
     void setIPAndPort(
-        const string& providerData);
+        const string &providerData);
 
     const string name() const;
 
@@ -46,5 +47,4 @@ private:
     Port mPort;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_GNSADDRESS_H
+#endif // GEO_NETWORK_CLIENT_GNSADDRESS_H

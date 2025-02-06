@@ -6,12 +6,14 @@
 #include "../../../../contractors/Contractor.h"
 #include "../../../../common/time/TimeUtils.h"
 
-class Record {
+class Record
+{
 public:
     typedef shared_ptr<Record> Shared;
 
 public:
-    enum RecordType {
+    enum RecordType
+    {
         TrustLineRecordType = 1,
         PaymentRecordType,
         PaymentAdditionalRecordType,

@@ -29,23 +29,23 @@ GetTrustLineByAddressCommand::GetTrustLineByAddressCommand(
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mContractorAddresses.push_back(
-                    make_shared<IPv4WithPortAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            case BaseAddress::GNS: {
-                mContractorAddresses.push_back(
-                    make_shared<GNSAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            default:
-                throw ValueError("GetTrustLineByAddressCommand: cannot parse command. "
-                    "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mContractorAddresses.push_back(
+                make_shared<IPv4WithPortAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        case BaseAddress::GNS: {
+            mContractorAddresses.push_back(
+                make_shared<GNSAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        default:
+            throw ValueError("GetTrustLineByAddressCommand: cannot parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
         address.erase();
     };
@@ -67,15 +67,15 @@ GetTrustLineByAddressCommand::GetTrustLineByAddressCommand(
             commandBuffer.end(), (
                 *(int_) > char_(kTokensSeparator)
                 > addressLexeme<
-                    decltype(addressAddChar),
-                    decltype(addressAddNumber),
-                    decltype(addressTypeParse),
-                    decltype(addressAddToVector)>(
-                        addressesCount,
-                        addressAddChar,
-                        addressAddNumber,
-                        addressTypeParse,
-                        addressAddToVector)
+                decltype(addressAddChar),
+                decltype(addressAddNumber),
+                decltype(addressTypeParse),
+                decltype(addressAddToVector)>(
+                    addressesCount,
+                    addressAddChar,
+                    addressAddNumber,
+                    addressTypeParse,
+                    addressAddToVector)
                 > +(int_[equivalentParse]) > eol > eoi));
     } catch(...) {
         throw ValueError("GetTrustLineByAddressCommand: cannot parse command.");
@@ -102,8 +102,8 @@ CommandResult::SharedConst GetTrustLineByAddressCommand::resultOk(
     string &neighbor) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        neighbor);
+               identifier(),
+               UUID(),
+               200,
+               neighbor);
 }

@@ -3,7 +3,8 @@
 
 #include "../../SenderMessage.h"
 
-class MaxFlowCalculationConfirmationMessage : public SenderMessage {
+class MaxFlowCalculationConfirmationMessage : public SenderMessage
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationConfirmationMessage> Shared;

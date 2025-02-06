@@ -25,14 +25,14 @@ TransactionResult::SharedConst GatewayNotificationReceiverTransaction::run()
     for (const auto &equivalent : mEquivalentsSubsystemsRouter->equivalents()) {
         auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(equivalent);
         if (!trustLinesManager->trustLineIsPresent(
-                mMessage->idOnReceiverSide)) {
+                    mMessage->idOnReceiverSide)) {
             continue;
         }
         isContractorNeighbor = true;
         bool isContractorGateway = find(
-            mMessage->gatewayEquivalents().begin(),
-            mMessage->gatewayEquivalents().end(),
-            equivalent) != mMessage->gatewayEquivalents().end();
+                                       mMessage->gatewayEquivalents().begin(),
+                                       mMessage->gatewayEquivalents().end(),
+                                       equivalent) != mMessage->gatewayEquivalents().end();
         try {
             trustLinesManager->setContractorAsGateway(
                 ioTransaction,
@@ -91,7 +91,7 @@ vector<BaseAddress::Shared> GatewayNotificationReceiverTransaction::getNeighbors
 {
     auto neighbors = mEquivalentsSubsystemsRouter->trustLinesManager(equivalent)->firstLevelNeighbors();
     vector<BaseAddress::Shared> result;
-    for(auto &node:neighbors){
+    for(auto &node:neighbors) {
         if(node == mMessage->idOnReceiverSide)
             continue;
         result.push_back(

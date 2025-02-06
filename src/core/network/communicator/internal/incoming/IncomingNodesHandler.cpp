@@ -5,7 +5,7 @@ IncomingNodesHandler::IncomingNodesHandler(
     MessagesParser &messagesParser,
     TailManager *tailManager,
     Logger &logger)
-    noexcept :
+noexcept :
 
     mMessagesParser(messagesParser),
     mTailManager(tailManager),
@@ -19,7 +19,7 @@ IncomingNodesHandler::IncomingNodesHandler(
  */
 IncomingRemoteNode* IncomingNodesHandler::handler (
     const UDPEndpoint &endpoint)
-    noexcept
+noexcept
 {
     const auto kEndpointKey = key(endpoint);
 
@@ -116,7 +116,7 @@ void IncomingNodesHandler::removeOutdatedChannelsOfPresentEndpoints()
  */
 uint64_t IncomingNodesHandler::key(
     const UDPEndpoint &endpoint)
-    noexcept
+noexcept
 {
     return
         endpoint.address().to_v4().to_ulong()
@@ -124,7 +124,7 @@ uint64_t IncomingNodesHandler::key(
 }
 
 LoggerStream IncomingNodesHandler::debug() const
-    noexcept
+noexcept
 {
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
     return mLog.debug("IncomingNodesHandler");

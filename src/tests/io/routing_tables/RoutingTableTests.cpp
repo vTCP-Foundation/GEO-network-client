@@ -4,9 +4,11 @@
 using namespace io::routing_tables;
 namespace f = boost::filesystem;
 
-class AbstractRoutingTableTests {
+class AbstractRoutingTableTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkAtomicInsert();
         checkAtomicRemoving();
         checkOperationsRollingBack();
@@ -17,7 +19,8 @@ public:
 protected:
     // Testable class that allows access to private methods;
     class TAbstractRoutingTable:
-        public AbstractRoutingTable {
+        public AbstractRoutingTable
+    {
         friend class AbstractRoutingTableTests;
 
     public:
@@ -26,16 +29,19 @@ protected:
 
     // Returns path to the directory,
     // into which all the tests must be done.
-    const f::path path() const {
+    const f::path path() const
+    {
         return f::path("tests/io/routing_tables/");
     }
 
-    void clean() {
+    void clean()
+    {
         f::remove_all(path());
     }
 
 
-    void checkAtomicInsert() {
+    void checkAtomicInsert()
+    {
         clean();
 
         NodeUUID u1, u2, u3, u4, u5, u6;
@@ -64,7 +70,8 @@ protected:
         }
     }
 
-    void checkAtomicRemoving() {
+    void checkAtomicRemoving()
+    {
         clean();
 
         NodeUUID u1, u2, u3, u4, u5, u6;
@@ -106,7 +113,8 @@ protected:
         }
     }
 
-    void checkOperationsRollingBack() {
+    void checkOperationsRollingBack()
+    {
         clean();
 
         NodeUUID u1, u2, u3, u4, u5, u6;

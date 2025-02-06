@@ -20,7 +20,7 @@ Provider::Provider(
                         addressStr.second));
             } catch (...) {
                 throw ValueError("Provider: " + providerName +
-                    " can't create provider address of type " + addressStr.first);
+                                 " can't create provider address of type " + addressStr.first);
             }
 
         } else {

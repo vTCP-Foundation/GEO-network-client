@@ -137,22 +137,23 @@ TransactionResult::SharedConst CyclesFiveNodesInitTransaction::runParseMessageAn
     for(const auto &debtorPackage : debtors) {
         auto nodeAddressAndPathRange = creditors.equal_range(debtorPackage.first);
         for (auto nodeAddressAndPathIt = nodeAddressAndPathRange.first;
-            nodeAddressAndPathIt != nodeAddressAndPathRange.second; ++nodeAddressAndPathIt) {
+                nodeAddressAndPathIt != nodeAddressAndPathRange.second; ++nodeAddressAndPathIt) {
             if ((nodeAddressAndPathIt->second.back() == debtorPackage.second[1]) or
-                (nodeAddressAndPathIt->second.back() == debtorPackage.second[2])) {
+                    (nodeAddressAndPathIt->second.back() == debtorPackage.second[2])) {
                 continue;
             }
 
             vector<BaseAddress::Shared> stepCyclePath = {
-                    nodeAddressAndPathIt->second.back(),
-                    // todo adapt for all types of address
-                    make_shared<IPv4WithPortAddress>(
-                        debtorPackage.first),
-                    debtorPackage.second[2],
-                    debtorPackage.second[1]};
+                nodeAddressAndPathIt->second.back(),
+                // todo adapt for all types of address
+                make_shared<IPv4WithPortAddress>(
+                debtorPackage.first),
+                debtorPackage.second[2],
+                debtorPackage.second[1]
+            };
 
             const auto cyclePath = make_shared<Path>(
-                stepCyclePath);
+                                       stepCyclePath);
             mCyclesManager->addCycle(
                 cyclePath);
 
@@ -163,7 +164,7 @@ TransactionResult::SharedConst CyclesFiveNodesInitTransaction::runParseMessageAn
     }
 #ifdef DEBUG_LOG_CYCLES_BUILDING_POCESSING
     debug() << "ResultCyclesCount " << resultCycles.size();
-    for (auto &cyclePath: resultCycles){
+    for (auto &cyclePath: resultCycles) {
         debug() << "CyclePath " << cyclePath->toString();
     }
 #endif

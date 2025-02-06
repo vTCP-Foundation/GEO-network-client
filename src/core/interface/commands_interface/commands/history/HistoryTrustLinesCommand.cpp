@@ -108,9 +108,9 @@ const SerializedEquivalent HistoryTrustLinesCommand::equivalent() const
 CommandResult::SharedConst HistoryTrustLinesCommand::resultOk(string &historyTrustLinesStr) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            historyTrustLinesStr));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   historyTrustLinesStr));
 }

@@ -32,19 +32,19 @@ TrustLineResetMessage::TrustLineResetMessage(
         sizeof(AuditNumber));
     bytesBufferOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBytes(
+    vector<byte_t> incomingAmountBytes(
         buffer.get() + bytesBufferOffset,
         buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
     mIncomingAmount = bytesToTrustLineAmount(incomingAmountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBytes(
+    vector<byte_t> outgoingAmountBytes(
         buffer.get() + bytesBufferOffset,
         buffer.get() + bytesBufferOffset + kTrustLineAmountBytesCount);
     mOutgoingAmount = bytesToTrustLineAmount(outgoingAmountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balance(
+    vector<byte_t> balance(
         buffer.get() + bytesBufferOffset,
         buffer.get() + bytesBufferOffset + kTrustLineBalanceSerializeBytesCount);
     mBalance = bytesToTrustLineBalance(balance);
@@ -104,27 +104,27 @@ pair<BytesShared, size_t> TrustLineResetMessage::serializeToBytes() const
         sizeof(AuditNumber));
     dataBytesOffset += sizeof(AuditNumber);
 
-    vector<byte> incomingAmountBuffer = trustLineAmountToBytes(mIncomingAmount);
+    vector<byte_t> incomingAmountBuffer = trustLineAmountToBytes(mIncomingAmount);
     memcpy(
         buffer.get() + dataBytesOffset,
         incomingAmountBuffer.data(),
         incomingAmountBuffer.size());
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> outgoingAmountBuffer = trustLineAmountToBytes(mOutgoingAmount);
+    vector<byte_t> outgoingAmountBuffer = trustLineAmountToBytes(mOutgoingAmount);
     memcpy(
         buffer.get() + dataBytesOffset,
         outgoingAmountBuffer.data(),
         outgoingAmountBuffer.size());
     dataBytesOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balanceBuffer = trustLineBalanceToBytes(mBalance);
+    vector<byte_t> balanceBuffer = trustLineBalanceToBytes(mBalance);
     memcpy(
         buffer.get() + dataBytesOffset,
         balanceBuffer.data(),
         balanceBuffer.size());
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

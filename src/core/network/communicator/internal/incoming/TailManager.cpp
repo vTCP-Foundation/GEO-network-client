@@ -18,7 +18,7 @@ TailManager::TailManager(
     mRoutingTableTail(*this)
 {
     mUpdatingTimer = make_unique<as::steady_timer>(
-        mIOService);
+                         mIOService);
     mUpdatingTimer->expires_from_now(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));

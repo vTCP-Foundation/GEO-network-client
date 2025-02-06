@@ -4,7 +4,8 @@
 #include "../BaseUserCommand.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class HistoryPaymentsCommand : public BaseUserCommand {
+class HistoryPaymentsCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<HistoryPaymentsCommand> Shared;

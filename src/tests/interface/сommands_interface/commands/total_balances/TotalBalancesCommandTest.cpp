@@ -5,8 +5,7 @@ TEST_CASE("Testing TotalBalancesCommand")
 {
     REQUIRE_NOTHROW(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\n"));
 
-    SECTION("No input")
-    {
+    SECTION("No input") {
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, ""));
 
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n"));
@@ -22,8 +21,7 @@ TEST_CASE("Testing TotalBalancesCommand")
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n\t"));
     }
 
-    SECTION("Double separator")
-    {
+    SECTION("Double separator") {
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\n1\n"));
 
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "\t1\t"));
@@ -34,8 +32,7 @@ TEST_CASE("Testing TotalBalancesCommand")
 
     }
 
-    SECTION("Character instead of integer & after EOL")
-    {
+    SECTION("Character instead of integer & after EOL") {
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "ddf\n"));
 
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "1\n\t"));
@@ -44,8 +41,7 @@ TEST_CASE("Testing TotalBalancesCommand")
 
     }
 
-    SECTION("No EOL")
-    {
+    SECTION("No EOL") {
         REQUIRE_THROWS(TotalBalancesCommand("47183823-2574-4bfd-b411-99ed177d3e43"s, "333"));
     }
 }

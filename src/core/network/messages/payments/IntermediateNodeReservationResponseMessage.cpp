@@ -3,10 +3,10 @@
 IntermediateNodeReservationResponseMessage::IntermediateNodeReservationResponseMessage(
     const SerializedEquivalent equivalent,
     vector<BaseAddress::Shared> &senderAddresses,
-    const TransactionUUID& transactionUUID,
-    const PathID& pathID,
+    const TransactionUUID &transactionUUID,
+    const PathID &pathID,
     const ResponseMessage::OperationState state,
-    const TrustLineAmount& reservedAmount):
+    const TrustLineAmount &reservedAmount) :
 
     ResponseMessage(
         equivalent,
@@ -15,7 +15,8 @@ IntermediateNodeReservationResponseMessage::IntermediateNodeReservationResponseM
         pathID,
         state),
     mAmountReserved(reservedAmount)
-{}
+{
+}
 
 IntermediateNodeReservationResponseMessage::IntermediateNodeReservationResponseMessage(
     BytesShared buffer) :
@@ -26,14 +27,14 @@ IntermediateNodeReservationResponseMessage::IntermediateNodeReservationResponseM
     auto parentMessageOffset = ResponseMessage::kOffsetToInheritedBytes();
     auto amountOffset = buffer.get() + parentMessageOffset;
     auto amountEndOffset = amountOffset + kTrustLineAmountBytesCount; // TODO: deserialize only non-zero
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         amountOffset,
         amountEndOffset);
 
     mAmountReserved = bytesToTrustLineAmount(amountBytes);
 }
 
-const TrustLineAmount& IntermediateNodeReservationResponseMessage::amountReserved() const
+const TrustLineAmount &IntermediateNodeReservationResponseMessage::amountReserved() const
 {
     return mAmountReserved;
 }
@@ -44,8 +45,7 @@ pair<BytesShared, size_t> IntermediateNodeReservationResponseMessage::serializeT
     auto serializedAmount = trustLineAmountToBytes(mAmountReserved);
 
     size_t bytesCount =
-        parentBytesAndCount.second
-        + serializedAmount.size();
+        parentBytesAndCount.second + serializedAmount.size();
 
     BytesShared dataBytesShared = tryMalloc(bytesCount);
     size_t dataBytesOffset = 0;
@@ -62,8 +62,8 @@ pair<BytesShared, size_t> IntermediateNodeReservationResponseMessage::serializeT
         serializedAmount.size());
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType IntermediateNodeReservationResponseMessage::typeID() const

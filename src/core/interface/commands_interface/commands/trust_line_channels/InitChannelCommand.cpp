@@ -28,23 +28,23 @@ InitChannelCommand::InitChannelCommand(
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mContractorAddresses.push_back(
-                    make_shared<IPv4WithPortAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            case BaseAddress::GNS: {
-                mContractorAddresses.push_back(
-                    make_shared<GNSAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            default:
-                throw ValueError("InitChannelCommand: can't parse command. "
-                                 "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mContractorAddresses.push_back(
+                make_shared<IPv4WithPortAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        case BaseAddress::GNS: {
+            mContractorAddresses.push_back(
+                make_shared<GNSAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        default:
+            throw ValueError("InitChannelCommand: can't parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
         address.erase();
     };
@@ -70,15 +70,15 @@ InitChannelCommand::InitChannelCommand(
             command.end(),
             *(int_) > char_(kTokensSeparator)
             > addressLexeme<
-                decltype(addressAddChar),
-                decltype(addressAddNumber),
-                decltype(addressTypeParse),
-                decltype(addressAddToVector)>(
-                    addressesCount,
-                    addressAddChar,
-                    addressAddNumber,
-                    addressTypeParse,
-                    addressAddToVector)
+            decltype(addressAddChar),
+            decltype(addressAddNumber),
+            decltype(addressTypeParse),
+            decltype(addressAddToVector)>(
+                addressesCount,
+                addressAddChar,
+                addressAddNumber,
+                addressTypeParse,
+                addressAddToVector)
             > -(+(char_[cryptoKeyParse] - char_(kTokensSeparator))
                 > char_(kTokensSeparator)
                 > +(int_[contractorChannelIDParse]) > eol)
@@ -114,9 +114,9 @@ CommandResult::SharedConst InitChannelCommand::responseOk(
     string &channelInfo) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            channelInfo));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   channelInfo));
 }

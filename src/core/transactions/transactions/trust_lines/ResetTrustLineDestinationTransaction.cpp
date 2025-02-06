@@ -28,13 +28,13 @@ TransactionResult::SharedConst ResetTrustLineDestinationTransaction::run()
     if (!mTrustLinesManager->trustLineIsPresent(mContractorID)) {
         warning() << "Attempt to change not existing TL";
         return sendTrustLineErrorConfirmation(
-            ConfirmationMessage::TrustLineIsAbsent);
+                   ConfirmationMessage::TrustLineIsAbsent);
     }
 
     if (mTrustLinesManager->trustLineState(mContractorID) != TrustLine::ResetPending) {
         warning() << "Invalid TL state: " << mTrustLinesManager->trustLineState(mContractorID) ;
         return sendTrustLineErrorConfirmation(
-            ConfirmationMessage::TrustLineInvalidState);
+                   ConfirmationMessage::TrustLineInvalidState);
     }
 
     info() << "Contractor reset values: audit: " << mMessage->auditNumber()
@@ -43,12 +43,12 @@ TransactionResult::SharedConst ResetTrustLineDestinationTransaction::run()
            << " BA: " << mMessage->balance();
 
     if (mTrustLinesManager->auditNumber(mContractorID) != mMessage->auditNumber() or
-        mTrustLinesManager->incomingTrustAmount(mContractorID) != mMessage->outgoingAmount() or
-        mTrustLinesManager->outgoingTrustAmount(mContractorID) != mMessage->incomingAmount() or
-        mTrustLinesManager->balance(mContractorID) != -1 * mMessage->balance()) {
+            mTrustLinesManager->incomingTrustAmount(mContractorID) != mMessage->outgoingAmount() or
+            mTrustLinesManager->outgoingTrustAmount(mContractorID) != mMessage->incomingAmount() or
+            mTrustLinesManager->balance(mContractorID) != -1 * mMessage->balance()) {
         warning() << "Contractor reset data different from current";
         return sendTrustLineErrorConfirmation(
-            ConfirmationMessage::Audit_Invalid);
+                   ConfirmationMessage::Audit_Invalid);
     }
 
     mTrustLinesManager->setTrustLineState(

@@ -10,7 +10,8 @@
 
 #include <string>
 
-class FeaturesHandler {
+class FeaturesHandler
+{
 
 public:
     FeaturesHandler(

@@ -4,7 +4,8 @@
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/transactions/PaymentTransactionByCommandUUIDCommand.h"
 
-class PaymentTransactionByCommandUUIDTransaction : public BaseTransaction {
+class PaymentTransactionByCommandUUIDTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<PaymentTransactionByCommandUUIDTransaction> Shared;

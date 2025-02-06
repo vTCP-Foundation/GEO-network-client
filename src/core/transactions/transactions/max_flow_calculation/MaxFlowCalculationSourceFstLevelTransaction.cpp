@@ -34,7 +34,7 @@ TransactionResult::SharedConst MaxFlowCalculationSourceFstLevelTransaction::run(
         // inform that I am is gateway
         // todo : it is not required inform about gateway, because this info initiator can obtain on it side
         auto contractorsAddress = mContractorsManager->contractorMainAddress(
-            mMessage->idOnReceiverSide);
+                                      mMessage->idOnReceiverSide);
         sendMessage<ResultMaxFlowCalculationGatewayMessage>(
             contractorsAddress,
             mEquivalent,

@@ -8,7 +8,8 @@
 
 
 class RequestMessage:
-    public TransactionMessage {
+    public TransactionMessage
+{
 
 public:
     RequestMessage(

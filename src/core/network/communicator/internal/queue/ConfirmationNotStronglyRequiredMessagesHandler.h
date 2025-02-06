@@ -17,7 +17,8 @@ using namespace std;
 namespace as = boost::asio;
 
 class ConfirmationNotStronglyRequiredMessagesHandler :
-    protected LoggerMixin {
+    protected LoggerMixin
+{
 
 public:
     /**
@@ -34,7 +35,7 @@ public:
     ConfirmationNotStronglyRequiredMessagesHandler(
         IOService &ioService,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     /**
      * Checks "message" type, and in case if this message must be confirmed, -
@@ -59,7 +60,7 @@ public:
 
 protected:
     const string logHeader() const
-        noexcept;
+    noexcept;
 
     /**
      * @returns timestamp, when next timer awakeness must be performed.
@@ -67,7 +68,7 @@ protected:
      * between now and queue timeout.
      */
     const DateTime closestQueueSendingTimestamp() const
-        noexcept;
+    noexcept;
 
     /**
      * Schedules timer for next awakeness.

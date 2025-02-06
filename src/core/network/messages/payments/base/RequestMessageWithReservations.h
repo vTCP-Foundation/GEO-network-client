@@ -6,7 +6,8 @@
 
 #include <vector>
 
-class RequestMessageWithReservations : public TransactionMessage {
+class RequestMessageWithReservations : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<RequestMessageWithReservations> Shared;

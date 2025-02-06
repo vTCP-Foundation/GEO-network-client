@@ -10,7 +10,8 @@
 #include "../../../interface/events_interface/interface/EventsInterfaceManager.h"
 #include "../../../subsystems_controller/SubsystemsController.h"
 
-class CloseIncomingTrustLineTransaction : public BaseTrustLineTransaction {
+class CloseIncomingTrustLineTransaction : public BaseTrustLineTransaction
+{
 
 public:
     typedef shared_ptr<CloseIncomingTrustLineTransaction> Shared;

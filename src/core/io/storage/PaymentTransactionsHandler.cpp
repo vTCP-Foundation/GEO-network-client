@@ -18,26 +18,26 @@ PaymentTransactionsHandler::PaymentTransactionsHandler(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("PaymentTransactionsHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
     query = "CREATE INDEX IF NOT EXISTS " + mTableName
             + "_uuid_idx on " + mTableName + " (uuid);";
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::creating index for TransactionUUID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("PaymentTransactionsHandler::creating index for TransactionUUID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
     sqlite3_reset(stmt);
     sqlite3_finalize(stmt);
@@ -48,34 +48,34 @@ void PaymentTransactionsHandler::saveRecord(
     BlockNumber maximalClaimingBlockNumber)
 {
     string query = "INSERT INTO " + mTableName + " (uuid, maximal_claiming_block_number, "
-            "observing_state, recording_time) VALUES(?, ?, ?, ?);";
+                   "observing_state, recording_time) VALUES(?, ?, ?, ?);";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, &maximalClaimingBlockNumber, sizeof(BlockNumber), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                          "Bad binding of Maximal claiming block number; sqlite error: " + to_string(rc));
+                      "Bad binding of Maximal claiming block number; sqlite error: " + to_string(rc));
     }
     // todo : use constant instead 0
     rc = sqlite3_bind_int(stmt, 3, 0);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                          "Bad binding of Observing state; sqlite error: " + to_string(rc));
+                      "Bad binding of Observing state; sqlite error: " + to_string(rc));
     }
     GEOEpochTimestamp timestamp = microsecondsSinceGEOEpoch(utc_now());
     rc = sqlite3_bind_int64(stmt, 4, timestamp);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                          "Bad binding of Timestamp; sqlite error: " + to_string(rc));
+                      "Bad binding of Timestamp; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -87,7 +87,7 @@ void PaymentTransactionsHandler::saveRecord(
 #endif
     } else {
         throw IOError("PaymentTransactionsHandler::saveRecord: "
-                              "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 
@@ -101,18 +101,18 @@ void PaymentTransactionsHandler::updateTransactionState(
     int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::updateTransactionState: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_bind_int(stmt, 1, observingTransactionState);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::updateTransactionState: "
-                          "Bad binding of Observing State; sqlite error: " + to_string(rc));
+                      "Bad binding of Observing State; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::updateTransactionState: "
-                          "Bad binding of UUID; sqlite error: " + to_string(rc));
+                      "Bad binding of UUID; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -124,7 +124,7 @@ void PaymentTransactionsHandler::updateTransactionState(
 #endif
     } else {
         throw IOError("PaymentTransactionsHandler::updateTransactionState: "
-                              "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 
     if (sqlite3_changes(mDataBase) == 0) {
@@ -143,10 +143,10 @@ vector<pair<TransactionUUID, BlockNumber>> PaymentTransactionsHandler::transacti
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("TrustLineHandler::allTrustLinesByEquivalent: "
-                              "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     while (sqlite3_step(stmt) == SQLITE_ROW ) {
-        TransactionUUID transactionUUID((uint8_t *)sqlite3_column_blob(stmt, 0));
+        TransactionUUID transactionUUID((uint8_t*)sqlite3_column_blob(stmt, 0));
 
         auto blockNumberBytes = sqlite3_column_blob(stmt, 1);
         BlockNumber maximalClaimingBlockNumber;
@@ -173,13 +173,13 @@ bool PaymentTransactionsHandler::isTransactionPresent(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::isTransactionPresent: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
 
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::isTransactionPresent: "
-                          "Bad binding of transactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of transactionUUID; sqlite error: " + to_string(rc));
     }
 
     bool result = (sqlite3_step(stmt) == SQLITE_ROW);
@@ -197,12 +197,12 @@ void PaymentTransactionsHandler::deleteRecord(
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::delete: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, transactionUUID.data, TransactionUUID::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("PaymentTransactionsHandler::delete: "
-                          "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
+                      "Bad binding of TransactionUUID; sqlite error: " + to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -213,7 +213,7 @@ void PaymentTransactionsHandler::deleteRecord(
 #endif
     } else {
         throw IOError("PaymentTransactionsHandler::delete: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " + to_string(rc));
     }
 }
 

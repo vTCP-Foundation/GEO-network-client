@@ -4,7 +4,8 @@
 #include "../../common/NodeUUID.h"
 
 
-class CommandUUID: public NodeUUID {
+class CommandUUID: public NodeUUID
+{
     using NodeUUID::NodeUUID;
 };
 

@@ -1,19 +1,21 @@
 #include "PathsManager.h"
 
-PathsManager::PathsManager(
-    const SerializedEquivalent equivalent,
-    TrustLinesManager *trustLinesManager,
-    TopologyTrustLinesManager *topologyTrustLineManager,
-    Logger &logger):
+PathsManager::PathsManager(const SerializedEquivalent equivalent,
+                           TrustLinesManager* trustLinesManager,
+                           TopologyTrustLinesManager* topologyTrustLineManager,
+                           Logger& logger)
+    :
 
-    mEquivalent(equivalent),
-    mTrustLinesManager(trustLinesManager),
-    mTopologyTrustLinesManager(topologyTrustLineManager),
-    mLog(logger),
-    mPathCollection(nullptr)
-{}
+    mEquivalent(equivalent)
+    , mTrustLinesManager(trustLinesManager)
+    , mTopologyTrustLinesManager(topologyTrustLineManager)
+    , mLog(logger)
+    , mPathCollection(nullptr)
+{
+}
 
-bool PathsManager::isPathValid(const Path &path)
+bool
+PathsManager::isPathValid(const Path& path)
 {
     auto itGlobal = path.intermediates().begin();
     while (itGlobal != path.intermediates().end() - 1) {
@@ -30,19 +32,15 @@ bool PathsManager::isPathValid(const Path &path)
 }
 
 // this method used the same logic as InitiateMaxFlowCalculationTransaction::calculateMaxFlow
-void PathsManager::buildPaths(
-    BaseAddress::Shared contractorAddress,
-    ContractorID contractorID)
+void
+PathsManager::buildPaths(BaseAddress::Shared contractorAddress, ContractorID contractorID)
 {
     info() << "Build paths to " << contractorAddress->fullAddress() << " id " << contractorID;
     auto startTime = utc_now();
-    mTopologyTrustLinesManager->makeFullyUsedTLsFromGatewaysToAllNodesExceptOne(
-        contractorID);
+    mTopologyTrustLinesManager->makeFullyUsedTLsFromGatewaysToAllNodesExceptOne(contractorID);
     mContractorID = contractorID;
-    mPathCollection = make_shared<PathsCollection>(
-        contractorAddress);
-    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(
-        TopologyTrustLinesManager::kCurrentNodeID);
+    mPathCollection = make_shared<PathsCollection>(contractorAddress);
+    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(TopologyTrustLinesManager::kCurrentNodeID);
     if (trustLinePtrsSet.empty()) {
         mTopologyTrustLinesManager->resetAllUsedAmounts();
         return;
@@ -62,10 +60,10 @@ void PathsManager::buildPaths(
 
 // this method used the same logic as PathsManager::reBuildPathsOnOneLevel
 // and InitiateMaxFlowCalculationTransaction::calculateMaxFlowOnOneLevel
-void PathsManager::buildPathsOnOneLevel()
+void
+PathsManager::buildPathsOnOneLevel()
 {
-    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(
-        TopologyTrustLinesManager::kCurrentNodeID);
+    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(TopologyTrustLinesManager::kCurrentNodeID);
     auto itTrustLinePtr = trustLinePtrsSet.begin();
     while (itTrustLinePtr != trustLinePtrsSet.end()) {
         auto trustLine = (*itTrustLinePtr)->topologyTrustLine();
@@ -76,10 +74,7 @@ void PathsManager::buildPathsOnOneLevel()
             continue;
         }
         mPassedNodeIDs.clear();
-        TrustLineAmount flow = calculateOneNode(
-            trustLine->targetID(),
-            *trustLineAmountPtr,
-            1);
+        TrustLineAmount flow = calculateOneNode(trustLine->targetID(), *trustLineAmountPtr, 1);
         if (flow > TrustLine::kZeroAmount()) {
             trustLine->addUsedAmount(flow);
         } else {
@@ -89,10 +84,10 @@ void PathsManager::buildPathsOnOneLevel()
 }
 
 // on second level (paths on 3 nodes) we build paths through gateway first of all
-void PathsManager::buildPathsOnSecondLevel()
+void
+PathsManager::buildPathsOnSecondLevel()
 {
-    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(
-        TopologyTrustLinesManager::kCurrentNodeID);
+    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(TopologyTrustLinesManager::kCurrentNodeID);
     auto gateways = mTrustLinesManager->gateways();
     while (!gateways.empty()) {
         auto itGateway = gateways.begin();
@@ -103,10 +98,7 @@ void PathsManager::buildPathsOnSecondLevel()
                 auto trustLineFreeAmountShared = trustLine->freeAmount();
                 auto trustLineAmountPtr = trustLineFreeAmountShared.get();
                 mPassedNodeIDs.clear();
-                TrustLineAmount flow = calculateOneNode(
-                    trustLine->targetID(),
-                    *trustLineAmountPtr,
-                    1);
+                TrustLineAmount flow = calculateOneNode(trustLine->targetID(), *trustLineAmountPtr, 1);
                 if (flow > TrustLine::kZeroAmount()) {
                     trustLine->addUsedAmount(flow);
                 }
@@ -118,7 +110,6 @@ void PathsManager::buildPathsOnSecondLevel()
             }
         }
         gateways.erase(itGateway);
-
     }
     auto itTrustLinePtr = trustLinePtrsSet.begin();
     while (itTrustLinePtr != trustLinePtrsSet.end()) {
@@ -126,10 +117,7 @@ void PathsManager::buildPathsOnSecondLevel()
         auto trustLineFreeAmountShared = trustLine->freeAmount();
         auto trustLineAmountPtr = trustLineFreeAmountShared.get();
         mPassedNodeIDs.clear();
-        TrustLineAmount flow = calculateOneNode(
-            trustLine->targetID(),
-            *trustLineAmountPtr,
-            1);
+        TrustLineAmount flow = calculateOneNode(trustLine->targetID(), *trustLineAmountPtr, 1);
         if (flow > TrustLine::kZeroAmount()) {
             trustLine->addUsedAmount(flow);
         } else {
@@ -141,10 +129,8 @@ void PathsManager::buildPathsOnSecondLevel()
 // it used the same logic as PathsManager::calculateOneNodeForRebuildingPaths
 // and InitiateMaxFlowCalculationTransaction::calculateOneNode
 // if you change this method, you should change others
-TrustLineAmount PathsManager::calculateOneNode(
-    ContractorID nodeID,
-    const TrustLineAmount &currentFlow,
-    byte level)
+TrustLineAmount
+PathsManager::calculateOneNode(ContractorID nodeID, const TrustLineAmount& currentFlow, byte_t level)
 {
     if (nodeID == mContractorID) {
         if (currentFlow > TrustLine::kZeroAmount()) {
@@ -163,15 +149,12 @@ TrustLineAmount PathsManager::calculateOneNode(
     if (trustLinePtrsSet.empty()) {
         return 0;
     }
-    for (auto &trustLinePtr : trustLinePtrsSet) {
+    for (auto& trustLinePtr : trustLinePtrsSet) {
         auto trustLine = trustLinePtr->topologyTrustLine();
         if (trustLine->targetID() == 0) {
             continue;
         }
-        if (find(
-                mPassedNodeIDs.begin(),
-                mPassedNodeIDs.end(),
-                trustLine->targetID()) != mPassedNodeIDs.end()) {
+        if (find(mPassedNodeIDs.begin(), mPassedNodeIDs.end(), trustLine->targetID()) != mPassedNodeIDs.end()) {
             continue;
         }
         TrustLineAmount nextFlow = currentFlow;
@@ -184,10 +167,7 @@ TrustLineAmount PathsManager::calculateOneNode(
             continue;
         }
         mPassedNodeIDs.push_back(nodeID);
-        TrustLineAmount calcFlow = calculateOneNode(
-            trustLine->targetID(),
-            nextFlow,
-            level + (byte) 1);
+        TrustLineAmount calcFlow = calculateOneNode(trustLine->targetID(), nextFlow, level + (byte_t)1);
         mPassedNodeIDs.pop_back();
         if (calcFlow > TrustLine::kZeroAmount()) {
             trustLine->addUsedAmount(calcFlow);
@@ -200,26 +180,20 @@ TrustLineAmount PathsManager::calculateOneNode(
 // this method used for rebuild paths in case of insufficient founds
 // it used the same logic as PathsManager::buildPaths
 // and InitiateMaxFlowCalculationTransaction::calculateMaxFlowOnOneLevel
-void PathsManager::reBuildPaths(
-    BaseAddress::Shared contractorAddress,
-    const vector<BaseAddress::Shared> &inaccessibleNodes)
+void
+PathsManager::reBuildPaths(BaseAddress::Shared contractorAddress, const vector<BaseAddress::Shared>& inaccessibleNodes)
 {
     mContractorAddress = contractorAddress;
     mContractorID = mTopologyTrustLinesManager->getID(contractorAddress);
     info() << "ReBuild paths to " << mContractorAddress->fullAddress() << " id " << mContractorID;
     auto startTime = utc_now();
-    mTopologyTrustLinesManager->makeFullyUsedTLsFromGatewaysToAllNodesExceptOne(
-        mContractorID);
-    for (const auto &inaccessibleNodeAddress : inaccessibleNodes) {
-        mInaccessibleNodes.insert(
-            mTopologyTrustLinesManager->getID(
-                inaccessibleNodeAddress));
+    mTopologyTrustLinesManager->makeFullyUsedTLsFromGatewaysToAllNodesExceptOne(mContractorID);
+    for (const auto& inaccessibleNodeAddress : inaccessibleNodes) {
+        mInaccessibleNodes.insert(mTopologyTrustLinesManager->getID(inaccessibleNodeAddress));
     }
-    mPathCollection = make_shared<PathsCollection>(
-        contractorAddress);
+    mPathCollection = make_shared<PathsCollection>(contractorAddress);
 
-    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(
-        TopologyTrustLinesManager::kCurrentNodeID);
+    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(TopologyTrustLinesManager::kCurrentNodeID);
     if (trustLinePtrsSet.empty()) {
         mTopologyTrustLinesManager->resetAllUsedAmounts();
         return;
@@ -237,14 +211,14 @@ void PathsManager::reBuildPaths(
 // this method used for rebuild paths in case of insufficient founds
 // it used the same logic as PathsManager::reBuildPathsOnOneLevel
 // and InitiateMaxFlowCalculationTransaction::calculateMaxFlowOnOneLevel
-TrustLineAmount PathsManager::reBuildPathsOnOneLevel()
+TrustLineAmount
+PathsManager::reBuildPathsOnOneLevel()
 {
     TrustLineAmount result = 0;
-    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(
-        TopologyTrustLinesManager::kCurrentNodeID);
-    while(true) {
+    auto trustLinePtrsSet = mTopologyTrustLinesManager->trustLinePtrsSet(TopologyTrustLinesManager::kCurrentNodeID);
+    while (true) {
         TrustLineAmount currentFlow = 0;
-        for (auto &trustLinePtr : trustLinePtrsSet) {
+        for (auto& trustLinePtr : trustLinePtrsSet) {
             auto trustLine = trustLinePtr->topologyTrustLine();
             auto trustLineFreeAmountShared = trustLine->freeAmount();
             auto trustLineAmountPtr = trustLineFreeAmountShared.get();
@@ -252,10 +226,7 @@ TrustLineAmount PathsManager::reBuildPathsOnOneLevel()
             if (mInaccessibleNodes.find(trustLine->targetID()) != mInaccessibleNodes.end()) {
                 continue;
             }
-            TrustLineAmount flow = calculateOneNodeForRebuildingPaths(
-                trustLine->targetID(),
-                *trustLineAmountPtr,
-                1);
+            TrustLineAmount flow = calculateOneNodeForRebuildingPaths(trustLine->targetID(), *trustLineAmountPtr, 1);
             if (flow > TrustLine::kZeroAmount()) {
                 currentFlow += flow;
                 trustLine->addUsedAmount(flow);
@@ -274,10 +245,8 @@ TrustLineAmount PathsManager::reBuildPathsOnOneLevel()
 // it used the same logic as PathsManager::calculateOneNode
 // and InitiateMaxFlowCalculationTransaction::calculateOneNode
 // if you change this method, you should change others
-TrustLineAmount PathsManager::calculateOneNodeForRebuildingPaths(
-    ContractorID nodeID,
-    const TrustLineAmount& currentFlow,
-    byte level)
+TrustLineAmount
+PathsManager::calculateOneNodeForRebuildingPaths(ContractorID nodeID, const TrustLineAmount& currentFlow, byte_t level)
 {
     if (nodeID == mContractorID) {
         if (currentFlow > TrustLine::kZeroAmount()) {
@@ -296,7 +265,7 @@ TrustLineAmount PathsManager::calculateOneNodeForRebuildingPaths(
     if (trustLinePtrsSet.empty()) {
         return 0;
     }
-    for (auto &trustLinePtr : trustLinePtrsSet) {
+    for (auto& trustLinePtr : trustLinePtrsSet) {
         auto trustLine = trustLinePtr->topologyTrustLine();
         if (trustLine->targetID() == 0) {
             continue;
@@ -306,10 +275,7 @@ TrustLineAmount PathsManager::calculateOneNodeForRebuildingPaths(
             continue;
         }
 
-        if (find(
-                mPassedNodeIDs.begin(),
-                mPassedNodeIDs.end(),
-                trustLine->targetID()) != mPassedNodeIDs.end()) {
+        if (find(mPassedNodeIDs.begin(), mPassedNodeIDs.end(), trustLine->targetID()) != mPassedNodeIDs.end()) {
             continue;
         }
         TrustLineAmount nextFlow = currentFlow;
@@ -322,10 +288,7 @@ TrustLineAmount PathsManager::calculateOneNodeForRebuildingPaths(
             continue;
         }
         mPassedNodeIDs.push_back(nodeID);
-        TrustLineAmount calcFlow = calculateOneNodeForRebuildingPaths(
-            trustLine->targetID(),
-            nextFlow,
-            level + (byte)1);
+        TrustLineAmount calcFlow = calculateOneNodeForRebuildingPaths(trustLine->targetID(), nextFlow, level + (byte_t)1);
         mPassedNodeIDs.pop_back();
         if (calcFlow > TrustLine::kZeroAmount()) {
             trustLine->addUsedAmount(calcFlow);
@@ -335,69 +298,62 @@ TrustLineAmount PathsManager::calculateOneNodeForRebuildingPaths(
     return 0;
 }
 
-void PathsManager::addUsedAmountFromInitiator(
-    BaseAddress::Shared targetAddress,
-    const TrustLineAmount &amount)
+void
+PathsManager::addUsedAmountFromInitiator(BaseAddress::Shared targetAddress, const TrustLineAmount& amount)
 {
     auto targetID = mTopologyTrustLinesManager->getID(targetAddress);
-    mTopologyTrustLinesManager->addUsedAmount(
-        TopologyTrustLinesManager::kCurrentNodeID,
-        targetID,
-        amount);
+    mTopologyTrustLinesManager->addUsedAmount(TopologyTrustLinesManager::kCurrentNodeID, targetID, amount);
 }
 
-void PathsManager::addUsedAmount(
-    BaseAddress::Shared sourceAddress,
-    BaseAddress::Shared targetAddress,
-    const TrustLineAmount &amount)
+void
+PathsManager::addUsedAmount(BaseAddress::Shared sourceAddress,
+                            BaseAddress::Shared targetAddress,
+                            const TrustLineAmount& amount)
 {
     auto sourceID = mTopologyTrustLinesManager->getID(sourceAddress);
     auto targetID = mTopologyTrustLinesManager->getID(targetAddress);
-    mTopologyTrustLinesManager->addUsedAmount(
-        sourceID,
-        targetID,
-        amount);
+    mTopologyTrustLinesManager->addUsedAmount(sourceID, targetID, amount);
 }
 
-void PathsManager::makeTrustLineFullyUsed(
-    BaseAddress::Shared sourceAddress,
-    BaseAddress::Shared targetAddress)
+void
+PathsManager::makeTrustLineFullyUsed(BaseAddress::Shared sourceAddress, BaseAddress::Shared targetAddress)
 {
     auto sourceID = mTopologyTrustLinesManager->getID(sourceAddress);
     auto targetID = mTopologyTrustLinesManager->getID(targetAddress);
-    mTopologyTrustLinesManager->makeFullyUsed(
-        sourceID,
-        targetID);
+    mTopologyTrustLinesManager->makeFullyUsed(sourceID, targetID);
 }
 
-vector<BaseAddress::Shared> PathsManager::addressesPath()
+vector<BaseAddress::Shared>
+PathsManager::addressesPath()
 {
     vector<BaseAddress::Shared> result;
     result.reserve(mPassedNodeIDs.size());
-    for (const auto &nodeID : mPassedNodeIDs) {
-        result.push_back(
-            mTopologyTrustLinesManager->getAddressByID(
-                nodeID));
+    for (const auto& nodeID : mPassedNodeIDs) {
+        result.push_back(mTopologyTrustLinesManager->getAddressByID(nodeID));
     }
     return result;
 }
 
-PathsCollection::Shared PathsManager::pathCollection() const
+PathsCollection::Shared
+PathsManager::pathCollection() const
 {
     return mPathCollection;
 }
 
-void PathsManager::clearPathsCollection()
+void
+PathsManager::clearPathsCollection()
 {
     mPathCollection = nullptr;
 }
 
-LoggerStream PathsManager::info() const
+LoggerStream
+PathsManager::info() const
 {
     return mLog.info(logHeader());
 }
 
-const string PathsManager::logHeader() const
+const string
+PathsManager::logHeader() const
 {
     stringstream s;
     s << "[PathsManager: " << mEquivalent << "] ";

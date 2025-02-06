@@ -6,7 +6,8 @@
 
 using namespace crypto;
 
-class TransactionPublicKeyHashMessage : public TransactionMessage {
+class TransactionPublicKeyHashMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<TransactionPublicKeyHashMessage> Shared;

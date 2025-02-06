@@ -41,14 +41,14 @@ pair<BytesShared, size_t> EquivalentMessage::serializeToBytes() const
         sizeof(SerializedEquivalent));
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const size_t EquivalentMessage::kOffsetToInheritedBytes() const
 {
     const auto kOffset =
-            Message::kOffsetToInheritedBytes()
-            + sizeof(SerializedEquivalent);
+        Message::kOffsetToInheritedBytes()
+        + sizeof(SerializedEquivalent);
     return kOffset;
 }

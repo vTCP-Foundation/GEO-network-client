@@ -3,7 +3,8 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class NoEquivalentMessage : public TransactionMessage {
+class NoEquivalentMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<NoEquivalentMessage> Shared;

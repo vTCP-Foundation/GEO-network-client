@@ -9,7 +9,8 @@
 
 using namespace crypto;
 
-class ObservingParticipantsVotesAppendRequestMessage : public ObservingMessage {
+class ObservingParticipantsVotesAppendRequestMessage : public ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingParticipantsVotesAppendRequestMessage> Shared;

@@ -5,7 +5,8 @@
 #include "../../../common/multiprecision/MultiprecisionUtils.h"
 
 class CoordinatorCycleReservationResponseMessage :
-    public ResponseCycleMessage {
+    public ResponseCycleMessage
+{
 
 public:
     typedef shared_ptr<CoordinatorCycleReservationResponseMessage> Shared;

@@ -7,9 +7,11 @@ using namespace db::fields;
 namespace f = boost::filesystem;
 
 
-class TrustLineDirectionColumnTests {
+class TrustLineDirectionColumnTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkFileCreation();
         checkSetOperation();
         checkRemoveOperation();
@@ -22,22 +24,26 @@ public:
     }
 
 private:
-    f::path path() {
+    f::path path()
+    {
         return f::path("tests/db/trust_line_direction_column/");
     }
 
-    void clean() {
+    void clean()
+    {
         f::remove_all(path());
     }
 
-    void checkFileCreation(){
+    void checkFileCreation()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());
         assert(f::exists(path()));
     };
 
-    void checkSetOperation(){
+    void checkSetOperation()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());
@@ -61,7 +67,8 @@ private:
         assert(column.bothDirectedRecordsNumbers().size() == 10);
     };
 
-    void checkSetOperationSpeed(){
+    void checkSetOperationSpeed()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());
@@ -84,7 +91,8 @@ private:
                   << std::endl;
     };
 
-    void checkSyncSetOperationSpeed(){
+    void checkSyncSetOperationSpeed()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());
@@ -107,7 +115,8 @@ private:
                   << std::endl;
     };
 
-    void checkRemoveOperation(){
+    void checkRemoveOperation()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());
@@ -161,7 +170,8 @@ private:
         }
     };
 
-    void checkStartupIndexInitialisation(){
+    void checkStartupIndexInitialisation()
+    {
         clean();
 
         TrustLineDirectionColumn column(path());

@@ -31,7 +31,7 @@ ParticipantsVotesMessage::ParticipantsVotesMessage(
         bytesBufferOffset += sizeof(PaymentNodeID);
 
         auto signature = make_shared<lamport::Signature>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         bytesBufferOffset += lamport::Signature::signatureSize();
 
         mParticipantsSignatures.insert(
@@ -75,7 +75,7 @@ pair<BytesShared, size_t> ParticipantsVotesMessage::serializeToBytes() const
         parentBytesAndCount.second
         + sizeof(SerializedRecordsCount)
         + kTotalParticipantsCount
-          * (sizeof(PaymentNodeID) + lamport::Signature::signatureSize());
+        * (sizeof(PaymentNodeID) + lamport::Signature::signatureSize());
 
     BytesShared buffer = tryMalloc(kBufferSize);
 
@@ -112,8 +112,8 @@ pair<BytesShared, size_t> ParticipantsVotesMessage::serializeToBytes() const
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }
 
 const map<PaymentNodeID, lamport::Signature::Shared>& ParticipantsVotesMessage::participantsSignatures() const

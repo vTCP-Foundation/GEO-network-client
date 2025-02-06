@@ -75,6 +75,6 @@ size_t ObservingParticipantsVotesAppendRequestMessage::serializedSize() const
            + TransactionUUID::kBytesSize
            + sizeof(SerializedRecordsCount)
            + mParticipantsSignatures.size()
-             * (sizeof(PaymentNodeID) + lamport::Signature::signatureSize());
+           * (sizeof(PaymentNodeID) + lamport::Signature::signatureSize());
     // todo : add hash size
 }

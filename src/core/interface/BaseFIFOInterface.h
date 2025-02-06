@@ -34,13 +34,14 @@ namespace fs = boost::filesystem;
  *
  * todo: tests needed.
  */
-class BaseFIFOInterface {
+class BaseFIFOInterface
+{
 public:
-    static const constexpr char *kFIFODir = "fifo/";
+    static const constexpr char* kFIFODir = "fifo/";
 
 protected:
     BaseFIFOInterface():
-        mFIFODescriptor(0){};
+        mFIFODescriptor(0) {};
 
     /**
      * Must be reimplemented by the descendant classes.
@@ -51,7 +52,8 @@ protected:
     /**
      * @returns relative path to the FIFO file including the name of the FIFO file.
      */
-    const string FIFOFilePath() const{
+    const string FIFOFilePath() const
+    {
         return string(kFIFODir) + string(FIFOName());
     }
 
@@ -59,7 +61,8 @@ protected:
      * @returns "true" if FIFO file with specified name and path is present.
      * Otherwise - returns "false".
      */
-    const bool isFIFOExists() const {
+    const bool isFIFOExists() const
+    {
         return fs::exists(fs::path(FIFOFilePath()));
     }
 
@@ -70,14 +73,15 @@ protected:
      * @throws IOError in case if FIFO can't be created.
      * @throws ConflictError in case if FIFO is present already.
      */
-    void createFIFO(unsigned int permissionsMask=0755) {
+    void createFIFO(unsigned int permissionsMask=0755)
+    {
         if (! isFIFOExists()) {
             fs::create_directories(kFIFODir);
 
             if (mkfifo(FIFOFilePath().c_str(), permissionsMask) != 0) {
                 throw IOError(
                     "BaseFIFOInterface::createFIFO: "
-                        "Can't create FIFO file.");
+                    "Can't create FIFO file.");
             }
 
         } else {

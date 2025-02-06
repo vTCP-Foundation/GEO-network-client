@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class TrustLinesInfluenceCommand : public BaseUserCommand {
+class TrustLinesInfluenceCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<TrustLinesInfluenceCommand> Shared;

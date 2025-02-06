@@ -7,7 +7,8 @@
 
 using namespace crypto;
 
-class AuditMessage : public TransactionMessage {
+class AuditMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<AuditMessage> Shared;

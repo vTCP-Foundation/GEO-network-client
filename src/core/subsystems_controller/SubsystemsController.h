@@ -8,7 +8,8 @@
 #include <chrono>
 #include <thread>
 
-class SubsystemsController {
+class SubsystemsController
+{
 
 public:
     SubsystemsController(

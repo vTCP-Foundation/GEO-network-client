@@ -12,7 +12,8 @@ using namespace std;
 
 namespace as = boost::asio;
 
-class TopologyCacheUpdateDelayedTask {
+class TopologyCacheUpdateDelayedTask
+{
 
 public:
     TopologyCacheUpdateDelayedTask(
@@ -45,11 +46,12 @@ private:
     static const uint16_t kProlongationTrustLineUpdatingTimeSec = 2;
 
 private:
-    static Duration& kProlongationTrustLineUpdatingDuration() {
+    static Duration& kProlongationTrustLineUpdatingDuration()
+    {
         static auto duration = Duration(
-            0,
-            0,
-            kProlongationTrustLineUpdatingTimeSec);
+                                   0,
+                                   0,
+                                   kProlongationTrustLineUpdatingTimeSec);
         return duration;
     }
 

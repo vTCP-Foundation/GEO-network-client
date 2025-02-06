@@ -12,7 +12,8 @@
 #include "../../../network/messages/trust_lines/ConflictResolverMessage.h"
 #include "../../../network/messages/trust_lines/ConflictResolverResponseMessage.h"
 
-class ConflictResolverInitiatorTransaction : public BaseTransaction  {
+class ConflictResolverInitiatorTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<ConflictResolverInitiatorTransaction> Shared;
@@ -40,7 +41,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         ResponseProcessing = 2,
         Recovery = 3,

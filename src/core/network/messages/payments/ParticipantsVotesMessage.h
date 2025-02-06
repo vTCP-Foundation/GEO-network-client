@@ -16,7 +16,8 @@ using namespace crypto;
  * TODO: [mvp+] add participants signing
  */
 class ParticipantsVotesMessage:
-    public TransactionMessage {
+    public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ParticipantsVotesMessage> Shared;

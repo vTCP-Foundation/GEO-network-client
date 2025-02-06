@@ -6,7 +6,8 @@
 /*
  * Abstract base class for messages that must contain equivalent.
  */
-class EquivalentMessage : public Message {
+class EquivalentMessage : public Message
+{
 
 public:
     EquivalentMessage(

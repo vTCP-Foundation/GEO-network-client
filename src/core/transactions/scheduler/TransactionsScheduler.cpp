@@ -40,7 +40,7 @@ void TransactionsScheduler::run()
 void TransactionsScheduler::scheduleTransaction(
     BaseTransaction::Shared transaction)
 {
-    for (const auto &transactionAndState : *mTransactions){
+    for (const auto &transactionAndState : *mTransactions) {
         if (transaction->currentTransactionUUID() == transactionAndState.first->currentTransactionUUID()) {
             warning() << "scheduleTransaction: Duplicate TransactionUUID. Already exists. "
                       << "Current TA type: " << transaction->transactionType()
@@ -57,7 +57,7 @@ void TransactionsScheduler::postponeTransaction(
     BaseTransaction::Shared transaction,
     uint32_t millisecondsDelay)
 {
-    for (const auto &transactionAndState : *mTransactions){
+    for (const auto &transactionAndState : *mTransactions) {
         if (transaction->currentTransactionUUID() == transactionAndState.first->currentTransactionUUID()) {
             warning() << "postponeTransaction: Duplicate TransactionUUID. Already exists. "
                       << "Current TA type: " << transaction->transactionType()
@@ -73,7 +73,7 @@ void TransactionsScheduler::postponeTransaction(
 void TransactionsScheduler::awakeTransaction(
     BaseTransaction::Shared transaction)
 {
-    for (const auto &transactionAndState : *mTransactions){
+    for (const auto &transactionAndState : *mTransactions) {
         if (transaction->currentTransactionUUID() == transactionAndState.first->currentTransactionUUID()) {
             (*mTransactions)[transactionAndState.first] = TransactionState::awakeAsFastAsPossible();
             adjustAwakeningToNextTransaction();
@@ -88,7 +88,7 @@ void TransactionsScheduler::tryAttachMessageToTransaction(
     if (!message->isTransactionMessage()) {
         throw ValueError(
             "TransactionsScheduler::tryAttachMessageToTransaction: "
-                "message received is not TransactionMessage " + to_string(message->typeID()));
+            "message received is not TransactionMessage " + to_string(message->typeID()));
     }
 
     auto transactionMessage = static_pointer_cast<TransactionMessage>(message);
@@ -110,7 +110,7 @@ void TransactionsScheduler::tryAttachMessageToTransaction(
                     message->typeID() == Message::Payments_FinalAmountsConfiguration or
                     message->typeID() == Message::Payments_FinalPathConfiguration) {
                 auto paymentTransaction = static_pointer_cast<BasePaymentTransaction>(
-                    transactionAndState.first);
+                                              transactionAndState.first);
                 if (paymentTransaction->coordinatorAddress() != transactionMessage->senderAddresses.at(0)) {
                     continue;
                 }
@@ -125,9 +125,9 @@ void TransactionsScheduler::tryAttachMessageToTransaction(
     }
     throw NotFoundError(
         "TransactionsScheduler::tryAttachMessageToTransaction: " +
-            transactionMessage->transactionUUID().stringUUID() +
-            " there is no requested transaction for message " +
-            to_string(message->typeID()));
+        transactionMessage->transactionUUID().stringUUID() +
+        " there is no requested transaction for message " +
+        to_string(message->typeID()));
 }
 
 void TransactionsScheduler::tryAttachResourceToTransaction(
@@ -152,7 +152,7 @@ void TransactionsScheduler::tryAttachResourceToTransaction(
 
     throw NotFoundError(
         "TransactionsScheduler::tryAttachResourceToTransaction: "
-            "Can't find transaction that requires given resource.");
+        "Can't find transaction that requires given resource.");
 }
 
 void TransactionsScheduler::launchTransaction(
@@ -167,12 +167,12 @@ void TransactionsScheduler::launchTransaction(
     try {
         const auto kTAType = transaction->transactionType();
         if (kTAType >= BaseTransaction::CoordinatorPaymentTransaction
-            && kTAType <= BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
+                && kTAType <= BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
 
             info() << "Payment or cycle closing TA launched:"
-                << " TransactionUUID: " << transaction->currentTransactionUUID()
-                << " Type: " << transaction->transactionType()
-                << " Step: " << transaction->currentStep();
+                   << " TransactionUUID: " << transaction->currentTransactionUUID()
+                   << " Type: " << transaction->transactionType()
+                   << " Step: " << transaction->currentStep();
         }
 
 
@@ -193,11 +193,11 @@ void TransactionsScheduler::launchTransaction(
 
     } catch (exception &e) {
         error() << "TA error occurred:"
-            << " TransactionUUID: " << transaction->currentTransactionUUID()
-            << " Type: " << transaction->transactionType()
-            << " Step: " << transaction->currentStep()
-            << " Error message: " << e.what()
-            << " Transaction dropped";
+                << " TransactionUUID: " << transaction->currentTransactionUUID()
+                << " Type: " << transaction->transactionType()
+                << " Step: " << transaction->currentStep()
+                << " Error message: " << e.what()
+                << " Transaction dropped";
 
         forgetTransaction(transaction);
     }
@@ -208,26 +208,26 @@ void TransactionsScheduler::handleTransactionResult(
     TransactionResult::SharedConst result)
 {
     switch (result->resultType()) {
-        case TransactionResult::ResultType::CommandResultType: {
-            processCommandResult(
-                transaction,
-                result->commandResult());
-            break;
-        }
+    case TransactionResult::ResultType::CommandResultType: {
+        processCommandResult(
+            transaction,
+            result->commandResult());
+        break;
+    }
 
-        case TransactionResult::ResultType::TransactionStateType: {
-            processTransactionState(
-                transaction,
-                result->state());
-            break;
-        }
-        case TransactionResult::ResultType::HybridType: {
-            processCommandResultAndTransactionState(
-                transaction,
-                result->commandResult(),
-                result->state());
-            break;
-        }
+    case TransactionResult::ResultType::TransactionStateType: {
+        processTransactionState(
+            transaction,
+            result->state());
+        break;
+    }
+    case TransactionResult::ResultType::HybridType: {
+        processCommandResultAndTransactionState(
+            transaction,
+            result->commandResult(),
+            result->state());
+        break;
+    }
     }
 }
 
@@ -246,7 +246,7 @@ void TransactionsScheduler::processTransactionState(
     if (state->mustSavePreviousStateState()) {
         return;
     }
-    if (state->mustBeRescheduled()){
+    if (state->mustBeRescheduled()) {
         if (state->needSerialize())
             serializeTransactionSignal(transaction);
 
@@ -282,12 +282,12 @@ void TransactionsScheduler::forgetTransaction(
 {
     const auto kTAType = transaction->transactionType();
     if (kTAType >= BaseTransaction::CoordinatorPaymentTransaction
-        && kTAType <= BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
+            && kTAType <= BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
 
         info() << "Payment or cycle closing TA has been forgotten:"
-                << " TransactionUUID: " << transaction->currentTransactionUUID()
-                << " Type: " << transaction->transactionType()
-                << " Step: " << transaction->currentStep();
+               << " TransactionUUID: " << transaction->currentTransactionUUID()
+               << " Type: " << transaction->transactionType()
+               << " Step: " << transaction->currentStep();
     }
 
     if (transaction->transactionType() == BaseTransaction::Payments_CycleCloserInitiatorTransaction) {
@@ -316,33 +316,33 @@ pair<BaseTransaction::Shared, GEOEpochTimestamp> TransactionsScheduler::transact
     if (mTransactions->empty()) {
         throw NotFoundError(
             "TransactionsScheduler::transactionWithMinimalAwakeningTimestamp: "
-                "There are no any delayed transactions.");
+            "There are no any delayed transactions.");
     }
 
     auto nextTransactionAndState = mTransactions->cbegin();
     if (mTransactions->size() > 1) {
-        for (auto it=(mTransactions->cbegin()++); it != mTransactions->cend(); ++it){
+        for (auto it=(mTransactions->cbegin()++); it != mTransactions->cend(); ++it) {
             if (it->second == nullptr) {
                 // Transaction has no state, and, as a result, doesn't have timeout set.
                 // Therefore, it can't be considered for awakening by the timeout.
                 continue;
             }
 
-            if (it->second->awakeningTimestamp() < nextTransactionAndState->second->awakeningTimestamp()){
+            if (it->second->awakeningTimestamp() < nextTransactionAndState->second->awakeningTimestamp()) {
                 nextTransactionAndState = it;
             }
         }
     }
 
-    if (nextTransactionAndState->second->mustBeRescheduled()){
+    if (nextTransactionAndState->second->mustBeRescheduled()) {
         return make_pair(
-            nextTransactionAndState->first,
-            nextTransactionAndState->second->awakeningTimestamp());
+                   nextTransactionAndState->first,
+                   nextTransactionAndState->second->awakeningTimestamp());
     }
 
     throw NotFoundError(
         "TransactionsScheduler::transactionWithMinimalAwakeningTimestamp: "
-            "there are no any delayed transactions.");
+        "there are no any delayed transactions.");
 }
 
 // This method used for finding earlier creating transaction of given type.
@@ -353,7 +353,7 @@ BaseTransaction::Shared TransactionsScheduler::getEarlierTransaction(
 {
     auto earlierTransaction = transaction;
     if (mTransactions->size() > 1) {
-        for (auto it=(mTransactions->begin()++); it != mTransactions->end(); ++it){
+        for (auto it=(mTransactions->begin()++); it != mTransactions->end(); ++it) {
             if (it->second == nullptr) {
                 // Transaction has no state, and, as a result, doesn't have timeout set.
                 // Therefore, it can't be considered for awakening by the timeout.
@@ -370,7 +370,7 @@ BaseTransaction::Shared TransactionsScheduler::getEarlierTransaction(
             if (microsecondsSinceGEOEpoch(utc_now()) >= it->second->awakeningTimestamp()) {
                 it->second = TransactionState::awakeAsFastAsPossible();
             }
-            if (it->first->timeStarted() < earlierTransaction->timeStarted()){
+            if (it->first->timeStarted() < earlierTransaction->timeStarted()) {
                 earlierTransaction = it->first;
             }
         }
@@ -416,7 +416,7 @@ void TransactionsScheduler::handleAwakening(
 
         if (errorsCount < 10) {
             error() << "handleAwakening. Error occurred on planned awakening. Details: " << errorMessage.message().c_str()
-                   << ". Next awakening would be scheduled for " << errorsCount << " seconds from now.";
+                    << ". Next awakening would be scheduled for " << errorsCount << " seconds from now.";
 
             // Transactions processing must not be cancelled.
             // Next awakening would be delayed for 10 seconds
@@ -427,12 +427,12 @@ void TransactionsScheduler::handleAwakening(
 
         } else {
             error() << "handleAwakening. Some error repeatedly occurs on awakening. "
-                   << "It seems that it can't be recovered automatically."
-                   << "Next awakening would not be planned.";
+                    << "It seems that it can't be recovered automatically."
+                    << "Next awakening would not be planned.";
 
             throw RuntimeError(
                 "TransactionsScheduler::handleAwakening: "
-                    "Some error repeated too much times");
+                "Some error repeated too much times");
         }
     }
 
@@ -445,7 +445,7 @@ void TransactionsScheduler::handleAwakening(
                 errorsCount = 0;
             } else {
                 auto transaction = getEarlierTransaction(
-                    transactionAndDelay.first);
+                                       transactionAndDelay.first);
                 launchTransaction(transaction);
                 errorsCount = 0;
             }
@@ -472,15 +472,15 @@ const BaseTransaction::Shared TransactionsScheduler::cycleClosingTransactionByUU
     for (const auto &transactionAndState : *mTransactions) {
         if (transactionAndState.first->currentTransactionUUID() == transactionUUID) {
             if (transactionAndState.first->transactionType() != BaseTransaction::Payments_CycleCloserInitiatorTransaction &&
-                transactionAndState.first->transactionType() != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
+                    transactionAndState.first->transactionType() != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
                 throw ValueError("TransactionsScheduler::cycleClosingTransactionByUUID: "
-                                     "requested transaction doesn't belong to CycleClosing transactions");
+                                 "requested transaction doesn't belong to CycleClosing transactions");
             }
             return transactionAndState.first;
         }
     }
     throw NotFoundError("TransactionsScheduler::cycleClosingTransactionByUUID: "
-                         "there is no transaction with requested UUID");
+                        "there is no transaction with requested UUID");
 }
 
 bool TransactionsScheduler::isTransactionInProcess(
@@ -510,31 +510,31 @@ const BaseTransaction::Shared TransactionsScheduler::paymentTransactionByCommand
 }
 
 string TransactionsScheduler::logHeader()
-    noexcept
+noexcept
 {
     return "[TransactionsScheduler]";
 }
 
 LoggerStream TransactionsScheduler::error() const
-    noexcept
+noexcept
 {
     return mLog.error(logHeader());
 }
 
 LoggerStream TransactionsScheduler::warning() const
-    noexcept
+noexcept
 {
     return mLog.warning(logHeader());
 }
 
 LoggerStream TransactionsScheduler::info() const
-    noexcept
+noexcept
 {
     return mLog.info(logHeader());
 }
 
 LoggerStream TransactionsScheduler::debug() const
-    noexcept
+noexcept
 {
     return mLog.debug(logHeader());
 }

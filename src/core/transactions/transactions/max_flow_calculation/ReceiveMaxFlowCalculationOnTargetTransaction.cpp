@@ -30,7 +30,7 @@ TransactionResult::SharedConst ReceiveMaxFlowCalculationOnTargetTransaction::run
 void ReceiveMaxFlowCalculationOnTargetTransaction::sendResultToInitiator()
 {
     TopologyCache::Shared maxFlowCalculationCachePtr = mTopologyCacheManager->cacheByAddress(
-        mMessage->senderAddresses.at(0));
+            mMessage->senderAddresses.at(0));
     if (maxFlowCalculationCachePtr != nullptr) {
         sendCachedResultToInitiator(
             maxFlowCalculationCachePtr);
@@ -119,11 +119,12 @@ void ReceiveMaxFlowCalculationOnTargetTransaction::sendMessagesOnFirstLevel()
     pair<vector<ContractorID>, vector<ContractorID>> incomingFlowIDs;
     if (mMessage->isSenderGateway()) {
         incomingFlowIDs = mTrustLinesManager->firstLevelGatewayNeighborsWithIncomingFlow();
-    } else {
+    }
+    else {
         incomingFlowIDs = mTrustLinesManager->firstLevelNeighborsWithIncomingFlow();
     }
     auto initiatorContractorID = mContractorsManager->contractorIDByAddress(
-        mMessage->senderAddresses.at(0));
+                                     mMessage->senderAddresses.at(0));
 
     for (auto const &nodeIDWithIncomingFlow : incomingFlowIDs.first) {
         if (nodeIDWithIncomingFlow == initiatorContractorID) {

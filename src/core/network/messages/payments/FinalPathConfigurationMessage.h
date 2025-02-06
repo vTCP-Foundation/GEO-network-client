@@ -3,7 +3,8 @@
 
 #include "base/RequestMessage.h"
 
-class FinalPathConfigurationMessage : public RequestMessage {
+class FinalPathConfigurationMessage : public RequestMessage
+{
 
 public:
     typedef shared_ptr<FinalPathConfigurationMessage> Shared;

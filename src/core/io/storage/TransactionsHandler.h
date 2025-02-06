@@ -12,7 +12,8 @@
 
 #include <vector>
 
-class TransactionsHandler {
+class TransactionsHandler
+{
 
 public:
     TransactionsHandler(

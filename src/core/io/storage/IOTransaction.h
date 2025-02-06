@@ -22,7 +22,8 @@
 
 #include "../../../libs/sqlite3/sqlite3.h"
 
-class IOTransaction {
+class IOTransaction
+{
 
 public:
     typedef shared_ptr<IOTransaction> Shared;

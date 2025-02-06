@@ -39,11 +39,11 @@ TrustLinesInfluenceCommand::TrustLinesInfluenceCommand(
             commandBuffer.end(), (
                 *(int_[flagsParse])
                 >-(char_(kTokensSeparator)
-                >*(int_[firstParamParse])
-                >char_(kTokensSeparator)
-                >*(int_[secondParamParse])
-                >char_(kTokensSeparator)
-                >*(int_[thirdParamParse]))
+                   >*(int_[firstParamParse])
+                   >char_(kTokensSeparator)
+                   >*(int_[secondParamParse])
+                   >char_(kTokensSeparator)
+                   >*(int_[thirdParamParse]))
                 >eol > eoi));
     } catch(...) {
         throw ValueError("TrustLinesInfluenceCommand: cannot parse command.");

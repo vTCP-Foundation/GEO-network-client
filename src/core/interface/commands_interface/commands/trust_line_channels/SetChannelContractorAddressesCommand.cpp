@@ -31,23 +31,23 @@ SetChannelContractorAddressesCommand::SetChannelContractorAddressesCommand(
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mContractorAddresses.push_back(
-                    make_shared<IPv4WithPortAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            case BaseAddress::GNS: {
-                mContractorAddresses.push_back(
-                    make_shared<GNSAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            default:
-                throw ValueError("SetChannelContractorAddressesCommand: can't parse command. "
-                                 "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mContractorAddresses.push_back(
+                make_shared<IPv4WithPortAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        case BaseAddress::GNS: {
+            mContractorAddresses.push_back(
+                make_shared<GNSAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        default:
+            throw ValueError("SetChannelContractorAddressesCommand: can't parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
         address.erase();
     };
@@ -69,15 +69,15 @@ SetChannelContractorAddressesCommand::SetChannelContractorAddressesCommand(
             +(int_) > char_(kTokensSeparator)
             >+(int_) > char_(kTokensSeparator)
             > addressLexeme<
-                decltype(addressAddChar),
-                decltype(addressAddNumber),
-                decltype(addressTypeParse),
-                decltype(addressAddToVector)>(
-                    addressesCount,
-                    addressAddChar,
-                    addressAddNumber,
-                    addressTypeParse,
-                    addressAddToVector)
+            decltype(addressAddChar),
+            decltype(addressAddNumber),
+            decltype(addressTypeParse),
+            decltype(addressAddToVector)>(
+                addressesCount,
+                addressAddChar,
+                addressAddNumber,
+                addressTypeParse,
+                addressAddToVector)
             > eoi);
 
     } catch(...) {

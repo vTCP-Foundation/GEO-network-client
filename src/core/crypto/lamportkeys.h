@@ -6,15 +6,13 @@
 #include <sodium.h>
 #include <memory>
 
-
 namespace crypto {
 namespace lamport {
 
 using namespace std;
 
-
-class BaseKey:
-    boost::noncopyable {
+class BaseKey : boost::noncopyable
+{
     friend class Signature;
 
 public:
@@ -25,7 +23,8 @@ protected:
     static const size_t kRandomNumberSize = 256 / 8;
 };
 
-class KeyHash {
+class KeyHash
+{
 public:
     typedef shared_ptr<KeyHash> Shared;
 
@@ -33,17 +32,17 @@ public:
     KeyHash() = default;
 
     KeyHash(
-        byte* buffer);
+        byte_t* buffer);
 
-    const byte* data() const;
+    const byte_t* data() const;
 
     const string toString() const;
 
-    friend bool operator== (
+    friend bool operator==(
         const KeyHash &kh1,
         const KeyHash &kh2);
 
-    friend bool operator!= (
+    friend bool operator!=(
         const KeyHash &kh1,
         const KeyHash &kh2);
 
@@ -51,12 +50,11 @@ public:
     static const size_t kBytesSize = 32;
 
 private:
-    byte mData[kBytesSize];
+    byte_t mData[kBytesSize];
 };
 
-
-class PublicKey:
-    public BaseKey {
+class PublicKey : public BaseKey
+{
     friend class PrivateKey;
     friend class Signature;
 
@@ -66,12 +64,11 @@ public:
     PublicKey() = default;
 
     PublicKey(
-        byte* data);
+        byte_t* data);
 
-    ~PublicKey()
-        noexcept;
+    ~PublicKey() noexcept;
 
-    const byte* data() const;
+    const byte_t* data() const;
 
     const KeyHash::Shared hash() const;
 
@@ -79,31 +76,29 @@ public:
     using BaseKey::BaseKey;
 
 private:
-    byte *mData;
+    byte_t* mData;
 };
 
-
-class PrivateKey:
-    public BaseKey {
+class PrivateKey : public BaseKey
+{
     friend class Signature;
 
 public:
     explicit PrivateKey();
 
     PrivateKey(
-        byte* data);
+        byte_t* data);
 
     PublicKey::Shared derivePublicKey();
 
     void crop();
 
-    const memory::SecureSegment* data() const;
+    const memory::SecureSegment *data() const;
 
 private:
     memory::SecureSegment mData;
     bool mIsCropped;
 };
-
 
 }
 }

@@ -3,7 +3,7 @@
 TrustLineRecord::TrustLineRecord(
     const TransactionUUID &operationUUID,
     const TrustLineRecord::TrustLineOperationType operationType,
-    Contractor::Shared contractor):
+    Contractor::Shared contractor) :
 
     Record(
         Record::TrustLineRecordType,
@@ -11,13 +11,14 @@ TrustLineRecord::TrustLineRecord(
         contractor),
     mTrustLineOperationType(operationType),
     mAmount(0)
-{}
+{
+}
 
 TrustLineRecord::TrustLineRecord(
     const TransactionUUID &operationUUID,
     const TrustLineRecord::TrustLineOperationType operationType,
     Contractor::Shared contractor,
-    const TrustLineAmount &amount):
+    const TrustLineAmount &amount) :
 
     Record(
         Record::TrustLineRecordType,
@@ -25,40 +26,39 @@ TrustLineRecord::TrustLineRecord(
         contractor),
     mTrustLineOperationType(operationType),
     mAmount(amount)
-{}
+{
+}
 
 TrustLineRecord::TrustLineRecord(
     const TransactionUUID &operationUUID,
     const GEOEpochTimestamp geoEpochTimestamp,
-    BytesShared recordBody):
-    Record(
-        Record::TrustLineRecordType,
-        operationUUID,
-        geoEpochTimestamp)
+    BytesShared recordBody) : Record(Record::TrustLineRecordType,
+                                         operationUUID,
+                                         geoEpochTimestamp)
 {
     size_t dataBufferOffset = 0;
-    auto* operationType =
+    auto *operationType =
         new (recordBody.get() + dataBufferOffset) TrustLineRecord::SerializedTrustLineOperationType;
     dataBufferOffset += sizeof(
-        TrustLineRecord::SerializedTrustLineOperationType);
+                            TrustLineRecord::SerializedTrustLineOperationType);
     mTrustLineOperationType = (TrustLineOperationType)*operationType;
 
     // todo : in future this parameter could be used for history with contractor by channel
     dataBufferOffset += sizeof(ContractorID);
 
     mContractor = make_shared<Contractor>(
-        recordBody.get() + dataBufferOffset);
+                      recordBody.get() + dataBufferOffset);
     dataBufferOffset += mContractor->serializedSize();
 
     mAmount = 0;
     if (*operationType != TrustLineRecord::TrustLineOperationType::Closing &&
-        *operationType != TrustLineRecord::TrustLineOperationType::Rejecting) {
-        vector<byte> amountBytes(
+            *operationType != TrustLineRecord::TrustLineOperationType::Rejecting) {
+        vector<byte_t> amountBytes(
             recordBody.get() + dataBufferOffset,
             recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
 
         mAmount = bytesToTrustLineAmount(
-            amountBytes);
+                      amountBytes);
     }
 }
 
@@ -80,14 +80,14 @@ const TrustLineAmount TrustLineRecord::amount() const
 pair<BytesShared, size_t> TrustLineRecord::serializedHistoryRecordBody() const
 {
     size_t recordBodySize = sizeof(SerializedTrustLineOperationType) +
-            sizeof(ContractorID) + mContractor->serializedSize();
+                            sizeof(ContractorID) + mContractor->serializedSize();
     if (mTrustLineOperationType != Closing &&
             mTrustLineOperationType != Rejecting) {
         recordBodySize += kTrustLineAmountBytesCount;
     }
 
     BytesShared bytesBuffer = tryCalloc(
-        recordBodySize);
+                                  recordBodySize);
     size_t bytesBufferOffset = 0;
 
     memcpy(
@@ -120,6 +120,6 @@ pair<BytesShared, size_t> TrustLineRecord::serializedHistoryRecordBody() const
             kTrustLineAmountBytesCount);
     }
     return make_pair(
-        bytesBuffer,
-        recordBodySize);
+               bytesBuffer,
+               recordBodySize);
 }

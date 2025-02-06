@@ -32,16 +32,19 @@
 #endif
 
 
-class TrustLinesManager {
+class TrustLinesManager
+{
 public:
-    enum TrustLineOperationResult {
+    enum TrustLineOperationResult
+    {
         Opened,
         Updated,
         Closed,
         NoChanges,
     };
 
-    enum TrustLineActionType {
+    enum TrustLineActionType
+    {
         NoActions,
         Audit,
         KeysSharing,
@@ -290,7 +293,7 @@ public:
      * @returns total summary of all incoming possibilities of the node.
      */
     ConstSharedTrustLineAmount totalIncomingAmount()
-        const;
+    const;
 
     // get all reservations (all transactions) to requested contractor
     vector<AmountReservation::ConstShared> reservationsToContractor(
@@ -407,16 +410,16 @@ protected:
 
 protected: // log shortcuts
     const string logHeader() const
-        noexcept;
+    noexcept;
 
     LoggerStream info() const
-        noexcept;
+    noexcept;
 
     LoggerStream warning() const
-        noexcept;
+    noexcept;
 
 private:
-    static const uint32_t kCountPaymentsForAudit = 10;
+    static constexpr uint32_t kCountPaymentsForAudit = 10;
 
 private:
     unordered_map<ContractorID, TrustLine::Shared> mTrustLines;

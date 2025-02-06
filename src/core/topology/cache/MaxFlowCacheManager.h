@@ -8,7 +8,8 @@
 #include <unordered_map>
 #include <map>
 
-class MaxFlowCacheManager {
+class MaxFlowCacheManager
+{
 public:
     MaxFlowCacheManager(
         const SerializedEquivalent equivalent,
@@ -21,7 +22,7 @@ public:
     void updateCaches();
 
     MaxFlowCache::Shared cacheByAddress(
-       BaseAddress::Shared nodeAddress) const;
+        BaseAddress::Shared nodeAddress) const;
 
     void updateCache(
         BaseAddress::Shared keyAddress,
@@ -43,15 +44,16 @@ private:
     const string logHeader() const;
 
 private:
-    static const byte kResetCacheHours = 0;
-    static const byte kResetCacheMinutes = 1;
-    static const byte kResetCacheSeconds = 0;
+    static const byte_t kResetCacheHours = 0;
+    static const byte_t kResetCacheMinutes = 1;
+    static const byte_t kResetCacheSeconds = 0;
 
-    static Duration& kResetCacheDuration() {
+    static Duration &kResetCacheDuration()
+    {
         static auto duration = Duration(
-            kResetCacheHours,
-            kResetCacheMinutes,
-            kResetCacheSeconds);
+                                   kResetCacheHours,
+                                   kResetCacheMinutes,
+                                   kResetCacheSeconds);
         return duration;
     }
 
@@ -62,5 +64,4 @@ private:
     Logger &mLog;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_MAXFLOWCACHEMANAGER_H
+#endif // GEO_NETWORK_CLIENT_MAXFLOWCACHEMANAGER_H

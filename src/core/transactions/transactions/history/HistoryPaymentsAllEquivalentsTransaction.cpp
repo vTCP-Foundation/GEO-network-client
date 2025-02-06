@@ -19,7 +19,7 @@ TransactionResult::SharedConst HistoryPaymentsAllEquivalentsTransaction::run()
 
     if (mCommand->isPaymentRecordCommandUUIDPresent()) {
         auto const paymentRecords = ioTransaction->historyStorage()->paymentRecordsByCommandUUID(
-                mCommand->paymentRecordCommandUUID());
+                                        mCommand->paymentRecordCommandUUID());
         if (paymentRecords.size() > 1) {
             warning() << "Count transactions with requested commandUUID is more than one";
         }
@@ -27,21 +27,21 @@ TransactionResult::SharedConst HistoryPaymentsAllEquivalentsTransaction::run()
     }
 
     auto const paymentRecords = ioTransaction->historyStorage()->paymentRecordsAllEquivalents(
-        mCommand->historyCount(),
-        mCommand->historyFrom(),
-        mCommand->timeFrom(),
-        mCommand->isTimeFromPresent(),
-        mCommand->timeTo(),
-        mCommand->isTimeToPresent(),
-        mCommand->lowBoundaryAmount(),
-        mCommand->isLowBoundaryAmountPresent(),
-        mCommand->highBoundaryAmount(),
-        mCommand->isHighBoundaryAmountPresent());
+                                    mCommand->historyCount(),
+                                    mCommand->historyFrom(),
+                                    mCommand->timeFrom(),
+                                    mCommand->isTimeFromPresent(),
+                                    mCommand->timeTo(),
+                                    mCommand->isTimeToPresent(),
+                                    mCommand->lowBoundaryAmount(),
+                                    mCommand->isLowBoundaryAmountPresent(),
+                                    mCommand->highBoundaryAmount(),
+                                    mCommand->isHighBoundaryAmountPresent());
     return resultOk(paymentRecords);
 }
 
 TransactionResult::SharedConst HistoryPaymentsAllEquivalentsTransaction::resultOk(
-        const vector<PaymentRecord::Shared> &records)
+    const vector<PaymentRecord::Shared> &records)
 {
     const auto kUnixEpoch = DateTime(boost::gregorian::date(1970,1,1));
 
@@ -62,8 +62,8 @@ TransactionResult::SharedConst HistoryPaymentsAllEquivalentsTransaction::resultO
 
         } else {
             throw RuntimeError(
-                    "HistoryPaymentsAllEquivalentsTransaction::resultOk: "
-                    "unexpected operation type occurred.");
+                "HistoryPaymentsAllEquivalentsTransaction::resultOk: "
+                "unexpected operation type occurred.");
         }
 
         stream << kTokensSeparator << kRecord->equivalent()
@@ -78,8 +78,8 @@ TransactionResult::SharedConst HistoryPaymentsAllEquivalentsTransaction::resultO
 
     auto result = stream.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            result));
+               mCommand->resultOk(
+                   result));
 }
 
 const string HistoryPaymentsAllEquivalentsTransaction::logHeader() const

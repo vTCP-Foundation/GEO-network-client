@@ -28,16 +28,16 @@ EventsInterface::~EventsInterface()
 void EventsInterface::writeEvent(
     Event::Shared event)
 {
-    if (mFIFODescriptor == 0){
+    if (mFIFODescriptor == 0) {
 #ifdef LINUX
         if (mIsBlocked) {
             mFIFODescriptor = open(
-                FIFOFilePath().c_str(),
-                O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL);
+                                  FIFOFilePath().c_str(),
+                                  O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL);
         } else {
             mFIFODescriptor = open(
-                FIFOFilePath().c_str(),
-                O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL | O_NONBLOCK);
+                                  FIFOFilePath().c_str(),
+                                  O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL | O_NONBLOCK);
         }
 #endif
 
@@ -51,12 +51,12 @@ void EventsInterface::writeEvent(
 #ifdef LINUX
         if (mIsBlocked) {
             mFIFODescriptor = open(
-                FIFOFilePath().c_str(),
-                O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL);
+                                  FIFOFilePath().c_str(),
+                                  O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL);
         } else {
             mFIFODescriptor = open(
-                FIFOFilePath().c_str(),
-                O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL | O_NONBLOCK);
+                                  FIFOFilePath().c_str(),
+                                  O_WRONLY | O_RSYNC | O_DSYNC | F_SETFL | O_NONBLOCK);
         }
 #endif
 
@@ -70,7 +70,7 @@ void EventsInterface::writeEvent(
     }
 }
 
-const char *EventsInterface::FIFOName() const
+const char* EventsInterface::FIFOName() const
 {
     return mFIFOName.c_str();
 }

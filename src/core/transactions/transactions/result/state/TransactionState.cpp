@@ -54,15 +54,15 @@ TransactionState::TransactionState(
 TransactionState::SharedConst TransactionState::exit()
 {
     return make_shared<TransactionState>(
-        numeric_limits<GEOEpochTimestamp>::max());
+               numeric_limits<GEOEpochTimestamp>::max());
 }
 
 TransactionState::SharedConst TransactionState::flushAndContinue()
 {
     return make_shared<TransactionState>(
-        microsecondsSinceGEOEpoch(
-            utc_now()),
-        true);
+               microsecondsSinceGEOEpoch(
+                   utc_now()),
+               true);
 }
 
 /*!
@@ -71,8 +71,8 @@ TransactionState::SharedConst TransactionState::flushAndContinue()
 TransactionState::SharedConst TransactionState::awakeAsFastAsPossible()
 {
     return make_shared<TransactionState>(
-        microsecondsSinceGEOEpoch(
-            utc_now()));
+               microsecondsSinceGEOEpoch(
+                   utc_now()));
 }
 
 /*!
@@ -82,8 +82,8 @@ TransactionState::SharedConst TransactionState::awakeAfterMilliseconds(
     uint32_t milliseconds)
 {
     return make_shared<TransactionState>(
-        microsecondsSinceGEOEpoch(
-            utc_now() + pt::microseconds(milliseconds * 1000)));
+               microsecondsSinceGEOEpoch(
+                   utc_now() + pt::microseconds(milliseconds * 1000)));
 }
 
 /*!
@@ -100,7 +100,7 @@ TransactionState::SharedConst TransactionState::waitForMessageTypes(
 
     } else {
         state = const_pointer_cast<TransactionState> (TransactionState::awakeAfterMilliseconds(
-            noLongerThanMilliseconds));
+                    noLongerThanMilliseconds));
     }
 
     state->mRequiredMessageTypes = requiredMessageType;
@@ -118,10 +118,10 @@ TransactionState::SharedConst TransactionState::waitForMessageTypesAndAwakeAfter
 
     } else {
         state = make_shared<TransactionState>(
-            microsecondsSinceGEOEpoch(
-                utc_now() + pt::microseconds(noLongerThanMilliseconds * 1000)),
-            false,
-            false);
+                    microsecondsSinceGEOEpoch(
+                        utc_now() + pt::microseconds(noLongerThanMilliseconds * 1000)),
+                    false,
+                    false);
     }
 
     state->mRequiredMessageTypes = requiredMessageType;
@@ -139,7 +139,7 @@ TransactionState::SharedConst TransactionState::waitForResourcesTypes(
 
     } else {
         state = const_pointer_cast<TransactionState> (TransactionState::awakeAfterMilliseconds(
-            noLongerThanMilliseconds));
+                    noLongerThanMilliseconds));
     }
 
     state->mRequiredResourcesTypes = requiredResourcesType;
@@ -158,7 +158,7 @@ TransactionState::SharedConst TransactionState::waitForResourcesAndMessagesTypes
 
     } else {
         state = const_pointer_cast<TransactionState> (TransactionState::awakeAfterMilliseconds(
-            noLongerThanMilliseconds));
+                    noLongerThanMilliseconds));
     }
 
     state->mRequiredResourcesTypes = requiredResourcesType;

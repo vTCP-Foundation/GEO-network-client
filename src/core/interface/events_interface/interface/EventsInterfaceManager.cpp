@@ -9,9 +9,9 @@ EventsInterfaceManager::EventsInterfaceManager(
     for (const auto &fifoFile : filesToBlock) {
         auto fifoFineName = fifoFile.first.c_str();
         auto eventsInterface = make_shared<EventsInterface>(
-            fifoFineName,
-            fifoFile.second,
-            logger);
+                                   fifoFineName,
+                                   fifoFile.second,
+                                   logger);
         for (const auto &fifoAndEvent : filesToEvents) {
             if (fifoAndEvent.first == fifoFile.first) {
                 mEventsInterfaces.insert(

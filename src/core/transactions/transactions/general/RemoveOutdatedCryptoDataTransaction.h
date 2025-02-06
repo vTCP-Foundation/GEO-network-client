@@ -10,7 +10,8 @@
 
 #include "../../../interface/commands_interface/commands/general/RemoveOutdatedCryptoDataCommand.h"
 
-class RemoveOutdatedCryptoDataTransaction : public BaseTransaction {
+class RemoveOutdatedCryptoDataTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<RemoveOutdatedCryptoDataTransaction> Shared;

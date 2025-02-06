@@ -5,7 +5,8 @@
 
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class ResetTrustLineCommand : public BaseUserCommand {
+class ResetTrustLineCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<ResetTrustLineCommand> Shared;

@@ -12,27 +12,32 @@ using namespace std;
 
 namespace fs = boost::filesystem;
 
-class FileLogger {
+class FileLogger
+{
 
 public:
-    FileLogger(){
+    FileLogger()
+    {
         obtainFileDescriptor();
     }
 
-    ~FileLogger(){
+    ~FileLogger()
+    {
         if (mFileDescriptor != NULL) {
             fclose(mFileDescriptor);
         }
     }
 
-    void addLine(const char *sentence){
+    void addLine(const char* sentence)
+    {
         fseek(mFileDescriptor, 0, SEEK_END);
         fputs(sentence, mFileDescriptor);
         fputs("\n", mFileDescriptor);
         fflush(mFileDescriptor);
     }
 
-    void writeEmptyLine(size_t count){
+    void writeEmptyLine(size_t count)
+    {
         for (size_t i=0; i<count; i++) {
             fputs("\n", mFileDescriptor);
         }
@@ -40,7 +45,8 @@ public:
     }
 
 private:
-    void obtainFileDescriptor() {
+    void obtainFileDescriptor()
+    {
         if (isFileExist()) {
             mFileDescriptor = fopen(kFileName.c_str(), kModeUpdate.c_str());
 
@@ -50,11 +56,13 @@ private:
         checkFileDescriptor();
     }
 
-    const bool isFileExist(){
+    const bool isFileExist()
+    {
         return fs::exists(fs::path(kFileName.c_str()));
     }
 
-    void checkFileDescriptor() {
+    void checkFileDescriptor()
+    {
         if (mFileDescriptor == NULL) {
             throw IOError(string("Unable to obtain file descriptor.").c_str());
         }

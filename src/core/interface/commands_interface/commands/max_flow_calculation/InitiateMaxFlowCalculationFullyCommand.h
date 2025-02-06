@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class InitiateMaxFlowCalculationFullyCommand : public BaseUserCommand {
+class InitiateMaxFlowCalculationFullyCommand : public BaseUserCommand
+{
 public:
     typedef shared_ptr<InitiateMaxFlowCalculationFullyCommand> Shared;
 

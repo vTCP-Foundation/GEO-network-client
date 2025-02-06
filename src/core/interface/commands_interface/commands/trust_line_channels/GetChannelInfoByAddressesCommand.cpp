@@ -29,23 +29,23 @@ GetChannelInfoByAddressesCommand::GetChannelInfoByAddressesCommand(
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mContractorAddresses.push_back(
-                    make_shared<IPv4WithPortAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            case BaseAddress::GNS: {
-                mContractorAddresses.push_back(
-                    make_shared<GNSAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            default:
-                throw ValueError("GetChannelInfoByAddressesCommand: cannot parse command. "
-                                 "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mContractorAddresses.push_back(
+                make_shared<IPv4WithPortAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        case BaseAddress::GNS: {
+            mContractorAddresses.push_back(
+                make_shared<GNSAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        default:
+            throw ValueError("GetChannelInfoByAddressesCommand: cannot parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
         address.erase();
     };
@@ -94,8 +94,8 @@ CommandResult::SharedConst GetChannelInfoByAddressesCommand::resultOk(
     string &neighbor) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        neighbor);
+               identifier(),
+               UUID(),
+               200,
+               neighbor);
 }

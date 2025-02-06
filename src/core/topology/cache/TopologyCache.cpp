@@ -86,8 +86,8 @@ bool TopologyCache::containsOutgoingFlow(
         if (*sharedFlow.get() != *flow.get()) {
             mOutgoingFlows.erase(nodeAddressAndOutgoingFlowIt);
             mOutgoingFlows.emplace_back(
-               nodeAddress,
-               flow);
+                nodeAddress,
+                flow);
             return false;
         }
     }

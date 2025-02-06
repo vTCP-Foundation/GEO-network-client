@@ -3,7 +3,8 @@
 
 #include "BaseResource.h"
 
-class BlockNumberRecourse : public BaseResource {
+class BlockNumberRecourse : public BaseResource
+{
 
 public:
     typedef shared_ptr<BlockNumberRecourse> Shared;

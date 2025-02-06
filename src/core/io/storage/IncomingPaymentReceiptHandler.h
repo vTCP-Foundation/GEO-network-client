@@ -12,7 +12,8 @@
 
 using namespace crypto::lamport;
 
-class IncomingPaymentReceiptHandler {
+class IncomingPaymentReceiptHandler
+{
 
 public:
     IncomingPaymentReceiptHandler(

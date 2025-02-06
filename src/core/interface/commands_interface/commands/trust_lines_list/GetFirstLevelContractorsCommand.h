@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class GetFirstLevelContractorsCommand : public BaseUserCommand {
+class GetFirstLevelContractorsCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<GetFirstLevelContractorsCommand> Shared;

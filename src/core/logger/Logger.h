@@ -19,10 +19,12 @@ class Logger;
  * It collects information
  */
 class LoggerStream:
-    public stringstream {
+    public stringstream
+{
 
 public:
-    enum StreamType {
+    enum StreamType
+    {
         Standard = 0,
 
         // Used into the transactions.
@@ -60,7 +62,8 @@ private:
 };
 
 
-class Logger {
+class Logger
+{
     friend class LoggerStream;
 
 public:

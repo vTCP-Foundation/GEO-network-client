@@ -7,7 +7,8 @@
 #include "../../../contractors/ContractorsManager.h"
 
 class GetFirstLevelContractorsTransaction :
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GetFirstLevelContractorsTransaction> Shared;

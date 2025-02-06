@@ -28,7 +28,7 @@ CyclesFourNodesBalancesResponseMessage::CyclesFourNodesBalancesResponseMessage(
 
     for (SerializedRecordNumber idx = 0; idx < suitableNodesCount; idx++) {
         auto stepAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
         bytesBufferOffset += stepAddress->serializedSize();
         mSuitableNodes.push_back(stepAddress);
     }
@@ -70,8 +70,8 @@ pair<BytesShared, size_t> CyclesFourNodesBalancesResponseMessage::serializeToByt
     }
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 vector<BaseAddress::Shared> CyclesFourNodesBalancesResponseMessage::suitableNodes() const

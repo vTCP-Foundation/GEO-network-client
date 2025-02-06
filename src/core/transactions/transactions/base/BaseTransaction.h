@@ -26,7 +26,8 @@
 
 namespace signals = boost::signals2;
 
-class BaseTransaction {
+class BaseTransaction
+{
 public:
     typedef shared_ptr<BaseTransaction> Shared;
     typedef uint16_t SerializedTransactionType;
@@ -35,10 +36,10 @@ public:
     typedef signals::signal<void(Message::Shared, const ContractorID)> SendMessageSignal;
     typedef signals::signal<void(Message::Shared, BaseAddress::Shared)> SendMessageToAddressSignal;
     typedef signals::signal<void(
-            TransactionMessage::Shared,
-            ContractorID,
-            Message::MessageType,
-            uint32_t)> SendMessageWithCachingSignal;
+        TransactionMessage::Shared,
+        ContractorID,
+        Message::MessageType,
+        uint32_t)> SendMessageWithCachingSignal;
     typedef signals::signal<void(BaseTransaction::Shared)> LaunchSubsidiaryTransactionSignal;
     typedef signals::signal<void(ConfirmationMessage::Shared)> ProcessConfirmationMessageSignal;
     typedef signals::signal<void(ContractorID, const SerializedEquivalent, bool)> TrustLineActionSignal;
@@ -49,7 +50,8 @@ public:
 public:
     virtual ~BaseTransaction() = default;
 
-    enum TransactionType {
+    enum TransactionType
+    {
         // Trust lines
         OpenTrustLineTransaction = 100,
         AcceptTrustLineTransaction = 101,

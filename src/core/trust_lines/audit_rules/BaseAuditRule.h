@@ -5,12 +5,14 @@
 #include "../TrustLine.h"
 #include "../../io/storage/IOTransaction.h"
 
-class BaseAuditRule {
+class BaseAuditRule
+{
 
 public:
     typedef shared_ptr<BaseAuditRule> Shared;
 
-    enum AuditRuleType {
+    enum AuditRuleType
+    {
         AuditRuleCountPaymentsType = 0,
         AuditRuleTimeType = 1,
         AuditRuleTrustLineAmountBoundaryType = 2,

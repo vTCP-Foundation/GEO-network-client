@@ -12,7 +12,8 @@
 
 #include <tuple>
 
-class CommunicatorMessagesQueueHandler {
+class CommunicatorMessagesQueueHandler
+{
 
 public:
     CommunicatorMessagesQueueHandler(

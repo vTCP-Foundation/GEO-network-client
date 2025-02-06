@@ -5,25 +5,29 @@
 #include "../common/Types.h"
 #include "../common/memory/MemoryUtils.h"
 
-class ByteEncryptor {
+class ByteEncryptor
+{
 public:
     typedef pair<BytesShared, size_t> Buffer;
-    struct PublicKey {
+    struct PublicKey
+    {
         typedef std::shared_ptr<PublicKey> Shared;
         static const size_t kBytesSize = crypto_box_PUBLICKEYBYTES;
         PublicKey() = default;
         explicit PublicKey(const string &str);
-        byte key[kBytesSize];
+        byte_t key[kBytesSize];
     };
-    struct SecretKey {
+    struct SecretKey
+    {
         typedef std::shared_ptr<SecretKey> Shared;
         static const size_t kBytesSize = crypto_box_SECRETKEYBYTES;
         SecretKey() = default;
         explicit SecretKey(const string &str);
-        byte key[kBytesSize];
+        byte_t key[kBytesSize];
     };
 
-    struct KeyPair {
+    struct KeyPair
+    {
         typedef std::shared_ptr<KeyPair> Shared;
         KeyPair() = default;
         explicit KeyPair(const string &str);
@@ -43,8 +47,8 @@ public:
     static PublicKey::Shared generateUndefinedKey();
 
 public:
-    Buffer encrypt(byte *bytes, size_t size, size_t headerSize = 0) const;
-    Buffer decrypt(byte *cipher, size_t size, size_t headerSize = 0) const;
+    Buffer encrypt(byte_t* bytes, size_t size, size_t headerSize = 0) const;
+    Buffer decrypt(byte_t* cipher, size_t size, size_t headerSize = 0) const;
     Buffer encrypt(const Buffer &bytes) const;
     Buffer decrypt(const Buffer &cipher) const;
 
@@ -53,9 +57,8 @@ protected:
     SecretKey::Shared mSecretKey = nullptr;
 };
 
-std::ostream &operator<< (std::ostream &out, const ByteEncryptor::PublicKey &t);
-std::ostream &operator<< (std::ostream &out, const ByteEncryptor::SecretKey &t);
-std::ostream &operator<< (std::ostream &out, const ByteEncryptor::KeyPair &t);
+std::ostream &operator<<(std::ostream &out, const ByteEncryptor::PublicKey &t);
+std::ostream &operator<<(std::ostream &out, const ByteEncryptor::SecretKey &t);
+std::ostream &operator<<(std::ostream &out, const ByteEncryptor::KeyPair &t);
 
-
-#endif //GEO_NETWORK_CLIENT_BYTEENCRYPTOR_H
+#endif // GEO_NETWORK_CLIENT_BYTEENCRYPTOR_H

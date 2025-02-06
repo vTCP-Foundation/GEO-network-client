@@ -16,7 +16,8 @@
 
 namespace as = boost::asio;
 
-class OutgoingRemoteBaseNode {
+class OutgoingRemoteBaseNode
+{
 public:
     typedef unique_ptr<OutgoingRemoteBaseNode> Unique;
 
@@ -30,23 +31,21 @@ public:
     virtual ~OutgoingRemoteBaseNode();
 
     void sendMessage(
-        pair<BytesShared, size_t>)
-        noexcept;
+        pair<BytesShared, size_t>) noexcept;
 
     bool containsPacketsInQueue() const;
 
 protected:
     uint32_t crc32Checksum(
-        byte* data,
+        byte_t* data,
         size_t bytesCount)
     const noexcept;
 
     void populateQueueWithNewPackets(
-        byte* messageData,
+        byte_t* messageData,
         const size_t bytesCount);
 
-    PacketHeader::ChannelIndex nextChannelIndex()
-        noexcept;
+    PacketHeader::ChannelIndex nextChannelIndex() noexcept;
 
     void beginPacketsSending();
 
@@ -60,7 +59,7 @@ protected:
     Logger &mLog;
 
     IPv4WithPortAddress::Shared mRemoteAddress;
-    queue<pair<byte*, Packet::Size>> mPacketsQueue;
+    queue<pair<byte_t*, Packet::Size>> mPacketsQueue;
     PacketHeader::ChannelIndex mNextAvailableChannelIndex;
 
     // This pair contains date time of last packet sending
@@ -69,5 +68,4 @@ protected:
     as::deadline_timer mSendingDelayTimer;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_OUTGOINGREMOTEBASENODE_H
+#endif // GEO_NETWORK_CLIENT_OUTGOINGREMOTEBASENODE_H

@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class SetChannelContractorCryptoKeyCommand : public BaseUserCommand {
+class SetChannelContractorCryptoKeyCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<SetChannelContractorCryptoKeyCommand> Shared;

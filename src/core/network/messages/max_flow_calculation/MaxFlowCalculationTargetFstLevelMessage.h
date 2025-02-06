@@ -4,7 +4,8 @@
 #include "../base/max_flow_calculation/MaxFlowCalculationMessage.h"
 
 class MaxFlowCalculationTargetFstLevelMessage :
-    public MaxFlowCalculationMessage {
+    public MaxFlowCalculationMessage
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationTargetFstLevelMessage> Shared;

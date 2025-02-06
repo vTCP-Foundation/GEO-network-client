@@ -79,59 +79,59 @@ void TransactionsManager::loadTransactionsFromStorage()
 
     for(const auto &kTABuffer: serializedTAs) {
         auto *transactionType =
-                new (kTABuffer.get()) BaseTransaction::SerializedTransactionType;
+            new (kTABuffer.get()) BaseTransaction::SerializedTransactionType;
         auto transactionTypeId = *transactionType;
         auto *equivalent =
-                new (kTABuffer.get()
-                     + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
+            new (kTABuffer.get()
+                 + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
 
         switch (transactionTypeId) {
-            case BaseTransaction::IntermediateNodePaymentTransaction:
-            case BaseTransaction::ReceiverPaymentTransaction:
-            case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
-                auto paymentTransaction = deserializePaymentTransaction(
-                    kTABuffer,
-                    transactionTypeId,
-                    *equivalent);
-                if (paymentTransaction == nullptr) {
-                    continue;
-                }
+        case BaseTransaction::IntermediateNodePaymentTransaction:
+        case BaseTransaction::ReceiverPaymentTransaction:
+        case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
+            auto paymentTransaction = deserializePaymentTransaction(
+                                          kTABuffer,
+                                          transactionTypeId,
+                                          *equivalent);
+            if (paymentTransaction == nullptr) {
+                continue;
+            }
+            prepareAndSchedule(
+                paymentTransaction,
+                false,
+                false,
+                true);
+            break;
+        }
+        case BaseTransaction::ConflictResolverInitiatorTransactionType: {
+            try {
+                auto transaction = make_shared<ConflictResolverInitiatorTransaction>(
+                                       kTABuffer,
+                                       mContractorsManager,
+                                       mEquivalentsSubsystemsRouter->trustLinesManager(*equivalent),
+                                       mStorageHandler,
+                                       mKeysStore,
+                                       mTrustLinesInfluenceController,
+                                       mLog);
+                subscribeForProcessingConfirmationMessage(
+                    transaction->processConfirmationMessageSignal);
                 prepareAndSchedule(
-                    paymentTransaction,
+                    transaction,
                     false,
-                    false,
+                    true,
                     true);
-                break;
+            } catch (NotFoundError &e) {
+                error() << "There are no subsystems for serialized ConflictResolverInitiatorTransaction "
+                           "with equivalent " << *equivalent << " Details are: " << e.what();
+                continue;
             }
-            case BaseTransaction::ConflictResolverInitiatorTransactionType: {
-                try {
-                    auto transaction = make_shared<ConflictResolverInitiatorTransaction>(
-                        kTABuffer,
-                        mContractorsManager,
-                        mEquivalentsSubsystemsRouter->trustLinesManager(*equivalent),
-                        mStorageHandler,
-                        mKeysStore,
-                        mTrustLinesInfluenceController,
-                        mLog);
-                    subscribeForProcessingConfirmationMessage(
-                        transaction->processConfirmationMessageSignal);
-                    prepareAndSchedule(
-                        transaction,
-                        false,
-                        true,
-                        true);
-                } catch (NotFoundError &e) {
-                    error() << "There are no subsystems for serialized ConflictResolverInitiatorTransaction "
-                            "with equivalent " << *equivalent << " Details are: " << e.what();
-                    continue;
-                }
-                break;
-            }
-            default: {
-                throw RuntimeError(
-                    "TrustLinesManager::loadTransactions. "
-                        "Unexpected transaction type identifier " + to_string(transactionTypeId));
-            }
+            break;
+        }
+        default: {
+            throw RuntimeError(
+                "TrustLinesManager::loadTransactions. "
+                "Unexpected transaction type identifier " + to_string(transactionTypeId));
+        }
         }
     }
 }
@@ -142,95 +142,95 @@ BasePaymentTransaction::Shared TransactionsManager::deserializePaymentTransactio
     SerializedEquivalent equivalent)
 {
     switch (transactionType) {
-        case BaseTransaction::IntermediateNodePaymentTransaction: {
-            try {
-                auto transaction = make_shared<IntermediateNodePaymentTransaction>(
-                    buffer,
-                    mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
-                    mContractorsManager,
-                    mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-                    mStorageHandler,
-                    mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
-                    mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
-                    mResourcesManager,
-                    mKeysStore,
-                    mLog,
-                    mSubsystemsController);
-                subscribeForBuildCyclesThreeNodesTransaction(
-                    transaction->mBuildCycleThreeNodesSignal);
-                subscribeForBuildCyclesFourNodesTransaction(
-                    transaction->mBuildCycleFourNodesSignal);
-                subscribeForTrustLineActionSignal(
-                    transaction->trustLineActionSignal);
-                subscribeForObserving(
-                    transaction);
-                return transaction;
-            } catch (NotFoundError &e) {
-                error() << "There are no subsystems for serialized IntermediateNodePaymentTransaction "
-                        "with equivalent " << equivalent << " Details are: " << e.what();
-                return nullptr;
-            }
+    case BaseTransaction::IntermediateNodePaymentTransaction: {
+        try {
+            auto transaction = make_shared<IntermediateNodePaymentTransaction>(
+                                   buffer,
+                                   mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
+                                   mContractorsManager,
+                                   mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                                   mStorageHandler,
+                                   mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
+                                   mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
+                                   mResourcesManager,
+                                   mKeysStore,
+                                   mLog,
+                                   mSubsystemsController);
+            subscribeForBuildCyclesThreeNodesTransaction(
+                transaction->mBuildCycleThreeNodesSignal);
+            subscribeForBuildCyclesFourNodesTransaction(
+                transaction->mBuildCycleFourNodesSignal);
+            subscribeForTrustLineActionSignal(
+                transaction->trustLineActionSignal);
+            subscribeForObserving(
+                transaction);
+            return transaction;
+        } catch (NotFoundError &e) {
+            error() << "There are no subsystems for serialized IntermediateNodePaymentTransaction "
+                       "with equivalent " << equivalent << " Details are: " << e.what();
+            return nullptr;
         }
-        case BaseTransaction::ReceiverPaymentTransaction: {
-            try {
-                auto transaction = make_shared<ReceiverPaymentTransaction>(
-                    buffer,
-                    mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
-                    mContractorsManager,
-                    mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-                    mStorageHandler,
-                    mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
-                    mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
-                    mResourcesManager,
-                    mKeysStore,
-                    mEventsInterfaceManager,
-                    mLog,
-                    mSubsystemsController);
-                subscribeForBuildCyclesThreeNodesTransaction(
-                    transaction->mBuildCycleThreeNodesSignal);
-                subscribeForBuildCyclesFourNodesTransaction(
-                    transaction->mBuildCycleFourNodesSignal);
-                subscribeForTrustLineActionSignal(
-                    transaction->trustLineActionSignal);
-                subscribeForObserving(
-                    transaction);
-                return transaction;
-            } catch (NotFoundError &e) {
-                error() << "There are no subsystems for serialized ReceiverPaymentTransaction "
-                        "with equivalent " << equivalent << " Details are: " << e.what();
-                return nullptr;
-            }
+    }
+    case BaseTransaction::ReceiverPaymentTransaction: {
+        try {
+            auto transaction = make_shared<ReceiverPaymentTransaction>(
+                                   buffer,
+                                   mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
+                                   mContractorsManager,
+                                   mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                                   mStorageHandler,
+                                   mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
+                                   mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
+                                   mResourcesManager,
+                                   mKeysStore,
+                                   mEventsInterfaceManager,
+                                   mLog,
+                                   mSubsystemsController);
+            subscribeForBuildCyclesThreeNodesTransaction(
+                transaction->mBuildCycleThreeNodesSignal);
+            subscribeForBuildCyclesFourNodesTransaction(
+                transaction->mBuildCycleFourNodesSignal);
+            subscribeForTrustLineActionSignal(
+                transaction->trustLineActionSignal);
+            subscribeForObserving(
+                transaction);
+            return transaction;
+        } catch (NotFoundError &e) {
+            error() << "There are no subsystems for serialized ReceiverPaymentTransaction "
+                       "with equivalent " << equivalent << " Details are: " << e.what();
+            return nullptr;
         }
-        case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
-            try {
-                auto transaction = make_shared<CycleCloserIntermediateNodeTransaction>(
-                    buffer,
-                    mContractorsManager,
-                    mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-                    mEquivalentsCyclesSubsystemsRouter->cyclesManager(equivalent),
-                    mStorageHandler,
-                    mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
-                    mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
-                    mResourcesManager,
-                    mKeysStore,
-                    mLog,
-                    mSubsystemsController);
-                subscribeForTrustLineActionSignal(
-                    transaction->trustLineActionSignal);
-                subscribeForObserving(
-                    transaction);
-                return transaction;
-            } catch (NotFoundError &e) {
-                error() << "There are no subsystems for serialized CycleCloserIntermediateNodeTransaction "
-                        "with equivalent " << equivalent << " Details are: " << e.what();
-                return nullptr;
-            }
+    }
+    case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
+        try {
+            auto transaction = make_shared<CycleCloserIntermediateNodeTransaction>(
+                                   buffer,
+                                   mContractorsManager,
+                                   mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                                   mEquivalentsCyclesSubsystemsRouter->cyclesManager(equivalent),
+                                   mStorageHandler,
+                                   mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
+                                   mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
+                                   mResourcesManager,
+                                   mKeysStore,
+                                   mLog,
+                                   mSubsystemsController);
+            subscribeForTrustLineActionSignal(
+                transaction->trustLineActionSignal);
+            subscribeForObserving(
+                transaction);
+            return transaction;
+        } catch (NotFoundError &e) {
+            error() << "There are no subsystems for serialized CycleCloserIntermediateNodeTransaction "
+                       "with equivalent " << equivalent << " Details are: " << e.what();
+            return nullptr;
         }
-        default: {
-            throw RuntimeError(
-                    "TrustLinesManager::deserializePaymentTransaction. "
-                        "Unexpected transaction type identifier " + to_string(transactionType));
-        }
+    }
+    default: {
+        throw RuntimeError(
+            "TrustLinesManager::deserializePaymentTransaction. "
+            "Unexpected transaction type identifier " + to_string(transactionType));
+    }
     }
 }
 
@@ -240,7 +240,7 @@ void TransactionsManager::processCommand(
 {
     if(!success and command) {
         return onCommandResultReady(
-            ((ErrorUserCommand *)command.get())->responseError());
+                   ((ErrorUserCommand *)command.get())->responseError());
     }
 
     // ToDo: sort calls in the call probability order.
@@ -301,92 +301,92 @@ void TransactionsManager::processCommand(
             dynamic_pointer_cast<CreditUsageCommand>(
                 command));
 
-    } else if (command->identifier() == InitiateMaxFlowCalculationCommand::identifier()){
+    } else if (command->identifier() == InitiateMaxFlowCalculationCommand::identifier()) {
         launchInitiateMaxFlowCalculatingTransaction(
             static_pointer_cast<InitiateMaxFlowCalculationCommand>(
                 command));
 
-    } else if (command->identifier() == InitiateMaxFlowCalculationFullyCommand::identifier()){
+    } else if (command->identifier() == InitiateMaxFlowCalculationFullyCommand::identifier()) {
         launchMaxFlowCalculationFullyTransaction(
             static_pointer_cast<InitiateMaxFlowCalculationFullyCommand>(
                 command));
 
-    } else if (command->identifier() == TotalBalancesCommand::identifier()){
+    } else if (command->identifier() == TotalBalancesCommand::identifier()) {
         launchTotalBalancesTransaction(
             static_pointer_cast<TotalBalancesCommand>(
                 command));
 
-    } else if (command->identifier() == HistoryPaymentsCommand::identifier()){
+    } else if (command->identifier() == HistoryPaymentsCommand::identifier()) {
         launchHistoryPaymentsTransaction(
             static_pointer_cast<HistoryPaymentsCommand>(
                 command));
 
-    } else if (command->identifier() == HistoryPaymentsAllEquivalentsCommand::identifier()){
+    } else if (command->identifier() == HistoryPaymentsAllEquivalentsCommand::identifier()) {
         launchHistoryPaymentsAllEquivalentsTransaction(
             static_pointer_cast<HistoryPaymentsAllEquivalentsCommand>(
                 command));
 
-    } else if (command->identifier() == HistoryAdditionalPaymentsCommand::identifier()){
+    } else if (command->identifier() == HistoryAdditionalPaymentsCommand::identifier()) {
         launchAdditionalHistoryPaymentsTransaction(
             static_pointer_cast<HistoryAdditionalPaymentsCommand>(
                 command));
 
-    } else if (command->identifier() == HistoryTrustLinesCommand::identifier()){
+    } else if (command->identifier() == HistoryTrustLinesCommand::identifier()) {
         launchHistoryTrustLinesTransaction(
             static_pointer_cast<HistoryTrustLinesCommand>(
                 command));
 
-    } else if (command->identifier() == HistoryWithContractorCommand::identifier()){
+    } else if (command->identifier() == HistoryWithContractorCommand::identifier()) {
         launchHistoryWithContractorTransaction(
             static_pointer_cast<HistoryWithContractorCommand>(
                 command));
 
-    } else if (command->identifier() == GetFirstLevelContractorsCommand::identifier()){
+    } else if (command->identifier() == GetFirstLevelContractorsCommand::identifier()) {
         launchGetFirstLevelContractorsTransaction(
             static_pointer_cast<GetFirstLevelContractorsCommand>(
                 command));
 
-    } else if (command->identifier() == GetTrustLinesCommand::identifier()){
+    } else if (command->identifier() == GetTrustLinesCommand::identifier()) {
         launchGetTrustLinesTransaction(
             static_pointer_cast<GetTrustLinesCommand>(
                 command));
 
-    } else if (command->identifier() == GetTrustLineByAddressCommand::identifier()){
+    } else if (command->identifier() == GetTrustLineByAddressCommand::identifier()) {
         launchGetTrustLineByAddressTransaction(
             static_pointer_cast<GetTrustLineByAddressCommand>(
                 command));
 
-    } else if (command->identifier() == GetTrustLineByIDCommand::identifier()){
+    } else if (command->identifier() == GetTrustLineByIDCommand::identifier()) {
         launchGetTrustLineByIDTransaction(
             static_pointer_cast<GetTrustLineByIDCommand>(
                 command));
 
-    } else if (command->identifier() == EquivalentListCommand::identifier()){
+    } else if (command->identifier() == EquivalentListCommand::identifier()) {
         launchGetEquivalentListTransaction(
             static_pointer_cast<EquivalentListCommand>(
                 command));
 
-    } else if (command->identifier() == ContractorListCommand::identifier()){
+    } else if (command->identifier() == ContractorListCommand::identifier()) {
         launchGetContractorListTransaction(
             static_pointer_cast<ContractorListCommand>(
                 command));
 
-    } else if (command->identifier() == GetChannelInfoCommand::identifier()){
+    } else if (command->identifier() == GetChannelInfoCommand::identifier()) {
         launchGetChannelInfoTransaction(
             static_pointer_cast<GetChannelInfoCommand>(
                 command));
 
-    } else if (command->identifier() == GetChannelInfoByAddressesCommand::identifier()){
+    } else if (command->identifier() == GetChannelInfoByAddressesCommand::identifier()) {
         launchGetChannelInfoByAddressesTransaction(
             static_pointer_cast<GetChannelInfoByAddressesCommand>(
                 command));
 
-    } else if (command->identifier() == PaymentTransactionByCommandUUIDCommand::identifier()){
+    } else if (command->identifier() == PaymentTransactionByCommandUUIDCommand::identifier()) {
         launchPaymentTransactionByCommandUUIDTransaction(
             static_pointer_cast<PaymentTransactionByCommandUUIDCommand>(
                 command));
 
-    } else if (command->identifier() == RemoveOutdatedCryptoDataCommand::identifier()){
+    } else if (command->identifier() == RemoveOutdatedCryptoDataCommand::identifier()) {
         launchRemoveOutdatedCryptoDataTransaction(
             static_pointer_cast<RemoveOutdatedCryptoDataCommand>(
                 command));
@@ -394,7 +394,7 @@ void TransactionsManager::processCommand(
     } else {
         throw ValueError(
             "TransactionsManager::processCommand: "
-                "Unexpected command identifier " + command->identifier());
+            "Unexpected command identifier " + command->identifier());
     }
 }
 
@@ -427,9 +427,9 @@ void TransactionsManager::processMessage(
         launchMaxFlowCalculationTargetSndLevelTransaction(
             static_pointer_cast<MaxFlowCalculationTargetSndLevelMessage>(message));
 
-    /*
-     * Payments
-     */
+        /*
+         * Payments
+         */
     } else if (message->typeID() == Message::Payments_ReceiverInitPaymentRequest) {
         launchReceiverPaymentTransaction(
             static_pointer_cast<ReceiverInitPaymentRequestMessage>(message));
@@ -444,7 +444,7 @@ void TransactionsManager::processMessage(
 
         } catch (NotFoundError &) {
             launchIntermediateNodePaymentTransaction(
-                    static_pointer_cast<IntermediateNodeReservationRequestMessage>(message));
+                static_pointer_cast<IntermediateNodeReservationRequestMessage>(message));
         }
 
     } else if (message->typeID() == Message::Payments_IntermediateNodeCycleReservationRequest) {
@@ -459,13 +459,13 @@ void TransactionsManager::processMessage(
             launchCycleCloserIntermediateNodeTransaction(
                 static_pointer_cast<IntermediateNodeCycleReservationRequestMessage>(message));
         }
-    } else if(message->typeID() == Message::MessageType::Payments_VotesStatusRequest){
+    } else if(message->typeID() == Message::MessageType::Payments_VotesStatusRequest) {
         launchVotesResponsePaymentsTransaction(
             static_pointer_cast<VotesStatusRequestMessage>(message));
 
-    /*
-     * Cycles
-     */
+        /*
+         * Cycles
+         */
     } else if (message->typeID() == Message::MessageType::Cycles_SixNodesMiddleware) {
         launchSixNodesCyclesResponseTransaction(
             static_pointer_cast<CyclesSixNodesInBetweenMessage>(message));
@@ -474,21 +474,21 @@ void TransactionsManager::processMessage(
         launchFiveNodesCyclesResponseTransaction(
             static_pointer_cast<CyclesFiveNodesInBetweenMessage>(message));
 
-    } else if (message->typeID() == Message::MessageType::Cycles_ThreeNodesBalancesRequest){
+    } else if (message->typeID() == Message::MessageType::Cycles_ThreeNodesBalancesRequest) {
         launchThreeNodesCyclesResponseTransaction(
             static_pointer_cast<CyclesThreeNodesBalancesRequestMessage>(message));
 
-    } else if (message->typeID() == Message::MessageType::Cycles_FourNodesNegativeBalanceRequest){
+    } else if (message->typeID() == Message::MessageType::Cycles_FourNodesNegativeBalanceRequest) {
         launchFourNodesCyclesResponseTransaction(
             static_pointer_cast<CyclesFourNodesNegativeBalanceRequestMessage>(message));
 
-    } else if (message->typeID() == Message::MessageType::Cycles_FourNodesPositiveBalanceRequest){
+    } else if (message->typeID() == Message::MessageType::Cycles_FourNodesPositiveBalanceRequest) {
         launchFourNodesCyclesResponseTransaction(
             static_pointer_cast<CyclesFourNodesPositiveBalanceRequestMessage>(message));
 
-    /*
-     * Trust lines
-     */
+        /*
+         * Trust lines
+         */
     } else if (message->typeID() == Message::TrustLines_Initial) {
         launchAcceptTrustLineTransaction(
             static_pointer_cast<TrustLineInitialMessage>(message));
@@ -509,9 +509,9 @@ void TransactionsManager::processMessage(
         launchResetTrustLineDestinationTransaction(
             static_pointer_cast<TrustLineResetMessage>(message));
 
-    /*
-     * Channels
-     */
+        /*
+         * Channels
+         */
     } else if (message->typeID() == Message::Channel_Init) {
         launchConfirmChannelTransaction(
             static_pointer_cast<InitChannelMessage>(message));
@@ -520,23 +520,23 @@ void TransactionsManager::processMessage(
         launchUpdateChannelAddressesTargetTransaction(
             static_pointer_cast<UpdateChannelAddressesMessage>(message));
 
-    /*
-     * General
-     */
+        /*
+         * General
+         */
     } else if (message->typeID() == Message::General_Pong) {
         launchPongReactionTransaction(
             static_pointer_cast<PongMessage>(message));
 
-    /*
-     * Gateway notification & RoutingTable
-     */
+        /*
+         * Gateway notification & RoutingTable
+         */
     } else if (message->typeID() == Message::GatewayNotification) {
         launchGatewayNotificationReceiverTransaction(
             static_pointer_cast<GatewayNotificationMessage>(message));
 
-    /*
-     * Attaching to existing transactions
-     */
+        /*
+         * Attaching to existing transactions
+         */
     } else {
         mScheduler->tryAttachMessageToTransaction(message);
     }
@@ -546,10 +546,10 @@ void TransactionsManager::launchInitChannelTransaction(
     InitChannelCommand::Shared command)
 {
     auto transaction = make_shared<InitChannelTransaction>(
-        command,
-        mContractorsManager,
-        mStorageHandler,
-        mLog);
+                           command,
+                           mContractorsManager,
+                           mStorageHandler,
+                           mLog);
     prepareAndSchedule(
         transaction,
         true,
@@ -561,10 +561,10 @@ void TransactionsManager::launchConfirmChannelTransaction(
     InitChannelMessage::Shared message)
 {
     auto transaction = make_shared<ConfirmChannelTransaction>(
-        message,
-        mContractorsManager,
-        mStorageHandler,
-        mLog);
+                           message,
+                           mContractorsManager,
+                           mStorageHandler,
+                           mLog);
     prepareAndSchedule(
         transaction,
         false,
@@ -658,7 +658,7 @@ void TransactionsManager::launchRegenerateChannelCryptoKeyTransaction(
 {
     prepareAndSchedule(
         make_shared<RegenerateChannelCryptoKeyTransaction>(
-           command,
+            command,
             mContractorsManager,
             mStorageHandler,
             mLog),
@@ -691,15 +691,15 @@ void TransactionsManager::launchInitTrustLineTransaction(
     }
 
     auto transaction = make_shared<OpenTrustLineTransaction>(
-        command,
-        mContractorsManager,
-        mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-        mStorageHandler,
-        mEventsInterfaceManager,
-        mEquivalentsSubsystemsRouter->iAmGateway(command->equivalent()),
-        mSubsystemsController,
-        mTrustLinesInfluenceController,
-        mLog);
+                           command,
+                           mContractorsManager,
+                           mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                           mStorageHandler,
+                           mEventsInterfaceManager,
+                           mEquivalentsSubsystemsRouter->iAmGateway(command->equivalent()),
+                           mSubsystemsController,
+                           mTrustLinesInfluenceController,
+                           mLog);
     subscribeForKeysSharingSignal(
         transaction->publicKeysSharingSignal);
     prepareAndSchedule(
@@ -715,18 +715,18 @@ void TransactionsManager::launchSetOutgoingTrustLineTransaction(
     try {
         auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent());
         auto transaction = make_shared<SetOutgoingTrustLineTransaction>(
-            command,
-            mContractorsManager,
-            trustLinesManager,
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
-            mSubsystemsController,
-            mKeysStore,
-            mFeaturesManager,
-            mEventsInterfaceManager,
-            mTrustLinesInfluenceController,
-            mLog);
+                               command,
+                               mContractorsManager,
+                               trustLinesManager,
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
+                               mSubsystemsController,
+                               mKeysStore,
+                               mFeaturesManager,
+                               mEventsInterfaceManager,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
         prepareAndSchedule(
@@ -736,7 +736,7 @@ void TransactionsManager::launchSetOutgoingTrustLineTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for SetOutgoingTrustLineTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -752,19 +752,19 @@ void TransactionsManager::launchCloseIncomingTrustLineTransaction(
 {
     try {
         auto transaction = make_shared<CloseIncomingTrustLineTransaction>(
-            command,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyTrustLineManager(command->equivalent()),
-            mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
-            mSubsystemsController,
-            mKeysStore,
-            mFeaturesManager,
-            mEventsInterfaceManager,
-            mTrustLinesInfluenceController,
-            mLog);
+                               command,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyTrustLineManager(command->equivalent()),
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
+                               mSubsystemsController,
+                               mKeysStore,
+                               mFeaturesManager,
+                               mEventsInterfaceManager,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
         prepareAndSchedule(
@@ -774,7 +774,7 @@ void TransactionsManager::launchCloseIncomingTrustLineTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CloseIncomingTrustLineTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -790,13 +790,13 @@ void TransactionsManager::launchPublicKeysSharingSourceTransaction(
 {
     try {
         auto transaction = make_shared<PublicKeysSharingSourceTransaction>(
-            command,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mTrustLinesInfluenceController,
-            mLog);
+                               command,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForAuditSignal(
             transaction->auditSignal);
         prepareAndSchedule(
@@ -806,7 +806,7 @@ void TransactionsManager::launchPublicKeysSharingSourceTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for PublicKeysSharingSourceTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -831,14 +831,14 @@ void TransactionsManager::launchAcceptTrustLineTransaction(
 
     try {
         auto transaction = make_shared<AcceptTrustLineTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
-            mSubsystemsController,
-            mTrustLinesInfluenceController,
-            mLog);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
+                               mSubsystemsController,
+                               mTrustLinesInfluenceController,
+                               mLog);
         prepareAndSchedule(
             transaction,
             false,
@@ -856,13 +856,13 @@ void TransactionsManager::launchPublicKeysSharingTargetTransaction(
     try {
 
         auto transaction = make_shared<PublicKeysSharingTargetTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mTrustLinesInfluenceController,
-            mLog);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForKeysSharingSignal(
             transaction->publicKeysSharingSignal);
         prepareAndSchedule(
@@ -872,7 +872,7 @@ void TransactionsManager::launchPublicKeysSharingTargetTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for PublicKeysSharingTargetTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -881,17 +881,17 @@ void TransactionsManager::launchAuditTargetTransaction(
 {
     try {
         auto transaction = make_shared<AuditTargetTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mEquivalentsSubsystemsRouter->topologyTrustLineManager(message->equivalent()),
-            mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
-            mFeaturesManager,
-            mTrustLinesInfluenceController,
-            mLog);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mEquivalentsSubsystemsRouter->topologyTrustLineManager(message->equivalent()),
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
+                               mFeaturesManager,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
         prepareAndSchedule(
@@ -901,7 +901,7 @@ void TransactionsManager::launchAuditTargetTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for AuditTargetTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -910,13 +910,13 @@ void TransactionsManager::launchConflictResolveContractorTransaction(
 {
     try {
         auto transaction = make_shared<ConflictResolverContractorTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mTrustLinesInfluenceController,
-            mLog);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mTrustLinesInfluenceController,
+                               mLog);
         subscribeForProcessingConfirmationMessage(
             transaction->processConfirmationMessageSignal);
         prepareAndSchedule(
@@ -926,7 +926,7 @@ void TransactionsManager::launchConflictResolveContractorTransaction(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for ConflictResolverContractorTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -935,12 +935,12 @@ void TransactionsManager::launchRemoveTrustLineTransaction(
 {
     try {
         auto transaction = make_shared<RemoveTrustLineTransaction>(
-            command,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mLog);
+                               command,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mLog);
         prepareAndSchedule(
             transaction,
             true,
@@ -957,12 +957,12 @@ void TransactionsManager::launchResetTrustLineSourceTransaction(
 {
     try {
         auto transaction = make_shared<ResetTrustLineSourceTransaction>(
-            command,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-            mStorageHandler,
-            mKeysStore,
-            mLog);
+                               command,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                               mStorageHandler,
+                               mKeysStore,
+                               mLog);
         subscribeForAuditSignal(
             transaction->auditSignal);
         prepareAndSchedule(
@@ -981,10 +981,10 @@ void TransactionsManager::launchResetTrustLineDestinationTransaction(
 {
     try {
         auto transaction = make_shared<ResetTrustLineDestinationTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mLog);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mLog);
         prepareAndSchedule(
             transaction,
             false,
@@ -1018,7 +1018,7 @@ void TransactionsManager::launchInitiateMaxFlowCalculatingTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for InitiateMaxFlowCalculationTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1051,7 +1051,7 @@ void TransactionsManager::launchMaxFlowCalculationFullyTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for MaxFlowCalculationFullyTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1084,7 +1084,7 @@ void TransactionsManager::launchReceiveMaxFlowCalculationOnTargetTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for ReceiveMaxFlowCalculationOnTargetTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1111,7 +1111,7 @@ void TransactionsManager::launchMaxFlowCalculationSourceFstLevelTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for MaxFlowCalculationSourceFstLevelTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1138,7 +1138,7 @@ void TransactionsManager::launchMaxFlowCalculationTargetFstLevelTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for MaxFlowCalculationTargetFstLevelTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1165,7 +1165,7 @@ void TransactionsManager::launchMaxFlowCalculationSourceSndLevelTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for MaxFlowCalculationSourceSndLevelTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1192,7 +1192,7 @@ void TransactionsManager::launchMaxFlowCalculationTargetSndLevelTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for MaxFlowCalculationTargetSndLevelTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1201,20 +1201,20 @@ void TransactionsManager::launchCoordinatorPaymentTransaction(
 {
     try {
         auto transaction = make_shared<CoordinatorPaymentTransaction>(
-            command,
-            mEquivalentsSubsystemsRouter->iAmGateway(command->equivalent()),
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
-            mResourcesManager,
-            mEquivalentsSubsystemsRouter->pathsManager(command->equivalent()),
-            mKeysStore,
-            isPaymentTransactionsAllowedDueToObserving,
-            mEventsInterfaceManager,
-            mLog,
-            mSubsystemsController);
+                               command,
+                               mEquivalentsSubsystemsRouter->iAmGateway(command->equivalent()),
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(command->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(command->equivalent()),
+                               mResourcesManager,
+                               mEquivalentsSubsystemsRouter->pathsManager(command->equivalent()),
+                               mKeysStore,
+                               isPaymentTransactionsAllowedDueToObserving,
+                               mEventsInterfaceManager,
+                               mLog,
+                               mSubsystemsController);
         subscribeForBuildCyclesThreeNodesTransaction(
             transaction->mBuildCycleThreeNodesSignal);
         subscribeForBuildCyclesFourNodesTransaction(
@@ -1226,7 +1226,7 @@ void TransactionsManager::launchCoordinatorPaymentTransaction(
         prepareAndSchedule(transaction, true, false, true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CoordinatorPaymentTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1247,18 +1247,18 @@ void TransactionsManager::launchReceiverPaymentTransaction(
     }
     try {
         auto transaction = make_shared<ReceiverPaymentTransaction>(
-            message,
-            mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
-            mResourcesManager,
-            mKeysStore,
-            mEventsInterfaceManager,
-            mLog,
-            mSubsystemsController);
+                               message,
+                               mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
+                               mResourcesManager,
+                               mKeysStore,
+                               mEventsInterfaceManager,
+                               mLog,
+                               mSubsystemsController);
         subscribeForBuildCyclesThreeNodesTransaction(
             transaction->mBuildCycleThreeNodesSignal);
         subscribeForBuildCyclesFourNodesTransaction(
@@ -1270,7 +1270,7 @@ void TransactionsManager::launchReceiverPaymentTransaction(
         prepareAndSchedule(transaction, false, false, true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for ReceiverPaymentTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 message,
@@ -1291,17 +1291,17 @@ void TransactionsManager::launchIntermediateNodePaymentTransaction(
     }
     try {
         auto transaction = make_shared<IntermediateNodePaymentTransaction>(
-            message,
-            mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
-            mResourcesManager,
-            mKeysStore,
-            mLog,
-            mSubsystemsController);
+                               message,
+                               mEquivalentsSubsystemsRouter->iAmGateway(message->equivalent()),
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
+                               mResourcesManager,
+                               mKeysStore,
+                               mLog,
+                               mSubsystemsController);
         subscribeForBuildCyclesThreeNodesTransaction(
             transaction->mBuildCycleThreeNodesSignal);
         subscribeForBuildCyclesFourNodesTransaction(
@@ -1313,7 +1313,7 @@ void TransactionsManager::launchIntermediateNodePaymentTransaction(
         prepareAndSchedule(transaction, false, false, true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for IntermediateNodePaymentTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 message,
@@ -1354,9 +1354,9 @@ void TransactionsManager::launchPaymentTransactionAfterGettingObservingSignature
     auto ioTransaction = mStorageHandler->beginTransaction();
     try {
         auto serializedPaymentTransaction = ioTransaction->transactionHandler()->getTransaction(
-            transactionUUID);
+                                                transactionUUID);
         auto *transactionType =
-                new (serializedPaymentTransaction.get()) BaseTransaction::SerializedTransactionType;
+            new (serializedPaymentTransaction.get()) BaseTransaction::SerializedTransactionType;
         auto transactionTypeId = *transactionType;
         if (transactionTypeId != BaseTransaction::IntermediateNodePaymentTransaction and
                 transactionTypeId != BaseTransaction::ReceiverPaymentTransaction and
@@ -1365,12 +1365,12 @@ void TransactionsManager::launchPaymentTransactionAfterGettingObservingSignature
             return;
         }
         auto *equivalent =
-                new (serializedPaymentTransaction.get()
-                     + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
+            new (serializedPaymentTransaction.get()
+                 + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
         auto paymentTransaction = deserializePaymentTransaction(
-            serializedPaymentTransaction,
-            transactionTypeId,
-            *equivalent);
+                                      serializedPaymentTransaction,
+                                      transactionTypeId,
+                                      *equivalent);
         if (paymentTransaction == nullptr) {
             error() << "Can't find deserialize payment TA: " << transactionUUID;
             return;
@@ -1396,23 +1396,23 @@ void TransactionsManager::launchPaymentTransactionForObservingRejecting(
     auto ioTransaction = mStorageHandler->beginTransaction();
     try {
         auto serializedPaymentTransaction = ioTransaction->transactionHandler()->getTransaction(
-            transactionUUID);
+                                                transactionUUID);
         auto *transactionType =
             new (serializedPaymentTransaction.get()) BaseTransaction::SerializedTransactionType;
         auto transactionTypeId = *transactionType;
         if (transactionTypeId != BaseTransaction::IntermediateNodePaymentTransaction and
-            transactionTypeId != BaseTransaction::ReceiverPaymentTransaction and
-            transactionTypeId != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
+                transactionTypeId != BaseTransaction::ReceiverPaymentTransaction and
+                transactionTypeId != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
             error() << "Transaction " << transactionUUID << " is not payment transaction";
             return;
         }
         auto *equivalent =
             new (serializedPaymentTransaction.get()
-                     + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
+                 + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
         auto paymentTransaction = deserializePaymentTransaction(
-            serializedPaymentTransaction,
-            transactionTypeId,
-            *equivalent);
+                                      serializedPaymentTransaction,
+                                      transactionTypeId,
+                                      *equivalent);
         if (paymentTransaction == nullptr) {
             error() << "Can't deserialize payment TA: " << transactionUUID;
             return;
@@ -1438,13 +1438,13 @@ void TransactionsManager::launchPaymentTransactionForObservingUncertainStage(
     auto ioTransaction = mStorageHandler->beginTransaction();
     try {
         auto serializedPaymentTransaction = ioTransaction->transactionHandler()->getTransaction(
-            transactionUUID);
+                                                transactionUUID);
         auto *transactionType =
             new (serializedPaymentTransaction.get()) BaseTransaction::SerializedTransactionType;
         auto transactionTypeId = *transactionType;
         if (transactionTypeId != BaseTransaction::IntermediateNodePaymentTransaction and
-            transactionTypeId != BaseTransaction::ReceiverPaymentTransaction and
-            transactionTypeId != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
+                transactionTypeId != BaseTransaction::ReceiverPaymentTransaction and
+                transactionTypeId != BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction) {
             error() << "Transaction " << transactionUUID << " is not payment transaction";
             return;
         }
@@ -1452,9 +1452,9 @@ void TransactionsManager::launchPaymentTransactionForObservingUncertainStage(
             new (serializedPaymentTransaction.get()
                  + sizeof(BaseTransaction::SerializedTransactionType)) SerializedEquivalent;
         auto paymentTransaction = deserializePaymentTransaction(
-            serializedPaymentTransaction,
-            transactionTypeId,
-            *equivalent);
+                                      serializedPaymentTransaction,
+                                      transactionTypeId,
+                                      *equivalent);
         if (paymentTransaction == nullptr) {
             error() << "Can't deserialize payment TA: " << transactionUUID;
             return;
@@ -1492,18 +1492,18 @@ void TransactionsManager::onCloseCycleTransaction(
     }
     try {
         auto transaction = make_shared<CycleCloserInitiatorTransaction>(
-            cycle,
-            equivalent,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-            mEquivalentsCyclesSubsystemsRouter->cyclesManager(equivalent),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
-            mResourcesManager,
-            mKeysStore,
-            mLog,
-            mSubsystemsController);
+                               cycle,
+                               equivalent,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                               mEquivalentsCyclesSubsystemsRouter->cyclesManager(equivalent),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(equivalent),
+                               mResourcesManager,
+                               mKeysStore,
+                               mLog,
+                               mSubsystemsController);
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
         subscribeForObserving(
@@ -1517,7 +1517,7 @@ void TransactionsManager::onCloseCycleTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CycleCloserInitiatorTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -1528,19 +1528,19 @@ void TransactionsManager::launchCycleCloserIntermediateNodeTransaction(
         warning() << "It is forbid to run payment transactions due to observing";
         return;
     }
-    try{
+    try {
         auto transaction = make_shared<CycleCloserIntermediateNodeTransaction>(
-            message,
-            mContractorsManager,
-            mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
-            mEquivalentsCyclesSubsystemsRouter->cyclesManager(message->equivalent()),
-            mStorageHandler,
-            mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
-            mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
-            mResourcesManager,
-            mKeysStore,
-            mLog,
-            mSubsystemsController);
+                               message,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(message->equivalent()),
+                               mEquivalentsCyclesSubsystemsRouter->cyclesManager(message->equivalent()),
+                               mStorageHandler,
+                               mEquivalentsSubsystemsRouter->topologyCacheManager(message->equivalent()),
+                               mEquivalentsSubsystemsRouter->maxFlowCacheManager(message->equivalent()),
+                               mResourcesManager,
+                               mKeysStore,
+                               mLog,
+                               mSubsystemsController);
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
         subscribeForObserving(
@@ -1554,7 +1554,7 @@ void TransactionsManager::launchCycleCloserIntermediateNodeTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CycleCloserIntermediateNodeTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 message,
@@ -1583,11 +1583,11 @@ void TransactionsManager::launchThreeNodesCyclesInitTransaction(
             true,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesThreeNodesInitTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -1604,11 +1604,11 @@ void TransactionsManager::launchThreeNodesCyclesResponseTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesThreeNodesReceiverTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1627,11 +1627,11 @@ void TransactionsManager::launchSixNodesCyclesInitTransaction(
             true,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesSixNodesInitTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -1648,11 +1648,11 @@ void TransactionsManager::launchSixNodesCyclesResponseTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesSixNodesReceiverTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1671,11 +1671,11 @@ void TransactionsManager::launchFiveNodesCyclesInitTransaction(
             true,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesFiveNodesInitTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -1692,11 +1692,11 @@ void TransactionsManager::launchFiveNodesCyclesResponseTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesFiveNodesReceiverTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1718,11 +1718,11 @@ void TransactionsManager::launchFourNodesCyclesInitTransaction(
             true,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesFourNodesInitTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -1739,11 +1739,11 @@ void TransactionsManager::launchFourNodesCyclesResponseTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesFourNodesReceiverTransaction "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1760,11 +1760,11 @@ void TransactionsManager::launchFourNodesCyclesResponseTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for CyclesFourNodesReceiverTransaction (positive) "
-                "with equivalent " << message->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << message->equivalent() << " Details are: " << e.what();
     }
 }
 
@@ -1788,7 +1788,7 @@ void TransactionsManager::launchTotalBalancesTransaction(
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for TotalBalancesTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1810,7 +1810,7 @@ void TransactionsManager::launchHistoryPaymentsTransaction(
         mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for launchHistoryPaymentsTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1858,7 +1858,7 @@ void TransactionsManager::launchAdditionalHistoryPaymentsTransaction(
         mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for launchAdditionalHistoryPaymentsTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1893,7 +1893,7 @@ void TransactionsManager::launchHistoryTrustLinesTransaction(
         mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for launchHistoryTrustLinesTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1928,7 +1928,7 @@ void TransactionsManager::launchHistoryWithContractorTransaction(
         mEquivalentsSubsystemsRouter->trustLinesManager(command->equivalent());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for launchHistoryWithContractorTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1967,7 +1967,7 @@ void TransactionsManager::launchGetFirstLevelContractorsTransaction(
             false);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for GetFirstLevelContractorsTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -1993,7 +1993,7 @@ void TransactionsManager::launchGetTrustLinesTransaction(
             false);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for GetTrustLinesListTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -2019,7 +2019,7 @@ void TransactionsManager::launchGetTrustLineByAddressTransaction(
             false);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for GetTrustLineByAddressTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -2044,7 +2044,7 @@ void TransactionsManager::launchGetTrustLineByIDTransaction(
             false);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for launchGetTrustLineByIDTransaction "
-                "with equivalent " << command->equivalent() << " Details are: " << e.what();
+                   "with equivalent " << command->equivalent() << " Details are: " << e.what();
         prepareAndSchedule(
             make_shared<NoEquivalentTransaction>(
                 command,
@@ -2081,7 +2081,7 @@ void TransactionsManager::launchPaymentTransactionByCommandUUIDTransaction(
             false,
             false,
             false);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     }
 }
@@ -2099,7 +2099,7 @@ void TransactionsManager::launchGatewayNotificationSenderTransaction()
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     }
 }
@@ -2118,7 +2118,7 @@ void TransactionsManager::launchGatewayNotificationReceiverTransaction(
             false,
             false,
             true);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     }
 }
@@ -2142,11 +2142,11 @@ void TransactionsManager::launchFindPathByMaxFlowTransaction(
             true,
             true,
             false);
-    } catch (ConflictError &e){
+    } catch (ConflictError &e) {
         throw ConflictError(e.message());
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for FindPathByMaxFlowTransaction "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -2154,10 +2154,10 @@ void TransactionsManager::launchPongReactionTransaction(
     PongMessage::Shared message)
 {
     auto transaction = make_shared<PongReactionTransaction>(
-        message,
-        mEquivalentsSubsystemsRouter,
-        mStorageHandler,
-        mLog);
+                           message,
+                           mEquivalentsSubsystemsRouter,
+                           mStorageHandler,
+                           mLog);
     subscribeForProcessingPongMessage(
         transaction->processPongMessageSignal);
     transaction->mResumeTransactionSignal.connect(
@@ -2179,11 +2179,11 @@ void TransactionsManager::launchRemoveOutdatedCryptoDataTransaction(
     RemoveOutdatedCryptoDataCommand::Shared command)
 {
     auto transaction = make_shared<RemoveOutdatedCryptoDataTransaction>(
-        command,
-        mEquivalentsSubsystemsRouter,
-        mStorageHandler,
-        mKeysStore,
-        mLog);
+                           command,
+                           mEquivalentsSubsystemsRouter,
+                           mStorageHandler,
+                           mKeysStore,
+                           mLog);
     prepareAndSchedule(
         transaction,
         true,
@@ -2492,7 +2492,7 @@ void TransactionsManager::onCommandResultReady(
     } catch (...) {
         throw RuntimeError(
             "TransactionsManager::onCommandResultReady: "
-                "Error occurred when command result has accepted");
+            "Error occurred when command result has accepted");
     }
 }
 
@@ -2563,7 +2563,7 @@ void TransactionsManager::onTryCloseNextCycleSlot(
         mEquivalentsCyclesSubsystemsRouter->cyclesManager(equivalent)->closeOneCycle(true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for Closing next cycle "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -2594,11 +2594,11 @@ void TransactionsManager::onTrustLineActionSlot(
     try {
         auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(equivalent);
         auto transaction = make_shared<CheckTrustLineTransaction>(
-            equivalent,
-            contractorID,
-            isActionInitiator,
-            trustLinesManager,
-            mLog);
+                               equivalent,
+                               contractorID,
+                               isActionInitiator,
+                               trustLinesManager,
+                               mLog);
 
         subscribeForKeysSharingSignal(
             transaction->publicKeysSharingSignal);
@@ -2612,7 +2612,7 @@ void TransactionsManager::onTrustLineActionSlot(
             500);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for onTrustLineActionSlot "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -2623,14 +2623,14 @@ void TransactionsManager::onPublicKeysSharingSlot(
     try {
         auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(equivalent);
         auto transaction = make_shared<PublicKeysSharingSourceTransaction>(
-            contractorID,
-            equivalent,
-            mContractorsManager,
-            trustLinesManager,
-            mStorageHandler,
-            mKeysStore,
-            mTrustLinesInfluenceController,
-            mLog);
+                               contractorID,
+                               equivalent,
+                               mContractorsManager,
+                               trustLinesManager,
+                               mStorageHandler,
+                               mKeysStore,
+                               mTrustLinesInfluenceController,
+                               mLog);
 
         subscribeForOutgoingMessages(
             transaction->outgoingMessageIsReadySignal);
@@ -2645,7 +2645,7 @@ void TransactionsManager::onPublicKeysSharingSlot(
             5);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for onPublicKeysSharingSlot "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -2656,15 +2656,15 @@ void TransactionsManager::onAuditSlot(
     try {
         auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(equivalent);
         auto transaction = make_shared<AuditSourceTransaction>(
-            contractorID,
-            equivalent,
-            mContractorsManager,
-            trustLinesManager,
-            mStorageHandler,
-            mKeysStore,
-            mFeaturesManager,
-            mTrustLinesInfluenceController,
-            mLog);
+                               contractorID,
+                               equivalent,
+                               mContractorsManager,
+                               trustLinesManager,
+                               mStorageHandler,
+                               mKeysStore,
+                               mFeaturesManager,
+                               mTrustLinesInfluenceController,
+                               mLog);
 
         subscribeForTrustLineActionSignal(
             transaction->trustLineActionSignal);
@@ -2678,7 +2678,7 @@ void TransactionsManager::onAuditSlot(
             true);
     } catch (NotFoundError &e) {
         error() << "There are no subsystems for onAuditSlot "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -2688,54 +2688,54 @@ void TransactionsManager::onResumeTransactionSlot(
     const BaseTransaction::TransactionType transactionType)
 {
     switch (transactionType) {
-        case BaseTransaction::OpenTrustLineTransaction: {
-            auto transaction = make_shared<OpenTrustLineTransaction>(
-                equivalent,
-                contractorID,
-                mContractorsManager,
-                mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-                mStorageHandler,
-                mEventsInterfaceManager,
-                mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
-                mSubsystemsController,
-                mTrustLinesInfluenceController,
-                mLog);
-            subscribeForKeysSharingSignal(
-                transaction->publicKeysSharingSignal);
-            subscribeForProcessingPongMessage(
-                transaction->processPongMessageSignal);
-            prepareAndSchedule(
-                transaction,
-                true,
-                false,
-                true);
-            break;
-        }
-        case BaseTransaction::AuditSourceTransactionType: {
-            auto transaction = make_shared<AuditSourceTransaction>(
-                equivalent,
-                mContractorsManager,
-                contractorID,
-                mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
-                mStorageHandler,
-                mKeysStore,
-                mFeaturesManager,
-                mTrustLinesInfluenceController,
-                mLog);
-            subscribeForTrustLineActionSignal(
-                transaction->trustLineActionSignal);
-            subscribeForProcessingPongMessage(
-                transaction->processPongMessageSignal);
-            prepareAndSchedule(
-                transaction,
-                true,
-                false,
-                true);
-            break;
-        }
-        default: {
-            warning() << "onResumeTransactionSlot: invalid transaction type " << transactionType;
-        }
+    case BaseTransaction::OpenTrustLineTransaction: {
+        auto transaction = make_shared<OpenTrustLineTransaction>(
+                               equivalent,
+                               contractorID,
+                               mContractorsManager,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                               mStorageHandler,
+                               mEventsInterfaceManager,
+                               mEquivalentsSubsystemsRouter->iAmGateway(equivalent),
+                               mSubsystemsController,
+                               mTrustLinesInfluenceController,
+                               mLog);
+        subscribeForKeysSharingSignal(
+            transaction->publicKeysSharingSignal);
+        subscribeForProcessingPongMessage(
+            transaction->processPongMessageSignal);
+        prepareAndSchedule(
+            transaction,
+            true,
+            false,
+            true);
+        break;
+    }
+    case BaseTransaction::AuditSourceTransactionType: {
+        auto transaction = make_shared<AuditSourceTransaction>(
+                               equivalent,
+                               mContractorsManager,
+                               contractorID,
+                               mEquivalentsSubsystemsRouter->trustLinesManager(equivalent),
+                               mStorageHandler,
+                               mKeysStore,
+                               mFeaturesManager,
+                               mTrustLinesInfluenceController,
+                               mLog);
+        subscribeForTrustLineActionSignal(
+            transaction->trustLineActionSignal);
+        subscribeForProcessingPongMessage(
+            transaction->processPongMessageSignal);
+        prepareAndSchedule(
+            transaction,
+            true,
+            false,
+            true);
+        break;
+    }
+    default: {
+        warning() << "onResumeTransactionSlot: invalid transaction type " << transactionType;
+    }
     }
 }
 
@@ -2841,79 +2841,79 @@ void TransactionsManager::onSerializeTransaction(
     const auto kTransactionTypeId = transaction->transactionType();
     const auto ioTransaction = mStorageHandler->beginTransaction();
     switch (kTransactionTypeId) {
-        case BaseTransaction::CoordinatorPaymentTransaction: {
-            const auto kChildTransaction = static_pointer_cast<CoordinatorPaymentTransaction>(transaction);
-            const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
-            ioTransaction->transactionHandler()->saveRecord(
-                kChildTransaction->currentTransactionUUID(),
-                transactionBytesAndCount.first,
-                transactionBytesAndCount.second);
-            break;
-        }
-        case BaseTransaction::IntermediateNodePaymentTransaction: {
-            const auto kChildTransaction = static_pointer_cast<IntermediateNodePaymentTransaction>(transaction);
-            const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
-            ioTransaction->transactionHandler()->saveRecord(
-                kChildTransaction->currentTransactionUUID(),
-                transactionBytesAndCount.first,
-                transactionBytesAndCount.second);
-            break;
-        }
-        case BaseTransaction::ReceiverPaymentTransaction: {
-            const auto kChildTransaction = static_pointer_cast<ReceiverPaymentTransaction>(transaction);
-            const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
-            ioTransaction->transactionHandler()->saveRecord(
-                kChildTransaction->currentTransactionUUID(),
-                transactionBytesAndCount.first,
-                transactionBytesAndCount.second);
-            break;
-        }
-        case BaseTransaction::Payments_CycleCloserInitiatorTransaction: {
-            const auto kChildTransaction = static_pointer_cast<CycleCloserInitiatorTransaction>(transaction);
-            const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
-            ioTransaction->transactionHandler()->saveRecord(
-                kChildTransaction->currentTransactionUUID(),
-                transactionBytesAndCount.first,
-                transactionBytesAndCount.second);
-            break;
-        }
-        case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
-            const auto kChildTransaction = static_pointer_cast<CycleCloserIntermediateNodeTransaction>(transaction);
-            const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
-            ioTransaction->transactionHandler()->saveRecord(
-                kChildTransaction->currentTransactionUUID(),
-                transactionBytesAndCount.first,
-                transactionBytesAndCount.second);
-            break;
-        }
-        default: {
-            throw RuntimeError(
-                "TrustLinesManager::onSerializeTransaction. "
-                    "Unexpected transaction type identifier " + to_string(kTransactionTypeId));
-        }
+    case BaseTransaction::CoordinatorPaymentTransaction: {
+        const auto kChildTransaction = static_pointer_cast<CoordinatorPaymentTransaction>(transaction);
+        const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
+        ioTransaction->transactionHandler()->saveRecord(
+            kChildTransaction->currentTransactionUUID(),
+            transactionBytesAndCount.first,
+            transactionBytesAndCount.second);
+        break;
+    }
+    case BaseTransaction::IntermediateNodePaymentTransaction: {
+        const auto kChildTransaction = static_pointer_cast<IntermediateNodePaymentTransaction>(transaction);
+        const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
+        ioTransaction->transactionHandler()->saveRecord(
+            kChildTransaction->currentTransactionUUID(),
+            transactionBytesAndCount.first,
+            transactionBytesAndCount.second);
+        break;
+    }
+    case BaseTransaction::ReceiverPaymentTransaction: {
+        const auto kChildTransaction = static_pointer_cast<ReceiverPaymentTransaction>(transaction);
+        const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
+        ioTransaction->transactionHandler()->saveRecord(
+            kChildTransaction->currentTransactionUUID(),
+            transactionBytesAndCount.first,
+            transactionBytesAndCount.second);
+        break;
+    }
+    case BaseTransaction::Payments_CycleCloserInitiatorTransaction: {
+        const auto kChildTransaction = static_pointer_cast<CycleCloserInitiatorTransaction>(transaction);
+        const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
+        ioTransaction->transactionHandler()->saveRecord(
+            kChildTransaction->currentTransactionUUID(),
+            transactionBytesAndCount.first,
+            transactionBytesAndCount.second);
+        break;
+    }
+    case BaseTransaction::Payments_CycleCloserIntermediateNodeTransaction: {
+        const auto kChildTransaction = static_pointer_cast<CycleCloserIntermediateNodeTransaction>(transaction);
+        const auto transactionBytesAndCount = kChildTransaction->serializeToBytes();
+        ioTransaction->transactionHandler()->saveRecord(
+            kChildTransaction->currentTransactionUUID(),
+            transactionBytesAndCount.first,
+            transactionBytesAndCount.second);
+        break;
+    }
+    default: {
+        throw RuntimeError(
+            "TrustLinesManager::onSerializeTransaction. "
+            "Unexpected transaction type identifier " + to_string(kTransactionTypeId));
+    }
     }
 }
 
 string TransactionsManager::logHeader()
-    noexcept
+noexcept
 {
     return "[TransactionsManager]";
 }
 
 LoggerStream TransactionsManager::error() const
-    noexcept
+noexcept
 {
     return mLog.error(logHeader());
 }
 
 LoggerStream TransactionsManager::warning() const
-    noexcept
+noexcept
 {
     return mLog.warning(logHeader());
 }
 
 LoggerStream TransactionsManager::info() const
-    noexcept
+noexcept
 {
     return mLog.info(logHeader());
 }

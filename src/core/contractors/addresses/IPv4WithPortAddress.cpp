@@ -4,65 +4,64 @@ IPv4WithPortAddress::IPv4WithPortAddress(
     const string &fullAddress)
 {
     size_t addressSeparatorPos = fullAddress.find(
-        kAddressSeparator);
+                                     kAddressSeparator);
     if (addressSeparatorPos == string::npos) {
         throw ValueError(
-                "IPv4WithPortAddress: can't parse address. There are no separator");
+            "IPv4WithPortAddress: can't parse address. There are no separator");
     }
 
     auto addressStr = fullAddress.substr(
-        0,
-        addressSeparatorPos);
+                          0,
+                          addressSeparatorPos);
     addressStr = addressStr + ".";
 
     size_t byteStartPos = 0;
     for (int idx = 0; idx < 4; idx++) {
         size_t bytesSeparatorPos = addressStr.find('.', byteStartPos);
         auto byteStr = addressStr.substr(byteStartPos, bytesSeparatorPos - byteStartPos);
-        mAddress[idx] = (byte) std::stoul(byteStr);
+        mAddress[idx] = (byte_t)std::stoul(byteStr);
         byteStartPos = bytesSeparatorPos + 1;
     }
 
     auto mPortStr = fullAddress.substr(
-        addressSeparatorPos + 1,
-        fullAddress.size() - addressSeparatorPos - 1);
+                        addressSeparatorPos + 1,
+                        fullAddress.size() - addressSeparatorPos - 1);
     try {
         mPort = (uint16_t)std::stoul(mPortStr);
     } catch (...) {
         throw ValueError(
-                "IPv4WithPortAddress: can't parse address. "
-                    "Error occurred while parsing 'port' token.");
+            "IPv4WithPortAddress: can't parse address. "
+            "Error occurred while parsing 'port' token.");
     }
 }
 
 IPv4WithPortAddress::IPv4WithPortAddress(
     const Host &host,
-    const Port port) :
-    mPort(port)
+    const Port port) : mPort(port)
 {
     auto addressStr = host + ".";
     size_t byteStartPos = 0;
     for (int idx = 0; idx < 4; idx++) {
         size_t bytesSeparatorPos = addressStr.find('.', byteStartPos);
         auto byteStr = addressStr.substr(byteStartPos, bytesSeparatorPos - byteStartPos);
-        mAddress[idx] = (byte) std::stoul(byteStr);
+        mAddress[idx] = (byte_t)std::stoul(byteStr);
         byteStartPos = bytesSeparatorPos + 1;
     }
 }
 
 IPv4WithPortAddress::IPv4WithPortAddress(
-    byte* buffer)
+    byte_t* buffer)
 {
     size_t bytesBufferOffset = sizeof(SerializedType);
 
     for (int idx = 0; idx < 4; idx++) {
-        byte nextIPByte;
+        byte_t nextIPByte;
         memcpy(
             &nextIPByte,
             buffer + bytesBufferOffset,
-            sizeof(byte));
-        bytesBufferOffset += sizeof(byte);
-        mAddress[idx] = (byte)nextIPByte;
+            sizeof(byte_t));
+        bytesBufferOffset += sizeof(byte_t);
+        mAddress[idx] = (byte_t)nextIPByte;
     }
 
     memcpy(
@@ -113,8 +112,8 @@ BytesShared IPv4WithPortAddress::serializeToBytes() const
         memcpy(
             dataBytesShared.get() + dataBytesOffset,
             &nextByte,
-            sizeof(byte));
-        dataBytesOffset += sizeof(byte);
+            sizeof(byte_t));
+        dataBytesOffset += sizeof(byte_t);
     }
 
     memcpy(

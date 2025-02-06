@@ -8,7 +8,8 @@
 
 #include "../../../../common/time/TimeUtils.h"
 
-class ConfirmationCachedResponseMessage {
+class ConfirmationCachedResponseMessage
+{
 
 public:
     typedef shared_ptr<ConfirmationCachedResponseMessage> Shared;

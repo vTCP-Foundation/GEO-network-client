@@ -19,7 +19,7 @@ TransactionResult::SharedConst HistoryPaymentsTransaction::run()
 
     if (mCommand->isPaymentRecordCommandUUIDPresent()) {
         auto const paymentRecords = ioTransaction->historyStorage()->paymentRecordsByCommandUUID(
-            mCommand->paymentRecordCommandUUID());
+                                        mCommand->paymentRecordCommandUUID());
         if (paymentRecords.size() > 1) {
             warning() << "Count transactions with requested commandUUID is more than one";
         }
@@ -27,17 +27,17 @@ TransactionResult::SharedConst HistoryPaymentsTransaction::run()
     }
 
     auto const paymentRecords = ioTransaction->historyStorage()->allPaymentRecords(
-        mCommand->equivalent(),
-        mCommand->historyCount(),
-        mCommand->historyFrom(),
-        mCommand->timeFrom(),
-        mCommand->isTimeFromPresent(),
-        mCommand->timeTo(),
-        mCommand->isTimeToPresent(),
-        mCommand->lowBoundaryAmount(),
-        mCommand->isLowBoundaryAmountPresent(),
-        mCommand->highBoundaryAmount(),
-        mCommand->isHighBoundaryAmountPresent());
+                                    mCommand->equivalent(),
+                                    mCommand->historyCount(),
+                                    mCommand->historyFrom(),
+                                    mCommand->timeFrom(),
+                                    mCommand->isTimeFromPresent(),
+                                    mCommand->timeTo(),
+                                    mCommand->isTimeToPresent(),
+                                    mCommand->lowBoundaryAmount(),
+                                    mCommand->isLowBoundaryAmountPresent(),
+                                    mCommand->highBoundaryAmount(),
+                                    mCommand->isHighBoundaryAmountPresent());
     return resultOk(paymentRecords);
 }
 
@@ -78,8 +78,8 @@ TransactionResult::SharedConst HistoryPaymentsTransaction::resultOk(
 
     auto result = stream.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            result));
+               mCommand->resultOk(
+                   result));
 }
 
 const string HistoryPaymentsTransaction::logHeader() const

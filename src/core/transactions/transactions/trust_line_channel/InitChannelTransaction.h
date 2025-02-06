@@ -8,7 +8,8 @@
 
 #include "../../../contractors/ContractorsManager.h"
 
-class InitChannelTransaction : public BaseTransaction {
+class InitChannelTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<InitChannelTransaction> Shared;
@@ -23,7 +24,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         ResponseProcessing = 2,
     };

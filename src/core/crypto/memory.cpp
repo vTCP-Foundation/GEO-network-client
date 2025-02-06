@@ -1,15 +1,13 @@
 #include "memory.h"
 
-
 namespace crypto {
 namespace memory {
 
-
 SecureSegment::SecureSegment(
-    size_t bytesCount):
-    mSize(bytesCount) {
+    size_t bytesCount) : mSize(bytesCount)
+{
 
-    mAddress = static_cast<byte*>(sodium_malloc(bytesCount));
+    mAddress = static_cast<byte_t*>(sodium_malloc(bytesCount));
     if (mAddress == nullptr) {
         // todo: throw memory error on codebase merge;
         exit(-1);
@@ -24,28 +22,30 @@ SecureSegment::SecureSegment(
     }
 }
 
-SecureSegment::~SecureSegment()
-    noexcept {
+SecureSegment::~SecureSegment() noexcept
+{
 
     wipeAndFree();
 }
 
 SecureSegmentGuard SecureSegment::unlockAndInitGuard()
-    const
-    noexcept {
+const
+noexcept
+{
 
     return SecureSegmentGuard(const_cast<SecureSegment&>(*this));
 }
 
-byte *SecureSegment::address()
-    const
-    noexcept {
+byte_t* SecureSegment::address()
+const
+noexcept
+{
 
     return mAddress;
 }
 
-void SecureSegment::wipeAndFree()
-    noexcept {
+void SecureSegment::wipeAndFree() noexcept
+{
 
     if (mAddress != nullptr) {
         sodium_free(mAddress);
@@ -54,26 +54,25 @@ void SecureSegment::wipeAndFree()
     }
 }
 
-
 SecureSegmentGuard::SecureSegmentGuard(
-    SecureSegment &segment)
-    noexcept:
+    SecureSegment &segment) noexcept :
 
-    mSegment(segment){
+    mSegment(segment)
+{
 
-   sodium_mprotect_readwrite(mSegment.address());
+    sodium_mprotect_readwrite(mSegment.address());
 }
 
-SecureSegmentGuard::~SecureSegmentGuard()
-    noexcept {
+SecureSegmentGuard::~SecureSegmentGuard() noexcept
+{
 
-   sodium_mprotect_noaccess(mSegment.address());
+    sodium_mprotect_noaccess(mSegment.address());
 }
 
-byte *SecureSegmentGuard::address() const noexcept {
+byte_t* SecureSegmentGuard::address() const noexcept
+{
     return mSegment.address();
 }
-
 
 }
 }

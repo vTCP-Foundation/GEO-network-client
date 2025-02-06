@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class PaymentTransactionByCommandUUIDCommand : public BaseUserCommand {
+class PaymentTransactionByCommandUUIDCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<PaymentTransactionByCommandUUIDCommand> Shared;

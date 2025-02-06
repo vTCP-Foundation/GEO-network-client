@@ -4,7 +4,7 @@ ConfirmationNotStronglyRequiredMessagesQueue::ConfirmationNotStronglyRequiredMes
     const SerializedEquivalent equivalent,
     BaseAddress::Shared contractorAddress,
     Logger &logger)
-    noexcept:
+noexcept:
     LoggerMixin(logger),
     mEquivalent(equivalent),
     mContractorAddress(contractorAddress)
@@ -25,19 +25,19 @@ bool ConfirmationNotStronglyRequiredMessagesQueue::enqueue(
     message->setConfirmationID(
         confirmationID);
     switch (message->typeID()) {
-        case Message::MaxFlow_ResultMaxFlowCalculation:
-        case Message::MaxFlow_ResultMaxFlowCalculationFromGateway: {
-            if (mMessages.count(confirmationID) != 0) {
-                this->warning() << "Message with confirmationID " << confirmationID
-                                << " has already present in queue";
-                return false;
-            }
-            mMessages[message->confirmationID()] = message;
-            return true;
-        }
-        default:
-            this->warning() << "Invalid  message type " << message->typeID();
+    case Message::MaxFlow_ResultMaxFlowCalculation:
+    case Message::MaxFlow_ResultMaxFlowCalculationFromGateway: {
+        if (mMessages.count(confirmationID) != 0) {
+            this->warning() << "Message with confirmationID " << confirmationID
+                            << " has already present in queue";
             return false;
+        }
+        mMessages[message->confirmationID()] = message;
+        return true;
+    }
+    default:
+        this->warning() << "Invalid  message type " << message->typeID();
+        return false;
     }
 }
 
@@ -60,26 +60,26 @@ BaseAddress::Shared ConfirmationNotStronglyRequiredMessagesQueue::contractorAddr
 }
 
 const DateTime &ConfirmationNotStronglyRequiredMessagesQueue::nextSendingAttemptDateTime()
-    noexcept
+noexcept
 {
     return mNextSendingAttemptDateTime;
 }
 
 const map<ConfirmationID, MaxFlowCalculationConfirmationMessage::Shared> &ConfirmationNotStronglyRequiredMessagesQueue::messages()
-    noexcept
+noexcept
 {
     mNextSendingAttemptDateTime = utc_now() + boost::posix_time::seconds(mNextTimeoutSeconds);
     return mMessages;
 }
 
 const size_t ConfirmationNotStronglyRequiredMessagesQueue::size() const
-    noexcept
+noexcept
 {
     return mMessages.size();
 }
 
 void ConfirmationNotStronglyRequiredMessagesQueue::resetInternalTimeout()
-    noexcept
+noexcept
 {
     mNextTimeoutSeconds = 3;
     mCountResendingAttempts = 0;

@@ -87,8 +87,7 @@ TransactionResult::SharedConst CyclesFiveNodesReceiverTransaction::run()
             boundaryNodes);
         info() << "send response message to " << path.front()->fullAddress();
         return resultDone();
-    }
-    else {
+    } else {
         warning() << "wrong depth " << (uint16_t)currentDepth << " creditor branch " << isCreditorsBranch;
         return resultDone();
     }

@@ -11,14 +11,15 @@
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class EquivalentsCyclesSubsystemsRouter {
+class EquivalentsCyclesSubsystemsRouter
+{
 
 public:
     typedef signals::signal<void(const SerializedEquivalent equivalent)> BuildSixNodesCyclesSignal;
     typedef signals::signal<void(const SerializedEquivalent equivalent)> BuildFiveNodesCyclesSignal;
     typedef signals::signal<void(
-            const SerializedEquivalent equivalent,
-            Path::Shared cycle)> CloseCycleSignal;
+        const SerializedEquivalent equivalent,
+        Path::Shared cycle)> CloseCycleSignal;
 
 public:
     EquivalentsCyclesSubsystemsRouter(

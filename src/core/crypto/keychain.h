@@ -13,16 +13,14 @@
 #include <vector>
 #include <utility>
 
-
 namespace crypto {
 using namespace std;
 
-
-class Encryptor {
+class Encryptor
+{
 public:
     Encryptor(
-        memory::SecureSegment &key)
-        noexcept;
+        memory::SecureSegment &key) noexcept;
 
     /**
      * @brief
@@ -32,7 +30,7 @@ public:
      * @throws MemoryError on bad allocation attempt.
      */
     pair<BytesShared, size_t> encrypt(
-        byte *data,
+        byte_t* data,
         size_t len);
 
     /**
@@ -43,13 +41,12 @@ public:
      * @throws MemoryError on bad allocation attempt.
      */
     pair<BytesShared, size_t> decrypt(
-        byte *data,
+        byte_t* data,
         size_t len);
 
 private:
     memory::SecureSegment &mKey;
 };
-
 
 /**
  * @brief The Keystore class provides single point of responsibility
@@ -58,20 +55,19 @@ private:
  * that would be available globally for the application sub-systems.
  */
 class TrustLineKeychain;
-class Keystore:
-    public boost::noncopyable {
+class Keystore : public boost::noncopyable
+{
 
 public:
     Keystore(
-        //todo memory::SecureSegment &memoryKey,
-        Logger &logger)
-        noexcept;
+        // todo memory::SecureSegment &memoryKey,
+        Logger &logger) noexcept;
 
     int init();
 
     TrustLineKeychain keychain(
         const TrustLineID trustLineID)
-        const;
+    const;
 
     lamport::PublicKey::Shared generateAndSaveKeyPairForPaymentTransaction(
         IOTransaction::Shared ioTransaction,
@@ -94,9 +90,8 @@ private:
 
 private:
     Logger &mLogger;
-    //todo Encryptor mEncryptor;
+    // todo Encryptor mEncryptor;
 };
-
 
 /**
  * @brief The TrustLineKeychain class provides secure interface
@@ -105,9 +100,10 @@ private:
  * in one place in codebase. It would never provide raw access to the private keys,
  * or any sensitive data. All data signing is done internally.
  */
-class TrustLineKeychain{
+class TrustLineKeychain
+{
 public:
-    static const size_t kDefaultKeysSetSize = 10;     // 16MB of PubKeys, and 16MB of PKeys.
+    static const size_t kDefaultKeysSetSize = 10; // 16MB of PubKeys, and 16MB of PKeys.
     static const size_t kMaxKeysSetSize = 1024;
     static const size_t kMinKeysSetSize = 2;
 
@@ -126,8 +122,7 @@ public:
     TrustLineKeychain(
         const TrustLineID trustLineID,
         // todo Encryptor encryptor,
-        Logger &logger)
-        noexcept;
+        Logger &logger) noexcept;
 
     /**
      * @brief
@@ -141,7 +136,7 @@ public:
      */
     void generateKeyPairsSet(
         IOTransaction::Shared ioTransaction,
-        KeysCount keyPairsCount=kDefaultKeysSetSize);
+        KeysCount keyPairsCount = kDefaultKeysSetSize);
 
     /**
      * @returns public key with number = "number".
@@ -159,7 +154,7 @@ public:
     lamport::PublicKey::Shared publicKey(
         IOTransaction::Shared ioTransaction,
         const KeyNumber number)
-        const;
+    const;
 
     /**
      * @brief
@@ -197,7 +192,7 @@ public:
 
     bool allContractorKeysPresent(
         IOTransaction::Shared ioTransaction,
-        KeysCount contractorKeysCount=kDefaultKeysSetSize);
+        KeysCount contractorKeysCount = kDefaultKeysSetSize);
 
     bool ownKeysCriticalCount(
         IOTransaction::Shared ioTransaction);
@@ -395,7 +390,7 @@ protected:
      */
     void keyNumberGuard(
         const KeyNumber &number)
-        const;
+    const;
 
     /**
      * @brief checks "data" and "size" for correct values.
@@ -404,7 +399,7 @@ protected:
     void dataGuard(
         const BytesShared data,
         const size_t size)
-        const;
+    const;
 
 private:
     LoggerStream info() const;
@@ -417,10 +412,9 @@ private:
 
 private:
     TrustLineID mTrustLineID;
-    //todo Encryptor &mEncryptor;
+    // todo Encryptor &mEncryptor;
     Logger &mLogger;
 };
-
 
 }
 

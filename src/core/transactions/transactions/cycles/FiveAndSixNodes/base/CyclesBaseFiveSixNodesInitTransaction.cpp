@@ -18,17 +18,18 @@ CyclesBaseFiveSixNodesInitTransaction::CyclesBaseFiveSixNodesInitTransaction(
     mTailManager(tailManager)
 {}
 
-TransactionResult::SharedConst CyclesBaseFiveSixNodesInitTransaction::run() {
+TransactionResult::SharedConst CyclesBaseFiveSixNodesInitTransaction::run()
+{
     switch (mStep) {
-        case Stages::CollectDataAndSendMessage:
-            return runCollectDataAndSendMessagesStage();
+    case Stages::CollectDataAndSendMessage:
+        return runCollectDataAndSendMessagesStage();
 
-        case Stages::ParseMessageAndCreateCycles:
-            return runParseMessageAndCreateCyclesStage();
+    case Stages::ParseMessageAndCreateCycles:
+        return runParseMessageAndCreateCyclesStage();
 
-        default:
-            throw RuntimeError(
-                "CyclesBaseFiveSixNodesInitTransaction::run():"
-                    "Invalid transaction step.");
+    default:
+        throw RuntimeError(
+            "CyclesBaseFiveSixNodesInitTransaction::run():"
+            "Invalid transaction step.");
     }
 }

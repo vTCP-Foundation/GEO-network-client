@@ -4,24 +4,22 @@ MaxFlowCalculationTargetFstLevelMessage::MaxFlowCalculationTargetFstLevelMessage
     const SerializedEquivalent equivalent,
     ContractorID idOnReceiverSide,
     vector<BaseAddress::Shared> targetAddresses,
-    bool isTargetGateway):
-    MaxFlowCalculationMessage(
-        equivalent,
-        idOnReceiverSide,
-        targetAddresses),
+    bool isTargetGateway) : MaxFlowCalculationMessage(equivalent,
+                idOnReceiverSide,
+                targetAddresses),
     mIsTargetGateway(isTargetGateway)
-{}
+{
+}
 
 MaxFlowCalculationTargetFstLevelMessage::MaxFlowCalculationTargetFstLevelMessage(
-    BytesShared buffer):
-    MaxFlowCalculationMessage(buffer)
+    BytesShared buffer) : MaxFlowCalculationMessage(buffer)
 {
     size_t bytesBufferOffset = MaxFlowCalculationMessage::kOffsetToInheritedBytes();
 
     memcpy(
         &mIsTargetGateway,
         buffer.get() + bytesBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
 }
 
 bool MaxFlowCalculationTargetFstLevelMessage::isTargetGateway() const
@@ -39,7 +37,7 @@ pair<BytesShared, size_t> MaxFlowCalculationTargetFstLevelMessage::serializeToBy
     auto parentBytesAndCount = MaxFlowCalculationMessage::serializeToBytes();
     size_t bytesCount =
         parentBytesAndCount.second +
-        sizeof(byte);
+        sizeof(byte_t);
 
     BytesShared dataBytesShared = tryCalloc(bytesCount);
     size_t dataBytesOffset = 0;
@@ -52,9 +50,9 @@ pair<BytesShared, size_t> MaxFlowCalculationTargetFstLevelMessage::serializeToBy
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         &mIsTargetGateway,
-        sizeof(byte));
+        sizeof(byte_t));
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

@@ -46,19 +46,19 @@ Communicator::Communicator(
 {
     if (!host.empty()) {
         mSocket = make_unique<UDPSocket>(
-            IOService,
-            udp::endpoint(
-                address::from_string(host),
-                port));
+                      IOService,
+                      udp::endpoint(
+                          address::from_string(host),
+                          port));
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
         logger.debug("Communicator mSocket ") << host << ":" << port;
 #endif
     } else {
         mSocket = make_unique<UDPSocket>(
-            IOService,
-            udp::endpoint(
-                udp::v4(),
-                contractorsManager->selfContractor()->mainAddress()->port()));
+                      IOService,
+                      udp::endpoint(
+                          udp::v4(),
+                          contractorsManager->selfContractor()->mainAddress()->port()));
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
         logger.debug("Communicator mSocket v4()") << ":" << port;
 #endif
@@ -115,7 +115,7 @@ Communicator::Communicator(
 }
 
 void Communicator::beginAcceptMessages()
-    noexcept
+noexcept
 {
     mIncomingMessagesHandler->beginReceivingData();
 }
@@ -135,7 +135,7 @@ void Communicator::beginAcceptMessages()
 void Communicator::sendMessage (
     const Message::Shared message,
     const ContractorID contractorID)
-    noexcept
+noexcept
 {
     // Filter outgoing messages for confirmation-required messages.
     if (message->isAddToConfirmationRequiredMessagesHandler()) {
@@ -157,7 +157,7 @@ void Communicator::sendMessage (
 void Communicator::sendMessage (
     const Message::Shared message,
     const BaseAddress::Shared contractorAddress)
-    noexcept
+noexcept
 {
     if (message->isAddToConfirmationNotStronglyRequiredMessagesHandler()) {
         mConfirmationNotStronglyRequiredMessagesHandler->tryEnqueueMessage(
@@ -175,7 +175,7 @@ void Communicator::sendMessageWithCacheSaving(
     ContractorID contractorID,
     Message::MessageType incomingMessageTypeFilter,
     uint32_t cacheLivingTime)
-    noexcept
+noexcept
 {
     mConfirmationResponseMessagesHandler->addCachedMessage(
         contractorID,
@@ -219,7 +219,7 @@ void Communicator::onMessageReceived(
     if (message->typeID() == Message::MaxFlow_ResultMaxFlowCalculation ||
             message->typeID() == Message::MaxFlow_ResultMaxFlowCalculationFromGateway) {
         const auto kResultMaxFlowCalculationMessage =
-                static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message);
+            static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message);
         sendMessage(
             make_shared<MaxFlowCalculationConfirmationMessage>(
                 kResultMaxFlowCalculationMessage->equivalent(),
@@ -235,7 +235,7 @@ void Communicator::onMessageReceived(
     // confirmation not strongly required messages handler.
     else if (message->typeID() == Message::MaxFlow_Confirmation) {
         const auto kConfirmationMessage =
-                static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message);
+            static_pointer_cast<MaxFlowCalculationConfirmationMessage>(message);
         mConfirmationNotStronglyRequiredMessagesHandler->tryProcessConfirmation(
             kConfirmationMessage);
         return;
@@ -249,23 +249,23 @@ void Communicator::onMessageReceived(
         const auto initMessage = static_pointer_cast<InitChannelMessage>(message);
         auto contractorID = mContractorsManager->contractorIDByAddresses(initMessage->senderAddresses);
         mConfirmationRequiredMessagesHandler->tryProcessConfirmation(make_shared<ConfirmationMessage>(
-            initMessage->equivalent(),
-            contractorID,
-            initMessage->transactionUUID()));
+                    initMessage->equivalent(),
+                    contractorID,
+                    initMessage->transactionUUID()));
 
     } else if (message->typeID() == Message::General_Ping) {
         const auto pingMessage =
-                static_pointer_cast<PingMessage>(message);
+            static_pointer_cast<PingMessage>(message);
         sendMessage(
             make_shared<PongMessage>(
                 mContractorsManager->idOnContractorSide(pingMessage->idOnReceiverSide)),
             pingMessage->idOnReceiverSide);
         return;
 
-    // In case if received message is of type "confirmation message" -
-    // then it must not be transferred for further processing.
-    // Instead of that, it must be transferred for processing into
-    // confirmation required messages handler.
+        // In case if received message is of type "confirmation message" -
+        // then it must not be transferred for further processing.
+        // Instead of that, it must be transferred for processing into
+        // confirmation required messages handler.
     } else if (message->typeID() == Message::System_Confirmation) {
         mConfirmationRequiredMessagesHandler->tryProcessConfirmation(
             static_pointer_cast<ConfirmationMessage>(message));
@@ -273,7 +273,7 @@ void Communicator::onMessageReceived(
 
     } else if (message->typeID() == Message::RoutingTableResponse) {
         const auto kConfirmationMessage =
-                static_pointer_cast<ConfirmationMessage>(message);
+            static_pointer_cast<ConfirmationMessage>(message);
         mConfirmationRequiredMessagesHandler->tryProcessConfirmation(
             kConfirmationMessage);
         return;

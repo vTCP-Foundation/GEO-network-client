@@ -4,7 +4,8 @@
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../contractors/Contractor.h"
 
-class InitChannelMessage : public TransactionMessage {
+class InitChannelMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<InitChannelMessage> Shared;

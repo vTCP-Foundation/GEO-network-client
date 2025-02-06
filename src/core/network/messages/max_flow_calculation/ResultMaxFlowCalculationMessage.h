@@ -7,7 +7,8 @@
 #include <vector>
 
 class ResultMaxFlowCalculationMessage:
-    public MaxFlowCalculationConfirmationMessage {
+    public MaxFlowCalculationConfirmationMessage
+{
 
 public:
     typedef shared_ptr<ResultMaxFlowCalculationMessage> Shared;

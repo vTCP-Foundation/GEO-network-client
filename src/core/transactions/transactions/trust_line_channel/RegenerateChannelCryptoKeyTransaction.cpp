@@ -45,31 +45,31 @@ TransactionResult::SharedConst RegenerateChannelCryptoKeyTransaction::resultOK()
        << *mContractorsManager->contractor(mCommand->contractorChannelID())->cryptoKey()->publicKey;
     auto channelInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->responseOk(channelInfo));
+               mCommand->responseOk(channelInfo));
 }
 
 TransactionResult::SharedConst RegenerateChannelCryptoKeyTransaction::resultForbiddenRun()
 {
     return transactionResultFromCommand(
-        mCommand->responseForbiddenRunTransaction());
+               mCommand->responseForbiddenRunTransaction());
 }
 
 TransactionResult::SharedConst RegenerateChannelCryptoKeyTransaction::resultContractorIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 TransactionResult::SharedConst RegenerateChannelCryptoKeyTransaction::resultProtocolError()
 {
     return transactionResultFromCommand(
-        mCommand->responseProtocolError());
+               mCommand->responseProtocolError());
 }
 
 TransactionResult::SharedConst RegenerateChannelCryptoKeyTransaction::resultUnexpectedError()
 {
     return transactionResultFromCommand(
-        mCommand->responseUnexpectedError());
+               mCommand->responseUnexpectedError());
 }
 
 const string RegenerateChannelCryptoKeyTransaction::logHeader() const

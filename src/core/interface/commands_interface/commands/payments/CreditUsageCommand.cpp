@@ -31,29 +31,29 @@ CreditUsageCommand::CreditUsageCommand(
     auto amountAddNumber = [&](auto &ctx) {
         amount += _attr(ctx);
         flagAmount++;
-       if (flagAmount == 1 && _attr(ctx) == '0') {
+        if (flagAmount == 1 && _attr(ctx) == '0') {
             throw ValueError("CreditUsageCommand: amount contains leading zero.");
         }
     };
     auto addressAddToVector = [&](auto &ctx) {
         switch (std::atoi(addressType.c_str())) {
-            case BaseAddress::IPv4_IncludingPort: {
-                mContractorAddresses.push_back(
-                    make_shared<IPv4WithPortAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            case BaseAddress::GNS: {
-                mContractorAddresses.push_back(
-                    make_shared<GNSAddress>(
-                        address));
-                addressType.erase();
-                break;
-            }
-            default:
-                throw ValueError("CreditUsageCommand: cannot parse command. "
-                    "Error occurred while parsing 'Contractor Address' token.");
+        case BaseAddress::IPv4_IncludingPort: {
+            mContractorAddresses.push_back(
+                make_shared<IPv4WithPortAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        case BaseAddress::GNS: {
+            mContractorAddresses.push_back(
+                make_shared<GNSAddress>(
+                    address));
+            addressType.erase();
+            break;
+        }
+        default:
+            throw ValueError("CreditUsageCommand: cannot parse command. "
+                             "Error occurred while parsing 'Contractor Address' token.");
         }
 
         address.erase();
@@ -81,15 +81,15 @@ CreditUsageCommand::CreditUsageCommand(
             commandBuffer.end(), (
                 *(int_) > char_(kTokensSeparator)
                 > addressLexeme<
-                    decltype(addressAddChar),
-                    decltype(addressAddNumber),
-                    decltype(addressTypeParse),
-                    decltype(addressAddToVector)>(
-                        contractorAddressesCount,
-                        addressAddChar,
-                        addressAddNumber,
-                        addressTypeParse,
-                        addressAddToVector)
+                decltype(addressAddChar),
+                decltype(addressAddNumber),
+                decltype(addressTypeParse),
+                decltype(addressAddToVector)>(
+                    contractorAddressesCount,
+                    addressAddChar,
+                    addressAddNumber,
+                    addressTypeParse,
+                    addressAddToVector)
                 >*(digit [amountAddNumber] > !alpha > !punct)
                 > char_(kTokensSeparator)
                 > +(int_[equivalentParse])
@@ -134,8 +134,8 @@ CommandResult::SharedConst CreditUsageCommand::responseOK(
     string &transactionUUID) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        201,
-        transactionUUID);
+               identifier(),
+               UUID(),
+               201,
+               transactionUUID);
 }

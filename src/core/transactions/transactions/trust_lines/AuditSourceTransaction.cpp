@@ -57,18 +57,18 @@ AuditSourceTransaction::AuditSourceTransaction(
 TransactionResult::SharedConst AuditSourceTransaction::run()
 {
     switch (mStep) {
-        case Stages::Initialization: {
-            return runInitializationStage();
-        }
-        case Stages::NextAttempt: {
-            return runNextAttemptStage();
-        }
-        case Stages::ResponseProcessing: {
-            return runResponseProcessingStage();
-        }
-        default:
-            throw ValueError(logHeader() + "::run: "
-                    "wrong value of mStep");
+    case Stages::Initialization: {
+        return runInitializationStage();
+    }
+    case Stages::NextAttempt: {
+        return runNextAttemptStage();
+    }
+    case Stages::ResponseProcessing: {
+        return runResponseProcessingStage();
+    }
+    default:
+        throw ValueError(logHeader() + "::run: "
+                                       "wrong value of mStep");
     }
 }
 
@@ -112,17 +112,17 @@ TransactionResult::SharedConst AuditSourceTransaction::runInitializationStage()
     // there is no need to call commit manually.
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
         auto ownPublicKeysHash = keyChain.ownPublicKeysHash(ioTransaction);
         auto contractorPublicKeysHash = keyChain.contractorPublicKeysHash(ioTransaction);
         auto serializedAuditData = getOwnSerializedAuditData(
-            ownPublicKeysHash,
-            contractorPublicKeysHash);
+                                       ownPublicKeysHash,
+                                       contractorPublicKeysHash);
         mOwnSignatureAndKeyNumber = keyChain.sign(
-            ioTransaction,
-            serializedAuditData.first,
-            serializedAuditData.second);
+                                        ioTransaction,
+                                        serializedAuditData.first,
+                                        serializedAuditData.second);
 
         keyChain.saveOwnAuditPart(
             ioTransaction,
@@ -179,8 +179,8 @@ TransactionResult::SharedConst AuditSourceTransaction::runInitializationStage()
 
     mStep = ResponseProcessing;
     return resultWaitForMessageTypes(
-        {Message::TrustLines_AuditConfirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_AuditConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst AuditSourceTransaction::runNextAttemptStage()
@@ -221,11 +221,11 @@ TransactionResult::SharedConst AuditSourceTransaction::runNextAttemptStage()
     // there is no need to call commit manually.
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-            mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
         mOwnSignatureAndKeyNumber = keyChain.getSignatureAndKeyNumberForPendingAudit(
-            ioTransaction,
-            mAuditNumber);
+                                        ioTransaction,
+                                        mAuditNumber);
         debug() << "signature getting";
 
 #ifdef TESTS
@@ -262,8 +262,8 @@ TransactionResult::SharedConst AuditSourceTransaction::runNextAttemptStage()
 
     mStep = ResponseProcessing;
     return resultWaitForMessageTypes(
-        {Message::TrustLines_AuditConfirmation},
-        kWaitMillisecondsForResponse);
+    {Message::TrustLines_AuditConfirmation},
+    kWaitMillisecondsForResponse);
 }
 
 TransactionResult::SharedConst AuditSourceTransaction::runResponseProcessingStage()
@@ -275,7 +275,7 @@ TransactionResult::SharedConst AuditSourceTransaction::runResponseProcessingStag
         // check if audit was cancelled
         auto ioTransaction = mStorageHandler->beginTransaction();
         auto keyChain = mKeysStore->keychain(
-            mTrustLines->trustLineID(mContractorID));
+                            mTrustLines->trustLineID(mContractorID));
         try {
             if (keyChain.isAuditWasCancelled(ioTransaction, mAuditNumber)) {
                 info() << "Audit was cancelled by other audit transaction";
@@ -301,8 +301,8 @@ TransactionResult::SharedConst AuditSourceTransaction::runResponseProcessingStag
             mCountSendingAttempts++;
             info() << "Send message " << mCountSendingAttempts << " times";
             return resultWaitForMessageTypes(
-                {Message::TrustLines_AuditConfirmation},
-                kWaitMillisecondsForResponse);
+            {Message::TrustLines_AuditConfirmation},
+            kWaitMillisecondsForResponse);
         }
         info() << "Transaction will be closed and send ping";
         sendMessage<PingMessage>(
@@ -329,13 +329,13 @@ TransactionResult::SharedConst AuditSourceTransaction::runResponseProcessingStag
         // message on communicator queue, wait for audit response after reservations committing or cancelling
         // todo add timeout or count failed attempts for running conflict resolver TA
         return resultWaitForMessageTypes(
-            {Message::TrustLines_AuditConfirmation},
-            kWaitMillisecondsForResponse);
+        {Message::TrustLines_AuditConfirmation},
+        kWaitMillisecondsForResponse);
     }
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto keyChain = mKeysStore->keychain(
-        mTrustLines->trustLineID(mContractorID));
+                        mTrustLines->trustLineID(mContractorID));
     try {
 
         // todo process ConfirmationMessage::OwnKeysAbsent and ConfirmationMessage::ContractorKeysAbsent
@@ -351,15 +351,15 @@ TransactionResult::SharedConst AuditSourceTransaction::runResponseProcessingStag
         }
 
         auto contractorSerializedAuditData = getContractorSerializedAuditData(
-            keyChain.ownPublicKeysHash(ioTransaction),
-            keyChain.contractorPublicKeysHash(ioTransaction));
+                keyChain.ownPublicKeysHash(ioTransaction),
+                keyChain.contractorPublicKeysHash(ioTransaction));
 
         if (!keyChain.checkSign(
-                ioTransaction,
-                contractorSerializedAuditData.first,
-                contractorSerializedAuditData.second,
-                message->signature(),
-                message->keyNumber())) {
+                    ioTransaction,
+                    contractorSerializedAuditData.first,
+                    contractorSerializedAuditData.second,
+                    message->signature(),
+                    message->keyNumber())) {
             warning() << "Contractor didn't sign message correct by key number " << message->keyNumber();
             mTrustLines->setTrustLineState(
                 mContractorID,

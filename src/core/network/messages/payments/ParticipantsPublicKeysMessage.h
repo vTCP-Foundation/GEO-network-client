@@ -8,7 +8,8 @@
 
 using namespace crypto;
 
-class ParticipantsPublicKeysMessage : public TransactionMessage {
+class ParticipantsPublicKeysMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ParticipantsPublicKeysMessage> Shared;

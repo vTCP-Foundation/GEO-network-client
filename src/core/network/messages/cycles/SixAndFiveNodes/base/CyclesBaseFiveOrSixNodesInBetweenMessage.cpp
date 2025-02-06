@@ -26,7 +26,7 @@ CycleBaseFiveOrSixNodesInBetweenMessage::CycleBaseFiveOrSixNodesInBetweenMessage
 
     for (SerializedPositionInPath idx = 0; idx < nodesInPath; idx++) {
         auto stepAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
         bytesBufferOffset += stepAddress->serializedSize();
         mPath.push_back(stepAddress);
     }
@@ -67,15 +67,15 @@ pair<BytesShared, size_t> CycleBaseFiveOrSixNodesInBetweenMessage::serializeToBy
     }
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const size_t CycleBaseFiveOrSixNodesInBetweenMessage::kOffsetToInheritedBytes() const
 {
     auto kNodesInPath = (SerializedPathLengthSize)mPath.size();
     size_t offset = SenderMessage::kOffsetToInheritedBytes()
-            + sizeof(SerializedPathLengthSize);
+                    + sizeof(SerializedPathLengthSize);
     for (const auto &address : mPath) {
         offset += address->serializedSize();
     }

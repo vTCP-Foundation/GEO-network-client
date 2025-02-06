@@ -98,8 +98,8 @@ EquivalentsSubsystemsRouter::EquivalentsSubsystemsRouter(
     }
 
     mGatewayNotificationAndRoutingTablesDelayedTask = make_unique<GatewayNotificationAndRoutingTablesDelayedTask>(
-        mIOService,
-        mLogger);
+            mIOService,
+            mLogger);
     subscribeForGatewayNotification(
         mGatewayNotificationAndRoutingTablesDelayedTask->gatewayNotificationSignal);
     info() << "Gateway Notification and Routing Tables Delayed Task is successfully initialized";
@@ -115,8 +115,8 @@ bool EquivalentsSubsystemsRouter::iAmGateway(
 {
     if (mIAmGateways.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::iAmGateway: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::iAmGateway: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mIAmGateways.at(equivalent);
 }
@@ -126,8 +126,8 @@ TrustLinesManager* EquivalentsSubsystemsRouter::trustLinesManager(
 {
     if (mTrustLinesManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::trustLinesManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::trustLinesManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mTrustLinesManagers.at(equivalent).get();
 }
@@ -137,8 +137,8 @@ TopologyTrustLinesManager* EquivalentsSubsystemsRouter::topologyTrustLineManager
 {
     if (mTopologyTrustLinesManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::topologyTrustLineManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::topologyTrustLineManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mTopologyTrustLinesManagers.at(equivalent).get();
 }
@@ -148,8 +148,8 @@ TopologyCacheManager* EquivalentsSubsystemsRouter::topologyCacheManager(
 {
     if (mTopologyCacheManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::topologyCacheManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::topologyCacheManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mTopologyCacheManagers.at(equivalent).get();
 }
@@ -159,8 +159,8 @@ MaxFlowCacheManager* EquivalentsSubsystemsRouter::maxFlowCacheManager(
 {
     if (mMaxFlowCacheManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::maxFlowCacheManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::maxFlowCacheManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mMaxFlowCacheManagers.at(equivalent).get();
 }
@@ -170,8 +170,8 @@ PathsManager* EquivalentsSubsystemsRouter::pathsManager(
 {
     if (mPathsManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsSubsystemsRouter::pathsManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsSubsystemsRouter::pathsManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mPathsManagers.at(equivalent).get();
 }
@@ -181,8 +181,8 @@ void EquivalentsSubsystemsRouter::initNewEquivalent(
 {
     if (mTrustLinesManagers.count(equivalent) != 0) {
         throw ValueError(
-                "EquivalentsSubsystemsRouter::initNewEquivalent: "
-                    "try init equivalent " + to_string(equivalent) + " which is already exists");
+            "EquivalentsSubsystemsRouter::initNewEquivalent: "
+            "try init equivalent " + to_string(equivalent) + " which is already exists");
     }
 
     mIAmGateways.insert(
@@ -240,12 +240,12 @@ void EquivalentsSubsystemsRouter::initNewEquivalent(
 
     mPathsManagers.insert(
         make_pair(
-             equivalent,
-             make_unique<PathsManager>(
-                 equivalent,
-                 mTrustLinesManagers[equivalent].get(),
-                 mTopologyTrustLinesManagers[equivalent].get(),
-                 mLogger)));
+            equivalent,
+            make_unique<PathsManager>(
+                equivalent,
+                mTrustLinesManagers[equivalent].get(),
+                mTopologyTrustLinesManagers[equivalent].get(),
+                mLogger)));
     info() << "Paths Manager is successfully initialized";
 
     mEquivalents.push_back(equivalent);

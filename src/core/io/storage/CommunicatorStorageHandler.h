@@ -12,7 +12,8 @@
 
 namespace fs = boost::filesystem;
 
-class CommunicatorStorageHandler {
+class CommunicatorStorageHandler
+{
 
 public:
     CommunicatorStorageHandler(

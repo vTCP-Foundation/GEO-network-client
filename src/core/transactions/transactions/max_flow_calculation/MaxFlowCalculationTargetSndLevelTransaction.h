@@ -9,7 +9,8 @@
 #include "../../../network/messages/max_flow_calculation/ResultMaxFlowCalculationMessage.h"
 #include "../../../network/messages/max_flow_calculation/ResultMaxFlowCalculationGatewayMessage.h"
 
-class MaxFlowCalculationTargetSndLevelTransaction : public BaseTransaction {
+class MaxFlowCalculationTargetSndLevelTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<MaxFlowCalculationTargetSndLevelTransaction> Shared;

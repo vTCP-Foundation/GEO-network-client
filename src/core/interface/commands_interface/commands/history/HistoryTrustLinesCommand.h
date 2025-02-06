@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class HistoryTrustLinesCommand : public BaseUserCommand {
+class HistoryTrustLinesCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<HistoryTrustLinesCommand> Shared;

@@ -23,7 +23,7 @@ ParticipantVoteMessage::ParticipantVoteMessage(
     if (mState == Accepted) {
         bytesBufferOffset += sizeof(SerializedOperationState);
         auto signature = make_shared<lamport::Signature>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         mSignature = signature;
     }
 }
@@ -48,8 +48,8 @@ pair<BytesShared, size_t> ParticipantVoteMessage::serializeToBytes() const
     const auto parentBytesAndCount = TransactionMessage::serializeToBytes();
 
     auto bufferSize =
-            parentBytesAndCount.second
-            + sizeof(SerializedOperationState);
+        parentBytesAndCount.second
+        + sizeof(SerializedOperationState);
     if (mSignature != nullptr) {
         bufferSize += lamport::Signature::signatureSize();
     }
@@ -85,6 +85,6 @@ pair<BytesShared, size_t> ParticipantVoteMessage::serializeToBytes() const
     }
 
     return make_pair(
-        buffer,
-        bufferSize);
+               buffer,
+               bufferSize);
 }

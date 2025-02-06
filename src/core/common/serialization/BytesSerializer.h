@@ -7,10 +7,9 @@
 
 #include <vector>
 
-
-class BytesSerializer {
+class BytesSerializer
+{
 protected:
-
     /**
      * This class implements interface for all derived serialization records classes.
      *
@@ -24,24 +23,23 @@ protected:
      * This class only implements simple interface that returns pointer to the data,
      * that must be copied, and bytes count. The internal logic behind this methods are transferred to the derived classes.
      */
-    class BaseSerializationRecord {
+    class BaseSerializationRecord
+    {
     public:
         BaseSerializationRecord(
-            const size_t bytesCount)
-            noexcept;
+            const size_t bytesCount) noexcept;
 
         virtual ~BaseSerializationRecord();
 
-    size_t bytesCount() const
+        size_t bytesCount() const
         noexcept;
 
-    virtual void* pointer() const
+        virtual void* pointer() const
         noexcept = 0;
 
     protected:
         const size_t mBytesCount;
     };
-
 
     /**
      * This record type is used for storing memory addresses of the objects,
@@ -50,22 +48,20 @@ protected:
      * Therefore, this record type must be used only for the object,
      * which is guaranteed to be alive when serialization would be started.
      */
-    class DelayedRecord:
-        public BaseSerializationRecord {
+    class DelayedRecord : public BaseSerializationRecord
+    {
 
     public:
         DelayedRecord(
-            const void *src,
-            const size_t bytesCount)
-            noexcept;
+            const void* src,
+            const size_t bytesCount) noexcept;
 
         virtual void* pointer() const
-            noexcept;
+        noexcept;
 
     protected:
-        const void *mSrc;
+        const void* mSrc;
     };
-
 
     /**
      * This record type is used for storing shared bytes buffers.
@@ -74,16 +70,15 @@ protected:
      * when serialization would be started - to merge them all into one common buffer,
      * and use only one additional memory allocation call.
      */
-    class InlineRecord:
-        public BaseSerializationRecord {
+    class InlineRecord : public BaseSerializationRecord
+    {
 
     public:
         InlineRecord(
             BytesShared bytes,
-            const size_t bytesCount)
-            noexcept;
+            const size_t bytesCount) noexcept;
 
-    virtual void* pointer() const
+        virtual void* pointer() const
         noexcept;
 
     protected:
@@ -99,22 +94,23 @@ protected:
      * and this would use the same memory amount. Also, copying allows to keep temporary objects.
      */
     template <typename T>
-    class OptimizedPrimitiveTypeInlineRecord:
-        public BaseSerializationRecord {
+    class OptimizedPrimitiveTypeInlineRecord : public BaseSerializationRecord
+    {
 
     public:
         OptimizedPrimitiveTypeInlineRecord(
-            T value)
-            noexcept :
+            T value) noexcept :
 
             BaseSerializationRecord(sizeof(value)),
-            mValue(value) {}
+            mValue(value)
+        {
+        }
 
         virtual void* pointer() const
-            noexcept
+        noexcept
         {
             return reinterpret_cast<void*>(
-                const_cast<T*>(&mValue));
+                       const_cast<T*>(&mValue));
         }
 
     protected:
@@ -125,71 +121,57 @@ protected:
     using InlineUInt16TRecord = OptimizedPrimitiveTypeInlineRecord<uint16_t>;
     using InlineUInt32TRecord = OptimizedPrimitiveTypeInlineRecord<uint32_t>;
     using InlineUInt64TRecord = OptimizedPrimitiveTypeInlineRecord<uint32_t>;
-    using InlineByteRecord = OptimizedPrimitiveTypeInlineRecord<byte>;
+    using InlineByteRecord = OptimizedPrimitiveTypeInlineRecord<byte_t>;
     using InlineBoolRecord = OptimizedPrimitiveTypeInlineRecord<bool>;
 
-
 public:
-    void enqueue (
-        const void *src,
-        const size_t bytesCount)
-        noexcept(false);
+    void enqueue(
+        const void* src,
+        const size_t bytesCount) noexcept(false);
 
-    void enqueue (
-        const NodeUUID &nodeUUID)
-        noexcept(false);
+    void enqueue(
+        const NodeUUID &nodeUUID) noexcept(false);
 
-    void enqueue (
+    void enqueue(
         BytesShared bytes,
-        const size_t bytesCount)
-        noexcept(false);
+        const size_t bytesCount) noexcept(false);
 
-    void enqueue (
-        pair<BytesShared, size_t> bytesAndSize)
-        noexcept(false);
+    void enqueue(
+        pair<BytesShared, size_t> bytesAndSize) noexcept(false);
 
-    void copy (
-        const uint16_t value)
-        noexcept(false);
+    void copy(
+        const uint16_t value) noexcept(false);
 
-    void copy (
-        const uint32_t value)
-        noexcept(false);
+    void copy(
+        const uint32_t value) noexcept(false);
 
-    void copy (
-        const size_t value)
-        noexcept(false);
+    void copy(
+        const size_t value) noexcept(false);
 
-    void copy (
-        const bool value)
-        noexcept(false);
+    void copy(
+        const bool value) noexcept(false);
 
-    void copy (
-        const byte value)
-        noexcept(false);
+    void copy(
+        const byte_t value) noexcept(false);
 
-    void copy (
-        const NodeUUID &nodeUUID)
-        noexcept(false);
+    void copy(
+        const NodeUUID &nodeUUID) noexcept(false);
 
-    void copy (
-        const void *src,
-        const size_t bytesCount)
-        noexcept(false);
+    void copy(
+        const void* src,
+        const size_t bytesCount) noexcept(false);
 
-    void copy (
-        vector<byte> &bytes)
-        noexcept(false);
+    void copy(
+        vector<byte_t> &bytes) noexcept(false);
 
-    void merge (
-        BytesSerializer &otherContainer)
-        noexcept(false);
+    void merge(
+        BytesSerializer &otherContainer) noexcept(false);
 
     const pair<BytesShared, size_t> collect() const
-        noexcept(false);
+    noexcept(false);
 
 protected:
-    vector<BaseSerializationRecord*> mRecords;
+    vector<BaseSerializationRecord *> mRecords;
 };
 
-#endif //GEO_NETWORK_CLIENT_BYTESSERIALIZER_H
+#endif // GEO_NETWORK_CLIENT_BYTESSERIALIZER_H

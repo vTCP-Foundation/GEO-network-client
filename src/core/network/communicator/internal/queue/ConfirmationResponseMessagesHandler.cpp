@@ -15,12 +15,12 @@ void ConfirmationResponseMessagesHandler::addCachedMessage(
     uint32_t cacheLivingTime)
 {
     auto keyMap = make_pair(
-        cachedMessage->equivalent(),
-        contractorID);
+                      cachedMessage->equivalent(),
+                      contractorID);
     mCachedMessages[keyMap] = make_shared<ConfirmationCachedResponseMessage>(
-        cachedMessage,
-        incomingMessageTypeFilter,
-        cacheLivingTime);
+                                  cachedMessage,
+                                  incomingMessageTypeFilter,
+                                  cacheLivingTime);
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
     debug() << "Message " << cachedMessage->typeID() << " added for " << incomingMessageTypeFilter
             << " from contractor " << contractorID << " equivalent " << cachedMessage->equivalent();
@@ -35,8 +35,8 @@ Message::Shared ConfirmationResponseMessagesHandler::getCachedMessage(
     TransactionMessage::Shared incomingMessage)
 {
     auto keyMap = make_pair(
-        incomingMessage->equivalent(),
-        incomingMessage->idOnReceiverSide);
+                      incomingMessage->equivalent(),
+                      incomingMessage->idOnReceiverSide);
 
     auto confirmationCachedResponseMessage = mCachedMessages.find(keyMap);
     if (confirmationCachedResponseMessage == mCachedMessages.end()) {
@@ -47,11 +47,11 @@ Message::Shared ConfirmationResponseMessagesHandler::getCachedMessage(
             << " equivalent " << incomingMessage->equivalent();
 #endif
     return confirmationCachedResponseMessage->second->getCachedMessage(
-        incomingMessage);
+               incomingMessage);
 }
 
 const DateTime ConfirmationResponseMessagesHandler::closestLegacyCacheTimestamp() const
-    noexcept
+noexcept
 {
     if (mCachedMessages.empty()) {
         return utc_now() + boost::posix_time::seconds(2);
@@ -118,7 +118,7 @@ void ConfirmationResponseMessagesHandler::clearLegacyCacheMessages()
 }
 
 const string ConfirmationResponseMessagesHandler::logHeader() const
-    noexcept
+noexcept
 {
     return "[ConfirmationResponseMessagesHandler]";
 }

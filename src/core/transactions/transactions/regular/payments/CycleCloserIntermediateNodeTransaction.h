@@ -4,7 +4,8 @@
 #include "base/BasePaymentTransaction.h"
 #include "../../../../cycles/CyclesManager.h"
 
-class CycleCloserIntermediateNodeTransaction : public BasePaymentTransaction {
+class CycleCloserIntermediateNodeTransaction : public BasePaymentTransaction
+{
 
 public:
     typedef shared_ptr<CycleCloserIntermediateNodeTransaction> Shared;

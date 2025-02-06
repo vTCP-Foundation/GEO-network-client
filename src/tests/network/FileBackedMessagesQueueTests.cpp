@@ -1,8 +1,10 @@
 #include "../../core/network/internal/OutgoingMessagesQueue.h"
 
-class SimpleTestMessage: public Message {
+class SimpleTestMessage: public Message
+{
 public:
-    virtual shared_ptr<SerialisedMessage> serialize() const {
+    virtual shared_ptr<SerialisedMessage> serialize() const
+    {
         const char* message = "qqqq....qqqq....";
 
         const uint64_t bytesLen = 16;
@@ -12,14 +14,17 @@ public:
         return std::shared_ptr<SerialisedMessage>(new SerialisedMessage((uint8_t*)(bytes), bytesLen));
     }
 
-    virtual const MessageTypeID typeID() const {
+    virtual const MessageTypeID typeID() const
+    {
         return TestSimpleMessage;
     }
 };
 
-class LongTestMessage: public Message {
+class LongTestMessage: public Message
+{
 public:
-    virtual shared_ptr<SerialisedMessage> serialize() const {
+    virtual shared_ptr<SerialisedMessage> serialize() const
+    {
         const char* message = "LLLL....LLLL....LLLL....LLLL....LLLL....LLLL....LLLL....LLLL....";
 
         const uint64_t bytesLen = 64;
@@ -29,14 +34,17 @@ public:
         return std::shared_ptr<SerialisedMessage>(new SerialisedMessage((uint8_t*)(bytes), bytesLen));
     }
 
-    virtual const MessageTypeID typeID() const {
+    virtual const MessageTypeID typeID() const
+    {
         return TestLongMessage;
     }
 };
 
-class FileBackedMessagesQueueTests {
+class FileBackedMessagesQueueTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkSequentialReading();
         checkRemoving();
         checkCacheReusing();
@@ -44,7 +52,8 @@ public:
         checkEmptyFileRemovingAfterQueueIsClosed();
     };
 
-    void checkSequentialReading() {
+    void checkSequentialReading()
+    {
         // This test performs several writes to the file cache and
         // then compares all records with the reference message.
 
@@ -60,9 +69,9 @@ public:
         // Checking pairs
         for (int j = 0; j < 100; ++j) {
             assert(memcmp(
-                serialisedMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
-                serialisedMessage.get()->bytesCount()
-            ) == 0);
+                       serialisedMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
+                       serialisedMessage.get()->bytesCount()
+                   ) == 0);
 
             queue.removeNextRecord();
         }
@@ -73,7 +82,8 @@ public:
         }
     }
 
-    void checkRemoving() {
+    void checkRemoving()
+    {
         // This test performs several writes to the file cache
         // and then removes second record from each one pair of records.
         // To check how the class is working with records of different sizes -
@@ -101,18 +111,18 @@ public:
             {
                 queue.removeNextRecord();
                 assert(memcmp(
-                    serialisedShortMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
-                    serialisedShortMessage.get()->bytesCount()
-                ) == 0);
+                           serialisedShortMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
+                           serialisedShortMessage.get()->bytesCount()
+                       ) == 0);
                 queue.removeNextRecord();
             }
 
             {
                 queue.removeNextRecord();
                 assert(memcmp(
-                    serialisedLongMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
-                    serialisedLongMessage.get()->bytesCount()
-                ) == 0);
+                           serialisedLongMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
+                           serialisedLongMessage.get()->bytesCount()
+                       ) == 0);
                 queue.removeNextRecord();
             }
         }
@@ -123,7 +133,8 @@ public:
         }
     }
 
-    void checkCacheReusing() {
+    void checkCacheReusing()
+    {
         // This test performs several writes to the file cache
         // and then closes it and reopens via separate instance.
         // Then checks if all records may be read.
@@ -148,9 +159,9 @@ public:
             // Checking pairs
             for (int j = 0; j < 100; ++j) {
                 assert(memcmp(
-                    serialisedMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
-                    serialisedMessage.get()->bytesCount()
-                ) == 0);
+                           serialisedMessage.get()->bytes(), queue.nextRecord().second.get()->bytes(),
+                           serialisedMessage.get()->bytesCount()
+                       ) == 0);
 
                 queue.removeNextRecord();
             }
@@ -162,7 +173,8 @@ public:
         }
     }
 
-    void checkFileIsPresentAfterQueueIsClosed(){
+    void checkFileIsPresentAfterQueueIsClosed()
+    {
         // If file cache contains valid records - it should not be deleted
         // after the queue handler is deleted from memory.
 
@@ -189,7 +201,8 @@ public:
         }
     }
 
-    void checkEmptyFileRemovingAfterQueueIsClosed(){
+    void checkEmptyFileRemovingAfterQueueIsClosed()
+    {
         // If file cache contains valid records - it should not be deleted
         // after the queue handler is deleted from memory.
 

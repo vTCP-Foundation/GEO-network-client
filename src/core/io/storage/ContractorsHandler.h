@@ -9,7 +9,8 @@
 
 #include <vector>
 
-class ContractorsHandler {
+class ContractorsHandler
+{
 
 public:
     ContractorsHandler(

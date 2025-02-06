@@ -3,7 +3,8 @@
 
 #include "../base/transaction/ConfirmationMessage.h"
 
-class TrustLineConfirmationMessage : public ConfirmationMessage {
+class TrustLineConfirmationMessage : public ConfirmationMessage
+{
 
 public:
     typedef shared_ptr<TrustLineConfirmationMessage> Shared;

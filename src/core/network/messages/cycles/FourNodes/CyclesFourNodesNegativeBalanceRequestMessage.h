@@ -8,7 +8,8 @@
 
 
 class CyclesFourNodesNegativeBalanceRequestMessage:
-    public TransactionMessage {
+    public TransactionMessage
+{
 
 public:
     typedef shared_ptr<CyclesFourNodesNegativeBalanceRequestMessage> Shared;

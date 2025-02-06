@@ -5,7 +5,8 @@
 
 
 class RuntimeError:
-    public Exception {
+    public Exception
+{
 
 public:
     using Exception::Exception;

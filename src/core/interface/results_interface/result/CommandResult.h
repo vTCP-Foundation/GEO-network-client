@@ -11,13 +11,15 @@
 
 using namespace std;
 
-class CommandResult {
+class CommandResult
+{
 public:
     typedef shared_ptr<CommandResult> Shared;
     typedef shared_ptr<const CommandResult> SharedConst;
 
 public:
-    enum CommandResultCode {
+    enum CommandResultCode
+    {
         OK = 200,
 
         // todo: add codes from specification

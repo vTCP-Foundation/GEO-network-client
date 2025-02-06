@@ -52,7 +52,7 @@ void TrustLine::setIncomingTrustAmount(
     // To avoid this - max value of TrustLineAmount is avoided from using.
     if (numeric_limits<TrustLineAmount>::max() == amount) {
         throw ValueError("TrustLine::setIncomingTrustAmount: "
-                             "Amount is too big.");
+                         "Amount is too big.");
     }
 
     mIncomingTrustAmount = amount;
@@ -73,7 +73,7 @@ void TrustLine::setOutgoingTrustAmount(
     // To avoid this - max value of TrustLineAmount is avoided from using.
     if (numeric_limits<TrustLineAmount>::max() == amount) {
         throw ValueError("TrustLine::setOutgoingTrustAmount: "
-                             "Amount is too big.");
+                         "Amount is too big.");
     }
 
     mOutgoingTrustAmount = amount;
@@ -143,8 +143,11 @@ ConstSharedTrustLineAmount TrustLine::availableOutgoingAmount() const
     if (mBalance < kZeroBalance() && absoluteBalanceAmount(mBalance) > mIncomingTrustAmount) {
         return make_shared<const TrustLineAmount>(0);
     }
+    // Convert balance to unsigned before addition if it's positive, otherwise use 0
+    TrustLineAmount balanceAmount = (mBalance >= kZeroBalance()) ?
+                                    TrustLineAmount(mBalance) : TrustLineAmount(0);
     return make_shared<const TrustLineAmount>(
-        mIncomingTrustAmount + mBalance);
+               mIncomingTrustAmount + balanceAmount);
 }
 
 /*!
@@ -155,8 +158,11 @@ ConstSharedTrustLineAmount TrustLine::availableIncomingAmount() const
     if (mBalance > kZeroBalance() && absoluteBalanceAmount(mBalance) > mOutgoingTrustAmount) {
         return make_shared<const TrustLineAmount>(0);
     }
+    // Convert balance to unsigned before subtraction
+    TrustLineAmount balanceAmount = (mBalance >= kZeroBalance()) ?
+                                    TrustLineAmount(mBalance) : TrustLineAmount(0);
     return make_shared<const TrustLineAmount>(
-        mOutgoingTrustAmount - mBalance);
+               mOutgoingTrustAmount - balanceAmount);
 }
 
 ConstSharedTrustLineAmount TrustLine::usedAmountByContractor() const
@@ -200,7 +206,7 @@ void TrustLine::setTotalIncomingReceiptsAmount(
 bool TrustLine::isTrustLineOverflowed() const
 {
     if (mTotalIncomingReceiptsAmount > mOutgoingTrustAmount
-        or mTotalOutgoingReceiptsAmount > mIncomingTrustAmount) {
+            or mTotalOutgoingReceiptsAmount > mIncomingTrustAmount) {
         return true;
     }
     return false;

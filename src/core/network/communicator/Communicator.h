@@ -20,7 +20,8 @@ using namespace std;
 using namespace boost::asio::ip;
 
 
-class Communicator {
+class Communicator
+{
 public:
     signals::signal<void(Message::Shared)> signalMessageReceived;
 
@@ -35,27 +36,27 @@ public:
         TailManager *tailManager,
         ProvidingHandler *providingHandler,
         Logger &logger)
-        noexcept(false);
+    noexcept(false);
 
     void beginAcceptMessages()
-        noexcept;
+    noexcept;
 
     void sendMessage (
         const Message::Shared kMessage,
         const ContractorID contractorID)
-        noexcept;
+    noexcept;
 
     void sendMessage(
         const Message::Shared kMessage,
         const BaseAddress::Shared contractorAddress)
-        noexcept;
+    noexcept;
 
     void sendMessageWithCacheSaving (
         const TransactionMessage::Shared kMessage,
         ContractorID contractorID,
         Message::MessageType incomingMessageTypeFilter,
         uint32_t cacheLivingTime)
-        noexcept;
+    noexcept;
 
     void processConfirmationMessage(
         ConfirmationMessage::Shared confirmationMessage);

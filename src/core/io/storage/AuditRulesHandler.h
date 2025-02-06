@@ -10,7 +10,8 @@
 
 #include "../../../libs/sqlite3/sqlite3.h"
 
-class AuditRulesHandler {
+class AuditRulesHandler
+{
 
 public:
     AuditRulesHandler(

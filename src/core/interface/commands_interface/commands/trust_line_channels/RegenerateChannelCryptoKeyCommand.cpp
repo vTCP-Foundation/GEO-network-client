@@ -47,9 +47,9 @@ CommandResult::SharedConst RegenerateChannelCryptoKeyCommand::responseOk(
     string &channelInfo) const
 {
     return CommandResult::SharedConst(
-        new CommandResult(
-            identifier(),
-            UUID(),
-            200,
-            channelInfo));
+               new CommandResult(
+                   identifier(),
+                   UUID(),
+                   200,
+                   channelInfo));
 }

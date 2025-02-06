@@ -49,7 +49,7 @@ TransactionResult::SharedConst CyclesThreeNodesReceiverTransaction::run()
         }
         stepNodeBalance = mTrustLinesManager->balance(neighborID);
         if ((searchDebtors and stepNodeBalance > TrustLine::kZeroBalance())
-            or (not searchDebtors and (stepNodeBalance < TrustLine::kZeroBalance())))
+                or (not searchDebtors and (stepNodeBalance < TrustLine::kZeroBalance())))
             commonNeighbors.push_back(
                 kNodeAddress);
     }

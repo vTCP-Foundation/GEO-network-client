@@ -4,7 +4,7 @@ GetEquivalentListTransaction::GetEquivalentListTransaction(
     EquivalentListCommand::Shared command,
     EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
     Logger &logger)
-    noexcept :
+noexcept :
     BaseTransaction(
         BaseTransaction::EquivalentsList,
         0,
@@ -24,8 +24,8 @@ TransactionResult::SharedConst GetEquivalentListTransaction::run()
     ss << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 const string GetEquivalentListTransaction::logHeader() const

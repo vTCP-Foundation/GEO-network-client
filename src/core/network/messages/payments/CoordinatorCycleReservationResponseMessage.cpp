@@ -3,9 +3,9 @@
 CoordinatorCycleReservationResponseMessage::CoordinatorCycleReservationResponseMessage(
     const SerializedEquivalent equivalent,
     vector<BaseAddress::Shared> &senderAddresses,
-    const TransactionUUID& transactionUUID,
+    const TransactionUUID &transactionUUID,
     const ResponseCycleMessage::OperationState state,
-    const TrustLineAmount& reservedAmount):
+    const TrustLineAmount &reservedAmount) :
 
     ResponseCycleMessage(
         equivalent,
@@ -13,7 +13,8 @@ CoordinatorCycleReservationResponseMessage::CoordinatorCycleReservationResponseM
         transactionUUID,
         state),
     mAmountReserved(reservedAmount)
-{}
+{
+}
 
 CoordinatorCycleReservationResponseMessage::CoordinatorCycleReservationResponseMessage(
     BytesShared buffer) :
@@ -24,14 +25,14 @@ CoordinatorCycleReservationResponseMessage::CoordinatorCycleReservationResponseM
     auto parentMessageOffset = ResponseCycleMessage::kOffsetToInheritedBytes();
     auto amountOffset = buffer.get() + parentMessageOffset;
     auto amountEndOffset = amountOffset + kTrustLineAmountBytesCount; // TODO: deserialize only non-zero
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         amountOffset,
         amountEndOffset);
 
     mAmountReserved = bytesToTrustLineAmount(amountBytes);
 }
 
-const TrustLineAmount& CoordinatorCycleReservationResponseMessage::amountReserved() const
+const TrustLineAmount &CoordinatorCycleReservationResponseMessage::amountReserved() const
 {
     return mAmountReserved;
 }
@@ -42,8 +43,7 @@ pair<BytesShared, size_t> CoordinatorCycleReservationResponseMessage::serializeT
     auto serializedAmount = trustLineAmountToBytes(mAmountReserved);
 
     size_t bytesCount =
-        parentBytesAndCount.second
-        + serializedAmount.size();
+        parentBytesAndCount.second + serializedAmount.size();
 
     BytesShared dataBytesShared = tryMalloc(bytesCount);
     size_t dataBytesOffset = 0;
@@ -60,8 +60,8 @@ pair<BytesShared, size_t> CoordinatorCycleReservationResponseMessage::serializeT
         serializedAmount.size());
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType CoordinatorCycleReservationResponseMessage::typeID() const

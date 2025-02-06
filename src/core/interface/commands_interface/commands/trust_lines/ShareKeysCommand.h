@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class ShareKeysCommand : public BaseUserCommand {
+class ShareKeysCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<ShareKeysCommand> Shared;

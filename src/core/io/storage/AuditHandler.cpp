@@ -23,30 +23,33 @@ AuditHandler::AuditHandler(
                    "outgoing_amount BLOB NOT NULL, "
                    "incoming_amount BLOB NOT NULL, "
                    "FOREIGN KEY(trust_line_id) REFERENCES trust_lines(id) ON DELETE CASCADE ON UPDATE CASCADE);";
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::creating table: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditHandler::creating table: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
-    query = "CREATE UNIQUE INDEX IF NOT EXISTS " + mTableName
-            + "_number_trust_line_id_idx on " + mTableName + "(number, trust_line_id);";
+    query = "CREATE UNIQUE INDEX IF NOT EXISTS " + mTableName + "_number_trust_line_id_idx on " + mTableName + "(number, trust_line_id);";
     rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::creating index for Number and TrustLineID: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditHandler::creating index for Number and TrustLineID: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
     sqlite3_reset(stmt);
@@ -71,73 +74,85 @@ void AuditHandler::saveFullAudit(
                    "contractor_signature, own_keys_set_hash, contractor_keys_set_hash, "
                    "incoming_amount, outgoing_amount, balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_bind_int(stmt, 1, number);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of Audit Number; sqlite error: " + to_string(rc));
+                      "Bad binding of Audit Number; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of ID; sqlite error: " + to_string(rc));
+                      "Bad binding of ID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 3, ownKeyHash->data(),
-                          (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
+                           (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of OwnKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of OwnKeyHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 4, ownSignature->data(), (int)ownSignature->signatureSize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of OnwSignature; sqlite error: " + to_string(rc));
+                      "Bad binding of OnwSignature; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 5, contractorKeyHash->data(),
-                          (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
+                           (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of ContractorKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorKeyHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 6, contractorSignature->data(), (int)contractorSignature->signatureSize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of ContractorSignature; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorSignature; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 7, ownKeysSetHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of OwnKeysSetHash; sqlite error: " + to_string(rc));
+                      "Bad binding of OwnKeysSetHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 8, contractorKeysSetHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of ContractorKeysSetHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorKeysSetHash; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(incomingAmount);
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(incomingAmount);
     rc = sqlite3_bind_blob(stmt, 9, incomingAmountBufferBytes.data(), kTrustLineAmountBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of Incoming Amount; sqlite error: " + to_string(rc));
+                      "Bad binding of Incoming Amount; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(outgoingAmount);
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(outgoingAmount);
     rc = sqlite3_bind_blob(stmt, 10, outgoingAmountBufferBytes.data(), kTrustLineAmountBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of Outgoing Amount; sqlite error: " + to_string(rc));
+                      "Bad binding of Outgoing Amount; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(const_cast<TrustLineBalance&>(balance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(const_cast<TrustLineBalance&>(balance));
     rc = sqlite3_bind_blob(stmt, 11, balanceBufferBytes.data(), kTrustLineBalanceSerializeBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Bad binding of Balance; sqlite error: " + to_string(rc));
+                      "Bad binding of Balance; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -149,7 +164,8 @@ void AuditHandler::saveFullAudit(
 #endif
     } else {
         throw IOError("AuditHandler::saveFullAudit: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -169,62 +185,72 @@ void AuditHandler::saveOwnAuditPart(
                    "own_keys_set_hash, contractor_keys_set_hash, incoming_amount, outgoing_amount, balance) "
                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_bind_int(stmt, 1, number);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of Audit Number; sqlite error: " + to_string(rc));
+                      "Bad binding of Audit Number; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of ID; sqlite error: " + to_string(rc));
+                      "Bad binding of ID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 3, ownKeyHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of OwnKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of OwnKeyHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 4, ownSignature->data(), (int)ownSignature->signatureSize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of OnwSignature; sqlite error: " + to_string(rc));
+                      "Bad binding of OnwSignature; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 5, ownKeysSetHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of OwnKeysSetHash; sqlite error: " + to_string(rc));
+                      "Bad binding of OwnKeysSetHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 6, contractorKeysSetHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of ContractorKeysSetHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorKeysSetHash; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(incomingAmount);
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(incomingAmount);
     rc = sqlite3_bind_blob(stmt, 7, incomingAmountBufferBytes.data(), kTrustLineAmountBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of Incoming Amount; sqlite error: " + to_string(rc));
+                      "Bad binding of Incoming Amount; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(outgoingAmount);
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(outgoingAmount);
     rc = sqlite3_bind_blob(stmt, 8, outgoingAmountBufferBytes.data(), kTrustLineAmountBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of Outgoing Amount; sqlite error: " + to_string(rc));
+                      "Bad binding of Outgoing Amount; sqlite error: " +
+                      to_string(rc));
     }
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(const_cast<TrustLineBalance&>(balance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(const_cast<TrustLineBalance&>(balance));
     rc = sqlite3_bind_blob(stmt, 9, balanceBufferBytes.data(), kTrustLineBalanceSerializeBytesCount, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Bad binding of Balance; sqlite error: " + to_string(rc));
+                      "Bad binding of Balance; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -233,7 +259,8 @@ void AuditHandler::saveOwnAuditPart(
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditHandler::saveOwnAuditPart: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -247,32 +274,37 @@ void AuditHandler::saveContractorAuditPart(
                    " SET contractor_key_hash = ?, contractor_signature = ? "
                    "WHERE trust_line_id = ? AND number = ?;";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_bind_blob(stmt, 1, contractorKeyHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Bad binding of ContractorKeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorKeyHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, contractorSignature->data(), (int)contractorSignature->signatureSize(), SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Bad binding of ContractorSignature; sqlite error: " + to_string(rc));
+                      "Bad binding of ContractorSignature; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 3, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Bad binding of ID; sqlite error: " + to_string(rc));
+                      "Bad binding of ID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 4, number);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Bad binding of Audit Number; sqlite error: " + to_string(rc));
+                      "Bad binding of Audit Number; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -281,7 +313,8 @@ void AuditHandler::saveContractorAuditPart(
     if (rc == SQLITE_DONE) {
     } else {
         throw IOError("AuditHandler::saveContractorAuditPart: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
     if (sqlite3_changes(mDataBase) == 0) {
@@ -293,61 +326,63 @@ const AuditRecord::Shared AuditHandler::getActualAudit(
     TrustLineID trustLineID)
 {
     string query = "SELECT number, incoming_amount, outgoing_amount, balance, contractor_signature, "
-                   "own_keys_set_hash, contractor_keys_set_hash FROM " + mTableName
-                   + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
+                   "own_keys_set_hash, contractor_keys_set_hash FROM " +
+                   mTableName + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAudit: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAudit: "
-                          "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
+                      "Bad binding of Trust Line ID; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_ROW) {
         auto number = (AuditNumber)sqlite3_column_int(stmt, 0);
-        auto incomingAmountBytes = (byte*)sqlite3_column_blob(stmt, 1);
-        vector<byte> incomingAmountBufferBytes(
+        auto incomingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 1);
+        vector<byte_t> incomingAmountBufferBytes(
             incomingAmountBytes,
             incomingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount incomingAmount = bytesToTrustLineAmount(incomingAmountBufferBytes);
 
-        auto outgoingAmountBytes = (byte*)sqlite3_column_blob(stmt, 2);
-        vector<byte> outgoingAmountBufferBytes(
+        auto outgoingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 2);
+        vector<byte_t> outgoingAmountBufferBytes(
             outgoingAmountBytes,
             outgoingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount outgoingAmount = bytesToTrustLineAmount(outgoingAmountBufferBytes);
 
-        auto balanceBytes = (byte*)sqlite3_column_blob(stmt, 3);
-        vector<byte> balanceBufferBytes(
+        auto balanceBytes = (byte_t*)sqlite3_column_blob(stmt, 3);
+        vector<byte_t> balanceBufferBytes(
             balanceBytes,
             balanceBytes + kTrustLineBalanceSerializeBytesCount);
         TrustLineBalance balance = bytesToTrustLineBalance(balanceBufferBytes);
 
-        auto contractorSignatureBytes = (byte*)sqlite3_column_blob(stmt, 4);
+        auto contractorSignatureBytes = (byte_t*)sqlite3_column_blob(stmt, 4);
         lamport::Signature::Shared contractorSignature = nullptr;
         if (contractorSignatureBytes != nullptr) {
             contractorSignature = make_shared<lamport::Signature>(
-                contractorSignatureBytes);
+                                      contractorSignatureBytes);
         }
 
         auto ownKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 5));
+                                  (byte_t*)sqlite3_column_blob(stmt, 5));
 
         auto contractorKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 6));
+                                         (byte_t*)sqlite3_column_blob(stmt, 6));
 
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
-        auto result =  make_shared<AuditRecord>(
-            number,
-            incomingAmount,
-            outgoingAmount,
-            balance);
+        auto result = make_shared<AuditRecord>(
+                          number,
+                          incomingAmount,
+                          outgoingAmount,
+                          balance);
         result->setContractorSignature(
             contractorSignature);
         result->setOwnKeysSetHash(
@@ -359,7 +394,7 @@ const AuditRecord::Shared AuditHandler::getActualAudit(
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         throw NotFoundError("AuditHandler::getActualAudit: "
-                                "There are no records with requested trust line id");
+                            "There are no records with requested trust line id");
     }
 }
 
@@ -368,103 +403,106 @@ const AuditRecord::Shared AuditHandler::getActualAuditFull(
 {
     string query = "SELECT number, incoming_amount, outgoing_amount, balance, "
                    "our_key_hash, our_signature, contractor_key_hash, contractor_signature, "
-                   "own_keys_set_hash, contractor_keys_set_hash FROM " + mTableName
-                   + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
+                   "own_keys_set_hash, contractor_keys_set_hash FROM " +
+                   mTableName + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAuditFull: "
-                              "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAuditFull: "
-                          "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
+                      "Bad binding of Trust Line ID; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_ROW) {
         auto number = (AuditNumber)sqlite3_column_int(stmt, 0);
-        auto incomingAmountBytes = (byte*)sqlite3_column_blob(stmt, 1);
-        vector<byte> incomingAmountBufferBytes(
+        auto incomingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 1);
+        vector<byte_t> incomingAmountBufferBytes(
             incomingAmountBytes,
             incomingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount incomingAmount = bytesToTrustLineAmount(incomingAmountBufferBytes);
 
-        auto outgoingAmountBytes = (byte*)sqlite3_column_blob(stmt, 2);
-        vector<byte> outgoingAmountBufferBytes(
+        auto outgoingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 2);
+        vector<byte_t> outgoingAmountBufferBytes(
             outgoingAmountBytes,
             outgoingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount outgoingAmount = bytesToTrustLineAmount(outgoingAmountBufferBytes);
 
-        auto balanceBytes = (byte*)sqlite3_column_blob(stmt, 3);
-        vector<byte> balanceBufferBytes(
+        auto balanceBytes = (byte_t*)sqlite3_column_blob(stmt, 3);
+        vector<byte_t> balanceBufferBytes(
             balanceBytes,
             balanceBytes + kTrustLineBalanceSerializeBytesCount);
         TrustLineBalance balance = bytesToTrustLineBalance(balanceBufferBytes);
 
         auto ownKeyHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 4));
+                              (byte_t*)sqlite3_column_blob(stmt, 4));
 
         auto ownSignature = make_shared<lamport::Signature>(
-            (byte*)sqlite3_column_blob(stmt, 5));
+                                (byte_t*)sqlite3_column_blob(stmt, 5));
 
-        auto contractorKeyHashBytes = (byte*)sqlite3_column_blob(stmt, 6);
+        auto contractorKeyHashBytes = (byte_t*)sqlite3_column_blob(stmt, 6);
         lamport::KeyHash::Shared contractorKeyHash = nullptr;
         if (contractorKeyHashBytes != nullptr) {
             contractorKeyHash = make_shared<lamport::KeyHash>(
-                contractorKeyHashBytes);
+                                    contractorKeyHashBytes);
         }
 
-        auto contractorSignatureBytes = (byte*)sqlite3_column_blob(stmt, 7);
+        auto contractorSignatureBytes = (byte_t*)sqlite3_column_blob(stmt, 7);
         lamport::Signature::Shared contractorSignature = nullptr;
         if (contractorSignatureBytes != nullptr) {
             contractorSignature = make_shared<lamport::Signature>(
-                contractorSignatureBytes);
+                                      contractorSignatureBytes);
         }
 
         auto ownKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 8));
+                                  (byte_t*)sqlite3_column_blob(stmt, 8));
 
         auto contractorKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 9));
+                                         (byte_t*)sqlite3_column_blob(stmt, 9));
 
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         return make_shared<AuditRecord>(
-            number,
-            incomingAmount,
-            outgoingAmount,
-            balance,
-            ownKeyHash,
-            ownSignature,
-            contractorKeyHash,
-            contractorSignature,
-            ownKeysSetHash,
-            contractorKeysSetHash);
+                   number,
+                   incomingAmount,
+                   outgoingAmount,
+                   balance,
+                   ownKeyHash,
+                   ownSignature,
+                   contractorKeyHash,
+                   contractorSignature,
+                   ownKeysSetHash,
+                   contractorKeysSetHash);
     } else {
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         throw NotFoundError("AuditHandler::getActualAuditFull: "
-                                "There are no records with requested trust line id");
+                            "There are no records with requested trust line id");
     }
 }
 
 const AuditNumber AuditHandler::getActualAuditNumber(
     TrustLineID trustLineID)
 {
-    string query = "SELECT number FROM " + mTableName
-                   + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
+    string query = "SELECT number FROM " + mTableName + " WHERE trust_line_id = ? ORDER BY number DESC LIMIT 1;";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAuditNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::getActualAuditNumber: "
-                          "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
+                      "Bad binding of Trust Line ID; sqlite error: " +
+                      to_string(rc));
     }
 
     rc = sqlite3_step(stmt);
@@ -478,7 +516,7 @@ const AuditNumber AuditHandler::getActualAuditNumber(
         sqlite3_reset(stmt);
         sqlite3_finalize(stmt);
         throw NotFoundError("AuditHandler::getActualAuditNumber: "
-                                "There are no records with requested trust line id");
+                            "There are no records with requested trust line id");
     }
 }
 
@@ -487,15 +525,17 @@ void AuditHandler::deleteRecords(
 {
     string query = "DELETE FROM " + mTableName + " WHERE trust_line_id = ?";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::deleteRecords: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::deleteRecords: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -506,7 +546,8 @@ void AuditHandler::deleteRecords(
 #endif
     } else {
         throw IOError("AuditHandler::deleteRecords: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 }
 
@@ -516,20 +557,23 @@ void AuditHandler::deleteAuditByNumber(
 {
     string query = "DELETE FROM " + mTableName + " WHERE trust_line_id = ? AND number = ?";
     sqlite3_stmt *stmt;
-    int rc = sqlite3_prepare_v2( mDataBase, query.c_str(), -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::deleteAuditByNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::deleteAuditByNumber: "
-                          "Bad binding of TrustLineID; sqlite error: " + to_string(rc));
+                      "Bad binding of TrustLineID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::deleteAuditByNumber: "
-                          "Bad binding of auditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of auditNumber; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_step(stmt);
     sqlite3_reset(stmt);
@@ -540,7 +584,8 @@ void AuditHandler::deleteAuditByNumber(
 #endif
     } else {
         throw IOError("AuditHandler::deleteAuditByNumber: "
-                          "Run query; sqlite error: " + to_string(rc));
+                      "Run query; sqlite error: " +
+                      to_string(rc));
     }
 
     if (sqlite3_changes(mDataBase) == 0) {
@@ -554,71 +599,74 @@ vector<AuditRecord::Shared> AuditHandler::auditsLessEqualThanAuditNumber(
 {
     string query = "SELECT number, incoming_amount, outgoing_amount, balance, "
                    "our_key_hash, our_signature, contractor_key_hash, contractor_signature, "
-                   "own_keys_set_hash, contractor_keys_set_hash FROM " + mTableName
-                   + " WHERE trust_line_id = ? AND number <= ?;";
+                   "own_keys_set_hash, contractor_keys_set_hash FROM " +
+                   mTableName + " WHERE trust_line_id = ? AND number <= ?;";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::auditsLessEqualThanAuditNumber: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 1, trustLineID);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::auditsLessEqualThanAuditNumber: "
-                          "Bad binding of Trust Line ID; sqlite error: " + to_string(rc));
+                      "Bad binding of Trust Line ID; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_int(stmt, 2, auditNumber);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::auditsLessEqualThanAuditNumber: "
-                          "Bad binding of AuditNumber; sqlite error: " + to_string(rc));
+                      "Bad binding of AuditNumber; sqlite error: " +
+                      to_string(rc));
     }
 
     vector<AuditRecord::Shared> result;
-    while (sqlite3_step(stmt) == SQLITE_ROW ) {
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
         auto number = (AuditNumber)sqlite3_column_int(stmt, 0);
-        auto incomingAmountBytes = (byte*)sqlite3_column_blob(stmt, 1);
-        vector<byte> incomingAmountBufferBytes(
+        auto incomingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 1);
+        vector<byte_t> incomingAmountBufferBytes(
             incomingAmountBytes,
-                incomingAmountBytes + kTrustLineAmountBytesCount);
+            incomingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount incomingAmount = bytesToTrustLineAmount(incomingAmountBufferBytes);
 
-        auto outgoingAmountBytes = (byte*)sqlite3_column_blob(stmt, 2);
-        vector<byte> outgoingAmountBufferBytes(
+        auto outgoingAmountBytes = (byte_t*)sqlite3_column_blob(stmt, 2);
+        vector<byte_t> outgoingAmountBufferBytes(
             outgoingAmountBytes,
             outgoingAmountBytes + kTrustLineAmountBytesCount);
         TrustLineAmount outgoingAmount = bytesToTrustLineAmount(outgoingAmountBufferBytes);
 
-        auto balanceBytes = (byte*)sqlite3_column_blob(stmt, 3);
-        vector<byte> balanceBufferBytes(
+        auto balanceBytes = (byte_t*)sqlite3_column_blob(stmt, 3);
+        vector<byte_t> balanceBufferBytes(
             balanceBytes,
             balanceBytes + kTrustLineBalanceSerializeBytesCount);
         TrustLineBalance balance = bytesToTrustLineBalance(balanceBufferBytes);
 
         auto ownKeyHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 4));
+                              (byte_t*)sqlite3_column_blob(stmt, 4));
 
         auto ownSignature = make_shared<lamport::Signature>(
-            (byte*)sqlite3_column_blob(stmt, 5));
+                                (byte_t*)sqlite3_column_blob(stmt, 5));
 
-        auto contractorKeyHashBytes = (byte*)sqlite3_column_blob(stmt, 6);
+        auto contractorKeyHashBytes = (byte_t*)sqlite3_column_blob(stmt, 6);
         lamport::KeyHash::Shared contractorKeyHash = nullptr;
         if (contractorKeyHashBytes != nullptr) {
             contractorKeyHash = make_shared<lamport::KeyHash>(
-                contractorKeyHashBytes);
+                                    contractorKeyHashBytes);
         }
 
-        auto contractorSignatureBytes = (byte*)sqlite3_column_blob(stmt, 7);
+        auto contractorSignatureBytes = (byte_t*)sqlite3_column_blob(stmt, 7);
         lamport::Signature::Shared contractorSignature = nullptr;
         if (contractorSignatureBytes != nullptr) {
             contractorSignature = make_shared<lamport::Signature>(
-                contractorSignatureBytes);
+                                      contractorSignatureBytes);
         }
 
         auto ownKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 8));
+                                  (byte_t*)sqlite3_column_blob(stmt, 8));
 
         auto contractorKeysSetHash = make_shared<lamport::KeyHash>(
-            (byte*)sqlite3_column_blob(stmt, 9));
+                                         (byte_t*)sqlite3_column_blob(stmt, 9));
 
         result.push_back(
             make_shared<AuditRecord>(
@@ -642,24 +690,26 @@ bool AuditHandler::isContainsKeyHash(
     lamport::KeyHash::Shared keyHash) const
 {
     sqlite3_stmt *stmt;
-    string query = "SELECT number FROM "
-                   + mTableName + " WHERE our_key_hash = ? OR contractor_key_hash = ? LIMIT 1";
+    string query = "SELECT number FROM " + mTableName + " WHERE our_key_hash = ? OR contractor_key_hash = ? LIMIT 1";
     int rc = sqlite3_prepare_v2(mDataBase, query.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::isContainsKeyHash: "
-                          "Bad query; sqlite error: " + to_string(rc));
+                      "Bad query; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 1, keyHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::isContainsKeyHash: "
-                          "Bad binding of Own KeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of Own KeyHash; sqlite error: " +
+                      to_string(rc));
     }
     rc = sqlite3_bind_blob(stmt, 2, keyHash->data(),
                            (int)lamport::KeyHash::kBytesSize, SQLITE_STATIC);
     if (rc != SQLITE_OK) {
         throw IOError("AuditHandler::isContainsKeyHash: "
-                          "Bad binding of Contractor KeyHash; sqlite error: " + to_string(rc));
+                      "Bad binding of Contractor KeyHash; sqlite error: " +
+                      to_string(rc));
     }
     sqlite3_step(stmt);
     auto result = rc == SQLITE_ROW;

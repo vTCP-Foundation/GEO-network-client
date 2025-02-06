@@ -23,7 +23,7 @@ CyclesFourNodesNegativeBalanceRequestMessage::CyclesFourNodesNegativeBalanceRequ
     size_t bytesBufferOffset = TransactionMessage::kOffsetToInheritedBytes();
     // contractorAddress
     mContractorAddress = deserializeAddress(
-        buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
     bytesBufferOffset += mContractorAddress->serializedSize();
 
     // checkedNodes
@@ -36,7 +36,7 @@ CyclesFourNodesNegativeBalanceRequestMessage::CyclesFourNodesNegativeBalanceRequ
 
     for (SerializedRecordNumber i = 1; i <= checkedNodesCount; ++i) {
         auto stepAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
         bytesBufferOffset += stepAddress->serializedSize();
         mCheckedNodes.push_back(stepAddress);
     }
@@ -88,8 +88,8 @@ pair<BytesShared, size_t> CyclesFourNodesNegativeBalanceRequestMessage::serializ
     }
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType CyclesFourNodesNegativeBalanceRequestMessage::typeID() const

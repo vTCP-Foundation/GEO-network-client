@@ -9,8 +9,8 @@ MaxFlowCacheManager::MaxFlowCacheManager(
 {}
 
 void MaxFlowCacheManager::addCache(
-        BaseAddress::Shared keyAddress,
-        MaxFlowCache::Shared cache)
+    BaseAddress::Shared keyAddress,
+    MaxFlowCache::Shared cache)
 {
     mCaches.insert(
         make_pair(

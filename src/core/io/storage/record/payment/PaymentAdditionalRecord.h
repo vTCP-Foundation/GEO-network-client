@@ -6,13 +6,15 @@
 #include "../../../../common/memory/MemoryUtils.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class PaymentAdditionalRecord : public Record {
+class PaymentAdditionalRecord : public Record
+{
 
 public:
     typedef shared_ptr<PaymentAdditionalRecord> Shared;
 
 public:
-    enum PaymentAdditionalOperationType {
+    enum PaymentAdditionalOperationType
+    {
         IntermediatePaymentType = 1,
         CycleCloserType,
         CycleCloserIntermediateType,

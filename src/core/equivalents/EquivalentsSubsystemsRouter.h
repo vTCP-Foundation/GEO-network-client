@@ -12,7 +12,8 @@
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class EquivalentsSubsystemsRouter {
+class EquivalentsSubsystemsRouter
+{
 
 public:
     typedef signals::signal<void()> GatewayNotificationSignal;

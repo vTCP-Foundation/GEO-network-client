@@ -8,7 +8,8 @@
 
 #include <string>
 
-class IPv4WithPortAddress : public BaseAddress {
+class IPv4WithPortAddress : public BaseAddress
+{
 public:
     typedef shared_ptr<IPv4WithPortAddress> Shared;
 
@@ -21,7 +22,7 @@ public:
         const Port port);
 
     IPv4WithPortAddress(
-        byte* buffer);
+        byte_t* buffer);
 
     const string host() const override;
 
@@ -36,9 +37,8 @@ public:
     size_t serializedSize() const override;
 
 private:
-    byte mAddress[4];
+    byte_t mAddress[4];
     Port mPort;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_IPV4WITHPORTADDRESS_H
+#endif // GEO_NETWORK_CLIENT_IPV4WITHPORTADDRESS_H

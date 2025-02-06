@@ -15,14 +15,16 @@
 
 using namespace std;
 
-class TrustLine {
+class TrustLine
+{
 public:
     typedef shared_ptr<TrustLine> Shared;
     typedef shared_ptr<const TrustLine> ConstShared;
     typedef uint16_t SerializedTrustLineState;
 
 public:
-    enum TrustLineState {
+    enum TrustLineState
+    {
         Init = 1,
         Active = 2,
         AuditPending = 3,

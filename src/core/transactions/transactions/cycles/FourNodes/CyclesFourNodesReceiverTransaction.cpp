@@ -37,7 +37,7 @@ TransactionResult::SharedConst CyclesFourNodesReceiverTransaction::run()
     info() << "Neighbor " << mRequestMessage->contractorAddress()->fullAddress() << " send request with "
            << mRequestMessage->checkedNodes().size() << " to check";
     mNeighborID = mContractorsManager->contractorIDByAddress(
-        mRequestMessage->contractorAddress());
+                      mRequestMessage->contractorAddress());
     if (mNeighborID == ContractorsManager::kNotFoundContractorID) {
         warning() << "Neighbor " << mRequestMessage->contractorAddress()->fullAddress() << " is not a neighbor";
         return resultDone();
@@ -78,7 +78,7 @@ void CyclesFourNodesReceiverTransaction::buildSuitableDebtorsForCycleNegativeBal
 
     for (const auto &checkedNode : mRequestMessage->checkedNodes()) {
         auto checkedContractorID = mContractorsManager->contractorIDByAddress(
-            checkedNode);
+                                       checkedNode);
         if (checkedContractorID == ContractorsManager::kNotFoundContractorID) {
             warning() << "Checked node " << checkedNode->fullAddress() << " is not a neighbor";
             continue;
@@ -107,7 +107,7 @@ void CyclesFourNodesReceiverTransaction::buildSuitableDebtorsForCyclePositiveBal
 
     for (const auto &checkedNode : mRequestMessage->checkedNodes()) {
         auto checkedContractorID = mContractorsManager->contractorIDByAddress(
-            checkedNode);
+                                       checkedNode);
         if (checkedContractorID == ContractorsManager::kNotFoundContractorID) {
             warning() << "Checked node " << checkedNode->fullAddress() << " is not a neighbor";
             continue;

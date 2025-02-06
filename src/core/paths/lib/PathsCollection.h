@@ -7,7 +7,8 @@
 
 #include <vector>
 
-class PathsCollection {
+class PathsCollection
+{
 
 public:
     typedef shared_ptr<PathsCollection> Shared;

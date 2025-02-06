@@ -6,7 +6,8 @@
 
 using namespace crypto;
 
-class AuditResponseMessage : public ConfirmationMessage {
+class AuditResponseMessage : public ConfirmationMessage
+{
 
 public:
     typedef shared_ptr<AuditResponseMessage> Shared;
@@ -26,7 +27,7 @@ public:
         OperationState state);
 
     AuditResponseMessage(
-       BytesShared buffer);
+        BytesShared buffer);
 
     const lamport::Signature::Shared signature() const;
 

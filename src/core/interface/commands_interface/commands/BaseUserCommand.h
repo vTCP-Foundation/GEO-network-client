@@ -28,7 +28,8 @@ namespace parserString = boost::spirit::x3;
 
 namespace uuids = boost::uuids;
 
-class BaseUserCommand {
+class BaseUserCommand
+{
 public:
     typedef shared_ptr<BaseUserCommand> Shared;
 public:
@@ -44,85 +45,87 @@ public:
 
     template<typename addChar, typename addNumber, typename addType, typename addToVector>
     inline auto addressLexeme(size_t mContractorAddressesCount, addChar addressChar,
-                              addNumber addressNumber, addType addressType, addToVector addressToVector) {
+                              addNumber addressNumber, addType addressType, addToVector addressToVector)
+    {
         return lexeme[expect[
-            repeat(mContractorAddressesCount)
-            [
-                parserString::string(std::to_string(BaseAddress::IPv4_IncludingPort))[addressType]
-                > *(char_[addressType] - char_(kTokensSeparator))
-                > char_(kTokensSeparator)
-                > repeat(3)
-                [
-                    int_[addressNumber]
-                    > char_('.')[addressChar]
-                ]
-                > int_[addressNumber]
-                > char_(kAddressSeparator)[addressChar]
-                > int_[addressNumber]
-                > (char_(kTokensSeparator)|eol)[addressToVector]
+                          repeat(mContractorAddressesCount)
+                          [
+                              parserString::string(std::to_string(BaseAddress::IPv4_IncludingPort))[addressType]
+                              > *(char_[addressType] - char_(kTokensSeparator))
+                              > char_(kTokensSeparator)
+                              > repeat(3)
+                              [
+                                  int_[addressNumber]
+                                  > char_('.')[addressChar]
+                              ]
+                              > int_[addressNumber]
+                              > char_(kAddressSeparator)[addressChar]
+                              > int_[addressNumber]
+                              > (char_(kTokensSeparator)|eol)[addressToVector]
 
-                                         | //OR
+                              | //OR
 
-                parserString::string(std::to_string(BaseAddress::GNS)) [addressType]
-                > *(char_[addressType] - char_(kTokensSeparator))
-                > char_(kTokensSeparator)
-                > +(char_[addressChar] - char_(kGNSAddressSeparator))
-                > char_(kGNSAddressSeparator)[addressChar]
-                > +(char_[addressChar] - (char_(kTokensSeparator)|eol))
-                > (char_(kTokensSeparator)|eol)[addressToVector]
+                              parserString::string(std::to_string(BaseAddress::GNS)) [addressType]
+                              > *(char_[addressType] - char_(kTokensSeparator))
+                              > char_(kTokensSeparator)
+                              > +(char_[addressChar] - char_(kGNSAddressSeparator))
+                              > char_(kGNSAddressSeparator)[addressChar]
+                              > +(char_[addressChar] - (char_(kTokensSeparator)|eol))
+                              > (char_(kTokensSeparator)|eol)[addressToVector]
 
-            ]
-        ]];
+                          ]
+                      ]];
     }
 
     template<typename UUID8Digits, typename UUID4Digits, typename UUID12Digits>
-    inline auto UUIDLexeme(UUID8Digits addUUID8Digits, UUID4Digits addUUID4Digits, UUID12Digits addUUID12Digits) {
+    inline auto UUIDLexeme(UUID8Digits addUUID8Digits, UUID4Digits addUUID4Digits, UUID12Digits addUUID12Digits)
+    {
         return lexeme[*(char_[addUUID8Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID8Digits]
-        > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
-        > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
-        > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
-        > *(char_[addUUID12Digits] - char_(kTokensSeparator)) > *(char_(kTokensSeparator)[addUUID12Digits] -char_(kTokensSeparator) )];
+                      > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
+                      > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
+                      > *(char_[addUUID4Digits] - char_(kUUIDSeparator)) > char_(kUUIDSeparator)[addUUID4Digits]
+                      > *(char_[addUUID12Digits] - char_(kTokensSeparator)) > *(char_(kTokensSeparator)[addUUID12Digits] -char_(kTokensSeparator) )];
     }
     // TODO: remove noexcept
     // TODO: split methods into classes
     CommandResult::SharedConst responseOK() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseCreated() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responsePostponedByReservations() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseProtocolError() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseAlreadyCreated() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseTrustLineIsAbsent() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseThereAreNoKeys() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseNoConsensus() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseInsufficientFunds() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseInsufficientFundsDueToKeysAbsent() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseInsufficientFundsDueToParticipantsKeysAbsent() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseConflictWithOtherOperation() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseRemoteNodeIsInaccessible() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseNoRoutes() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseUnexpectedError() const
-        noexcept;
+    noexcept;
     // this response used during disabling start payment and trust line transactions
     CommandResult::SharedConst responseForbiddenRunTransaction() const
-        noexcept;
+    noexcept;
     CommandResult::SharedConst responseForbiddenRunDueObservingTransaction() const
-        noexcept;
+    noexcept;
 
     CommandResult::SharedConst responseEquivalentIsAbsent() const
-        noexcept;
+    noexcept;
 
 protected:
     CommandResult::SharedConst makeResult(

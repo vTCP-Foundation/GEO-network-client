@@ -24,13 +24,13 @@ TransactionResult::SharedConst RemoveOutdatedCryptoDataTransaction::run()
         try {
             info() << "Equivalent " << equivalent;
             auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(
-                equivalent);
+                                         equivalent);
             for (const auto &contractorIDAndTrustLine : trustLinesManager->trustLines()) {
                 info() << "Trust Line ID " << contractorIDAndTrustLine.second->trustLineID();
                 auto keyChain = mKeysStore->keychain(
-                    contractorIDAndTrustLine.second->trustLineID());
+                                    contractorIDAndTrustLine.second->trustLineID());
                 auto currentAuditRecord = ioTransaction->auditHandler()->getActualAuditFull(
-                    contractorIDAndTrustLine.second->trustLineID());
+                                              contractorIDAndTrustLine.second->trustLineID());
                 info() << "Current audit number " << currentAuditRecord->auditNumber();
                 if (currentAuditRecord->auditNumber() <= kOutdatedDifference) {
                     info() << "No outdated crypto data";
@@ -57,7 +57,7 @@ TransactionResult::SharedConst RemoveOutdatedCryptoDataTransaction::run()
 TransactionResult::SharedConst RemoveOutdatedCryptoDataTransaction::resultOK()
 {
     return transactionResultFromCommand(
-        mCommand->responseOK());
+               mCommand->responseOK());
 }
 
 const string RemoveOutdatedCryptoDataTransaction::logHeader() const

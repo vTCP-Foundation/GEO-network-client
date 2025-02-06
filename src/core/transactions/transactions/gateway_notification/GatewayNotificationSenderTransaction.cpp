@@ -21,15 +21,15 @@ GatewayNotificationSenderTransaction::GatewayNotificationSenderTransaction(
 TransactionResult::SharedConst GatewayNotificationSenderTransaction::run()
 {
     switch (mStep) {
-        case Stages::GatewayNotificationStage:
-            return sendGatewayNotification();
+    case Stages::GatewayNotificationStage:
+        return sendGatewayNotification();
 
-        case Stages::UpdateRoutingTableStage:
-            return processRoutingTablesResponse();
+    case Stages::UpdateRoutingTableStage:
+        return processRoutingTablesResponse();
 
-        default:
-            error() << "invalid transaction step " << mStep;
-            return resultDone();
+    default:
+        error() << "invalid transaction step " << mStep;
+        return resultDone();
     }
 }
 
@@ -65,7 +65,7 @@ TransactionResult::SharedConst GatewayNotificationSenderTransaction::sendGateway
     mPreviousStepStarted = utc_now();
     mStep = UpdateRoutingTableStage;
     return resultAwakeAfterMilliseconds(
-        kCollectingRoutingTablesMilliseconds);
+               kCollectingRoutingTablesMilliseconds);
 }
 
 TransactionResult::SharedConst GatewayNotificationSenderTransaction::processRoutingTablesResponse()
@@ -84,10 +84,10 @@ TransactionResult::SharedConst GatewayNotificationSenderTransaction::processRout
             for (const auto &equivalentAndNeighbors : kMessage->neighborsByEquivalents()) {
                 try {
                     auto trustLinesManager = mEquivalentsSubsystemsRouter->trustLinesManager(
-                        equivalentAndNeighbors.first);
+                                                 equivalentAndNeighbors.first);
                     auto routingTablesManager = mEquivalentsCyclesSubsystemsRouter->routingTableManager(
-                        equivalentAndNeighbors.first);
-                    if(!trustLinesManager->trustLineIsPresent(kMessage->idOnReceiverSide)){
+                                                    equivalentAndNeighbors.first);
+                    if(!trustLinesManager->trustLineIsPresent(kMessage->idOnReceiverSide)) {
                         warning() << "Node " << kMessage->idOnReceiverSide << " is not a neighbor on equivalent "
                                   << equivalentAndNeighbors.first;
                         continue;
@@ -109,7 +109,7 @@ TransactionResult::SharedConst GatewayNotificationSenderTransaction::processRout
     if (allNeighborsResponseReceive.size() < allNeighborsRequestAlreadySent.size()) {
         if (utc_now() - mPreviousStepStarted < kMaxDurationBetweenSteps()) {
             return resultAwakeAfterMilliseconds(
-                kCollectingRoutingTablesMilliseconds);
+                       kCollectingRoutingTablesMilliseconds);
         }
     }
 
@@ -133,7 +133,7 @@ TransactionResult::SharedConst GatewayNotificationSenderTransaction::processRout
             }
         }
         return resultAwakeAfterMilliseconds(
-            kCollectingRoutingTablesMilliseconds);
+                   kCollectingRoutingTablesMilliseconds);
     }
 
     if (utc_now() - mTransactionStarted > kMaxTransactionDuration()) {
@@ -148,7 +148,7 @@ TransactionResult::SharedConst GatewayNotificationSenderTransaction::processRout
     if (allNeighborsResponseReceive.size() < allNeighborsRequestShouldBeSend.size()) {
         info() << "Not all nodes send response";
         return resultAwakeAfterMilliseconds(
-            kCollectingRoutingTablesMilliseconds);
+                   kCollectingRoutingTablesMilliseconds);
     }
 
     info() << "All data processed";

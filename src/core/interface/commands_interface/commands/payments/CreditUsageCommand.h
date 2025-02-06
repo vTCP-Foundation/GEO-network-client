@@ -6,7 +6,8 @@
 #include "../../../../common/exceptions/MemoryError.h"
 
 class CreditUsageCommand:
-    public BaseUserCommand {
+    public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<CreditUsageCommand> Shared;

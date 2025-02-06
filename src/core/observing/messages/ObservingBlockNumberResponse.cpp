@@ -5,7 +5,7 @@ ObservingBlockNumberResponse::ObservingBlockNumberResponse(
     ObservingResponseMessage(
         buffer)
 {
-   memcpy(
+    memcpy(
         &mActualBlockNumber,
         buffer.get() + ObservingResponseMessage::kOffsetToInheritedBytes(),
         sizeof(BlockNumber));

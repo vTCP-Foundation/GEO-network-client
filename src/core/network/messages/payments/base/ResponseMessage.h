@@ -3,11 +3,12 @@
 
 #include "../../base/transaction/TransactionMessage.h"
 
-class ResponseMessage:
-    public TransactionMessage {
+class ResponseMessage : public TransactionMessage
+{
 
 public:
-    enum OperationState {
+    enum OperationState
+    {
         Accepted = 1,
         Rejected = 2,
         RejectedDueOwnKeysAbsence = 3,
@@ -33,7 +34,7 @@ public:
     const PathID pathID() const;
 
 protected:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
     const size_t kOffsetToInheritedBytes() const override;
 

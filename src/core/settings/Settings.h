@@ -15,7 +15,8 @@
 using namespace std;
 using json = nlohmann::json;
 
-class Settings {
+class Settings
+{
 public:
     vector<pair<string, string>> addresses(
         const json *conf = nullptr) const;
@@ -30,7 +31,7 @@ public:
         const json *conf = nullptr) const;
 
     pair<string, uint16_t> interface(
-        const json *conf = nullptr) const;
+            const json *conf = nullptr) const;
 
     json providers(
         const json *conf = nullptr) const;

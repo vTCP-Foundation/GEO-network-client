@@ -9,7 +9,8 @@
 
 #include <vector>
 
-class HistoryWithContractorTransaction : public BaseTransaction {
+class HistoryWithContractorTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<HistoryWithContractorTransaction> Shared;

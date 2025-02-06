@@ -16,7 +16,7 @@ ContractorsManager::ContractorsManager(
         if (addressStr.first == "ipv4") {
             try {
                 address = make_shared<IPv4WithPortAddress>(
-                    addressStr.second);
+                              addressStr.second);
 
             } catch (...) {
                 throw ValueError("ContractorsManager: can't create own address of type " + addressStr.first);
@@ -25,14 +25,14 @@ ContractorsManager::ContractorsManager(
         } else if (addressStr.first == "gns") {
             try {
                 address = make_shared<GNSAddress>(
-                    addressStr.second);
+                              addressStr.second);
             } catch (...) {
                 throw ValueError("ContractorsManager: can't create own address of type " + addressStr.first);
             }
 
         } else {
             throw ValueError("ContractorsManager: can't create own address. "
-                                 "Wrong address type " + addressStr.first);
+                             "Wrong address type " + addressStr.first);
         }
         selfAddresses.push_back(
             address);
@@ -59,7 +59,7 @@ ContractorsManager::ContractorsManager(
     auto ioTransaction = mStorageHandler->beginTransaction();
     for (const auto &contractor : ioTransaction->contractorsHandler()->allContractors()) {
         auto contractorAddresses = ioTransaction->addressHandler()->contractorAddresses(
-            contractor->getID());
+                                       contractor->getID());
         contractor->setAddresses(
             contractorAddresses);
         mContractors.insert(
@@ -98,7 +98,7 @@ Contractor::Shared ContractorsManager::createContractor(
     const ContractorID channelIDOnContractorSide)
 {
     auto contractorID = contractorIDByAddresses(
-        contractorAddresses);
+                            contractorAddresses);
     if (contractorID != kNotFoundContractorID) {
         throw ValueError("Channel for this contractor already present");
     }
@@ -107,17 +107,17 @@ Contractor::Shared ContractorsManager::createContractor(
     info() << "New contractor initializing " << id;
     if (cryptoKey.empty()) {
         auto contractor = make_shared<Contractor>(
-            id,
-            contractorAddresses,
-            MsgEncryptor::generateKeyTrio());
+                              id,
+                              contractorAddresses,
+                              MsgEncryptor::generateKeyTrio());
         mContractors[id] = contractor;
         ioTransaction->contractorsHandler()->saveContractor(
             mContractors[id]);
     } else {
         auto contractor = make_shared<Contractor>(
-            id,
-            contractorAddresses,
-            MsgEncryptor::generateKeyTrio(cryptoKey));
+                              id,
+                              contractorAddresses,
+                              MsgEncryptor::generateKeyTrio(cryptoKey));
         contractor->setOwnIdOnContractorSide(
             channelIDOnContractorSide);
         contractor->confirm();
@@ -205,7 +205,7 @@ void ContractorsManager::regenerateCryptoKey(
     }
 
     auto regeneratedCryptoKey = MsgEncryptor::generateKeyTrio(
-        contractor->cryptoKey()->contractorPublicKey);
+                                    contractor->cryptoKey()->contractorPublicKey);
     contractor->setCryptoKey(
         regeneratedCryptoKey);
     ioTransaction->contractorsHandler()->updateCryptoKey(
@@ -351,7 +351,7 @@ void ContractorsManager::updateContractorAddresses(
 }
 
 const string ContractorsManager::logHeader() const
-    noexcept
+noexcept
 {
     stringstream s;
     s << "[ContractorsManager] ";
@@ -359,19 +359,19 @@ const string ContractorsManager::logHeader() const
 }
 
 LoggerStream ContractorsManager::info() const
-    noexcept
+noexcept
 {
     return mLogger.info(logHeader());
 }
 
 LoggerStream ContractorsManager::debug() const
-    noexcept
+noexcept
 {
     return mLogger.debug(logHeader());
 }
 
 LoggerStream ContractorsManager::warning() const
-    noexcept
+noexcept
 {
     return mLogger.warning(logHeader());
 }

@@ -18,10 +18,10 @@ FeaturesManager::FeaturesManager(
     auto ioTransaction = mStorageHandler->beginTransaction();
     try {
         auto dataBaseEquivalentRegistryAddress = ioTransaction->featuresHandler()->getFeature(
-            kEquivalentsRegistryAddressFieldName);
+                kEquivalentsRegistryAddressFieldName);
         if (dataBaseEquivalentRegistryAddress != mEquivalentsRegistryAddressValue) {
             throw ValueError("There is different value of " +
-                kEquivalentsRegistryAddressFieldName + " feature in database: " + dataBaseEquivalentRegistryAddress);
+                             kEquivalentsRegistryAddressFieldName + " feature in database: " + dataBaseEquivalentRegistryAddress);
         }
     } catch (NotFoundError &e) {
         info() << "There is no feature " << kEquivalentsRegistryAddressFieldName << " yet. Add it";
@@ -38,7 +38,7 @@ FeaturesManager::FeaturesManager(
     }
     try {
         auto dataBaseOwnAddresses = ioTransaction->featuresHandler()->getFeature(
-            kOwnAddressesFieldName);
+                                        kOwnAddressesFieldName);
         if (dataBaseOwnAddresses != ownAddresses) {
             info() << "There is different value of " << kOwnAddressesFieldName
                    << " feature in database: " << dataBaseOwnAddresses;
@@ -46,7 +46,7 @@ FeaturesManager::FeaturesManager(
                 kOwnAddressesFieldName,
                 ownAddresses);
             mNotificationTimer = make_unique<as::steady_timer>(
-                mIOService);
+                                     mIOService);
             mNotificationTimer->expires_from_now(
                 chrono::seconds(
                     kSignalTimerPeriodSeconds));

@@ -5,7 +5,7 @@ GetTrustLineByAddressTransaction::GetTrustLineByAddressTransaction(
     ContractorsManager *contractorsManager,
     TrustLinesManager *trustLinesManager,
     Logger &logger)
-    noexcept:
+noexcept:
     BaseTransaction(
         BaseTransaction::TrustLineOneByAddress,
         command->equivalent(),
@@ -43,14 +43,14 @@ TransactionResult::SharedConst GetTrustLineByAddressTransaction::run()
     ss << kCommandsSeparator;
     string kResultInfo = ss.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            kResultInfo));
+               mCommand->resultOk(
+                   kResultInfo));
 }
 
 TransactionResult::SharedConst GetTrustLineByAddressTransaction::resultTrustLineIsAbsent()
 {
     return transactionResultFromCommand(
-        mCommand->responseTrustLineIsAbsent());
+               mCommand->responseTrustLineIsAbsent());
 }
 
 const string GetTrustLineByAddressTransaction::logHeader() const

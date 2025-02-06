@@ -5,7 +5,8 @@
 #include "../../../contractors/ContractorsManager.h"
 #include "../../../network/messages/trust_line_channels/UpdateChannelAddressesMessage.h"
 
-class UpdateChannelAddressesInitiatorTransaction : public BaseTransaction {
+class UpdateChannelAddressesInitiatorTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<UpdateChannelAddressesInitiatorTransaction> Shared;

@@ -2,7 +2,7 @@
 
 Core::Core(
     char* pArgv)
-    noexcept:
+noexcept:
 
     mCommandDescriptionPtr(pArgv)
 {}
@@ -136,7 +136,7 @@ int Core::initSubsystems()
     }
 
     initCode = initEquivalentsSubsystemsRouter(
-        equivalentsOnWhichIAmIsGateway);
+                   equivalentsOnWhichIAmIsGateway);
     if (initCode != 0) {
         return initCode;
     }
@@ -187,11 +187,12 @@ int Core::initLogger()
     }
 }
 
-int Core::initTailManager() {
+int Core::initTailManager()
+{
     try {
         mTailManager = make_unique<TailManager>(
-            mIOService,
-            *mLog);
+                           mIOService,
+                           *mLog);
 
         info() << "Tail manager is successfully initialised";
         return 0;
@@ -208,13 +209,13 @@ int Core::initCommunicator(
     try {
         auto interface = mSettings->interface(&conf);
         mCommunicator = make_unique<Communicator>(
-            mIOService,
-            interface.first,
-            interface.second,
-            mContractorsManager.get(),
-            mTailManager.get(),
-            mProvidingHandler.get(),
-            *mLog);
+                            mIOService,
+                            interface.first,
+                            interface.second,
+                            mContractorsManager.get(),
+                            mTailManager.get(),
+                            mProvidingHandler.get(),
+                            *mLog);
 
         info() << "Network communicator is successfully initialised";
         return 0;
@@ -230,11 +231,11 @@ int Core::initObservingHandler(
 {
     try {
         mObservingHandler = make_unique<ObservingHandler>(
-            mSettings->observers(&conf),
-            mIOService,
-            mStorageHandler.get(),
-            mResourcesManager.get(),
-            *mLog);
+                                mSettings->observers(&conf),
+                                mIOService,
+                                mStorageHandler.get(),
+                                mResourcesManager.get(),
+                                *mLog);
 
         info() << "Observing handler is successfully initialised";
         return 0;
@@ -249,7 +250,7 @@ int Core::initResultsInterface()
 {
     try {
         mResultsInterface = make_unique<ResultsInterface>(
-            *mLog);
+                                *mLog);
         info() << "Results interface is successfully initialised";
         return 0;
 
@@ -282,9 +283,9 @@ int Core::initEventsInterfaceManager(
         }
 
         mEventsInterfaceManager = make_unique<EventsInterfaceManager>(
-            filesToEvents,
-            filesToBlock,
-            *mLog);
+                                      filesToEvents,
+                                      filesToBlock,
+                                      *mLog);
         info() << "Events interface manager is successfully initialised";
         return 0;
     } catch (const std::exception &e) {
@@ -298,13 +299,13 @@ int Core::initEquivalentsSubsystemsRouter(
 {
     try {
         mEquivalentsSubsystemsRouter = make_unique<EquivalentsSubsystemsRouter>(
-            mStorageHandler.get(),
-            mKeysStore.get(),
-            mContractorsManager.get(),
-            mEventsInterfaceManager.get(),
-            mIOService,
-            equivalentIAmGateway,
-            *mLog);
+                                           mStorageHandler.get(),
+                                           mKeysStore.get(),
+                                           mContractorsManager.get(),
+                                           mEventsInterfaceManager.get(),
+                                           mIOService,
+                                           equivalentIAmGateway,
+                                           *mLog);
         info() << "EquivalentsSubsystemsRouter is successfully initialised";
         return 0;
     } catch (const std::exception &e) {
@@ -330,19 +331,19 @@ int Core::initTransactionsManager()
 {
     try {
         mTransactionsManager = make_unique<TransactionsManager>(
-            mIOService,
-            mContractorsManager.get(),
-            mEquivalentsSubsystemsRouter.get(),
-            mResourcesManager.get(),
-            mResultsInterface.get(),
-            mStorageHandler.get(),
-            mKeysStore.get(),
-            mFeaturesManager.get(),
-            mEventsInterfaceManager.get(),
-            mTailManager.get(),
-            *mLog,
-            mSubsystemsController.get(),
-            mTrustLinesInfluenceController.get());
+                                   mIOService,
+                                   mContractorsManager.get(),
+                                   mEquivalentsSubsystemsRouter.get(),
+                                   mResourcesManager.get(),
+                                   mResultsInterface.get(),
+                                   mStorageHandler.get(),
+                                   mKeysStore.get(),
+                                   mFeaturesManager.get(),
+                                   mEventsInterfaceManager.get(),
+                                   mTailManager.get(),
+                                   *mLog,
+                                   mSubsystemsController.get(),
+                                   mTrustLinesInfluenceController.get());
         info() << "Transactions handler is successfully initialised";
         return 0;
 
@@ -356,8 +357,8 @@ int Core::initCommandsInterface()
 {
     try {
         mCommandsInterface = make_unique<CommandsInterface>(
-            mIOService,
-            *mLog);
+                                 mIOService,
+                                 *mLog);
         info() << "Commands interface is successfully initialised";
         return 0;
 
@@ -371,9 +372,9 @@ int Core::initStorageHandler()
 {
     try {
         mStorageHandler = make_unique<StorageHandler>(
-            "io",
-            "storageDB",
-            *mLog);
+                              "io",
+                              "storageDB",
+                              *mLog);
         info() << "Storage handler is successfully initialised";
         return 0;
     } catch (const std::exception &e) {
@@ -387,9 +388,9 @@ int Core::initContractorsManager(
 {
     try {
         mContractorsManager = make_unique<ContractorsManager>(
-            mSettings->addresses(&conf),
-            mStorageHandler.get(),
-            *mLog);
+                                  mSettings->addresses(&conf),
+                                  mStorageHandler.get(),
+                                  *mLog);
         info() << "Contractors manager is successfully initialised";
         return 0;
     } catch (const std::exception &e) {
@@ -424,10 +425,10 @@ int Core::initProvidingHandler(
         }
 
         mProvidingHandler = make_unique<ProvidingHandler>(
-            providers,
-            mIOService,
-            mContractorsManager->selfContractor(),
-            *mLog);
+                                providers,
+                                mIOService,
+                                mContractorsManager->selfContractor(),
+                                *mLog);
         info() << "Providing handler is successfully initialised";
         return 0;
     } catch (const std::exception &e) {
@@ -440,7 +441,7 @@ int Core::initSubsystemsController()
 {
     try {
         mSubsystemsController = make_unique<SubsystemsController>(
-            *mLog);
+                                    *mLog);
         info() << "Subsystems controller is successfully initialized";
         return 0;
     } catch (const std::exception &e) {
@@ -453,7 +454,7 @@ int Core::initTrustLinesInfluenceController()
 {
     try {
         mTrustLinesInfluenceController = make_unique<TrustLinesInfluenceController>(
-            *mLog);
+                                             *mLog);
         info() << "Trust Lines Influence controller is successfully initialized";
         return 0;
     } catch (const std::exception &e) {
@@ -466,7 +467,7 @@ int Core::initKeysStore()
 {
     try {
         mKeysStore = make_unique<Keystore>(
-            *mLog);
+                         *mLog);
         mKeysStore->init();
         info() << "Keys store is successfully initialized";
         return 0;
@@ -480,9 +481,9 @@ int Core::initTopologyEventDelayedTask()
 {
     try {
         mTopologyEventDelayedTask = make_unique<TopologyEventDelayedTask>(
-            mIOService,
-            mEquivalentsSubsystemsRouter.get(),
-            *mLog);
+                                        mIOService,
+                                        mEquivalentsSubsystemsRouter.get(),
+                                        *mLog);
         info() << "Topology Event Delayed Task is successfully initialized";
         return 0;
     } catch (const std::exception &e) {
@@ -496,11 +497,11 @@ int Core::initFeaturesManager(
 {
     try {
         mFeaturesManager = make_unique<FeaturesManager>(
-            mIOService,
-            mSettings->equivalentsRegistryAddress(&conf),
-            mContractorsManager->selfContractor()->outputString(),
-            mStorageHandler.get(),
-            *mLog);
+                               mIOService,
+                               mSettings->equivalentsRegistryAddress(&conf),
+                               mContractorsManager->selfContractor()->outputString(),
+                               mStorageHandler.get(),
+                               *mLog);
         info() << "Features Manager is successfully initialized";
         return 0;
     } catch (const std::exception &e) {
@@ -748,7 +749,7 @@ void Core::onClearTopologyCacheSlot(
         mEquivalentsSubsystemsRouter->topologyCacheManager(equivalent)->removeCache(nodeAddress);
     } catch (NotFoundError &e) {
         error() << "There are no topologyCacheManager for onClearTopologyCacheSlot "
-                "with equivalent " << equivalent << " Details are: " << e.what();
+                   "with equivalent " << equivalent << " Details are: " << e.what();
     }
 }
 
@@ -956,31 +957,31 @@ void Core::updateProcessName()
 }
 
 string Core::logHeader()
-    noexcept
+noexcept
 {
     return "[CORE]";
 }
 
 LoggerStream Core::error() const
-    noexcept
+noexcept
 {
     return mLog->error(logHeader());
 }
 
 LoggerStream Core::warning() const
-    noexcept
+noexcept
 {
     return mLog->warning(logHeader());
 }
 
 LoggerStream Core::info() const
-    noexcept
+noexcept
 {
     return mLog->info(logHeader());
 }
 
 LoggerStream Core::debug() const
-    noexcept
+noexcept
 {
     return mLog->debug(logHeader());
 }

@@ -26,7 +26,7 @@ TransactionResult::SharedConst NoEquivalentTransaction::run()
 {
     if (mCommand != nullptr) {
         return transactionResultFromCommand(
-            mCommand->responseEquivalentIsAbsent());
+                   mCommand->responseEquivalentIsAbsent());
     } else if (mMessage != nullptr) {
         // todo : inspect what type of message address is present in message
         sendMessage<NoEquivalentMessage>(

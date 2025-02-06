@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class NotFoundError: public Exception {
+class NotFoundError: public Exception
+{
     using Exception::Exception;
 };
 

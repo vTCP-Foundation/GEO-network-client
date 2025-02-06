@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class OverflowError: public Exception {
+class OverflowError: public Exception
+{
     using Exception::Exception;
 };
 

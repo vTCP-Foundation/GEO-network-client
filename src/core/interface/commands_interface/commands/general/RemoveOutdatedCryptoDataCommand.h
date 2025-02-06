@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class RemoveOutdatedCryptoDataCommand : public BaseUserCommand {
+class RemoveOutdatedCryptoDataCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<RemoveOutdatedCryptoDataCommand> Shared;

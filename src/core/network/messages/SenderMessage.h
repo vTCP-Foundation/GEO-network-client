@@ -11,7 +11,8 @@
  * Abstract base class for messages that must contain sender node address.
  */
 class SenderMessage:
-    public EquivalentMessage {
+    public EquivalentMessage
+{
 
 public:
     ContractorID idOnReceiverSide;

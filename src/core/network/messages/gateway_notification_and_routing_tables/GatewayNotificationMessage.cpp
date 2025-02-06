@@ -75,8 +75,8 @@ pair<BytesShared, size_t> GatewayNotificationMessage::serializeToBytes() const
     }
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType GatewayNotificationMessage::typeID() const

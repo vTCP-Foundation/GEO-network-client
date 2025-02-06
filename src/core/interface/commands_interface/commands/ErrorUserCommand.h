@@ -3,7 +3,8 @@
 
 #include "BaseUserCommand.h"
 
-class ErrorUserCommand : public BaseUserCommand {
+class ErrorUserCommand : public BaseUserCommand
+{
 
 public:
     ErrorUserCommand(
@@ -16,16 +17,19 @@ public:
         mError(error)
     {}
 
-    inline const string &error() const { return mError; }
+    inline const string &error() const
+    {
+        return mError;
+    }
 
     CommandResult::SharedConst responseError() const
     {
         return CommandResult::SharedConst(
-            new CommandResult(
-                identifier(),
-                UUID(),
-                606,
-                mError));
+                   new CommandResult(
+                       identifier(),
+                       UUID(),
+                       606,
+                       mError));
     }
 
 protected:

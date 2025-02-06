@@ -5,7 +5,8 @@
 
 
 class ReceiverInitPaymentResponseMessage:
-    public ResponseMessage {
+    public ResponseMessage
+{
 
 public:
     typedef shared_ptr<ReceiverInitPaymentResponseMessage> Shared;

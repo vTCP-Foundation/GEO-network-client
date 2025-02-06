@@ -5,13 +5,15 @@
 
 using namespace std;
 
-class BaseAddress {
+class BaseAddress
+{
 
 public:
     typedef shared_ptr<BaseAddress> Shared;
-    typedef byte SerializedType;
+    typedef byte_t SerializedType;
 
-    enum AddressType {
+    enum AddressType
+    {
         /*
          * IPv4
          */
@@ -44,14 +46,13 @@ public:
 
     virtual size_t serializedSize() const = 0;
 
-    friend bool operator== (
+    friend bool operator==(
         BaseAddress::Shared address1,
         BaseAddress::Shared address2);
 
-    friend bool operator!= (
+    friend bool operator!=(
         BaseAddress::Shared address1,
         BaseAddress::Shared address2);
 };
 
-
-#endif //GEO_NETWORK_CLIENT_BASEADDRESS_H
+#endif // GEO_NETWORK_CLIENT_BASEADDRESS_H

@@ -5,12 +5,10 @@ TEST_CASE("Trying INIT trustline ")
 {
     REQUIRE_NOTHROW(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t12\t127.0.0.1:2007\t3\n"));
 
-    SECTION("Two addresses")
-    {
+    SECTION("Two addresses") {
         REQUIRE_NOTHROW(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"2\t12\t127.0.0.1:2007\t12\t127.0.0.1:2007\t3\n"));
     }
-    SECTION("Address type corrupted")
-    {
+    SECTION("Address type corrupted") {
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"2\t12\t127.0.0.1:2007\t127.0.0.1:2007\t3\n"));
 
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t13\t127.0.0.1:2007\t3\n"));
@@ -18,8 +16,7 @@ TEST_CASE("Trying INIT trustline ")
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"2\t12\t127.0.0.1:2007\t13\t127.0.0.1:2007\t3\n"));
     }
 
-    SECTION("Double separator")
-    {
+    SECTION("Double separator") {
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t12\t127.0.0.1:2007\t3\n\t"));
 
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t12\t127.0.0.1:2007\t3\n\n"));
@@ -33,8 +30,7 @@ TEST_CASE("Trying INIT trustline ")
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t12\t127.0.0.1:2007\t\t3\n"));
     }
 
-    SECTION("Charater instead of int in number of addresses")
-    {
+    SECTION("Charater instead of int in number of addresses") {
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"s\t12\t127.0.0.1:2007\t3\n"));
 
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"s\t12\t127.0.0.1:2007\t3\n"));
@@ -64,8 +60,7 @@ TEST_CASE("Trying INIT trustline ")
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1!12!127.0.0.1:2007!3\n"));
     }
 
-    SECTION("No input")
-    {
+    SECTION("No input") {
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,""));
 
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"\n"));
@@ -81,8 +76,7 @@ TEST_CASE("Trying INIT trustline ")
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"\n\t"));
     }
 
-    SECTION("Characters instead of input & after EOL")
-    {
+    SECTION("Characters instead of input & after EOL") {
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"dfsfdfsf\n"));
 
         REQUIRE_THROWS(InitTrustLineCommand("47183823-2574-4bfd-b411-99ed177d3e43"s,"1\t12\t127.0.0.1:2007\t3\n\t"));

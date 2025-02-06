@@ -9,7 +9,8 @@
 #include "../../../network/messages/max_flow_calculation/ResultMaxFlowCalculationGatewayMessage.h"
 #include "../../../network/communicator/internal/incoming/TailManager.h"
 
-class BaseCollectTopologyTransaction : public BaseTransaction {
+class BaseCollectTopologyTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<BaseCollectTopologyTransaction> Shared;
@@ -26,7 +27,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         SendRequestForCollectingTopology = 1,
         ProcessCollectingTopology = 2,
         CustomLogic = 3
@@ -37,7 +39,10 @@ protected:
 
     virtual TransactionResult::SharedConst processCollectingTopology() = 0;
 
-    virtual TransactionResult::SharedConst applyCustomLogic(){return resultDone();};
+    virtual TransactionResult::SharedConst applyCustomLogic()
+    {
+        return resultDone();
+    };
 
     void fillTopology();
 

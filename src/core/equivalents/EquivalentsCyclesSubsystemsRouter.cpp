@@ -42,8 +42,8 @@ CyclesManager* EquivalentsCyclesSubsystemsRouter::cyclesManager(
 {
     if (mCyclesManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsCyclesSubsystemsRouter::cyclesManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsCyclesSubsystemsRouter::cyclesManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mCyclesManagers.at(equivalent).get();
 }
@@ -53,8 +53,8 @@ RoutingTableManager* EquivalentsCyclesSubsystemsRouter::routingTableManager(
 {
     if (mRoutingTablesManagers.count(equivalent) == 0) {
         throw NotFoundError(
-                "EquivalentsCyclesSubsystemsRouter::routingTableManager: "
-                    "wrong equivalent " + to_string(equivalent));
+            "EquivalentsCyclesSubsystemsRouter::routingTableManager: "
+            "wrong equivalent " + to_string(equivalent));
     }
     return mRoutingTablesManagers.at(equivalent).get();
 }
@@ -64,8 +64,8 @@ void EquivalentsCyclesSubsystemsRouter::initNewEquivalent(
 {
     if (mCyclesManagers.count(equivalent) != 0) {
         throw ValueError(
-                "EquivalentsCyclesSubsystemsRouter::initNewEquivalent: "
-                    "try init equivalent " + to_string(equivalent) + " which is already exists");
+            "EquivalentsCyclesSubsystemsRouter::initNewEquivalent: "
+            "try init equivalent " + to_string(equivalent) + " which is already exists");
     }
 
     mCyclesManagers.insert(

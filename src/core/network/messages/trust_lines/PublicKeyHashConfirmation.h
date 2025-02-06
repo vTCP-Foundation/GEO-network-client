@@ -6,7 +6,8 @@
 
 using namespace crypto;
 
-class PublicKeyHashConfirmation : public ConfirmationMessage {
+class PublicKeyHashConfirmation : public ConfirmationMessage
+{
 
 public:
     typedef shared_ptr<PublicKeyHashConfirmation> Shared;

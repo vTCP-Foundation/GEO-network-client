@@ -8,7 +8,8 @@
 #include <map>
 #include <vector>
 
-class RoutingTableManager {
+class RoutingTableManager
+{
 
 public:
     RoutingTableManager(

@@ -3,7 +3,8 @@
 
 #include "base/BaseTrustLineTransaction.h"
 
-class AuditSourceTransaction : public BaseTrustLineTransaction {
+class AuditSourceTransaction : public BaseTrustLineTransaction
+{
 
 public:
     typedef shared_ptr<AuditSourceTransaction> Shared;

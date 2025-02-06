@@ -4,7 +4,8 @@
 #include "BaseResource.h"
 #include "../../paths/lib/PathsCollection.h"
 
-class PathsResource : public BaseResource {
+class PathsResource : public BaseResource
+{
 
 public:
     typedef shared_ptr<PathsResource> Shared;

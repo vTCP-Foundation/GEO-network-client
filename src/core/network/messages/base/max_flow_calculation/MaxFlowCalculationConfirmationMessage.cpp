@@ -61,8 +61,8 @@ pair<BytesShared, size_t> MaxFlowCalculationConfirmationMessage::serializeToByte
         sizeof(ConfirmationID));
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const size_t MaxFlowCalculationConfirmationMessage::kOffsetToInheritedBytes() const

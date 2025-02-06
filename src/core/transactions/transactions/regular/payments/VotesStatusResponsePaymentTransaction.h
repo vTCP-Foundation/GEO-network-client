@@ -12,7 +12,8 @@
 using namespace crypto;
 
 class VotesStatusResponsePaymentTransaction:
-        public BaseTransaction{
+    public BaseTransaction
+{
 public:
     VotesStatusResponsePaymentTransaction(
         VotesStatusRequestMessage::Shared message,

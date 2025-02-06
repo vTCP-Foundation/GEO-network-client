@@ -7,7 +7,8 @@
 
 
 class CyclesThreeNodesBalancesResponseMessage:
-    public TransactionMessage {
+    public TransactionMessage
+{
 
 public:
     typedef shared_ptr<CyclesThreeNodesBalancesResponseMessage> Shared;

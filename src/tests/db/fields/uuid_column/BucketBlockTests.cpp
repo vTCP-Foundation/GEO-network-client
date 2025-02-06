@@ -5,9 +5,11 @@ namespace fields {
 namespace uuid_map {
 
 
-class BucketBlockTests {
+class BucketBlockTests
+{
 public:
-    void run() {
+    void run()
+    {
         checkInsertInEmptyBlock();
         checkInsertInSameUUID();
 //        checkInsertInDifferentUUID();
@@ -25,7 +27,8 @@ public:
     }
 
 private:
-    void checkInsertInEmptyBlock() {
+    void checkInsertInEmptyBlock()
+    {
         NodeUUID uuid;
         AbstractRecordsHandler::RecordNumber recordNumber(1);
 
@@ -38,7 +41,8 @@ private:
         assert(block.mRecords[0].mRecordsNumbersCount == 1);
     }
 
-    void checkInsertInSameUUID() {
+    void checkInsertInSameUUID()
+    {
         NodeUUID uuid;
         BucketBlock block;
         assert(block.mRecordsCount == 0);
@@ -50,7 +54,8 @@ private:
         assert(block.mRecords[0].mRecordsNumbersCount == 100);
     }
 
-    void checkInsertInDifferentUUID() {
+    void checkInsertInDifferentUUID()
+    {
         BucketBlock block;
         assert(block.mRecordsCount == 0);
 
@@ -63,7 +68,8 @@ private:
         }
     }
 
-    void checkInsertOrder() {
+    void checkInsertOrder()
+    {
         BucketBlock block;
         assert(block.mRecordsCount == 0);
 
@@ -91,7 +97,8 @@ private:
         assert(block.mRecords[2].uuid().data[15] == 3);
     }
 
-    void checkInsertDuplicate() {
+    void checkInsertDuplicate()
+    {
         NodeUUID uuid;
         BucketBlock block;
         assert(block.mRecordsCount == 0);
@@ -107,14 +114,16 @@ private:
         }
     }
 
-    void checkRemoveFromEmptyRecord() {
+    void checkRemoveFromEmptyRecord()
+    {
         NodeUUID uuid;
         BucketBlock block;
 
         assert(!block.remove(uuid, 1));
     }
 
-    void checkRemoveWithSameUUID() {
+    void checkRemoveWithSameUUID()
+    {
         NodeUUID uuid;
         BucketBlock block;
 
@@ -129,7 +138,8 @@ private:
         assert(block.mRecordsCount == 0);
     }
 
-    void checkRemoveWithDifferentUUID() {
+    void checkRemoveWithDifferentUUID()
+    {
         BucketBlock block;
 
         std::vector<NodeUUID> uuids;
@@ -148,7 +158,8 @@ private:
         assert(block.mRecordsCount == 0);
     }
 
-    void checkBinSearchWithZeroElements() {
+    void checkBinSearchWithZeroElements()
+    {
         NodeUUID uuid;
         BucketBlock block;
 
@@ -162,7 +173,8 @@ private:
         }
     }
 
-    void checkBinSearchWithAbsentElement() {
+    void checkBinSearchWithAbsentElement()
+    {
         NodeUUID uuid1;
         NodeUUID uuid2;
         BucketBlock block;
@@ -179,7 +191,8 @@ private:
         }
     }
 
-    void checkBinSearchWithOneElement() {
+    void checkBinSearchWithOneElement()
+    {
         NodeUUID uuid;
         BucketBlock block;
 
@@ -187,7 +200,8 @@ private:
         assert(block.recordIndexByUUID(uuid) == 0);
     }
 
-    void checkBinSearchWithPairCountOfElements() {
+    void checkBinSearchWithPairCountOfElements()
+    {
         NodeUUID uuid1;
         NodeUUID uuid2;
         BucketBlock block;
@@ -199,7 +213,8 @@ private:
         assert(block.recordIndexByUUID(uuid2) == 1);
     }
 
-    void checkBinSearchWithNonPairCountOfElements() {
+    void checkBinSearchWithNonPairCountOfElements()
+    {
         BucketBlock block;
 
         NodeUUID uuid1;
@@ -238,7 +253,8 @@ private:
         assert(block.recordIndexByUUID(uuid1) == 0);
     }
 
-    void checkModifiedAfterInsertion() {
+    void checkModifiedAfterInsertion()
+    {
         NodeUUID uuid;
         BucketBlock block;
         assert(!block.isModified());
@@ -247,7 +263,8 @@ private:
         assert(block.isModified());
     }
 
-    void checkModifiedAfterRemoving() {
+    void checkModifiedAfterRemoving()
+    {
         BucketBlock block;
         assert(!block.isModified());
 

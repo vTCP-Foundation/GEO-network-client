@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class EquivalentListCommand : public BaseUserCommand {
+class EquivalentListCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<EquivalentListCommand> Shared;

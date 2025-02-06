@@ -18,10 +18,10 @@ TransactionResult::SharedConst HistoryWithContractorTransaction::run()
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto contractorAddresses = mCommand->contractorAddresses();
     auto const resultRecords = ioTransaction->historyStorage()->recordsWithContractor(
-        contractorAddresses,
-        mCommand->equivalent(),
-        mCommand->historyCount(),
-        mCommand->historyFrom());
+                                   contractorAddresses,
+                                   mCommand->equivalent(),
+                                   mCommand->historyCount(),
+                                   mCommand->historyFrom());
     return resultOk(resultRecords);
 }
 
@@ -51,8 +51,8 @@ TransactionResult::SharedConst HistoryWithContractorTransaction::resultOk(
 
             } else {
                 throw RuntimeError(
-                        "HistoryWithContractorTransaction::resultOk: "
-                                "unexpected payment operation type occurred.");
+                    "HistoryWithContractorTransaction::resultOk: "
+                    "unexpected payment operation type occurred.");
             }
 
             stream << kTokensSeparator << formattedRecordType
@@ -96,8 +96,8 @@ TransactionResult::SharedConst HistoryWithContractorTransaction::resultOk(
 
             } else {
                 throw RuntimeError(
-                        "HistoryWithContractorTransaction::resultOk: "
-                            "unexpected trust line operation type occurred.");
+                    "HistoryWithContractorTransaction::resultOk: "
+                    "unexpected trust line operation type occurred.");
             }
 
             stream << kTokensSeparator << formattedRecordType
@@ -107,14 +107,14 @@ TransactionResult::SharedConst HistoryWithContractorTransaction::resultOk(
                    << kTokensSeparator << trustLineRecord->amount();
         } else {
             throw ValueError("HistoryWithContractorTransaction::resultOk: "
-                                 "unexpected record type occurred.");
+                             "unexpected record type occurred.");
         }
     }
 
     auto result = stream.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            result));
+               mCommand->resultOk(
+                   result));
 }
 
 const string HistoryWithContractorTransaction::logHeader() const

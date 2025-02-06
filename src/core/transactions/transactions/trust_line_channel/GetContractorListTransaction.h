@@ -5,7 +5,8 @@
 #include "../../../interface/commands_interface/commands/trust_line_channels/ContractorListCommand.h"
 #include "../../../contractors/ContractorsManager.h"
 
-class GetContractorListTransaction : public BaseTransaction {
+class GetContractorListTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GetContractorListTransaction> Shared;

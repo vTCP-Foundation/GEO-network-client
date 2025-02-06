@@ -8,7 +8,8 @@
 
 #include "../max_flow_calculation/CollectTopologyTransaction.h"
 
-class FindPathByMaxFlowTransaction : public BaseCollectTopologyTransaction {
+class FindPathByMaxFlowTransaction : public BaseCollectTopologyTransaction
+{
 
 public:
     typedef shared_ptr<FindPathByMaxFlowTransaction> Shared;
@@ -30,7 +31,10 @@ protected:
 private:
     TransactionResult::SharedConst sendRequestForCollectingTopology() override;
 
-    TransactionResult::SharedConst processCollectingTopologyShortly(){return resultDone();}
+    TransactionResult::SharedConst processCollectingTopologyShortly()
+    {
+        return resultDone();
+    }
 
     TransactionResult::SharedConst processCollectingTopology() override;
 
@@ -41,8 +45,8 @@ private:
     static const uint32_t kTopologyCollectingAgainMillisecondsTimeout = 500;
     static const uint32_t kMaxTopologyCollectingMillisecondsTimeout = 6000;
     static const uint16_t kCountRunningProcessCollectingTopologyStage =
-            (kMaxTopologyCollectingMillisecondsTimeout - kTopologyCollectingMillisecondsTimeout) /
-            kTopologyCollectingAgainMillisecondsTimeout;
+        (kMaxTopologyCollectingMillisecondsTimeout - kTopologyCollectingMillisecondsTimeout) /
+        kTopologyCollectingAgainMillisecondsTimeout;
 
 private:
     ContractorID mContractorID;

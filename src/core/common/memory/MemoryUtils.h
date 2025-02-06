@@ -14,15 +14,13 @@
 #include <malloc.h>
 #endif
 
-
 using namespace std;
 
-
 inline BytesShared tryMalloc(
-    size_t bytesCount) {
-
+    size_t bytesCount)
+{
     BytesShared bytesShared(
-        (byte *)malloc(bytesCount),
+        (byte_t*)malloc(bytesCount),
         free
     );
 
@@ -34,15 +32,14 @@ inline BytesShared tryMalloc(
 }
 
 inline BytesShared tryCalloc(
-    size_t bytesCount) {
-
+    size_t bytesCount)
+{
     BytesShared bytesShared(
-        (byte *)calloc(
+        (byte_t*)calloc(
             bytesCount,
-            sizeof(byte)
+            sizeof(byte_t)
         ),
-        free
-    );
+        free);
 
     if (bytesShared == nullptr) {
         throw std::bad_alloc();
@@ -50,4 +47,4 @@ inline BytesShared tryCalloc(
 
     return bytesShared;
 }
-#endif //GEO_NETWORK_CLIENT_MEMORYUTILS_H
+#endif // GEO_NETWORK_CLIENT_MEMORYUTILS_H

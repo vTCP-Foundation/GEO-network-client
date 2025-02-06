@@ -3,7 +3,8 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class UpdateChannelAddressesMessage : public TransactionMessage {
+class UpdateChannelAddressesMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<UpdateChannelAddressesMessage> Shared;

@@ -18,9 +18,11 @@
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class CyclesManager {
+class CyclesManager
+{
 public:
-    enum CycleClosingState {
+    enum CycleClosingState
+    {
         ThreeNodes = 1,
         FourNodes,
         FiveNodes,
@@ -70,7 +72,7 @@ private:
     void updateOfflineNodesAndClosedTLLists(
         const boost::system::error_code &err);
 
-    vector<Path::Shared>* cyclesVector(
+    vector<Path::Shared> *cyclesVector(
         CycleClosingState currentCycleClosingState);
 
     void incrementCurrentCycleClosingState();
@@ -116,15 +118,16 @@ private:
 #endif
     const uint32_t kUpdatingTimerPeriodSeconds = 10 * 60;
 
-    static const byte kOfflineNodesAndClosedTLLiveHours = 0;
-    static const byte kOfflineNodesAndClosedTLLiveMinutes = 30;
-    static const byte kOfflineNodesAndClosedTLLiveSeconds = 0;
+    static const byte_t kOfflineNodesAndClosedTLLiveHours = 0;
+    static const byte_t kOfflineNodesAndClosedTLLiveMinutes = 30;
+    static const byte_t kOfflineNodesAndClosedTLLiveSeconds = 0;
 
-    static Duration& kOfflineNodesAndClosedTLLiveDuration() {
+    static Duration &kOfflineNodesAndClosedTLLiveDuration()
+    {
         static auto duration = Duration(
-            kOfflineNodesAndClosedTLLiveHours,
-            kOfflineNodesAndClosedTLLiveMinutes,
-            kOfflineNodesAndClosedTLLiveSeconds);
+                                   kOfflineNodesAndClosedTLLiveHours,
+                                   kOfflineNodesAndClosedTLLiveMinutes,
+                                   kOfflineNodesAndClosedTLLiveSeconds);
         return duration;
     }
 
@@ -154,5 +157,4 @@ private:
     SubsystemsController *mSubsystemsController;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_CYCLESMANAGER_H
+#endif // GEO_NETWORK_CLIENT_CYCLESMANAGER_H

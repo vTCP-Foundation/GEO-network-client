@@ -3,7 +3,8 @@
 
 #include "BaseAuditRule.h"
 
-class AuditRuleCountPayments : public BaseAuditRule {
+class AuditRuleCountPayments : public BaseAuditRule
+{
 public:
     typedef shared_ptr<AuditRuleCountPayments> Shared;
 

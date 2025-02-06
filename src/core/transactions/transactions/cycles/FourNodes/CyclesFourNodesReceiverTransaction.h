@@ -12,7 +12,8 @@
 #include <set>
 
 class CyclesFourNodesReceiverTransaction:
-    public BaseTransaction {
+    public BaseTransaction
+{
 
 public:
     CyclesFourNodesReceiverTransaction(

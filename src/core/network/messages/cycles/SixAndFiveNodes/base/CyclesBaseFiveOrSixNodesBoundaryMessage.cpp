@@ -27,9 +27,9 @@ CyclesBaseFiveOrSixNodesBoundaryMessage::CyclesBaseFiveOrSixNodesBoundaryMessage
         sizeof(SerializedRecordsCount));
     bytesBufferOffset += sizeof(SerializedRecordsCount);
     //    Parse boundary nodes
-    for (SerializedRecordNumber idx = 0; idx < boundaryNodesCount; idx++){
+    for (SerializedRecordNumber idx = 0; idx < boundaryNodesCount; idx++) {
         auto stepAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                               buffer.get() + bytesBufferOffset);
         bytesBufferOffset += stepAddress->serializedSize();
         mBoundaryNodes.push_back(stepAddress);
     }
@@ -62,7 +62,7 @@ pair<BytesShared, size_t> CyclesBaseFiveOrSixNodesBoundaryMessage::serializeToBy
         sizeof(SerializedRecordsCount));
     dataBytesOffset += sizeof(SerializedRecordsCount);
 
-    for(const auto &address: mBoundaryNodes){
+    for(const auto &address: mBoundaryNodes) {
         auto serializedAddress = address->serializeToBytes();
         memcpy(
             dataBytesShared.get() + dataBytesOffset,
@@ -72,8 +72,8 @@ pair<BytesShared, size_t> CyclesBaseFiveOrSixNodesBoundaryMessage::serializeToBy
     }
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 vector<BaseAddress::Shared> CyclesBaseFiveOrSixNodesBoundaryMessage::boundaryNodes() const

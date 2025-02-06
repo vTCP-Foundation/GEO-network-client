@@ -11,7 +11,7 @@ PingMessagesHandler::PingMessagesHandler(
     mResendingTimer(ioService)
 {
     mReschedulingTimer = make_unique<as::steady_timer>(
-        mIOService);
+                             mIOService);
     mReschedulingTimer->expires_from_now(
         chrono::seconds(
             +kMessagesReschedulingSecondsTime));
@@ -25,9 +25,9 @@ void PingMessagesHandler::tryEnqueueContractor(
     ContractorID contractorID)
 {
     if (find(
-            mContractors.begin(),
-            mContractors.end(),
-            contractorID) != mContractors.end()) {
+                mContractors.begin(),
+                mContractors.end(),
+                contractorID) != mContractors.end()) {
         return;
     }
 
@@ -47,9 +47,9 @@ void PingMessagesHandler::enqueueContractorWithPostponedSending(
     ContractorID contractorID)
 {
     if (find(
-            mContractors.begin(),
-            mContractors.end(),
-            contractorID) != mContractors.end()) {
+                mContractors.begin(),
+                mContractors.end(),
+                contractorID) != mContractors.end()) {
         return;
     }
 
@@ -65,9 +65,9 @@ void PingMessagesHandler::tryProcessPongMessage(
     ContractorID contractorID)
 {
     auto contractorIt = find(
-        mContractors.begin(),
-        mContractors.end(),
-        contractorID);
+                            mContractors.begin(),
+                            mContractors.end(),
+                            contractorID);
     if (contractorIt == mContractors.end()) {
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
         warning() << "tryProcessPongMessage: no contractor is present " << contractorID;
@@ -79,7 +79,7 @@ void PingMessagesHandler::tryProcessPongMessage(
         contractorIt);
 
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
-        debug() << "Pong message from contractor " << contractorID << " received.";
+    debug() << "Pong message from contractor " << contractorID << " received.";
 #endif
 }
 

@@ -3,7 +3,8 @@
 
 #include "../../ObservingTransaction.h"
 
-class ObservingResponseMessage {
+class ObservingResponseMessage
+{
 
 public:
     ObservingResponseMessage(

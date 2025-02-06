@@ -8,7 +8,8 @@
 
 #include "../../../contractors/ContractorsManager.h"
 
-class SetChannelContractorCryptoKeyTransaction : public BaseTransaction {
+class SetChannelContractorCryptoKeyTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<SetChannelContractorCryptoKeyTransaction> Shared;
@@ -23,7 +24,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         ResponseProcessing = 2,
     };

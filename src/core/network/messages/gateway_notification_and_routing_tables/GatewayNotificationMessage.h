@@ -3,7 +3,8 @@
 
 #include "../base/transaction/TransactionMessage.h"
 
-class GatewayNotificationMessage : public TransactionMessage {
+class GatewayNotificationMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<GatewayNotificationMessage> Shared;

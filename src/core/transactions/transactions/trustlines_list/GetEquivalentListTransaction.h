@@ -5,7 +5,8 @@
 #include "../../../interface/commands_interface/commands/trust_lines_list/EquivalentListCommand.h"
 #include "../../../equivalents/EquivalentsSubsystemsRouter.h"
 
-class GetEquivalentListTransaction : public BaseTransaction {
+class GetEquivalentListTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<GetEquivalentListTransaction> Shared;
@@ -15,7 +16,7 @@ public:
         EquivalentListCommand::Shared command,
         EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     TransactionResult::SharedConst run() override;
 

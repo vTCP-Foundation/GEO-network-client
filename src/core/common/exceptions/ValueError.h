@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class ValueError: public Exception {
+class ValueError: public Exception
+{
     using Exception::Exception;
 };
 

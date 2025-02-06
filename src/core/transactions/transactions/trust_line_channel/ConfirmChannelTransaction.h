@@ -7,7 +7,8 @@
 
 #include "../../../contractors/ContractorsManager.h"
 
-class ConfirmChannelTransaction : public BaseTransaction {
+class ConfirmChannelTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<ConfirmChannelTransaction> Shared;

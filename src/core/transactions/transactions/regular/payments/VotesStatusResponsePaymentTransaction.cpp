@@ -27,7 +27,7 @@ TransactionResult::SharedConst VotesStatusResponsePaymentTransaction::run()
         // if requested transaction didn't finish yet,
         // we send empty message, which means that requester should wait and ask again
         info() << "Requested TA currently is in processing. "
-                "Send response with empty ParticipantsVotesMessage";
+                  "Send response with empty ParticipantsVotesMessage";
         sendMessage<ParticipantsVotesMessage>(
             senderAddress,
             mEquivalent,
@@ -39,7 +39,7 @@ TransactionResult::SharedConst VotesStatusResponsePaymentTransaction::run()
 
     auto ioTransaction = mStorageHandler->beginTransaction();
     auto participantsSignatures = ioTransaction->paymentParticipantsVotesHandler()->participantsSignatures(
-        mRequest->transactionUUID());
+                                      mRequest->transactionUUID());
     if (!participantsSignatures.empty()) {
         // todo : check if requested node is participant of this transaction
         info() << "send response with not empty ParticipantsVotesMessage";

@@ -14,7 +14,8 @@
 
 using namespace std;
 
-class MaxFlowCalculationMessage : public SenderMessage {
+class MaxFlowCalculationMessage : public SenderMessage
+{
 public:
     typedef shared_ptr<MaxFlowCalculationMessage> Shared;
 

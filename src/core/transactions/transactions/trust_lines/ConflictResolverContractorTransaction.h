@@ -13,7 +13,8 @@
 #include "../../../network/messages/trust_lines/ConflictResolverResponseMessage.h"
 #include "ConflictResolverInitiatorTransaction.h"
 
-class ConflictResolverContractorTransaction : public BaseTransaction {
+class ConflictResolverContractorTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<ConflictResolverContractorTransaction> Shared;

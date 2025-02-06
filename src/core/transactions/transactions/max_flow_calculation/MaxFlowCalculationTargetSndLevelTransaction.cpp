@@ -40,7 +40,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendResultToInitiator()
     info() << "sendResultToInitiator";
 #endif
     TopologyCache::Shared maxFlowCalculationCachePtr = mTopologyCacheManager->cacheByAddress(
-        mMessage->targetAddresses().at(0));
+            mMessage->targetAddresses().at(0));
     if (maxFlowCalculationCachePtr != nullptr) {
         sendCachedResultToInitiator(
             maxFlowCalculationCachePtr);
@@ -48,7 +48,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendResultToInitiator()
     }
     vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> outgoingFlows;
     auto const outgoingFlow = mTrustLinesManager->outgoingFlow(
-        mMessage->idOnReceiverSide);
+                                  mMessage->idOnReceiverSide);
     if (*outgoingFlow.second.get() > TrustLine::kZeroAmount()) {
         outgoingFlows.push_back(
             outgoingFlow);
@@ -91,7 +91,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendCachedResultToInitiator(
 #endif
     vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> outgoingFlowsForSending;
     auto const outgoingFlow = mTrustLinesManager->outgoingFlow(
-        mMessage->idOnReceiverSide);
+                                  mMessage->idOnReceiverSide);
     if (!maxFlowCalculationCachePtr->containsOutgoingFlow(outgoingFlow.first, outgoingFlow.second)) {
         outgoingFlowsForSending.push_back(
             outgoingFlow);
@@ -127,7 +127,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendGatewayResultToInitiator()
     info() << "sendGatewayResultToInitiator";
 #endif
     TopologyCache::Shared maxFlowCalculationCachePtr = mTopologyCacheManager->cacheByAddress(
-        mMessage->targetAddresses().at(0));
+            mMessage->targetAddresses().at(0));
     if (maxFlowCalculationCachePtr != nullptr) {
         sendCachedGatewayResultToInitiator(
             maxFlowCalculationCachePtr);
@@ -136,7 +136,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendGatewayResultToInitiator()
 
     vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> outgoingFlows;
     auto const outgoingFlow = mTrustLinesManager->outgoingFlow(
-        mMessage->idOnReceiverSide);
+                                  mMessage->idOnReceiverSide);
     if (*outgoingFlow.second.get() > TrustLine::kZeroAmount()) {
         outgoingFlows.push_back(
             outgoingFlow);
@@ -191,7 +191,7 @@ void MaxFlowCalculationTargetSndLevelTransaction::sendCachedGatewayResultToIniti
 #endif
     vector<pair<BaseAddress::Shared, ConstSharedTrustLineAmount>> outgoingFlowsForSending;
     auto const outgoingFlow = mTrustLinesManager->outgoingFlow(
-        mMessage->idOnReceiverSide);
+                                  mMessage->idOnReceiverSide);
     if (!maxFlowCalculationCachePtr->containsOutgoingFlow(outgoingFlow.first, outgoingFlow.second)) {
         outgoingFlowsForSending.push_back(
             outgoingFlow);

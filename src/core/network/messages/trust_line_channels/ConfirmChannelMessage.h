@@ -4,7 +4,8 @@
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../contractors/Contractor.h"
 
-class ConfirmChannelMessage : public TransactionMessage {
+class ConfirmChannelMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ConfirmChannelMessage> Shared;

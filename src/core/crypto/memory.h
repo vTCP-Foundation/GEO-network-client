@@ -6,10 +6,8 @@
 
 #include "../common/Types.h"
 
-
 namespace crypto {
 namespace memory {
-
 
 class SecureSegment;
 
@@ -21,35 +19,32 @@ class SecureSegment;
  * On construction, it would unlock corresponding memory segment,
  * and would automatically lock it back on destruction.
  */
-class SecureSegmentGuard {
+class SecureSegmentGuard
+{
 public:
-
     /**
      * @brief
      * Unlocks memory segment for read/write operations.
      */
     SecureSegmentGuard(
-        SecureSegment &segment)
-        noexcept;
+        SecureSegment &segment) noexcept;
 
     /**
      * @brief
      * Locks memory segment for read/write operations.
      */
-    ~SecureSegmentGuard()
-        noexcept;
+    ~SecureSegmentGuard() noexcept;
 
     /**
      * @returns address of first byte of allocated segment.
      */
-    byte* address()
-        const
-        noexcept;
+    byte_t* address()
+    const
+    noexcept;
 
 private:
     SecureSegment &mSegment;
 };
-
 
 /**
  * @brief
@@ -57,7 +52,8 @@ private:
  * Provides methods for locking/unlocking and accessing it for read/write operations.
  * See constructor documentation for more details about implementation.
  */
-class SecureSegment {
+class SecureSegment
+{
 public:
     friend class SecureSegmentGuard;
 
@@ -97,39 +93,36 @@ public:
      *
      * Fills the memory region with zeros before the deallocation.
      */
-    ~SecureSegment()
-        noexcept;
+    ~SecureSegment() noexcept;
 
     SecureSegmentGuard unlockAndInitGuard()
-        const
-        noexcept;
+    const
+    noexcept;
 
     /**
      * @returns current segment adress.
      */
-    byte* address()
-        const
-        noexcept;
+    byte_t* address()
+    const
+    noexcept;
 
     /**
      * @returns current segment size.
      */
     size_t size()
-        const
-        noexcept;
+    const
+    noexcept;
 
     /**
      * @brief
      * Securely removes the content of the segment from the memory.
      */
-    void wipeAndFree()
-        noexcept;
+    void wipeAndFree() noexcept;
 
 private:
-    byte *mAddress;
+    byte_t* mAddress;
     size_t mSize;
 };
-
 
 }
 }

@@ -3,34 +3,31 @@
 UpdateChannelAddressesMessage::UpdateChannelAddressesMessage(
     Contractor::Shared contractor,
     const TransactionUUID &transactionUUID,
-    vector<BaseAddress::Shared> newSenderAddresses) :
-    TransactionMessage(
-        0,
-        contractor->ownIdOnContractorSide(),
-        transactionUUID),
+    vector<BaseAddress::Shared> newSenderAddresses) : TransactionMessage(0,
+                contractor->ownIdOnContractorSide(),
+                transactionUUID),
     mNewSenderAddresses(newSenderAddresses)
 {
     encrypt(contractor);
 }
 
 UpdateChannelAddressesMessage::UpdateChannelAddressesMessage(
-    BytesShared buffer):
-    TransactionMessage(buffer)
+    BytesShared buffer) : TransactionMessage(buffer)
 {
     size_t bytesBufferOffset = TransactionMessage::kOffsetToInheritedBytes();
 
-    byte senderAddressesCnt;
+    byte_t senderAddressesCnt;
     memcpy(
         &senderAddressesCnt,
         buffer.get() + bytesBufferOffset,
-        sizeof(byte));
-    bytesBufferOffset += sizeof(byte);
+        sizeof(byte_t));
+    bytesBufferOffset += sizeof(byte_t);
     mNewSenderAddresses.reserve(
         senderAddressesCnt);
 
     for (int idx = 0; idx < senderAddressesCnt; idx++) {
         auto senderAddress = deserializeAddress(
-            buffer.get() + bytesBufferOffset);
+                                 buffer.get() + bytesBufferOffset);
         mNewSenderAddresses.push_back(senderAddress);
         bytesBufferOffset += senderAddress->serializedSize();
     }
@@ -50,7 +47,7 @@ pair<BytesShared, size_t> UpdateChannelAddressesMessage::serializeToBytes() cons
 {
     auto parentBytesAndCount = TransactionMessage::serializeToBytes();
 
-    size_t bytesCount = parentBytesAndCount.second + sizeof(byte);
+    size_t bytesCount = parentBytesAndCount.second + sizeof(byte_t);
     for (const auto &address : mNewSenderAddresses) {
         bytesCount += address->serializedSize();
     }
@@ -64,12 +61,12 @@ pair<BytesShared, size_t> UpdateChannelAddressesMessage::serializeToBytes() cons
         parentBytesAndCount.second);
     dataBytesOffset += parentBytesAndCount.second;
     //----------------------------
-    auto addressesCnt = (byte)mNewSenderAddresses.size();
+    auto addressesCnt = (byte_t)mNewSenderAddresses.size();
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         &addressesCnt,
-        sizeof(byte));
-    dataBytesOffset += sizeof(byte);
+        sizeof(byte_t));
+    dataBytesOffset += sizeof(byte_t);
     //----------------------------
     for (const auto &address : mNewSenderAddresses) {
         auto serializedAddress = address->serializeToBytes();
@@ -81,6 +78,6 @@ pair<BytesShared, size_t> UpdateChannelAddressesMessage::serializeToBytes() cons
     }
     //----------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

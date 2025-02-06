@@ -41,7 +41,7 @@ TransactionResult::SharedConst AcceptTrustLineTransaction::run()
 
     if (mTrustLinesManager->trustLineIsPresent(mContractorID)) {
         if (mTrustLinesManager->isTrustLineEmpty(mContractorID)
-            and mTrustLinesManager->auditNumber(mContractorID) == 0) {
+                and mTrustLinesManager->auditNumber(mContractorID) == 0) {
             info() << "Send confirmation on init TL again";
             sendMessageWithTemporaryCaching<TrustLineConfirmationMessage>(
                 mContractorID,
@@ -57,7 +57,7 @@ TransactionResult::SharedConst AcceptTrustLineTransaction::run()
         if (mTrustLinesManager->trustLineState(mContractorID) != TrustLine::Archived) {
             warning() << "Trust line already present and not initial.";
             return sendTrustLineErrorConfirmation(
-                ConfirmationMessage::TrustLineAlreadyPresent);
+                       ConfirmationMessage::TrustLineAlreadyPresent);
         } else {
             info() << "Reopening of archived TL";
         }
@@ -159,10 +159,10 @@ void AcceptTrustLineTransaction::populateHistory(
 {
 #ifndef TESTS
     auto record = make_shared<TrustLineRecord>(
-        mTransactionUUID,
-        operationType,
-        mContractorsManager->contractor(mContractorID),
-        0);
+                      mTransactionUUID,
+                      operationType,
+                      mContractorsManager->contractor(mContractorID),
+                      0);
 
     ioTransaction->historyStorage()->saveTrustLineRecord(
         record,

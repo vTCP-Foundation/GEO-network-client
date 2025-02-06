@@ -10,41 +10,42 @@
 using namespace std;
 
 
-class OutgoingNodesHandler {
+class OutgoingNodesHandler
+{
 public:
     OutgoingNodesHandler (
         IOService &ioService,
         UDPSocket &socket,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     OutgoingRemoteBaseNode* handler(
         const IPv4WithPortAddress::Shared address)
-        noexcept;
+    noexcept;
 
     OutgoingRemoteBaseNode* providerHandler(
         const IPv4WithPortAddress::Shared address)
-        noexcept;
+    noexcept;
 
 protected:
     static chrono::seconds kHandlersTTL()
-        noexcept;
+    noexcept;
 
 protected:
     void rescheduleCleaning()
-        noexcept;
+    noexcept;
 
     void removeOutdatedNodeHandlers()
-        noexcept;
+    noexcept;
 
     void removeOutdatedProviderHandlers()
-        noexcept;
+    noexcept;
 
     static string logHeader()
-        noexcept;
+    noexcept;
 
     LoggerStream debug() const
-        noexcept;
+    noexcept;
 
 protected:
     boost::unordered_map<string, OutgoingRemoteBaseNode::Unique> mNodes;

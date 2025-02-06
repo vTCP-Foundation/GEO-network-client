@@ -9,7 +9,7 @@ PaymentRecord::PaymentRecord(
     const TrustLineBalance &balanceAfterOperation,
     vector<pair<ContractorID, TrustLineAmount>> &outgoingTransfers,
     vector<pair<ContractorID, TrustLineAmount>> &incomingTransfers,
-    const string payload):
+    const string payload) :
 
     Record(
         Record::PaymentRecordType,
@@ -23,7 +23,8 @@ PaymentRecord::PaymentRecord(
     mIncomingTransfers(incomingTransfers),
     mCommandUUID(CommandUUID::empty()),
     mPayload(payload)
-{}
+{
+}
 
 PaymentRecord::PaymentRecord(
     const SerializedEquivalent equivalent,
@@ -35,7 +36,7 @@ PaymentRecord::PaymentRecord(
     vector<pair<ContractorID, TrustLineAmount>> &outgoingTransfers,
     vector<pair<ContractorID, TrustLineAmount>> &incomingTransfers,
     const CommandUUID &commandUUID,
-    const string payload):
+    const string payload) :
 
     Record(
         Record::PaymentRecordType,
@@ -49,42 +50,40 @@ PaymentRecord::PaymentRecord(
     mIncomingTransfers(incomingTransfers),
     mCommandUUID(commandUUID),
     mPayload(payload)
-{}
+{
+}
 
 PaymentRecord::PaymentRecord(
     const SerializedEquivalent equivalent,
     const TransactionUUID &operationUUID,
     const GEOEpochTimestamp geoEpochTimestamp,
-    BytesShared recordBody):
-    Record(
-        Record::PaymentRecordType,
-        operationUUID,
-        geoEpochTimestamp),
+    BytesShared recordBody) : Record(
+            Record::PaymentRecordType,
+            operationUUID,
+            geoEpochTimestamp),
     mEquivalent(equivalent)
 {
     size_t dataBufferOffset = 0;
-    auto *operationType
-        = new (recordBody.get() + dataBufferOffset) PaymentRecord::SerializedPaymentOperationType;
-    dataBufferOffset += sizeof(
-        PaymentRecord::SerializedPaymentOperationType);
+    auto *operationType = new (recordBody.get() + dataBufferOffset) PaymentRecord::SerializedPaymentOperationType;
+    dataBufferOffset +=sizeof(PaymentRecord::SerializedPaymentOperationType);
     mPaymentOperationType = (PaymentOperationType)*operationType;
 
     mContractor = make_shared<Contractor>(
-        recordBody.get() + dataBufferOffset);
+                      recordBody.get() + dataBufferOffset);
     dataBufferOffset += mContractor->serializedSize();
 
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         recordBody.get() + dataBufferOffset,
         recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
     mAmount = bytesToTrustLineAmount(
-        amountBytes);
+                  amountBytes);
     dataBufferOffset += kTrustLineAmountBytesCount;
 
-    vector<byte> balanceBytes(
+    vector<byte_t> balanceBytes(
         recordBody.get() + dataBufferOffset,
         recordBody.get() + dataBufferOffset + kTrustLineBalanceSerializeBytesCount);
     mBalanceAfterOperation = bytesToTrustLineBalance(
-        balanceBytes);
+                                 balanceBytes);
     dataBufferOffset += kTrustLineBalanceSerializeBytesCount;
 
     uint16_t outgoingTransfersCount;
@@ -103,7 +102,7 @@ PaymentRecord::PaymentRecord(
             sizeof(ContractorID));
         dataBufferOffset += sizeof(ContractorID);
 
-        vector<byte> amountTransferBytes(
+        vector<byte_t> amountTransferBytes(
             recordBody.get() + dataBufferOffset,
             recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
         dataBufferOffset += kTrustLineAmountBytesCount;
@@ -130,7 +129,7 @@ PaymentRecord::PaymentRecord(
             sizeof(ContractorID));
         dataBufferOffset += sizeof(ContractorID);
 
-        vector<byte> amountTransferBytes(
+        vector<byte_t> amountTransferBytes(
             recordBody.get() + dataBufferOffset,
             recordBody.get() + dataBufferOffset + kTrustLineAmountBytesCount);
         dataBufferOffset += kTrustLineAmountBytesCount;
@@ -141,18 +140,18 @@ PaymentRecord::PaymentRecord(
                 amountTransferBytes));
     }
 
-    byte payloadLength;
+    byte_t payloadLength;
     memcpy(
         &payloadLength,
         recordBody.get() + dataBufferOffset,
-        sizeof(byte));
+        sizeof(byte_t));
 
     mPayload = "";
     if (payloadLength > 0) {
-        dataBufferOffset += sizeof(byte);
+        dataBufferOffset += sizeof(byte_t);
         mPayload = string(
-            recordBody.get() + dataBufferOffset,
-            recordBody.get() + dataBufferOffset + payloadLength);
+                       recordBody.get() + dataBufferOffset,
+                       recordBody.get() + dataBufferOffset + payloadLength);
     }
 }
 
@@ -171,17 +170,17 @@ const PaymentRecord::PaymentOperationType PaymentRecord::paymentOperationType() 
     return mPaymentOperationType;
 }
 
-const TrustLineAmount& PaymentRecord::amount() const
+const TrustLineAmount &PaymentRecord::amount() const
 {
     return mAmount;
 }
 
-const TrustLineBalance& PaymentRecord::balanceAfterOperation() const
+const TrustLineBalance &PaymentRecord::balanceAfterOperation() const
 {
     return mBalanceAfterOperation;
 }
 
-const CommandUUID& PaymentRecord::commandUUID() const
+const CommandUUID &PaymentRecord::commandUUID() const
 {
     return mCommandUUID;
 }
@@ -193,19 +192,10 @@ const string PaymentRecord::payload() const
 
 pair<BytesShared, size_t> PaymentRecord::serializedHistoryRecordBody() const
 {
-    size_t recordBodySize = sizeof(SerializedPaymentOperationType)
-                            + mContractor->serializedSize()
-                            + kTrustLineAmountBytesCount
-                            + kTrustLineBalanceSerializeBytesCount
-                            + sizeof(uint16_t)
-                            + (sizeof(ContractorID) + kTrustLineAmountBytesCount) * mOutgoingTransfers.size()
-                            + sizeof(uint16_t)
-                            + (sizeof(ContractorID) + kTrustLineAmountBytesCount) * mIncomingTransfers.size()
-                            + sizeof(byte)
-                            + mPayload.length();
+    size_t recordBodySize = sizeof(SerializedPaymentOperationType) + mContractor->serializedSize() + kTrustLineAmountBytesCount + kTrustLineBalanceSerializeBytesCount + sizeof(uint16_t) + (sizeof(ContractorID) + kTrustLineAmountBytesCount) * mOutgoingTransfers.size() + sizeof(uint16_t) + (sizeof(ContractorID) + kTrustLineAmountBytesCount) * mIncomingTransfers.size() + sizeof(byte_t) + mPayload.length();
 
     BytesShared bytesBuffer = tryCalloc(
-        recordBodySize);
+                                  recordBodySize);
     size_t bytesBufferOffset = 0;
 
     memcpy(
@@ -281,14 +271,14 @@ pair<BytesShared, size_t> PaymentRecord::serializedHistoryRecordBody() const
         bytesBufferOffset += kTrustLineAmountBytesCount;
     }
 
-    auto payloadLength = (byte)mPayload.length();
+    auto payloadLength = (byte_t)mPayload.length();
     memcpy(
         bytesBuffer.get() + bytesBufferOffset,
         &payloadLength,
-        sizeof(byte));
+        sizeof(byte_t));
 
     if (payloadLength > 0) {
-        bytesBufferOffset += sizeof(byte);
+        bytesBufferOffset += sizeof(byte_t);
         memcpy(
             bytesBuffer.get() + bytesBufferOffset,
             mPayload.c_str(),
@@ -296,6 +286,6 @@ pair<BytesShared, size_t> PaymentRecord::serializedHistoryRecordBody() const
     }
 
     return make_pair(
-        bytesBuffer,
-        recordBodySize);
+               bytesBuffer,
+               recordBodySize);
 }

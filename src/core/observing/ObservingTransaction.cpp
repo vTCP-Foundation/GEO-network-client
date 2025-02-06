@@ -1,5 +1,15 @@
 #include "ObservingTransaction.h"
 
+// todo: move to .h
+const uint16_t ObservingTransaction::kClaimRequestPeriodSeconds;
+const uint16_t ObservingTransaction::kClaimRequestSmallPeriodSeconds;
+
+#ifdef TESTS
+// todo: move to .h
+const uint16_t ObservingTransaction::kClaimRequestPeriodSecondsTests;
+const uint16_t ObservingTransaction::kClaimRequestSmallPeriodSecondsTests;
+#endif
+
 ObservingTransaction::ObservingTransaction(
     ObservingClaimAppendRequestMessage::Shared observingRequestMessage) :
     mRequest(observingRequestMessage),
@@ -59,7 +69,7 @@ void ObservingTransaction::rescheduleNextActionTime()
 
 void ObservingTransaction::rescheduleNextActionSmallTime()
 {
-   mNextActionDateTime = utc_now() + boost::posix_time::seconds(kClaimRequestSmallPeriodSeconds);
+    mNextActionDateTime = utc_now() + boost::posix_time::seconds(kClaimRequestSmallPeriodSeconds);
 #ifdef TESTS
     mNextActionDateTime = utc_now() + boost::posix_time::seconds(kClaimRequestSmallPeriodSecondsTests);
 #endif

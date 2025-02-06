@@ -15,7 +15,8 @@ namespace signals = boost::signals2;
  * Stores messages, that must be re-sent to the remote node,
  * until appropriate confirmation would be received.
  */
-class ConfirmationRequiredMessagesQueue {
+class ConfirmationRequiredMessagesQueue
+{
 public:
     typedef shared_ptr<ConfirmationRequiredMessagesQueue> Shared;
 
@@ -28,7 +29,7 @@ public:
     ConfirmationRequiredMessagesQueue(
         const SerializedEquivalent equivalent,
         ContractorID contractorID)
-        noexcept;
+    noexcept;
 
     /**
      * Checks message type, and in case if this message requires confirmation -
@@ -48,27 +49,27 @@ public:
      * @returns date time when next sending attempt must be scheduled.
      */
     const DateTime &nextSendingAttemptDateTime()
-        noexcept;
+    noexcept;
 
     /**
      * @returns messages, that are enqueued by this queue.
      * On each call, internal timer of next re-sending is exponentially increased.
      */
     const map<TransactionUUID, TransactionMessage::Shared> &messages()
-        noexcept;
+    noexcept;
 
     /**
      * @returns messages count in the queue.
      */
     const size_t size() const
-        noexcept;
+    noexcept;
 
 protected:
     /**
      * Sets re-sending timeout to the default value.
      */
     void resetInternalTimeout()
-        noexcept;
+    noexcept;
 
 protected: // messages handlers
     /**

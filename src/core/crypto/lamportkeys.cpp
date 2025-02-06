@@ -1,6 +1,5 @@
 #include "lamportkeys.h"
 
-
 namespace crypto {
 namespace lamport {
 
@@ -10,50 +9,47 @@ const size_t BaseKey::keySize()
     return 16 * 1024;
 }
 
-
-PrivateKey::PrivateKey():
-    mData(memory::SecureSegment(kRandomNumbersCount * kRandomNumberSize)),
+PrivateKey::PrivateKey() : mData(memory::SecureSegment(kRandomNumbersCount * kRandomNumberSize)),
     mIsCropped(false)
 {
     auto guard = mData.unlockAndInitGuard();
 
-    auto offset = static_cast<byte*>(guard.address());
-    for (size_t i=0; i<kRandomNumbersCount; ++i) {
+    auto offset = static_cast<byte_t*>(guard.address());
+    for (size_t i = 0; i < kRandomNumbersCount; ++i) {
         randombytes_buf(offset, kRandomNumberSize);
         offset += kRandomNumberSize;
     }
 }
 
 PrivateKey::PrivateKey(
-    byte *data) :
-    mData(memory::SecureSegment(keySize())),
+    byte_t* data) : mData(memory::SecureSegment(keySize())),
     mIsCropped(false)
 {
     auto guard = mData.unlockAndInitGuard();
-    auto offset = static_cast<byte*>(guard.address());
+    auto offset = static_cast<byte_t*>(guard.address());
     memcpy(
         offset,
         data,
         keySize());
 }
 
-
-PublicKey::Shared PrivateKey::derivePublicKey() {
+PublicKey::Shared PrivateKey::derivePublicKey()
+{
 
     auto guard = mData.unlockAndInitGuard();
     auto generatedKey = make_shared<PublicKey>();
 
     // Numbers buffers memory allocation.
-    generatedKey->mData = static_cast<byte*>(malloc(kRandomNumbersCount * kRandomNumberSize));
+    generatedKey->mData = static_cast<byte_t*>(malloc(kRandomNumbersCount * kRandomNumberSize));
     if (generatedKey->mData == nullptr) {
         return nullptr;
     }
 
     // Numbers buffers initialisation via hashing private key numbers.
-    auto source = static_cast<byte*>(guard.address());
-    auto destination = static_cast<byte*>(generatedKey->mData);
+    auto source = static_cast<byte_t*>(guard.address());
+    auto destination = static_cast<byte_t*>(generatedKey->mData);
 
-    for (size_t i=0; i<kRandomNumbersCount; ++i) {
+    for (size_t i = 0; i < kRandomNumbersCount; ++i) {
         crypto_generichash(destination, kRandomNumberSize, source, kRandomNumberSize, nullptr, 0);
         source += kRandomNumberSize;
         destination += kRandomNumberSize;
@@ -62,25 +58,24 @@ PublicKey::Shared PrivateKey::derivePublicKey() {
     return generatedKey;
 }
 
-const memory::SecureSegment* PrivateKey::data() const
+const memory::SecureSegment *PrivateKey::data() const
 {
     return &mData;
 }
 
 PublicKey::PublicKey(
-    byte *data)
+    byte_t* data)
 {
-    mData = static_cast<byte*>(
-        malloc(
-            keySize()));
+    mData = static_cast<byte_t*>(
+                malloc(
+                    keySize()));
     memcpy(
         mData,
         data,
         keySize());
 }
 
-PublicKey::~PublicKey()
-    noexcept
+PublicKey::~PublicKey() noexcept
 {
     if (mData != nullptr) {
         free(mData);
@@ -88,14 +83,14 @@ PublicKey::~PublicKey()
     }
 }
 
-const byte* PublicKey::data() const
+const byte_t* PublicKey::data() const
 {
     return mData;
 }
 
 const KeyHash::Shared PublicKey::hash() const
 {
-    auto keyHashBuffer = (byte*)malloc(KeyHash::kBytesSize);
+    auto keyHashBuffer = (byte_t*)malloc(KeyHash::kBytesSize);
     crypto_generichash(
         keyHashBuffer,
         KeyHash::kBytesSize,
@@ -107,7 +102,7 @@ const KeyHash::Shared PublicKey::hash() const
 }
 
 KeyHash::KeyHash(
-    byte* buffer)
+    byte_t* buffer)
 {
     memcpy(
         mData,
@@ -115,7 +110,7 @@ KeyHash::KeyHash(
         kBytesSize);
 }
 
-const byte* KeyHash::data() const
+const byte_t* KeyHash::data() const
 {
     return mData;
 }
@@ -124,23 +119,23 @@ const string KeyHash::toString() const
 {
     stringstream ss;
     ss << std::hex;
-    for(byte i : mData)
-        ss<<(int)i;
+    for (byte_t i : mData)
+        ss << (int)i;
     return ss.str();
 }
 
-bool operator== (const KeyHash &kh1, const KeyHash &kh2)
+bool operator==(const KeyHash &kh1, const KeyHash &kh2)
 {
-    for (int i = KeyHash::kBytesSize - 1; i >= 0; --i){
+    for (int i = KeyHash::kBytesSize - 1; i >= 0; --i) {
         if (kh1.mData[i] != kh2.mData[i])
             return false;
     }
     return true;
 }
 
-bool operator!= (const KeyHash &kh1, const KeyHash &kh2)
+bool operator!=(const KeyHash &kh1, const KeyHash &kh2)
 {
-    for (int i = KeyHash::kBytesSize - 1; i >= 0; --i){
+    for (int i = KeyHash::kBytesSize - 1; i >= 0; --i) {
         if (kh1.mData[i] != kh2.mData[i])
             return true;
     }
@@ -149,4 +144,3 @@ bool operator!= (const KeyHash &kh1, const KeyHash &kh2)
 
 }
 }
-

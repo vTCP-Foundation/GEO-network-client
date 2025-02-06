@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 
-class MemoryError: public Exception {
+class MemoryError: public Exception
+{
     using Exception::Exception;
 };
 

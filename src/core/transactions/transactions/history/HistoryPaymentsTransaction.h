@@ -8,7 +8,8 @@
 
 #include <vector>
 
-class HistoryPaymentsTransaction : public BaseTransaction {
+class HistoryPaymentsTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<HistoryPaymentsTransaction> Shared;

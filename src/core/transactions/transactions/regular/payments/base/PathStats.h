@@ -6,10 +6,12 @@
 #include "../../../../../common/exceptions/ValueError.h"
 #include "../../../../../common/exceptions/NotFoundError.h"
 
-class PathStats {
+class PathStats
+{
 
 public:
-    enum NodeState {
+    enum NodeState
+    {
         ReservationRequestDoesntSent = 0,
 
         NeighbourReservationRequestSent,

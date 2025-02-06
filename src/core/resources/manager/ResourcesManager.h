@@ -14,13 +14,14 @@
 using namespace std;
 namespace signals = boost::signals2;
 
-class ResourcesManager {
+class ResourcesManager
+{
 public:
     typedef signals::signal<void(
-                const TransactionUUID&,
-                BaseAddress::Shared,
-                const SerializedEquivalent)>
-            RequestPathsResourcesSignal;
+        const TransactionUUID&,
+        BaseAddress::Shared,
+        const SerializedEquivalent)>
+    RequestPathsResourcesSignal;
     typedef signals::signal<void(const TransactionUUID&)> RequestObservingBlockNumberSignal;
     typedef signals::signal<void(BaseResource::Shared)> AttachResourceSignal;
 

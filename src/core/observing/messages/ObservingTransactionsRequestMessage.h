@@ -5,7 +5,8 @@
 #include "../../transactions/transactions/base/TransactionUUID.h"
 #include <vector>
 
-class ObservingTransactionsRequestMessage : public ObservingMessage {
+class ObservingTransactionsRequestMessage : public ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingTransactionsRequestMessage> Shared;

@@ -1,6 +1,5 @@
 ﻿#include "RequestMessage.h"
 
-
 RequestMessage::RequestMessage(
     const SerializedEquivalent equivalent,
     vector<BaseAddress::Shared> &senderAddresses,
@@ -14,10 +13,11 @@ RequestMessage::RequestMessage(
         transactionUUID),
     mPathID(pathID),
     mAmount(amount)
-{}
+{
+}
 
 RequestMessage::RequestMessage(
-    BytesShared buffer):
+    BytesShared buffer) :
 
     TransactionMessage(buffer)
 {
@@ -27,7 +27,7 @@ RequestMessage::RequestMessage(
     mPathID = *pathID;
     bytesBufferOffset += sizeof(PathID);
     auto amountEndOffset = bytesBufferOffset + kTrustLineBalanceBytesCount; // TODO: deserialize only non-zero
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         bytesBufferOffset,
         amountEndOffset);
 
@@ -49,9 +49,7 @@ pair<BytesShared, size_t> RequestMessage::serializeToBytes() const
     auto serializedAmount = trustLineAmountToBytes(mAmount); // TODO: serialize only non-zero
     auto parentBytesAndCount = TransactionMessage::serializeToBytes();
     size_t bytesCount =
-        + parentBytesAndCount.second
-        + sizeof(PathID)
-        + kTrustLineAmountBytesCount;
+        +parentBytesAndCount.second + sizeof(PathID) + kTrustLineAmountBytesCount;
 
     BytesShared buffer = tryMalloc(bytesCount);
     auto initialOffset = buffer.get();
@@ -74,17 +72,14 @@ pair<BytesShared, size_t> RequestMessage::serializeToBytes() const
         kTrustLineAmountBytesCount);
 
     return make_pair(
-        buffer,
-        bytesCount);
+               buffer,
+               bytesCount);
 }
 
 const size_t RequestMessage::kOffsetToInheritedBytes() const
 {
     const size_t offset =
-        TransactionMessage::kOffsetToInheritedBytes()
-        + sizeof(PathID)
-        + kTrustLineAmountBytesCount;
+        TransactionMessage::kOffsetToInheritedBytes() + sizeof(PathID) + kTrustLineAmountBytesCount;
 
     return offset;
 }
-

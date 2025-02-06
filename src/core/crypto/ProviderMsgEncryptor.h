@@ -5,16 +5,18 @@
 #include "../common/memory/MemoryUtils.h"
 #include "../common/time/TimeUtils.h"
 
-class ProviderMsgEncryptor {
+class ProviderMsgEncryptor
+{
 
 public:
     typedef pair<BytesShared, size_t> Buffer;
-    struct PublicKey {
+    struct PublicKey
+    {
         typedef std::shared_ptr<PublicKey> Shared;
         static const size_t kBytesSize = crypto_aead_aes256gcm_KEYBYTES;
         PublicKey() {}
         explicit PublicKey(const string &str);
-        byte key[kBytesSize];
+        byte_t key[kBytesSize];
     };
 
 public:
@@ -22,12 +24,11 @@ public:
         const PublicKey::Shared &publicKey);
 
     Buffer encrypt(
-        byte* bytesForEncryption,
+        byte_t* bytesForEncryption,
         size_t size);
 
 protected:
     PublicKey::Shared mPublicKey = nullptr;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_PROVIDERMSGENCRYPTOR_H
+#endif // GEO_NETWORK_CLIENT_PROVIDERMSGENCRYPTOR_H

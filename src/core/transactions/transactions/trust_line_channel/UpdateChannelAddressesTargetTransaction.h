@@ -6,7 +6,8 @@
 #include "../../../contractors/ContractorsManager.h"
 #include "../../../io/storage/StorageHandler.h"
 
-class UpdateChannelAddressesTargetTransaction : public BaseTransaction {
+class UpdateChannelAddressesTargetTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<UpdateChannelAddressesTargetTransaction> Shared;

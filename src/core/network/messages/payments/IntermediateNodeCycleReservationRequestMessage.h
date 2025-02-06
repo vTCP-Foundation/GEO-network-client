@@ -4,7 +4,8 @@
 #include "base/RequestCycleMessage.h"
 
 class IntermediateNodeCycleReservationRequestMessage :
-    public RequestCycleMessage {
+    public RequestCycleMessage
+{
 
 public:
     typedef shared_ptr<IntermediateNodeCycleReservationRequestMessage> Shared;

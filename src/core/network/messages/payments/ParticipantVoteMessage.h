@@ -6,12 +6,14 @@
 
 using namespace crypto;
 
-class ParticipantVoteMessage : public TransactionMessage {
+class ParticipantVoteMessage : public TransactionMessage
+{
 
 public:
     typedef shared_ptr<ParticipantVoteMessage> Shared;
 
-    enum OperationState {
+    enum OperationState
+    {
         Accepted = 1,
         Rejected = 2,
     };
@@ -35,12 +37,11 @@ public:
     pair<BytesShared, size_t> serializeToBytes() const override;
 
 private:
-    typedef byte SerializedOperationState;
+    typedef byte_t SerializedOperationState;
 
 private:
     OperationState mState;
     lamport::Signature::Shared mSignature;
 };
 
-
-#endif //GEO_NETWORK_CLIENT_PARTICIPANTVOTEMESSAGE_H
+#endif // GEO_NETWORK_CLIENT_PARTICIPANTVOTEMESSAGE_H

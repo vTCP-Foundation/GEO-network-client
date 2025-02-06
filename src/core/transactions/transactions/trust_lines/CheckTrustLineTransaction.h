@@ -4,7 +4,8 @@
 #include "../base/BaseTransaction.h"
 #include "../../../trust_lines/manager/TrustLinesManager.h"
 
-class CheckTrustLineTransaction : public BaseTransaction {
+class CheckTrustLineTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<CheckTrustLineTransaction> Shared;

@@ -9,7 +9,8 @@
 
 using boost::asio::ip::tcp;
 
-class ObservingCommunicator {
+class ObservingCommunicator
+{
 
 public:
     ObservingCommunicator(

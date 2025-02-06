@@ -40,7 +40,7 @@ FinalAmountsConfigurationResponseMessage::FinalAmountsConfigurationResponseMessa
     if (mState == Accepted) {
         bytesBufferOffset += sizeof(SerializedOperationState);
         auto publicKey = make_shared<lamport::PublicKey>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         mPublicKey = publicKey;
     }
 }
@@ -90,8 +90,8 @@ pair<BytesShared, size_t> FinalAmountsConfigurationResponseMessage::serializeToB
             mPublicKey->keySize());
     }
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType FinalAmountsConfigurationResponseMessage::typeID() const

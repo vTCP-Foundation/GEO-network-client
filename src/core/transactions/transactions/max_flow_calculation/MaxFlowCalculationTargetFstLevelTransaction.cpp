@@ -48,7 +48,7 @@ TransactionResult::SharedConst MaxFlowCalculationTargetFstLevelTransaction::run(
         incomingFlowIDs = mTrustLinesManager->firstLevelNonGatewayNeighborsWithIncomingFlow();
     }
     auto targetContractorID = mContractorsManager->contractorIDByAddress(
-        mMessage->targetAddresses().at(0));
+                                  mMessage->targetAddresses().at(0));
     for (auto const &nodeIDWithIncomingFlow : incomingFlowIDs.first) {
         if (nodeIDWithIncomingFlow == mMessage->idOnReceiverSide or
                 nodeIDWithIncomingFlow == targetContractorID) {
@@ -68,7 +68,7 @@ TransactionResult::SharedConst MaxFlowCalculationTargetFstLevelTransaction::run(
     }
     for (auto const &nodeIDWithIncomingFlow : incomingFlowIDs.second) {
         if (nodeIDWithIncomingFlow == mMessage->idOnReceiverSide or
-            nodeIDWithIncomingFlow == targetContractorID) {
+                nodeIDWithIncomingFlow == targetContractorID) {
             continue;
         }
         if (!mTopologyCacheManager->isInFirstLevelCache(nodeIDWithIncomingFlow)) {

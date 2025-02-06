@@ -5,16 +5,16 @@ ReceiptRecord::ReceiptRecord(
     const TransactionUUID &transactionUUID,
     const TrustLineAmount &amount,
     const lamport::KeyHash::Shared keyHash,
-    const lamport::Signature::Shared signature) :
-    mAuditNumber(auditNumber),
+    const lamport::Signature::Shared signature) : mAuditNumber(auditNumber),
     mTransactionUUID(transactionUUID),
     mAmount(amount),
     mKeyHash(keyHash),
     mSignature(signature)
-{}
+{
+}
 
 ReceiptRecord::ReceiptRecord(
-    byte* buffer)
+    byte_t* buffer)
 {
     auto bytesBufferOffset = 0;
     memcpy(
@@ -29,18 +29,18 @@ ReceiptRecord::ReceiptRecord(
         TransactionUUID::kBytesSize);
     bytesBufferOffset += TransactionUUID::kBytesSize;
 
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         buffer + bytesBufferOffset,
         buffer + bytesBufferOffset + kTrustLineAmountBytesCount);
     mAmount = bytesToTrustLineAmount(amountBytes);
     bytesBufferOffset += kTrustLineAmountBytesCount;
 
     mKeyHash = make_shared<lamport::KeyHash>(
-        buffer + bytesBufferOffset);
+                   buffer + bytesBufferOffset);
     bytesBufferOffset += lamport::KeyHash::kBytesSize;
 
     mSignature = make_shared<lamport::Signature>(
-        buffer + bytesBufferOffset);
+                     buffer + bytesBufferOffset);
 }
 
 const AuditNumber ReceiptRecord::auditNumber() const
@@ -48,12 +48,12 @@ const AuditNumber ReceiptRecord::auditNumber() const
     return mAuditNumber;
 }
 
-const TransactionUUID& ReceiptRecord::transactionUUID() const
+const TransactionUUID &ReceiptRecord::transactionUUID() const
 {
     return mTransactionUUID;
 }
 
-const TrustLineAmount& ReceiptRecord::amount() const
+const TrustLineAmount &ReceiptRecord::amount() const
 {
     return mAmount;
 }
@@ -85,8 +85,8 @@ BytesShared ReceiptRecord::serializeToBytes()
         TransactionUUID::kBytesSize);
     dataBytesOffset += TransactionUUID::kBytesSize;
 
-    vector<byte> amountBufferBytes = trustLineAmountToBytes(
-        mAmount);
+    vector<byte_t> amountBufferBytes = trustLineAmountToBytes(
+                                           mAmount);
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         amountBufferBytes.data(),
@@ -109,14 +109,10 @@ BytesShared ReceiptRecord::serializeToBytes()
 
 const size_t ReceiptRecord::recordSize()
 {
-    return sizeof(AuditNumber)
-           + TransactionUUID::kBytesSize
-           + kTrustLineAmountBytesCount
-           + lamport::KeyHash::kBytesSize
-           + lamport::Signature::signatureSize();
+    return sizeof(AuditNumber) + TransactionUUID::kBytesSize + kTrustLineAmountBytesCount + lamport::KeyHash::kBytesSize + lamport::Signature::signatureSize();
 }
 
-bool operator== (
+bool operator==(
     const ReceiptRecord::Shared record1,
     const ReceiptRecord::Shared record2)
 {

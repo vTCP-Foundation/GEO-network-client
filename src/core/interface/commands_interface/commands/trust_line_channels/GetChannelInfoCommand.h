@@ -3,7 +3,8 @@
 
 #include "../BaseUserCommand.h"
 
-class GetChannelInfoCommand : public BaseUserCommand {
+class GetChannelInfoCommand : public BaseUserCommand
+{
 
 public:
     typedef shared_ptr<GetChannelInfoCommand> Shared;

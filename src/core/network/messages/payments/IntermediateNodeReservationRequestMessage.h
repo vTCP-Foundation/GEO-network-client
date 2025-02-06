@@ -5,7 +5,8 @@
 
 
 class IntermediateNodeReservationRequestMessage:
-    public RequestMessageWithReservations {
+    public RequestMessageWithReservations
+{
 
 public:
     typedef shared_ptr<IntermediateNodeReservationRequestMessage> Shared;

@@ -1,17 +1,15 @@
 #include "ObservingParticipantsVotesResponseMessage.h"
 
 ObservingParticipantsVotesResponseMessage::ObservingParticipantsVotesResponseMessage(
-    BytesShared buffer):
-    ObservingResponseMessage(
-        buffer)
+    BytesShared buffer) : ObservingResponseMessage(buffer)
 {
     size_t bytesBufferOffset = ObservingResponseMessage::kOffsetToInheritedBytes();
 
     memcpy(
         &mIsParticipantsVotesPresent,
         buffer.get() + bytesBufferOffset,
-        sizeof(byte));
-    bytesBufferOffset += sizeof(byte);
+        sizeof(byte_t));
+    bytesBufferOffset += sizeof(byte_t);
 
     memcpy(
         &mMaximalClaimingBlockNumber,
@@ -37,7 +35,7 @@ ObservingParticipantsVotesResponseMessage::ObservingParticipantsVotesResponseMes
         bytesBufferOffset += sizeof(PaymentNodeID);
 
         auto signature = make_shared<lamport::Signature>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         bytesBufferOffset += lamport::Signature::signatureSize();
 
         mParticipantsSignatures.insert(
@@ -52,7 +50,7 @@ bool ObservingParticipantsVotesResponseMessage::isParticipantsVotesPresent() con
     return mIsParticipantsVotesPresent;
 }
 
-const TransactionUUID& ObservingParticipantsVotesResponseMessage::transactionUUID() const
+const TransactionUUID &ObservingParticipantsVotesResponseMessage::transactionUUID() const
 {
     return mTransactionUUID;
 }
@@ -62,7 +60,7 @@ const BlockNumber ObservingParticipantsVotesResponseMessage::maximalClaimingBloc
     return mMaximalClaimingBlockNumber;
 }
 
-const map<PaymentNodeID, lamport::Signature::Shared>& ObservingParticipantsVotesResponseMessage::participantsSignatures() const
+const map<PaymentNodeID, lamport::Signature::Shared> &ObservingParticipantsVotesResponseMessage::participantsSignatures() const
 {
     return mParticipantsSignatures;
 }

@@ -76,6 +76,6 @@ pair<BytesShared, size_t> IntermediateNodeCycleReservationRequestMessage::serial
         sizeof(SerializedPathLengthSize));
 
     return make_pair(
-        buffer,
-        totalBytesCount);
+               buffer,
+               totalBytesCount);
 }

@@ -1,24 +1,27 @@
 #include "TransactionsManagerTest.h"
 
 TransactionsManagerTest::TransactionsManagerTest(
-        as::io_service &IOService,
-        TrustLinesManager *trustLinesManager,
-        ResultsInterface *resultsInterface,
-        Logger *logger) :
+    as::io_service &IOService,
+    TrustLinesManager *trustLinesManager,
+    ResultsInterface *resultsInterface,
+    Logger *logger) :
 
-        mLog(logger){
+    mLog(logger)
+{
 
     mTransactionsManager = new TransactionsManager(IOService, trustLinesManager, resultsInterface, logger);
 }
 
-TransactionsManagerTest::~TransactionsManagerTest() {
+TransactionsManagerTest::~TransactionsManagerTest()
+{
 
     if (mTransactionsManager != nullptr) {
         delete mTransactionsManager;
     }
 }
 
-void TransactionsManagerTest::runFewTransactionsWithSuccessResultTestCase() {
+void TransactionsManagerTest::runFewTransactionsWithSuccessResultTestCase()
+{
 
 //    mLog->mFileLogger->writeEmptyLine(1);
 //    mLog->logInfo("Transactions manager test",
@@ -39,7 +42,8 @@ void TransactionsManagerTest::runFewTransactionsWithSuccessResultTestCase() {
 
 }
 
-void TransactionsManagerTest::runSingleTransactionWithFailureStateAndAfterRelaunchingWithSuccessResultTestCase() {
+void TransactionsManagerTest::runSingleTransactionWithFailureStateAndAfterRelaunchingWithSuccessResultTestCase()
+{
 
 //    mLog->mFileLogger->writeEmptyLine(1);
 //    mLog->logInfo("Transactions manager test",
@@ -56,7 +60,8 @@ void TransactionsManagerTest::runSingleTransactionWithFailureStateAndAfterRelaun
 
 }
 
-void TransactionsManagerTest::runSingleTransactionWhichCrashWhileRunning() {
+void TransactionsManagerTest::runSingleTransactionWhichCrashWhileRunning()
+{
 //    mLog->mFileLogger->writeEmptyLine(1);
 //    mLog->logInfo("Transactions manager test",
 //                  "_________________________________________________");
@@ -71,7 +76,8 @@ void TransactionsManagerTest::runSingleTransactionWhichCrashWhileRunning() {
     mTransactionsManager->processCommand(BaseUserCommand::Shared(command1));
 }
 
-void TransactionsManagerTest::runFewTransactionsWhichReturnsFailureStateAndAfterRelaunchingWithSuccessResultTestCase() {
+void TransactionsManagerTest::runFewTransactionsWhichReturnsFailureStateAndAfterRelaunchingWithSuccessResultTestCase()
+{
 //    mLog->mFileLogger->writeEmptyLine(1);
 //    mLog->logInfo("Transactions manager test",
 //                  "_________________________________________________");
@@ -90,7 +96,8 @@ void TransactionsManagerTest::runFewTransactionsWhichReturnsFailureStateAndAfter
     mTransactionsManager->processCommand(BaseUserCommand::Shared(command2));
 }
 
-void TransactionsManagerTest::runAllCases() {
+void TransactionsManagerTest::runAllCases()
+{
 //    mLog->mFileLogger->writeEmptyLine(1);
 //    mLog->logInfo("Transactions manager test",
 //                  "_________________________________________________");
@@ -103,7 +110,8 @@ void TransactionsManagerTest::runAllCases() {
     runSingleTransactionWhichCrashWhileRunning();
 }
 
-void TransactionsManagerTest::run() {
+void TransactionsManagerTest::run()
+{
     runFewTransactionsWhichReturnsFailureStateAndAfterRelaunchingWithSuccessResultTestCase();
 }
 

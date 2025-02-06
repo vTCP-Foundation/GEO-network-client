@@ -13,7 +13,8 @@
 #include "../../../network/messages/trust_lines/TrustLineConfirmationMessage.h"
 #include "../../../network/messages/general/PingMessage.h"
 
-class OpenTrustLineTransaction : public BaseTransaction {
+class OpenTrustLineTransaction : public BaseTransaction
+{
 
 public:
     typedef shared_ptr<OpenTrustLineTransaction> Shared;
@@ -45,7 +46,8 @@ public:
     TransactionResult::SharedConst run() override;
 
 protected:
-    enum Stages {
+    enum Stages
+    {
         Initialization = 1,
         NextAttempt = 2,
         ResponseProcessing = 3,

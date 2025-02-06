@@ -1,13 +1,12 @@
 ﻿#include "CoordinatorReservationResponseMessage.h"
 
-
 CoordinatorReservationResponseMessage::CoordinatorReservationResponseMessage(
     const SerializedEquivalent equivalent,
     vector<BaseAddress::Shared> &senderAddresses,
-    const TransactionUUID& transactionUUID,
-    const PathID& pathID,
+    const TransactionUUID &transactionUUID,
+    const PathID &pathID,
     const ResponseMessage::OperationState state,
-    const TrustLineAmount& reservedAmount):
+    const TrustLineAmount &reservedAmount) :
 
     ResponseMessage(
         equivalent,
@@ -16,7 +15,8 @@ CoordinatorReservationResponseMessage::CoordinatorReservationResponseMessage(
         pathID,
         state),
     mAmountReserved(reservedAmount)
-{}
+{
+}
 
 CoordinatorReservationResponseMessage::CoordinatorReservationResponseMessage(
     BytesShared buffer) :
@@ -27,14 +27,14 @@ CoordinatorReservationResponseMessage::CoordinatorReservationResponseMessage(
     auto parentMessageOffset = ResponseMessage::kOffsetToInheritedBytes();
     auto amountOffset = buffer.get() + parentMessageOffset;
     auto amountEndOffset = amountOffset + kTrustLineAmountBytesCount; // TODO: deserialize only non-zero
-    vector<byte> amountBytes(
+    vector<byte_t> amountBytes(
         amountOffset,
         amountEndOffset);
 
     mAmountReserved = bytesToTrustLineAmount(amountBytes);
 }
 
-const TrustLineAmount&CoordinatorReservationResponseMessage::amountReserved() const
+const TrustLineAmount &CoordinatorReservationResponseMessage::amountReserved() const
 {
     return mAmountReserved;
 }
@@ -45,8 +45,7 @@ pair<BytesShared, size_t> CoordinatorReservationResponseMessage::serializeToByte
     auto serializedAmount = trustLineAmountToBytes(mAmountReserved);
 
     size_t bytesCount =
-        parentBytesAndCount.second
-        + serializedAmount.size();
+        parentBytesAndCount.second + serializedAmount.size();
 
     BytesShared dataBytesShared = tryMalloc(bytesCount);
     size_t dataBytesOffset = 0;
@@ -63,8 +62,8 @@ pair<BytesShared, size_t> CoordinatorReservationResponseMessage::serializeToByte
         serializedAmount.size());
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType CoordinatorReservationResponseMessage::typeID() const

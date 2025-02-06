@@ -8,7 +8,8 @@
 #include "../../../../../common/multiprecision/MultiprecisionUtils.h"
 #include "../../../../../contractors/addresses/BaseAddress.h"
 
-class CycleBaseFiveOrSixNodesInBetweenMessage: public SenderMessage {
+class CycleBaseFiveOrSixNodesInBetweenMessage: public SenderMessage
+{
 
 public:
     typedef shared_ptr<CycleBaseFiveOrSixNodesInBetweenMessage> Shared;

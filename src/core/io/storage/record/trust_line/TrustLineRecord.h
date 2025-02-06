@@ -6,12 +6,14 @@
 #include "../../../../common/memory/MemoryUtils.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
 
-class TrustLineRecord: public Record {
+class TrustLineRecord: public Record
+{
 public:
     typedef shared_ptr<TrustLineRecord> Shared;
 
 public:
-    enum TrustLineOperationType {
+    enum TrustLineOperationType
+    {
         Opening = 1,
         Accepting,
         Setting,

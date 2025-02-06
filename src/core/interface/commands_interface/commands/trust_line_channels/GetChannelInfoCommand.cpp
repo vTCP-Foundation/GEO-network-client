@@ -45,8 +45,8 @@ CommandResult::SharedConst GetChannelInfoCommand::resultOk(
     string &neighbor) const
 {
     return make_shared<const CommandResult>(
-        identifier(),
-        UUID(),
-        200,
-        neighbor);
+               identifier(),
+               UUID(),
+               200,
+               neighbor);
 }

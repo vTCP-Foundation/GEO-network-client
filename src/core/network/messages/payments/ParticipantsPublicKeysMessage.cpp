@@ -34,7 +34,7 @@ ParticipantsPublicKeysMessage::ParticipantsPublicKeysMessage(
         bytesBufferOffset += sizeof(PaymentNodeID);
 
         auto publicKey = make_shared<lamport::PublicKey>(
-            buffer.get() + bytesBufferOffset);
+                             buffer.get() + bytesBufferOffset);
         bytesBufferOffset += lamport::PublicKey::keySize();
 
         mPublicKeys.insert(
@@ -59,10 +59,10 @@ pair<BytesShared, size_t> ParticipantsPublicKeysMessage::serializeToBytes() cons
     const auto parentBytesAndCount = TransactionMessage::serializeToBytes();
 
     const auto kBufferSize =
-            parentBytesAndCount.second
-            + sizeof(SerializedRecordsCount)
-            + mPublicKeys.size()
-              * (sizeof(PaymentNodeID) + lamport::PublicKey::keySize());
+        parentBytesAndCount.second
+        + sizeof(SerializedRecordsCount)
+        + mPublicKeys.size()
+        * (sizeof(PaymentNodeID) + lamport::PublicKey::keySize());
 
     BytesShared buffer = tryMalloc(kBufferSize);
 
@@ -98,6 +98,6 @@ pair<BytesShared, size_t> ParticipantsPublicKeysMessage::serializeToBytes() cons
     }
 
     return make_pair(
-        buffer,
-        kBufferSize);
+               buffer,
+               kBufferSize);
 }

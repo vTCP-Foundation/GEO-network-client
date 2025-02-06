@@ -17,17 +17,18 @@
 using namespace std;
 
 
-class IncomingNodesHandler {
+class IncomingNodesHandler
+{
 public:
     IncomingNodesHandler(
         MessagesParser &messagesParser,
         TailManager *tailManager,
         Logger &logger)
-        noexcept;
+    noexcept;
 
     IncomingRemoteNode* handler(
         const UDPEndpoint &endpoint)
-        noexcept;
+    noexcept;
 
     void removeOutdatedEndpoints();
 
@@ -36,10 +37,10 @@ public:
 protected:
     static uint64_t key(
         const UDPEndpoint &endpoint)
-        noexcept;
+    noexcept;
 
     LoggerStream debug() const
-        noexcept;
+    noexcept;
 
 protected:
     MessagesParser &mMessagesParser;

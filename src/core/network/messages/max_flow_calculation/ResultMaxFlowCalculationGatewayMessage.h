@@ -4,7 +4,8 @@
 #include "ResultMaxFlowCalculationMessage.h"
 
 class ResultMaxFlowCalculationGatewayMessage :
-    public ResultMaxFlowCalculationMessage {
+    public ResultMaxFlowCalculationMessage
+{
 
 public:
     typedef shared_ptr<ResultMaxFlowCalculationGatewayMessage> Shared;

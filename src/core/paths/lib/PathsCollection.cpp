@@ -7,11 +7,11 @@ PathsCollection::PathsCollection(
 {}
 
 void PathsCollection::add(
-        Path::Shared &path)
+    Path::Shared &path)
 {
     if (path->length() > 5) {
         throw ValueError("PathsCollection::add "
-                             "Added path is too long");
+                         "Added path is too long");
     }
     mPaths.push_back(path);
 }
@@ -30,7 +30,7 @@ Path::Shared PathsCollection::nextPath()
 {
     if (mCurrentPath > mPaths.size()) {
         throw IndexError("PathsCollection::nextPath "
-                                 "no paths are available");
+                         "no paths are available");
     }
     mCurrentPath++;
     return mPaths.at(mCurrentPath - 1);

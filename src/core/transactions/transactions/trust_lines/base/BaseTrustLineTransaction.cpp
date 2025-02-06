@@ -23,7 +23,8 @@ BaseTrustLineTransaction::BaseTrustLineTransaction(
     mKeysStore(keystore),
     mFeaturesManager(featuresManager),
     mTrustLinesInfluenceController(trustLinesInfluenceController)
-{}
+{
+}
 
 BaseTrustLineTransaction::BaseTrustLineTransaction(
     const TransactionType type,
@@ -50,7 +51,8 @@ BaseTrustLineTransaction::BaseTrustLineTransaction(
     mKeysStore(keystore),
     mFeaturesManager(featuresManager),
     mTrustLinesInfluenceController(trustLinesInfluenceController)
-{}
+{
+}
 
 TransactionResult::SharedConst BaseTrustLineTransaction::sendAuditErrorConfirmation(
     ConfirmationMessage::OperationState errorState)
@@ -68,14 +70,7 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     lamport::KeyHash::Shared ownPublicKeysHash,
     lamport::KeyHash::Shared contractorPublicKeysHash)
 {
-    size_t bytesCount = sizeof(AuditNumber)
-                        + kTrustLineAmountBytesCount
-                        + kTrustLineAmountBytesCount
-                        + kTrustLineBalanceSerializeBytesCount
-                        + lamport::KeyHash::kBytesSize
-                        + lamport::KeyHash::kBytesSize
-                        + sizeof(EquivalentRegisterAddressLength)
-                        + mFeaturesManager->getEquivalentsRegistryAddress().length();
+    size_t bytesCount = sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + kTrustLineBalanceSerializeBytesCount + lamport::KeyHash::kBytesSize + lamport::KeyHash::kBytesSize + sizeof(EquivalentRegisterAddressLength) + mFeaturesManager->getEquivalentsRegistryAddress().length();
     BytesShared dataBytesShared = tryCalloc(bytesCount);
     size_t dataBytesOffset = 0;
 
@@ -86,9 +81,9 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     dataBytesOffset += sizeof(AuditNumber);
     info() << "own audit " << mAuditNumber;
 
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(
-        mTrustLines->incomingTrustAmount(
-            mContractorID));
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(
+            mTrustLines->incomingTrustAmount(
+                mContractorID));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         incomingAmountBufferBytes.data(),
@@ -96,9 +91,9 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     dataBytesOffset += kTrustLineAmountBytesCount;
     info() << "own incoming amount " << mTrustLines->incomingTrustAmount(mContractorID);
 
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(
-        mTrustLines->outgoingTrustAmount(
-            mContractorID));
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(
+            mTrustLines->outgoingTrustAmount(
+                mContractorID));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         outgoingAmountBufferBytes.data(),
@@ -106,8 +101,8 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     dataBytesOffset += kTrustLineAmountBytesCount;
     info() << "own outgoing amount " << mTrustLines->outgoingTrustAmount(mContractorID);
 
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(
-        const_cast<TrustLineBalance&>(mTrustLines->balance(mContractorID)));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(
+                                            const_cast<TrustLineBalance&>(mTrustLines->balance(mContractorID)));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         balanceBufferBytes.data(),
@@ -143,22 +138,15 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getOwnSerializedAuditData(
     info() << "own equivalents registry address: " << equivalentRegistryAddress;
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 pair<BytesShared, size_t> BaseTrustLineTransaction::getContractorSerializedAuditData(
     lamport::KeyHash::Shared ownPublicKeysHash,
     lamport::KeyHash::Shared contractorPublicKeysHash)
 {
-    size_t bytesCount = sizeof(AuditNumber)
-                        + kTrustLineAmountBytesCount
-                        + kTrustLineAmountBytesCount
-                        + kTrustLineBalanceSerializeBytesCount
-                        + lamport::KeyHash::kBytesSize
-                        + lamport::KeyHash::kBytesSize
-                        + sizeof(EquivalentRegisterAddressLength)
-                        + mFeaturesManager->getEquivalentsRegistryAddress().length();
+    size_t bytesCount = sizeof(AuditNumber) + kTrustLineAmountBytesCount + kTrustLineAmountBytesCount + kTrustLineBalanceSerializeBytesCount + lamport::KeyHash::kBytesSize + lamport::KeyHash::kBytesSize + sizeof(EquivalentRegisterAddressLength) + mFeaturesManager->getEquivalentsRegistryAddress().length();
     BytesShared dataBytesShared = tryCalloc(bytesCount);
     size_t dataBytesOffset = 0;
 
@@ -169,9 +157,9 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getContractorSerializedAudit
     dataBytesOffset += sizeof(AuditNumber);
     info() << "contractor audit " << mAuditNumber;
 
-    vector<byte> outgoingAmountBufferBytes = trustLineAmountToBytes(
-        mTrustLines->outgoingTrustAmount(
-            mContractorID));
+    vector<byte_t> outgoingAmountBufferBytes = trustLineAmountToBytes(
+            mTrustLines->outgoingTrustAmount(
+                mContractorID));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         outgoingAmountBufferBytes.data(),
@@ -179,9 +167,9 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getContractorSerializedAudit
     dataBytesOffset += kTrustLineAmountBytesCount;
     info() << "contractor outgoing amount " << mTrustLines->outgoingTrustAmount(mContractorID);
 
-    vector<byte> incomingAmountBufferBytes = trustLineAmountToBytes(
-        mTrustLines->incomingTrustAmount(
-            mContractorID));
+    vector<byte_t> incomingAmountBufferBytes = trustLineAmountToBytes(
+            mTrustLines->incomingTrustAmount(
+                mContractorID));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         incomingAmountBufferBytes.data(),
@@ -190,8 +178,8 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getContractorSerializedAudit
     info() << "contractor incoming amount " << mTrustLines->incomingTrustAmount(mContractorID);
 
     auto contractorBalance = -1 * mTrustLines->balance(mContractorID);
-    vector<byte> balanceBufferBytes = trustLineBalanceToBytes(
-        const_cast<TrustLineBalance&>(contractorBalance));
+    vector<byte_t> balanceBufferBytes = trustLineBalanceToBytes(
+                                            const_cast<TrustLineBalance&>(contractorBalance));
     memcpy(
         dataBytesShared.get() + dataBytesOffset,
         balanceBufferBytes.data(),
@@ -227,6 +215,6 @@ pair<BytesShared, size_t> BaseTrustLineTransaction::getContractorSerializedAudit
     info() << "contractor equivalents registry address: " << equivalentRegistryAddress;
 
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }

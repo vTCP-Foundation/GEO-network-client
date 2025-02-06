@@ -18,17 +18,17 @@ TransactionResult::SharedConst HistoryAdditionalPaymentsTransaction::run()
     auto ioTransaction = mStorageHandler->beginTransaction();
 
     auto const paymentRecords = ioTransaction->historyStorage()->allPaymentAdditionalRecords(
-        mCommand->equivalent(),
-        mCommand->historyCount(),
-        mCommand->historyFrom(),
-        mCommand->timeFrom(),
-        mCommand->isTimeFromPresent(),
-        mCommand->timeTo(),
-        mCommand->isTimeToPresent(),
-        mCommand->lowBoundaryAmount(),
-        mCommand->isLowBoundaryAmountPresent(),
-        mCommand->highBoundaryAmount(),
-        mCommand->isHighBoundaryAmountPresent());
+                                    mCommand->equivalent(),
+                                    mCommand->historyCount(),
+                                    mCommand->historyFrom(),
+                                    mCommand->timeFrom(),
+                                    mCommand->isTimeFromPresent(),
+                                    mCommand->timeTo(),
+                                    mCommand->isTimeToPresent(),
+                                    mCommand->lowBoundaryAmount(),
+                                    mCommand->isLowBoundaryAmountPresent(),
+                                    mCommand->highBoundaryAmount(),
+                                    mCommand->isHighBoundaryAmountPresent());
     return resultOk(paymentRecords);
 }
 
@@ -58,7 +58,7 @@ TransactionResult::SharedConst HistoryAdditionalPaymentsTransaction::resultOk(
         } else {
             throw RuntimeError(
                 "HistoryAdditionalPaymentsTransaction::resultOk: "
-                    "unexpected operation type occured.");
+                "unexpected operation type occured.");
         }
 
         stream << kTokensSeparator << kRecord->operationUUID() << kTokensSeparator;
@@ -69,8 +69,8 @@ TransactionResult::SharedConst HistoryAdditionalPaymentsTransaction::resultOk(
 
     auto result = stream.str();
     return transactionResultFromCommand(
-        mCommand->resultOk(
-            result));
+               mCommand->resultOk(
+                   result));
 }
 
 const string HistoryAdditionalPaymentsTransaction::logHeader() const

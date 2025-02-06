@@ -13,7 +13,8 @@ using namespace std;
 namespace as = boost::asio;
 namespace signals = boost::signals2;
 
-class FeaturesManager : protected LoggerMixin {
+class FeaturesManager : protected LoggerMixin
+{
 
 public:
     typedef signals::signal<void()> SendAddressesSignal;
@@ -41,7 +42,7 @@ private:
 private:
     const string kEquivalentsRegistryAddressFieldName = "EQUIVALENTS_REGISTRY_ADDRESS";
     const string kOwnAddressesFieldName = "OWN_ADDRESSES";
-    static const uint32_t kSignalTimerPeriodSeconds = 15;
+    static constexpr uint32_t kSignalTimerPeriodSeconds = 15;
 
 private:
     StorageHandler *mStorageHandler;

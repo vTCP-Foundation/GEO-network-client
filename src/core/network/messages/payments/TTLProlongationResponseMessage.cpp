@@ -53,8 +53,8 @@ pair<BytesShared, size_t> TTLProlongationResponseMessage::serializeToBytes() con
         sizeof(SerializedOperationState));
     //----------------------------------------------------
     return make_pair(
-        dataBytesShared,
-        bytesCount);
+               dataBytesShared,
+               bytesCount);
 }
 
 const Message::MessageType TTLProlongationResponseMessage::typeID() const

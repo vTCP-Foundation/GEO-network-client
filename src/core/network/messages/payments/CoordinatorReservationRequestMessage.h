@@ -4,7 +4,8 @@
 #include "base/RequestMessageWithReservations.h"
 
 class CoordinatorReservationRequestMessage:
-    public RequestMessageWithReservations {
+    public RequestMessageWithReservations
+{
 
 public:
     typedef shared_ptr<CoordinatorReservationRequestMessage> Shared;
@@ -28,7 +29,7 @@ public:
     virtual pair<BytesShared, size_t> serializeToBytes() const override;
 
 protected:
-     BaseAddress::Shared mNextPathNode;
+    BaseAddress::Shared mNextPathNode;
 };
 
 #endif // COORDINATORRESERVATIONREQUESTMESSAGE_H

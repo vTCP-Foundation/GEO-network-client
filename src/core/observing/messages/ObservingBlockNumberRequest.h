@@ -3,7 +3,8 @@
 
 #include "base/ObservingMessage.hpp"
 
-class ObservingBlockNumberRequest : public ObservingMessage {
+class ObservingBlockNumberRequest : public ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingBlockNumberRequest> Shared;

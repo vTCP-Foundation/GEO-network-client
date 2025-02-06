@@ -8,7 +8,8 @@
 
 #include <map>
 
-class ContractorsManager {
+class ContractorsManager
+{
 
 public:
     ContractorsManager(
