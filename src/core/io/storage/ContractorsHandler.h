@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONTRACTORSHANDLER_H
-#define GEO_NETWORK_CLIENT_CONTRACTORSHANDLER_H
+#ifndef VTCPD_CONTRACTORSHANDLER_H
+#define VTCPD_CONTRACTORSHANDLER_H
 
 #include "../../contractors/Contractor.h"
 #include "../../logger/Logger.h"
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_CONTRACTORSHANDLER_H
+#endif //VTCPD_CONTRACTORSHANDLER_H

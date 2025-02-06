@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_AMOUNTBLOCK_H
-#define GEO_NETWORK_CLIENT_AMOUNTBLOCK_H
+﻿#ifndef VTCPD_AMOUNTBLOCK_H
+#define VTCPD_AMOUNTBLOCK_H
 
 #include "../../common/Types.h"
 #include "../../transactions/transactions/base/TransactionUUID.h"
@@ -45,4 +45,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_AMOUNTBLOCK_H
+#endif //VTCPD_AMOUNTBLOCK_H

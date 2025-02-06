@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PROVIDER_H
-#define GEO_NETWORK_CLIENT_PROVIDER_H
+#ifndef VTCPD_PROVIDER_H
+#define VTCPD_PROVIDER_H
 
 #include "../contractors/addresses/IPv4WithPortAddress.h"
 #include "../crypto/ProviderMsgEncryptor.h"
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PROVIDER_H
+#endif //VTCPD_PROVIDER_H

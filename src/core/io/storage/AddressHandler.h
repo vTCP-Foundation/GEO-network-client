@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_ADDRESSHANDLER_H
-#define GEO_NETWORK_CLIENT_ADDRESSHANDLER_H
+#ifndef VTCPD_ADDRESSHANDLER_H
+#define VTCPD_ADDRESSHANDLER_H
 
 #include "../../logger/Logger.h"
 #include "../../common/exceptions/IOError.h"
@@ -42,4 +42,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_ADDRESSHANDLER_H
+#endif //VTCPD_ADDRESSHANDLER_H

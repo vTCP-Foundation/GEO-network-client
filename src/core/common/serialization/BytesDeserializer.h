@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BYTESDESERIALIZER_H
-#define GEO_NETWORK_CLIENT_BYTESDESERIALIZER_H
+#ifndef VTCPD_BYTESDESERIALIZER_H
+#define VTCPD_BYTESDESERIALIZER_H
 
 #include "../Types.h"
 #include "../NodeUUID.h"
@@ -49,4 +49,4 @@ protected:
     size_t mCurrentOffset;
 };
 
-#endif // GEO_NETWORK_CLIENT_BYTESDESERIALIZER_H
+#endif // VTCPD_BYTESDESERIALIZER_H

@@ -1,5 +1,5 @@
-#ifndef MEMORY_H
-#define MEMORY_H
+#ifndef VTCPD_MEMORY_H
+#define VTCPD_MEMORY_H
 
 #include <sodium.h>
 #include <sodium/core.h>
@@ -127,4 +127,4 @@ private:
 }
 }
 
-#endif // MEMORY_H
+#endif // VTCPD_MEMORY_H

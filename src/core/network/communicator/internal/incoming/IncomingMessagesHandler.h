@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_INCOMINGCONNECTIONSHANDLER_H
-#define GEO_NETWORK_CLIENT_INCOMINGCONNECTIONSHANDLER_H
+﻿#ifndef VTCPD_INCOMINGCONNECTIONSHANDLER_H
+#define VTCPD_INCOMINGCONNECTIONSHANDLER_H
 
 #include "../common/Types.h"
 #include "../../internal/incoming/IncomingNodesHandler.h"
@@ -65,4 +65,4 @@ protected:
     boost::asio::deadline_timer mCleaningTimer;
 };
 
-#endif // GEO_NETWORK_CLIENT_INCOMINGCONNECTIONSHANDLER_H
+#endif // VTCPD_INCOMINGCONNECTIONSHANDLER_H

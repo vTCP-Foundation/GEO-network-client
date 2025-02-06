@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONFLICTRESOLVERMESSAGE_H
-#define GEO_NETWORK_CLIENT_CONFLICTRESOLVERMESSAGE_H
+#ifndef VTCPD_CONFLICTRESOLVERMESSAGE_H
+#define VTCPD_CONFLICTRESOLVERMESSAGE_H
 
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../io/storage/record/audit/AuditRecord.h"
@@ -44,4 +44,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_CONFLICTRESOLVERMESSAGE_H
+#endif //VTCPD_CONFLICTRESOLVERMESSAGE_H

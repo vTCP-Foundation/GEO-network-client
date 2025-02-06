@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_INCOMINGREMOTENODE_H
-#define GEO_NETWORK_CLIENT_INCOMINGREMOTENODE_H
+#ifndef VTCPD_INCOMINGREMOTENODE_H
+#define VTCPD_INCOMINGREMOTENODE_H
 
 #include "../common/Types.h"
 #include "../common/Packet.hpp"
@@ -72,4 +72,4 @@ protected:
     Logger &mLog;
 };
 
-#endif // GEO_NETWORK_CLIENT_INCOMINGREMOTENODE_H
+#endif // VTCPD_INCOMINGREMOTENODE_H

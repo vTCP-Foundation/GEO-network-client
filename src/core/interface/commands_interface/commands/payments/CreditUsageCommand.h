@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_CREDITUSAGECOMMAND_H
-#define GEO_NETWORK_CLIENT_CREDITUSAGECOMMAND_H
+﻿#ifndef VTCPD_CREDITUSAGECOMMAND_H
+#define VTCPD_CREDITUSAGECOMMAND_H
 
 #include "../BaseUserCommand.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
@@ -39,4 +39,4 @@ private:
     std::string mPayload;
 };
 
-#endif //GEO_NETWORK_CLIENT_CREDITUSAGECOMMAND_H
+#endif //VTCPD_CREDITUSAGECOMMAND_H

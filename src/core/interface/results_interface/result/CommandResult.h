@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_BASECOMMANDRESULT_H
-#define GEO_NETWORK_CLIENT_BASECOMMANDRESULT_H
+﻿#ifndef VTCPD_BASECOMMANDRESULT_H
+#define VTCPD_BASECOMMANDRESULT_H
 
 #include "../../../common/Constraints.h"
 #include "../../../common/time/TimeUtils.h"
@@ -58,4 +58,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_BASECOMMANDRESULT_H
+#endif //VTCPD_BASECOMMANDRESULT_H

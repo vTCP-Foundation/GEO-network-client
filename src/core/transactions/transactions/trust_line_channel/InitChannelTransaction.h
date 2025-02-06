@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_INITCHANNELTRANSACTION_H
-#define GEO_NETWORK_CLIENT_INITCHANNELTRANSACTION_H
+#ifndef VTCPD_INITCHANNELTRANSACTION_H
+#define VTCPD_INITCHANNELTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_line_channels/InitChannelCommand.h"
@@ -63,4 +63,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_INITCHANNELTRANSACTION_H
+#endif //VTCPD_INITCHANNELTRANSACTION_H

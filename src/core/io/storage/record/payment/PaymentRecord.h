@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PAYMENTRECORD_H
-#define GEO_NETWORK_CLIENT_PAYMENTRECORD_H
+#ifndef VTCPD_PAYMENTRECORD_H
+#define VTCPD_PAYMENTRECORD_H
 
 #include "../base/Record.h"
 
@@ -77,4 +77,4 @@ private:
     string mPayload;
 };
 
-#endif //GEO_NETWORK_CLIENT_PAYMENTRECORD_H
+#endif //VTCPD_PAYMENTRECORD_H

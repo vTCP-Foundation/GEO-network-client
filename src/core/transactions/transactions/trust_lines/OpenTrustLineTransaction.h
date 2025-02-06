@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OPENTRUSTLINETRANSACTION_H
-#define GEO_NETWORK_CLIENT_OPENTRUSTLINETRANSACTION_H
+#ifndef VTCPD_OPENTRUSTLINETRANSACTION_H
+#define VTCPD_OPENTRUSTLINETRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines/InitTrustLineCommand.h"
@@ -99,4 +99,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_OPENTRUSTLINETRANSACTION_H
+#endif //VTCPD_OPENTRUSTLINETRANSACTION_H

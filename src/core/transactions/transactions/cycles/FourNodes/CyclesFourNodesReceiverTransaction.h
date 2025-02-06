@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CYCLEFOURNODESRESPONSETRANSACTION_H
-#define GEO_NETWORK_CLIENT_CYCLEFOURNODESRESPONSETRANSACTION_H
+#ifndef VTCPD_CYCLEFOURNODESRESPONSETRANSACTION_H
+#define VTCPD_CYCLEFOURNODESRESPONSETRANSACTION_H
 
 #include "../../base/BaseTransaction.h"
 #include "../../../../contractors/ContractorsManager.h"
@@ -45,4 +45,4 @@ protected:
     bool mNegativeCycleBalance;
     vector<BaseAddress::Shared> mSuitableNodes;
 };
-#endif //GEO_NETWORK_CLIENT_CYCLEFOURNODESRESPONSETRANSACTION_H
+#endif //VTCPD_CYCLEFOURNODESRESPONSETRANSACTION_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PATHSMANAGER_H
-#define GEO_NETWORK_CLIENT_PATHSMANAGER_H
+#ifndef VTCPD_PATHSMANAGER_H
+#define VTCPD_PATHSMANAGER_H
 
 #include "lib/PathsCollection.h"
 #include "../trust_lines/manager/TrustLinesManager.h"
@@ -86,4 +86,4 @@ private:
     set<ContractorID> mInaccessibleNodes;
 };
 
-#endif // GEO_NETWORK_CLIENT_PATHSMANAGER_H
+#endif // VTCPD_PATHSMANAGER_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_HISTORYSTORAGE_H
-#define GEO_NETWORK_CLIENT_HISTORYSTORAGE_H
+#ifndef VTCPD_HISTORYSTORAGE_H
+#define VTCPD_HISTORYSTORAGE_H
 
 #include "../../transactions/transactions/base/TransactionUUID.h"
 #include "../../common/Types.h"
@@ -175,4 +175,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_HISTORYSTORAGE_H
+#endif //VTCPD_HISTORYSTORAGE_H

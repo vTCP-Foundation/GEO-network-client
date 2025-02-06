@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RUNTIMEERROR_H
-#define GEO_NETWORK_CLIENT_RUNTIMEERROR_H
+#ifndef VTCPD_RUNTIMEERROR_H
+#define VTCPD_RUNTIMEERROR_H
 
 #include "Exception.h"
 
@@ -12,4 +12,4 @@ public:
     using Exception::Exception;
 };
 
-#endif //GEO_NETWORK_CLIENT_RUNTIMEERROR_H
+#endif //VTCPD_RUNTIMEERROR_H

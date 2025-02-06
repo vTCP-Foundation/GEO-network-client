@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TRANSACTIONRESULT_H
-#define GEO_NETWORK_CLIENT_TRANSACTIONRESULT_H
+#ifndef VTCPD_TRANSACTIONRESULT_H
+#define VTCPD_TRANSACTIONRESULT_H
 
 #include "../../../interface/results_interface/result/CommandResult.h"
 #include "state/TransactionState.h"
@@ -53,4 +53,4 @@ private:
     CommandResult::SharedConst mCommandResult;
     TransactionState::SharedConst mTransactionState;
 };
-#endif //GEO_NETWORK_CLIENT_TRANSACTIONRESULT_H
+#endif //VTCPD_TRANSACTIONRESULT_H

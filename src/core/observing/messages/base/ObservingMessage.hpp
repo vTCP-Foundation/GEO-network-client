@@ -1,11 +1,12 @@
-#ifndef GEO_NETWORK_CLIENT_OBSERVINGMESSAGE_H
-#define GEO_NETWORK_CLIENT_OBSERVINGMESSAGE_H
+#ifndef VTCPD_OBSERVINGMESSAGE_H
+#define VTCPD_OBSERVINGMESSAGE_H
 
 #include "../../../common/memory/MemoryUtils.h"
 
 using namespace std;
 
-class ObservingMessage {
+class ObservingMessage
+{
 
 public:
     typedef shared_ptr<ObservingMessage> Shared;
@@ -13,11 +14,13 @@ public:
     typedef uint32_t MessageSize;
 
 public:
-    enum ProtocolVersion {
+    enum ProtocolVersion
+    {
         Latest = 0,
     };
 
-    enum MessageType {
+    enum MessageType
+    {
         Observing_ClaimAppendRequest = 128,
         Observing_ParticipantsVotesAppendRequest = 64,
         Observing_ParticipantsVotesRequest = 68,
@@ -62,4 +65,4 @@ public:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_OBSERVINGMESSAGE_H
+#endif //VTCPD_OBSERVINGMESSAGE_H

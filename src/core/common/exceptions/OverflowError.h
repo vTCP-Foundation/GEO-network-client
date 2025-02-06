@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OVERFLOWERROR_H
-#define GEO_NETWORK_CLIENT_OVERFLOWERROR_H
+#ifndef VTCPD_OVERFLOWERROR_H
+#define VTCPD_OVERFLOWERROR_H
 
 #include "Exception.h"
 
@@ -9,4 +9,4 @@ class OverflowError: public Exception
     using Exception::Exception;
 };
 
-#endif //GEO_NETWORK_CLIENT_OVERFLOWERROR_H
+#endif //VTCPD_OVERFLOWERROR_H

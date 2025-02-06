@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PINGMESSAGE_H
-#define GEO_NETWORK_CLIENT_PINGMESSAGE_H
+#ifndef VTCPD_PINGMESSAGE_H
+#define VTCPD_PINGMESSAGE_H
 
 #include "../SenderMessage.h"
 
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PINGMESSAGE_H
+#endif //VTCPD_PINGMESSAGE_H

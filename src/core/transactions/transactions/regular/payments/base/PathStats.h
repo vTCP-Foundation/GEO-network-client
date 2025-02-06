@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PATHSTATS_H
-#define GEO_NETWORK_CLIENT_PATHSTATS_H
+#ifndef VTCPD_PATHSTATS_H
+#define VTCPD_PATHSTATS_H
 
 #include "../../../../../paths/lib/Path.h"
 #include "../../../../../common/Types.h"
@@ -74,4 +74,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PATHSTATS_H
+#endif //VTCPD_PATHSTATS_H

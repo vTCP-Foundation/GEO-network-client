@@ -1,17 +1,19 @@
-#ifndef GEO_NETWORK_CLIENT_CYCLESIXNODESINBETWEENMESSAGE_H
-#define GEO_NETWORK_CLIENT_CYCLESIXNODESINBETWEENMESSAGE_H
+#ifndef VTCPD_CYCLESIXNODESINBETWEENMESSAGE_H
+#define VTCPD_CYCLESIXNODESINBETWEENMESSAGE_H
 
 #include "base/CyclesBaseFiveOrSixNodesInBetweenMessage.h"
 
-class CyclesSixNodesInBetweenMessage: public CycleBaseFiveOrSixNodesInBetweenMessage {
+class CyclesSixNodesInBetweenMessage: public CycleBaseFiveOrSixNodesInBetweenMessage
+{
 public:
     typedef shared_ptr<CyclesSixNodesInBetweenMessage> Shared;
 
 public:
     using CycleBaseFiveOrSixNodesInBetweenMessage::CycleBaseFiveOrSixNodesInBetweenMessage;
 
-    const MessageType typeID() const override {
+    const MessageType typeID() const override
+    {
         return Message::Cycles_SixNodesMiddleware;
     };
 };
-#endif //GEO_NETWORK_CLIENT_CYCLESIXNODESINBETWEENMESSAGE_H
+#endif //VTCPD_CYCLESIXNODESINBETWEENMESSAGE_H

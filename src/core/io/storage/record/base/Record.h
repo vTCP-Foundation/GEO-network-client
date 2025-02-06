@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RECORD_H
-#define GEO_NETWORK_CLIENT_RECORD_H
+#ifndef VTCPD_RECORD_H
+#define VTCPD_RECORD_H
 
 #include "../../../../common/Types.h"
 #include "../../../../transactions/transactions/base/TransactionUUID.h"
@@ -58,4 +58,4 @@ protected:
     Contractor::Shared mContractor;
 };
 
-#endif //GEO_NETWORK_CLIENT_RECORD_H
+#endif //VTCPD_RECORD_H

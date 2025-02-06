@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_COMMUNICATOR_H
-#define GEO_NETWORK_CLIENT_COMMUNICATOR_H
+#ifndef VTCPD_COMMUNICATOR_H
+#define VTCPD_COMMUNICATOR_H
 
 #include "../../common/Types.h"
 
@@ -121,4 +121,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_COMMUNICATOR_H
+#endif //VTCPD_COMMUNICATOR_H

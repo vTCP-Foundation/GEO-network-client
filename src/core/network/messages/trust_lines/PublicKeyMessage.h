@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PUBLICKEYMESSAGE_H
-#define GEO_NETWORK_CLIENT_PUBLICKEYMESSAGE_H
+#ifndef VTCPD_PUBLICKEYMESSAGE_H
+#define VTCPD_PUBLICKEYMESSAGE_H
 
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../crypto/lamportkeys.h"
@@ -42,4 +42,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PUBLICKEYMESSAGE_H
+#endif //VTCPD_PUBLICKEYMESSAGE_H

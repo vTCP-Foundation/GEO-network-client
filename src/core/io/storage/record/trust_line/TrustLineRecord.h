@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TRUSTLINERECORD_H
-#define GEO_NETWORK_CLIENT_TRUSTLINERECORD_H
+#ifndef VTCPD_TRUSTLINERECORD_H
+#define VTCPD_TRUSTLINERECORD_H
 
 #include "../base/Record.h"
 
@@ -55,4 +55,4 @@ private:
     TrustLineAmount mAmount;
 };
 
-#endif //GEO_NETWORK_CLIENT_TRUSTLINERECORD_H
+#endif //VTCPD_TRUSTLINERECORD_H

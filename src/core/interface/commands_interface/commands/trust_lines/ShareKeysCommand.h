@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_SHAREKEYSCOMMAND_H
-#define GEO_NETWORK_CLIENT_SHAREKEYSCOMMAND_H
+#ifndef VTCPD_SHAREKEYSCOMMAND_H
+#define VTCPD_SHAREKEYSCOMMAND_H
 
 #include "../BaseUserCommand.h"
 
@@ -25,4 +25,4 @@ private:
     SerializedEquivalent mEquivalent;
 };
 
-#endif //GEO_NETWORK_CLIENT_SHAREKEYSCOMMAND_H
+#endif //VTCPD_SHAREKEYSCOMMAND_H

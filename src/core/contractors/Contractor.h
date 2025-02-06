@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONTRACTOR_H
-#define GEO_NETWORK_CLIENT_CONTRACTOR_H
+#ifndef VTCPD_CONTRACTOR_H
+#define VTCPD_CONTRACTOR_H
 
 #include "../common/multiprecision/MultiprecisionUtils.h"
 #include "../crypto/MsgEncryptor.h"
@@ -79,4 +79,4 @@ private:
     vector<BaseAddress::Shared> mAddresses;
 };
 
-#endif // GEO_NETWORK_CLIENT_CONTRACTOR_H
+#endif // VTCPD_CONTRACTOR_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_AUDITRESPONSEMESSAGE_H
-#define GEO_NETWORK_CLIENT_AUDITRESPONSEMESSAGE_H
+#ifndef VTCPD_AUDITRESPONSEMESSAGE_H
+#define VTCPD_AUDITRESPONSEMESSAGE_H
 
 #include "../base/transaction/ConfirmationMessage.h"
 #include "../../../crypto/lamportscheme.h"
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_AUDITRESPONSEMESSAGE_H
+#endif //VTCPD_AUDITRESPONSEMESSAGE_H

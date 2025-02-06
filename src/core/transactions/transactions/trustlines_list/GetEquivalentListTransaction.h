@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETEQUIVALENTLISTTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETEQUIVALENTLISTTRANSACTION_H
+#ifndef VTCPD_GETEQUIVALENTLISTTRANSACTION_H
+#define VTCPD_GETEQUIVALENTLISTTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines_list/EquivalentListCommand.h"
@@ -29,4 +29,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_GETEQUIVALENTLISTTRANSACTION_H
+#endif //VTCPD_GETEQUIVALENTLISTTRANSACTION_H

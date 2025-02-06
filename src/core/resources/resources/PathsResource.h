@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PATHSRESOURCE_H
-#define GEO_NETWORK_CLIENT_PATHSRESOURCE_H
+#ifndef VTCPD_PATHSRESOURCE_H
+#define VTCPD_PATHSRESOURCE_H
 
 #include "BaseResource.h"
 #include "../../paths/lib/PathsCollection.h"
@@ -22,4 +22,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PATHSRESOURCE_H
+#endif //VTCPD_PATHSRESOURCE_H

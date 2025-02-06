@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_COMMANDPARSINGERROR_H
-#define GEO_NETWORK_CLIENT_COMMANDPARSINGERROR_H
+#ifndef VTCPD_COMMANDPARSINGERROR_H
+#define VTCPD_COMMANDPARSINGERROR_H
 
 #include "Exception.h"
 
@@ -9,4 +9,4 @@ class CommandParsingError : public Exception
     using Exception::Exception;
 };
 
-#endif //GEO_NETWORK_CLIENT_COMMANDPARSINGERROR_H
+#endif //VTCPD_COMMANDPARSINGERROR_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETCHANNELINFOTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETCHANNELINFOTRANSACTION_H
+#ifndef VTCPD_GETCHANNELINFOTRANSACTION_H
+#define VTCPD_GETCHANNELINFOTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_line_channels/GetChannelInfoCommand.h"
@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_GETCHANNELINFOTRANSACTION_H
+#endif //VTCPD_GETCHANNELINFOTRANSACTION_H

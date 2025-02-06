@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_FEATURESMANAGER_H
-#define GEO_NETWORK_CLIENT_FEATURESMANAGER_H
+#ifndef VTCPD_FEATURESMANAGER_H
+#define VTCPD_FEATURESMANAGER_H
 
 #include "../settings/Settings.h"
 #include "../io/storage/StorageHandler.h"
@@ -52,4 +52,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_FEATURESMANAGER_H
+#endif //VTCPD_FEATURESMANAGER_H

@@ -1,6 +1,6 @@
 ﻿
-#ifndef GEO_NETWORK_CLIENT_CORE_H
-#define GEO_NETWORK_CLIENT_CORE_H
+#ifndef VTCPD_CORE_H
+#define VTCPD_CORE_H
 
 #include "common/Types.h"
 
@@ -228,4 +228,4 @@ protected:
     unique_ptr<ProvidingHandler> mProvidingHandler;
 };
 
-#endif //GEO_NETWORK_CLIENT_CORE_H
+#endif //VTCPD_CORE_H

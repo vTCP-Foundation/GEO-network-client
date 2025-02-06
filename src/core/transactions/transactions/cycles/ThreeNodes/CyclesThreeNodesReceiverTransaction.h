@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_THREENODESRESPONSETRANSACTION_H
-#define GEO_NETWORK_CLIENT_THREENODESRESPONSETRANSACTION_H
+#ifndef VTCPD_THREENODESRESPONSETRANSACTION_H
+#define VTCPD_THREENODESRESPONSETRANSACTION_H
 
 #include "../../base/BaseTransaction.h"
 #include "../../../../contractors/ContractorsManager.h"
@@ -31,4 +31,4 @@ protected:
     ContractorsManager *mContractorsManager;
     TrustLinesManager *mTrustLinesManager;
 };
-#endif //GEO_NETWORK_CLIENT_THREENODESRESPONSETRANSACTION_H
+#endif //VTCPD_THREENODESRESPONSETRANSACTION_H

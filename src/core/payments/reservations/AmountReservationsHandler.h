@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_AMOUNTBLOCKSHANDLER_H
-#define GEO_NETWORK_CLIENT_AMOUNTBLOCKSHANDLER_H
+﻿#ifndef VTCPD_AMOUNTBLOCKSHANDLER_H
+#define VTCPD_AMOUNTBLOCKSHANDLER_H
 
 #include "AmountReservation.h"
 #include "../../common/exceptions/MemoryError.h"
@@ -64,4 +64,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_AMOUNTBLOCKSHANDLER_H
+#endif //VTCPD_AMOUNTBLOCKSHANDLER_H

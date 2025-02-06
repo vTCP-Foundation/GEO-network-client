@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OBSERVINGCOMMUNICATOR_H
-#define GEO_NETWORK_CLIENT_OBSERVINGCOMMUNICATOR_H
+#ifndef VTCPD_OBSERVINGCOMMUNICATOR_H
+#define VTCPD_OBSERVINGCOMMUNICATOR_H
 
 #include "../contractors/addresses/IPv4WithPortAddress.h"
 #include "messages/base/ObservingMessage.hpp"
@@ -36,4 +36,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_OBSERVINGCOMMUNICATOR_H
+#endif //VTCPD_OBSERVINGCOMMUNICATOR_H

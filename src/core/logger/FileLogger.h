@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_FILELOGGER_H
-#define GEO_NETWORK_CLIENT_FILELOGGER_H
+#ifndef VTCPD_FILELOGGER_H
+#define VTCPD_FILELOGGER_H
 
 #include <cstdio>
 #include <string>
@@ -78,4 +78,4 @@ private:
 
 };
 
-#endif //GEO_NETWORK_CLIENT_FILELOGGER_H
+#endif //VTCPD_FILELOGGER_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_IPV4WITHPORTADDRESS_H
-#define GEO_NETWORK_CLIENT_IPV4WITHPORTADDRESS_H
+#ifndef VTCPD_IPV4WITHPORTADDRESS_H
+#define VTCPD_IPV4WITHPORTADDRESS_H
 
 #include "BaseAddress.h"
 #include "../../common/Constraints.h"
@@ -41,4 +41,4 @@ private:
     Port mPort;
 };
 
-#endif // GEO_NETWORK_CLIENT_IPV4WITHPORTADDRESS_H
+#endif // VTCPD_IPV4WITHPORTADDRESS_H

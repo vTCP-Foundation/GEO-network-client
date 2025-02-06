@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CYCLESSIXNODESRESPONSETRANSACTION_H
-#define GEO_NETWORK_CLIENT_CYCLESSIXNODESRESPONSETRANSACTION_H
+#ifndef VTCPD_CYCLESSIXNODESRESPONSETRANSACTION_H
+#define VTCPD_CYCLESSIXNODESRESPONSETRANSACTION_H
 
 #include "../../base/BaseTransaction.h"
 #include "../../../../contractors/ContractorsManager.h"
@@ -28,4 +28,4 @@ protected:
     ContractorsManager *mContractorsManager;
     TrustLinesManager *mTrustLinesManager;
 };
-#endif //GEO_NETWORK_CLIENT_CYCLESSIXNODESRESPONSETRANSACTION_H
+#endif //VTCPD_CYCLESSIXNODESRESPONSETRANSACTION_H

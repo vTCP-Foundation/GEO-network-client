@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_FOURNODESBALANCESRESPONSEMESSAGE_H
-#define GEO_NETWORK_CLIENT_FOURNODESBALANCESRESPONSEMESSAGE_H
+#ifndef VTCPD_FOURNODESBALANCESRESPONSEMESSAGE_H
+#define VTCPD_FOURNODESBALANCESRESPONSEMESSAGE_H
 
 #include "../../base/transaction/TransactionMessage.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
@@ -31,4 +31,4 @@ public:
 protected:
     vector<BaseAddress::Shared> mSuitableNodes;
 };
-#endif //GEO_NETWORK_CLIENT_FOURNODESBALANCESRESPONSEMESSAGE_H
+#endif //VTCPD_FOURNODESBALANCESRESPONSEMESSAGE_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PROVIDERMSGENCRYPTOR_H
-#define GEO_NETWORK_CLIENT_PROVIDERMSGENCRYPTOR_H
+#ifndef VTCPD_PROVIDERMSGENCRYPTOR_H
+#define VTCPD_PROVIDERMSGENCRYPTOR_H
 
 #include <sodium.h>
 #include "../common/memory/MemoryUtils.h"
@@ -31,4 +31,4 @@ protected:
     PublicKey::Shared mPublicKey = nullptr;
 };
 
-#endif // GEO_NETWORK_CLIENT_PROVIDERMSGENCRYPTOR_H
+#endif // VTCPD_PROVIDERMSGENCRYPTOR_H

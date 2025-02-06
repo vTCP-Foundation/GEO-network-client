@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETTRUSTLINESLISTTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETTRUSTLINESLISTTRANSACTION_H
+#ifndef VTCPD_GETTRUSTLINESLISTTRANSACTION_H
+#define VTCPD_GETTRUSTLINESLISTTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines_list/GetTrustLinesCommand.h"
@@ -32,4 +32,4 @@ private:
     ContractorsManager *mContractorsManager;
 };
 
-#endif //GEO_NETWORK_CLIENT_GETTRUSTLINESLISTTRANSACTION_H
+#endif //VTCPD_GETTRUSTLINESLISTTRANSACTION_H

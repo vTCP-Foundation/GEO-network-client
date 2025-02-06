@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_HISTORYPAYMENTSCOMMAND_H
-#define GEO_NETWORK_CLIENT_HISTORYPAYMENTSCOMMAND_H
+#ifndef VTCPD_HISTORYPAYMENTSCOMMAND_H
+#define VTCPD_HISTORYPAYMENTSCOMMAND_H
 
 #include "../BaseUserCommand.h"
 #include "../../../../common/multiprecision/MultiprecisionUtils.h"
@@ -65,4 +65,4 @@ private:
     SerializedEquivalent mEquivalent;
 };
 
-#endif //GEO_NETWORK_CLIENT_HISTORYPAYMENTSCOMMAND_H
+#endif //VTCPD_HISTORYPAYMENTSCOMMAND_H

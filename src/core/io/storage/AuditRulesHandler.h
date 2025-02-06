@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_AUDITRULESHANDLER_H
-#define GEO_NETWORK_CLIENT_AUDITRULESHANDLER_H
+#ifndef VTCPD_AUDITRULESHANDLER_H
+#define VTCPD_AUDITRULESHANDLER_H
 
 #include "../../logger/Logger.h"
 #include "../../common/Types.h"
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_AUDITRULESHANDLER_H
+#endif //VTCPD_AUDITRULESHANDLER_H

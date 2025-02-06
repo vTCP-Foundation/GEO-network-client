@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_NOTFOUNDERROR_H
-#define GEO_NETWORK_CLIENT_NOTFOUNDERROR_H
+#ifndef VTCPD_NOTFOUNDERROR_H
+#define VTCPD_NOTFOUNDERROR_H
 
 #include "Exception.h"
 
@@ -10,4 +10,4 @@ class NotFoundError: public Exception
 };
 
 
-#endif //GEO_NETWORK_CLIENT_NOTFOUNDERROR_H
+#endif //VTCPD_NOTFOUNDERROR_H

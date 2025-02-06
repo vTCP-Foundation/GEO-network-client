@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_COMMAND_H
-#define GEO_NETWORK_CLIENT_COMMAND_H
+﻿#ifndef VTCPD_COMMAND_H
+#define VTCPD_COMMAND_H
 
 #include "../../../common/memory/MemoryUtils.h"
 #include "../../../common/exceptions/ValueError.h"
@@ -136,4 +136,4 @@ private:
     const string mCommandIdentifier;
 };
 
-#endif //GEO_NETWORK_CLIENT_COMMAND_H
+#endif //VTCPD_COMMAND_H

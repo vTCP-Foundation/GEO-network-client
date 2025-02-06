@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_MULTIPRECISIONUTILS_H
-#define GEO_NETWORK_CLIENT_MULTIPRECISIONUTILS_H
+﻿#ifndef VTCPD_MULTIPRECISIONUTILS_H
+#define VTCPD_MULTIPRECISIONUTILS_H
 
 #include "../../contractors/addresses/GNSAddress.h"
 #include "../../contractors/addresses/IPv4WithPortAddress.h"
@@ -146,4 +146,4 @@ inline BaseAddress::Shared deserializeAddress(byte_t* offset)
     }
 }
 
-#endif // GEO_NETWORK_CLIENT_MULTIPRECISIONUTILS_H
+#endif // VTCPD_MULTIPRECISIONUTILS_H

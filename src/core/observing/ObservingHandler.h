@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OBSERVINGHANDLER_H
-#define GEO_NETWORK_CLIENT_OBSERVINGHANDLER_H
+#ifndef VTCPD_OBSERVINGHANDLER_H
+#define VTCPD_OBSERVINGHANDLER_H
 
 #include "ObservingCommunicator.h"
 #include "ObservingTransaction.h"
@@ -167,4 +167,4 @@ private:
     ResourcesManager *mResourcesManager;
 };
 
-#endif // GEO_NETWORK_CLIENT_OBSERVINGHANDLER_H
+#endif // VTCPD_OBSERVINGHANDLER_H

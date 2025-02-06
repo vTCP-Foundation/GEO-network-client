@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OBSERVINGTRANSACTION_H
-#define GEO_NETWORK_CLIENT_OBSERVINGTRANSACTION_H
+#ifndef VTCPD_OBSERVINGTRANSACTION_H
+#define VTCPD_OBSERVINGTRANSACTION_H
 
 #include "messages/ObservingClaimAppendRequestMessage.h"
 #include "../contractors/addresses/IPv4WithPortAddress.h"
@@ -68,4 +68,4 @@ private:
     DateTime mNextActionDateTime;
 };
 
-#endif // GEO_NETWORK_CLIENT_OBSERVINGTRANSACTION_H
+#endif // VTCPD_OBSERVINGTRANSACTION_H

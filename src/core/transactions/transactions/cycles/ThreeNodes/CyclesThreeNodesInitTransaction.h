@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_THREENODESINITTRANSACTION_H
-#define GEO_NETWORK_CLIENT_THREENODESINITTRANSACTION_H
+#ifndef VTCPD_THREENODESINITTRANSACTION_H
+#define VTCPD_THREENODESINITTRANSACTION_H
 
 #include "../../base/BaseTransaction.h"
 #include "../../../../contractors/ContractorsManager.h"
@@ -53,4 +53,4 @@ protected:
     RoutingTableManager *mRougingTable;
 };
 
-#endif //GEO_NETWORK_CLIENT_THREENODESINITTRANSACTION_H
+#endif //VTCPD_THREENODESINITTRANSACTION_H

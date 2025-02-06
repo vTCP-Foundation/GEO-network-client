@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_TIME_UTILS_H
-#define GEO_NETWORK_CLIENT_TIME_UTILS_H
+﻿#ifndef VTCPD_TIME_UTILS_H
+#define VTCPD_TIME_UTILS_H
 
 #include <boost/date_time.hpp>
 #include <boost/date_time/posix_time/ptime.hpp>
@@ -56,4 +56,4 @@ inline GEOEpochTimestamp microsecondsSinceUnixEpoch()
     return duration.total_microseconds();
 }
 
-#endif //GEO_NETWORK_CLIENT_TIME_UTILS_H
+#endif //VTCPD_TIME_UTILS_H

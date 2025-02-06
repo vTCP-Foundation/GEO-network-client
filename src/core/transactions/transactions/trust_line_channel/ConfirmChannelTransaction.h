@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONFIRMCHANNELTRANSACTION_H
-#define GEO_NETWORK_CLIENT_CONFIRMCHANNELTRANSACTION_H
+#ifndef VTCPD_CONFIRMCHANNELTRANSACTION_H
+#define VTCPD_CONFIRMCHANNELTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../network/messages/trust_line_channels/InitChannelMessage.h"
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_CONFIRMCHANNELTRANSACTION_H
+#endif //VTCPD_CONFIRMCHANNELTRANSACTION_H

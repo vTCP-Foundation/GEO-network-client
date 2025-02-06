@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TOPOLOGYCACHE_H
-#define GEO_NETWORK_CLIENT_TOPOLOGYCACHE_H
+#ifndef VTCPD_TOPOLOGYCACHE_H
+#define VTCPD_TOPOLOGYCACHE_H
 
 #include "../../common/Types.h"
 #include "../../contractors/addresses/BaseAddress.h"
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TOPOLOGYCACHE_H
+#endif //VTCPD_TOPOLOGYCACHE_H

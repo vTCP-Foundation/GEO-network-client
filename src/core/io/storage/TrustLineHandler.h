@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TRUSTLINEHANDLER_H
-#define GEO_NETWORK_CLIENT_TRUSTLINEHANDLER_H
+#ifndef VTCPD_TRUSTLINEHANDLER_H
+#define VTCPD_TRUSTLINEHANDLER_H
 
 #include "../../trust_lines/TrustLine.h"
 #include "../../logger/Logger.h"
@@ -56,4 +56,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TRUSTLINEHANDLER_H
+#endif //VTCPD_TRUSTLINEHANDLER_H

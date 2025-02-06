@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_MAXFLOWCACHEMANAGER_H
-#define GEO_NETWORK_CLIENT_MAXFLOWCACHEMANAGER_H
+#ifndef VTCPD_MAXFLOWCACHEMANAGER_H
+#define VTCPD_MAXFLOWCACHEMANAGER_H
 
 #include "../../contractors/addresses/BaseAddress.h"
 #include "MaxFlowCache.h"
@@ -64,4 +64,4 @@ private:
     Logger &mLog;
 };
 
-#endif // GEO_NETWORK_CLIENT_MAXFLOWCACHEMANAGER_H
+#endif // VTCPD_MAXFLOWCACHEMANAGER_H

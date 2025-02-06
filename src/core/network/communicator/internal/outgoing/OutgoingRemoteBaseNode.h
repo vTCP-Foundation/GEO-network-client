@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OUTGOINGREMOTEBASENODE_H
-#define GEO_NETWORK_CLIENT_OUTGOINGREMOTEBASENODE_H
+#ifndef VTCPD_OUTGOINGREMOTEBASENODE_H
+#define VTCPD_OUTGOINGREMOTEBASENODE_H
 
 #include "../common/Types.h"
 #include "../common/Packet.hpp"
@@ -68,4 +68,4 @@ protected:
     as::deadline_timer mSendingDelayTimer;
 };
 
-#endif // GEO_NETWORK_CLIENT_OUTGOINGREMOTEBASENODE_H
+#endif // VTCPD_OUTGOINGREMOTEBASENODE_H

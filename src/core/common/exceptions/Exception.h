@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_EXCEPTIONS_H
-#define GEO_NETWORK_CLIENT_EXCEPTIONS_H
+#ifndef VTCPD_EXCEPTIONS_H
+#define VTCPD_EXCEPTIONS_H
 
 #include <string>
 
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_EXCEPTIONS_H
+#endif //VTCPD_EXCEPTIONS_H

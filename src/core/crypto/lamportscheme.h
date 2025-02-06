@@ -1,5 +1,5 @@
-#ifndef LAMPORTSCHEME_H
-#define LAMPORTSCHEME_H
+#ifndef VTCPD_LAMPORTSCHEME_H
+#define VTCPD_LAMPORTSCHEME_H
 
 #include "lamportkeys.h"
 
@@ -55,4 +55,4 @@ protected:
 }
 }
 
-#endif // LAMPORTSCHEME_H
+#endif // VTCPD_LAMPORTSCHEME_H

@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_COMMAND_ERROR_H
-#define GEO_NETWORK_CLIENT_COMMAND_ERROR_H
+﻿#ifndef VTCPD_COMMAND_ERROR_H
+#define VTCPD_COMMAND_ERROR_H
 
 #include "BaseUserCommand.h"
 
@@ -36,4 +36,4 @@ protected:
     std::string mError;
 };
 
-#endif //GEO_NETWORK_CLIENT_COMMAND_ERROR_H
+#endif //VTCPD_COMMAND_ERROR_H

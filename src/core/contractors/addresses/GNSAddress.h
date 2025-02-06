@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GNSADDRESS_H
-#define GEO_NETWORK_CLIENT_GNSADDRESS_H
+#ifndef VTCPD_GNSADDRESS_H
+#define VTCPD_GNSADDRESS_H
 
 #include "BaseAddress.h"
 #include "../../common/Constraints.h"
@@ -47,4 +47,4 @@ private:
     Port mPort;
 };
 
-#endif // GEO_NETWORK_CLIENT_GNSADDRESS_H
+#endif // VTCPD_GNSADDRESS_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_MEMORYUTILS_H
-#define GEO_NETWORK_CLIENT_MEMORYUTILS_H
+#ifndef VTCPD_MEMORYUTILS_H
+#define VTCPD_MEMORYUTILS_H
 
 #include "../Types.h"
 
@@ -47,4 +47,4 @@ inline BytesShared tryCalloc(
 
     return bytesShared;
 }
-#endif // GEO_NETWORK_CLIENT_MEMORYUTILS_H
+#endif // VTCPD_MEMORYUTILS_H

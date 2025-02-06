@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_MAXFLOWCALCULATIONFULLYTRANSACTION_H
-#define GEO_NETWORK_CLIENT_MAXFLOWCALCULATIONFULLYTRANSACTION_H
+#ifndef VTCPD_MAXFLOWCALCULATIONFULLYTRANSACTION_H
+#define VTCPD_MAXFLOWCALCULATIONFULLYTRANSACTION_H
 
 #include "../base/BaseCollectTopologyTransaction.h"
 #include "../../../interface/commands_interface/commands/max_flow_calculation/InitiateMaxFlowCalculationFullyCommand.h"
@@ -67,4 +67,4 @@ private:
     bool mIamGateway;
 };
 
-#endif // GEO_NETWORK_CLIENT_MAXFLOWCALCULATIONFULLYTRANSACTION_H
+#endif // VTCPD_MAXFLOWCALCULATIONFULLYTRANSACTION_H

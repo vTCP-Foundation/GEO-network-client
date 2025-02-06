@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_NODEUUID_H
-#define GEO_NETWORK_CLIENT_NODEUUID_H
+#ifndef VTCPD_NODEUUID_H
+#define VTCPD_NODEUUID_H
 
 
 #include <boost/uuid/uuid.hpp>
@@ -39,4 +39,4 @@ public:
     const string stringUUID() const;
 };
 
-#endif //GEO_NETWORK_CLIENT_NODEUUID_H
+#endif //VTCPD_NODEUUID_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_IOTRANSACTION_H
-#define GEO_NETWORK_CLIENT_IOTRANSACTION_H
+#ifndef VTCPD_IOTRANSACTION_H
+#define VTCPD_IOTRANSACTION_H
 
 #include "../../common/Types.h"
 #include "TrustLineHandler.h"
@@ -116,4 +116,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_IOTRANSACTION_H
+#endif //VTCPD_IOTRANSACTION_H

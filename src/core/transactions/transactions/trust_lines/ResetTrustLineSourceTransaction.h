@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RESETTRUSTLINESOURCETRANSACTION_H
-#define GEO_NETWORK_CLIENT_RESETTRUSTLINESOURCETRANSACTION_H
+#ifndef VTCPD_RESETTRUSTLINESOURCETRANSACTION_H
+#define VTCPD_RESETTRUSTLINESOURCETRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines/ResetTrustLineCommand.h"
@@ -64,4 +64,4 @@ private:
     uint16_t mCountSendingAttempts;
 };
 
-#endif //GEO_NETWORK_CLIENT_RESETTRUSTLINESOURCETRANSACTION_H
+#endif //VTCPD_RESETTRUSTLINESOURCETRANSACTION_H

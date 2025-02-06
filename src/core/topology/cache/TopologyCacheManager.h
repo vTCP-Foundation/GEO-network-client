@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TOPOLOGYCACHEMANAGER_H
-#define GEO_NETWORK_CLIENT_TOPOLOGYCACHEMANAGER_H
+#ifndef VTCPD_TOPOLOGYCACHEMANAGER_H
+#define VTCPD_TOPOLOGYCACHEMANAGER_H
 
 #include "TopologyCache.h"
 #include "../../contractors/addresses/BaseAddress.h"
@@ -92,4 +92,4 @@ private:
     Logger &mLog;
 };
 
-#endif // GEO_NETWORK_CLIENT_TOPOLOGYCACHEMANAGER_H
+#endif // VTCPD_TOPOLOGYCACHEMANAGER_H

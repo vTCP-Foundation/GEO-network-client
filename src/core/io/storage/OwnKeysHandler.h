@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OWNKEYSHANDLER_H
-#define GEO_NETWORK_CLIENT_OWNKEYSHANDLER_H
+#ifndef VTCPD_OWNKEYSHANDLER_H
+#define VTCPD_OWNKEYSHANDLER_H
 
 #include "../../logger/Logger.h"
 #include "../../common/exceptions/IOError.h"
@@ -95,4 +95,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_OWNKEYSHANDLER_H
+#endif //VTCPD_OWNKEYSHANDLER_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BASEINTERFACE_H
-#define GEO_NETWORK_CLIENT_BASEINTERFACE_H
+#ifndef VTCPD_BASEINTERFACE_H
+#define VTCPD_BASEINTERFACE_H
 
 
 #include "../common/exceptions/IOError.h"
@@ -95,4 +95,4 @@ protected:
     int mFIFODescriptor;
 };
 
-#endif //GEO_NETWORK_CLIENT_BASEINTERFACE_H
+#endif //VTCPD_BASEINTERFACE_H

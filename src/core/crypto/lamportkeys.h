@@ -1,5 +1,5 @@
-#ifndef LAMPORTKEYS_H
-#define LAMPORTKEYS_H
+#ifndef VTCPD_LAMPORTKEYS_H
+#define VTCPD_LAMPORTKEYS_H
 
 #include "memory.h"
 
@@ -103,4 +103,4 @@ private:
 }
 }
 
-#endif // LAMPORTKEYS_H
+#endif // VTCPD_LAMPORTKEYS_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PINGMESSAGESHANDLER_H
-#define GEO_NETWORK_CLIENT_PINGMESSAGESHANDLER_H
+#ifndef VTCPD_PINGMESSAGESHANDLER_H
+#define VTCPD_PINGMESSAGESHANDLER_H
 
 #include "../../internal/common/Types.h"
 #include "../../../../common/exceptions/RuntimeError.h"
@@ -79,4 +79,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PINGMESSAGESHANDLER_H
+#endif //VTCPD_PINGMESSAGESHANDLER_H

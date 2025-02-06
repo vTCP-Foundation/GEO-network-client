@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TYPES_H
-#define GEO_NETWORK_CLIENT_TYPES_H
+#ifndef VTCPD_TYPES_H
+#define VTCPD_TYPES_H
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <memory>
@@ -58,4 +58,4 @@ typedef uint32_t ProviderParticipantID;
 
 typedef uint16_t SerializedEventType;
 
-#endif // GEO_NETWORK_CLIENT_TYPES_H
+#endif // VTCPD_TYPES_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONSTANTS_H
-#define GEO_NETWORK_CLIENT_CONSTANTS_H
+#ifndef VTCPD_CONSTANTS_H
+#define VTCPD_CONSTANTS_H
 
 #include "Types.h"
 
@@ -13,4 +13,4 @@ static const constexpr char kUUIDSeparator = '-';
 static const constexpr char kAddressSeparator = ':';
 static const constexpr char kGNSAddressSeparator = '@';
 
-#endif //GEO_NETWORK_CLIENT_CONSTANTS_H
+#endif //VTCPD_CONSTANTS_H

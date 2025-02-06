@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_REMOVETRUSTLINETRANSACTION_H
-#define GEO_NETWORK_CLIENT_REMOVETRUSTLINETRANSACTION_H
+#ifndef VTCPD_REMOVETRUSTLINETRANSACTION_H
+#define VTCPD_REMOVETRUSTLINETRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines/RemoveTrustLineCommand.h"
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_REMOVETRUSTLINETRANSACTION_H
+#endif //VTCPD_REMOVETRUSTLINETRANSACTION_H

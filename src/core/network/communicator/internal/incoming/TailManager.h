@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TAILMANAGER_H
-#define GEO_NETWORK_CLIENT_TAILMANAGER_H
+#ifndef VTCPD_TAILMANAGER_H
+#define VTCPD_TAILMANAGER_H
 
 #include <list>
 #include <deque>
@@ -92,4 +92,4 @@ private:
     unique_ptr<as::steady_timer> mUpdatingTimer;
 };
 
-#endif // GEO_NETWORK_CLIENT_TAILMANAGER_H
+#endif // VTCPD_TAILMANAGER_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_IOERROR_H
-#define GEO_NETWORK_CLIENT_IOERROR_H
+#ifndef VTCPD_IOERROR_H
+#define VTCPD_IOERROR_H
 
 #include "Exception.h"
 
@@ -10,4 +10,4 @@ class IOError: public Exception
 };
 
 
-#endif //GEO_NETWORK_CLIENT_IOERROR_H
+#endif //VTCPD_IOERROR_H

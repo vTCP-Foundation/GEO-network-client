@@ -1,5 +1,5 @@
-#ifndef MESSAGEPARSER_H
-#define MESSAGEPARSER_H
+#ifndef VTCPD_MESSAGEPARSER_H
+#define VTCPD_MESSAGEPARSER_H
 
 #include "../../../../common/memory/MemoryUtils.h"
 #include "../../../../contractors/ContractorsManager.h"
@@ -120,4 +120,4 @@ protected:
 
 
 
-#endif // MESSAGEPARSER_H
+#endif // VTCPD_MESSAGEPARSER_H

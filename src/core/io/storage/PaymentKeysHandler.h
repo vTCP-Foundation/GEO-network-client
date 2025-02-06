@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PAYMENTKEYSHANDLER_H
-#define GEO_NETWORK_CLIENT_PAYMENTKEYSHANDLER_H
+#ifndef VTCPD_PAYMENTKEYSHANDLER_H
+#define VTCPD_PAYMENTKEYSHANDLER_H
 
 #include "../../transactions/transactions/base/TransactionUUID.h"
 #include "../../logger/Logger.h"
@@ -46,4 +46,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PAYMENTKEYSHANDLER_H
+#endif //VTCPD_PAYMENTKEYSHANDLER_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_INCOMINGCHANNEL_H
-#define GEO_NETWORK_CLIENT_INCOMINGCHANNEL_H
+#ifndef VTCPD_INCOMINGCHANNEL_H
+#define VTCPD_INCOMINGCHANNEL_H
 
 #include "MessageParser.h"
 #include "../common/Types.h"
@@ -65,4 +65,4 @@ protected:
     boost::unordered_map<PacketHeader::PacketIndex, pair<void*, PacketHeader::PacketSize>> mPackets;
 };
 
-#endif // GEO_NETWORK_CLIENT_INCOMINGCHANNEL_H
+#endif // VTCPD_INCOMINGCHANNEL_H

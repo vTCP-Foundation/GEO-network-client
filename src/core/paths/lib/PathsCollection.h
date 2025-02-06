@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_PATHSCOLLECTION_H
-#define GEO_NETWORK_CLIENT_PATHSCOLLECTION_H
+﻿#ifndef VTCPD_PATHSCOLLECTION_H
+#define VTCPD_PATHSCOLLECTION_H
 
 #include "Path.h"
 #include "../../common/exceptions/ValueError.h"
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PATHSCOLLECTION_H
+#endif //VTCPD_PATHSCOLLECTION_H

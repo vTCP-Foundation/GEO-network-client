@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CYCLESMANAGER_H
-#define GEO_NETWORK_CLIENT_CYCLESMANAGER_H
+#ifndef VTCPD_CYCLESMANAGER_H
+#define VTCPD_CYCLESMANAGER_H
 
 #include "../transactions/scheduler/TransactionsScheduler.h"
 #include "../transactions/transactions/regular/payments/base/BasePaymentTransaction.h"
@@ -157,4 +157,4 @@ private:
     SubsystemsController *mSubsystemsController;
 };
 
-#endif // GEO_NETWORK_CLIENT_CYCLESMANAGER_H
+#endif // VTCPD_CYCLESMANAGER_H

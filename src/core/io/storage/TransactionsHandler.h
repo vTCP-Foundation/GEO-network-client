@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TRANSACTIONSHANDLER_H
-#define GEO_NETWORK_CLIENT_TRANSACTIONSHANDLER_H
+#ifndef VTCPD_TRANSACTIONSHANDLER_H
+#define VTCPD_TRANSACTIONSHANDLER_H
 
 #include "../../logger/Logger.h"
 #include "../../transactions/transactions/base/TransactionUUID.h"
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TRANSACTIONSHANDLER_H
+#endif //VTCPD_TRANSACTIONSHANDLER_H

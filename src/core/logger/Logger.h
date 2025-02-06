@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_LOGGER_H
-#define GEO_NETWORK_CLIENT_LOGGER_H
+﻿#ifndef VTCPD_LOGGER_H
+#define VTCPD_LOGGER_H
 
 #include "../common/exceptions/Exception.h"
 #include "../common/time/TimeUtils.h"
@@ -114,4 +114,4 @@ private:
     uint32_t mOperationsLogFileLinesNumber;
     string mOperationLogFileName;
 };
-#endif //GEO_NETWORK_CLIENT_LOGGER_H
+#endif //VTCPD_LOGGER_H

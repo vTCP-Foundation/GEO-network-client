@@ -1,5 +1,5 @@
-#ifndef KEYCHAIN_H
-#define KEYCHAIN_H
+#ifndef VTCPD_KEYCHAIN_H
+#define VTCPD_KEYCHAIN_H
 
 #include "memory.h"
 #include "lamportscheme.h"
@@ -418,4 +418,4 @@ private:
 
 }
 
-#endif // KEYCHAIN_H
+#endif // VTCPD_KEYCHAIN_H

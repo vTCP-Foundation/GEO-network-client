@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TOPOLOGYTRUSTLINE_H
-#define GEO_NETWORK_CLIENT_TOPOLOGYTRUSTLINE_H
+#ifndef VTCPD_TOPOLOGYTRUSTLINE_H
+#define VTCPD_TOPOLOGYTRUSTLINE_H
 
 #include "../common/Types.h"
 #include "../trust_lines/TrustLine.h"
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TOPOLOGYTRUSTLINE_H
+#endif //VTCPD_TOPOLOGYTRUSTLINE_H

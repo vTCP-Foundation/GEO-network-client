@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_AUDITRECORD_H
-#define GEO_NETWORK_CLIENT_AUDITRECORD_H
+#ifndef VTCPD_AUDITRECORD_H
+#define VTCPD_AUDITRECORD_H
 
 #include "../../../../common/Types.h"
 #include "../../../../crypto/lamportkeys.h"
@@ -90,4 +90,4 @@ private:
     lamport::KeyHash::Shared mContractorKeysSetHash;
 };
 
-#endif // GEO_NETWORK_CLIENT_AUDITRECORD_H
+#endif // VTCPD_AUDITRECORD_H

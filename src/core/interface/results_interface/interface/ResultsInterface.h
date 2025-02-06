@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RESULTSINTERFACE_H
-#define GEO_NETWORK_CLIENT_RESULTSINTERFACE_H
+#ifndef VTCPD_RESULTSINTERFACE_H
+#define VTCPD_RESULTSINTERFACE_H
 
 #include "../../BaseFIFOInterface.h"
 #include "../../../logger/Logger.h"
@@ -34,4 +34,4 @@ private:
     Logger &mLog;
 };
 
-#endif //GEO_NETWORK_CLIENT_RESULTSINTERFACE_H
+#endif //VTCPD_RESULTSINTERFACE_H

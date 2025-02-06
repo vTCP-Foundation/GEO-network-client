@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_HISTORYPAYMENTSTRANSACTION_H
-#define GEO_NETWORK_CLIENT_HISTORYPAYMENTSTRANSACTION_H
+#ifndef VTCPD_HISTORYPAYMENTSTRANSACTION_H
+#define VTCPD_HISTORYPAYMENTSTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/history/HistoryPaymentsCommand.h"
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_HISTORYPAYMENTSTRANSACTION_H
+#endif //VTCPD_HISTORYPAYMENTSTRANSACTION_H

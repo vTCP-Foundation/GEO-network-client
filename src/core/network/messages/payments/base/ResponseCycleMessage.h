@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RESPONSECYCLEMESSAGE_H
-#define GEO_NETWORK_CLIENT_RESPONSECYCLEMESSAGE_H
+#ifndef VTCPD_RESPONSECYCLEMESSAGE_H
+#define VTCPD_RESPONSECYCLEMESSAGE_H
 
 #include "../../base/transaction/TransactionMessage.h"
 
@@ -40,4 +40,4 @@ private:
     OperationState mState;
 };
 
-#endif // GEO_NETWORK_CLIENT_RESPONSECYCLEMESSAGE_H
+#endif // VTCPD_RESPONSECYCLEMESSAGE_H

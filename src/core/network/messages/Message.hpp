@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_MESSAGE_H
-#define GEO_NETWORK_CLIENT_MESSAGE_H
+﻿#ifndef VTCPD_MESSAGE_H
+#define VTCPD_MESSAGE_H
 
 #include "../../common/memory/MemoryUtils.h"
 #include "../../contractors/Contractor.h"
@@ -11,7 +11,8 @@
 using namespace std;
 
 
-class Message {
+class Message
+{
 public:
     typedef shared_ptr<Message> Shared;
     typedef uint16_t SerializedType;
@@ -21,11 +22,13 @@ public:
         sizeof(SerializedProtocolVersion) +
         sizeof(ContractorID);
 
-    enum ProtocolVersion {
+    enum ProtocolVersion
+    {
         Latest = 0,
     };
 
-    enum MessageType {
+    enum MessageType
+    {
         /*
          * System messages types
          */
@@ -142,7 +145,7 @@ public:
     static size_t maxSize()
     {
         return
-             numeric_limits<PacketHeader::PacketIndex>::max() * Packet::kMaxSize -
+            numeric_limits<PacketHeader::PacketIndex>::max() * Packet::kMaxSize -
             (numeric_limits<PacketHeader::PacketIndex>::max() * PacketHeader::kSize);
     }
 
@@ -201,7 +204,7 @@ public:
         size_t dataBytesOffset = 0;
         const auto kBufferSize = sizeof(SerializedProtocolVersion) + sizeof(ContractorID) + sizeof(kMessageType);
         auto buffer = tryMalloc(
-            kBufferSize);
+                          kBufferSize);
 
         memcpy(
             buffer.get(),
@@ -222,8 +225,8 @@ public:
             sizeof(kMessageType));
 
         return make_pair(
-            buffer,
-            kBufferSize);
+                   buffer,
+                   kBufferSize);
     }
 
     void setSenderIncomingIP(
@@ -237,14 +240,20 @@ public:
         return mSenderIncomingIP;
     }
 
-    bool isEncrypted() const { return mContractorId != std::numeric_limits<ContractorID>::max(); }
+    bool isEncrypted() const
+    {
+        return mContractorId != std::numeric_limits<ContractorID>::max();
+    }
 
-    ContractorID contractorId() const { return mContractorId; }
+    ContractorID contractorId() const
+    {
+        return mContractorId;
+    }
     ContractorID ownIdOnContractorSide() const
     {
         return isEncrypted() ?
-            mContractor->ownIdOnContractorSide() :
-            std::numeric_limits<ContractorID>::max();
+               mContractor->ownIdOnContractorSide() :
+               std::numeric_limits<ContractorID>::max();
     }
 
     void encrypt(Contractor::Shared contractor)
@@ -265,4 +274,4 @@ private:
     Contractor::Shared mContractor;
 };
 
-#endif //GEO_NETWORK_CLIENT_MESSAGE_H
+#endif //VTCPD_MESSAGE_H

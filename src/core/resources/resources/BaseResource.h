@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BASERESOURCE_H
-#define GEO_NETWORK_CLIENT_BASERESOURCE_H
+#ifndef VTCPD_BASERESOURCE_H
+#define VTCPD_BASERESOURCE_H
 
 #include "../../common/Types.h"
 #include "../../transactions/transactions/base/TransactionUUID.h"
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_BASERESOURCE_H
+#endif //VTCPD_BASERESOURCE_H

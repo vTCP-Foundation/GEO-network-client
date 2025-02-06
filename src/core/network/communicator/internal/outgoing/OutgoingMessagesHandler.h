@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_OUTGOINGMESSAGESHANDLER_H
-#define GEO_NETWORK_CLIENT_OUTGOINGMESSAGESHANDLER_H
+#ifndef VTCPD_OUTGOINGMESSAGESHANDLER_H
+#define VTCPD_OUTGOINGMESSAGESHANDLER_H
 
 #include "OutgoingNodesHandler.h"
 #include "../../../../providing/ProvidingHandler.h"
@@ -71,4 +71,4 @@ protected:
     multimap<string, pair<MsgEncryptor::Buffer, DateTime>> mPostponedMessages;
 };
 
-#endif // GEO_NETWORK_CLIENT_OUTGOINGMESSAGESHANDLER_H
+#endif // VTCPD_OUTGOINGMESSAGESHANDLER_H

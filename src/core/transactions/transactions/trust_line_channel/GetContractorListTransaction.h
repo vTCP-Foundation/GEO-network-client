@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETCONTRACTORLISTTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETCONTRACTORLISTTRANSACTION_H
+#ifndef VTCPD_GETCONTRACTORLISTTRANSACTION_H
+#define VTCPD_GETCONTRACTORLISTTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_line_channels/ContractorListCommand.h"
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_GETCONTRACTORLISTTRANSACTION_H
+#endif //VTCPD_GETCONTRACTORLISTTRANSACTION_H

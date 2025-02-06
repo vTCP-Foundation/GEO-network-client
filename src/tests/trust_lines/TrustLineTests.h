@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TRUSTLINETESTS_H
-#define GEO_NETWORK_CLIENT_TRUSTLINETESTS_H
+#ifndef VTCPD_TRUSTLINETESTS_H
+#define VTCPD_TRUSTLINETESTS_H
 #include <iostream>
 #include <string>
 #include "../../core/common/Types.h"
@@ -24,4 +24,4 @@ public:
     Logger *mLogger;
 };
 
-#endif //GEO_NETWORK_CLIENT_TRUSTLINETESTS_H
+#endif //VTCPD_TRUSTLINETESTS_H

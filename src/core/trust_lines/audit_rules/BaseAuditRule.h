@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BASEAUDITRULE_H
-#define GEO_NETWORK_CLIENT_BASEAUDITRULE_H
+#ifndef VTCPD_BASEAUDITRULE_H
+#define VTCPD_BASEAUDITRULE_H
 
 #include "../../common/Types.h"
 #include "../TrustLine.h"
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_BASEAUDITRULE_H
+#endif //VTCPD_BASEAUDITRULE_H

@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_TRUSTLINE_H
-#define GEO_NETWORK_CLIENT_TRUSTLINE_H
+﻿#ifndef VTCPD_TRUSTLINE_H
+#define VTCPD_TRUSTLINE_H
 
 #include "../common/Types.h"
 #include "../common/memory/MemoryUtils.h"
@@ -144,4 +144,4 @@ private:
     bool mIsContractorKeysPresent;
 };
 
-#endif //GEO_NETWORK_CLIENT_TRUSTLINE_H
+#endif //VTCPD_TRUSTLINE_H

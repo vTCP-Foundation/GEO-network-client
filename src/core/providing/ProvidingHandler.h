@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PROVIDINGHANDLER_H
-#define GEO_NETWORK_CLIENT_PROVIDINGHANDLER_H
+#ifndef VTCPD_PROVIDINGHANDLER_H
+#define VTCPD_PROVIDINGHANDLER_H
 
 #include "Provider.h"
 #include "../contractors/Contractor.h"
@@ -86,4 +86,4 @@ private:
     vector<pair<DateTime, string>> mTimesCache;
 };
 
-#endif // GEO_NETWORK_CLIENT_PROVIDINGHANDLER_H
+#endif // VTCPD_PROVIDINGHANDLER_H

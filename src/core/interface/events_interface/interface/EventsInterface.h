@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_EVENTSINTERFACE_H
-#define GEO_NETWORK_CLIENT_EVENTSINTERFACE_H
+#ifndef VTCPD_EVENTSINTERFACE_H
+#define VTCPD_EVENTSINTERFACE_H
 
 #include "../../BaseFIFOInterface.h"
 #include "../events/Event.h"
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_EVENTSINTERFACE_H
+#endif //VTCPD_EVENTSINTERFACE_H

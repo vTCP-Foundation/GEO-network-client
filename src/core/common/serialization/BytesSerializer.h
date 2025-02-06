@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BYTESSERIALIZER_H
-#define GEO_NETWORK_CLIENT_BYTESSERIALIZER_H
+#ifndef VTCPD_BYTESSERIALIZER_H
+#define VTCPD_BYTESSERIALIZER_H
 
 #include "../NodeUUID.h"
 #include "../memory/MemoryUtils.h"
@@ -174,4 +174,4 @@ protected:
     vector<BaseSerializationRecord *> mRecords;
 };
 
-#endif // GEO_NETWORK_CLIENT_BYTESSERIALIZER_H
+#endif // VTCPD_BYTESSERIALIZER_H

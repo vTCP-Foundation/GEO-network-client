@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BYTEENCRYPTOR_H
-#define GEO_NETWORK_CLIENT_BYTEENCRYPTOR_H
+#ifndef VTCPD_BYTEENCRYPTOR_H
+#define VTCPD_BYTEENCRYPTOR_H
 
 #include <sodium.h>
 #include "../common/Types.h"
@@ -61,4 +61,4 @@ std::ostream &operator<<(std::ostream &out, const ByteEncryptor::PublicKey &t);
 std::ostream &operator<<(std::ostream &out, const ByteEncryptor::SecretKey &t);
 std::ostream &operator<<(std::ostream &out, const ByteEncryptor::KeyPair &t);
 
-#endif // GEO_NETWORK_CLIENT_BYTEENCRYPTOR_H
+#endif // VTCPD_BYTEENCRYPTOR_H

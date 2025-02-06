@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETTRUSTLINEBYADDRESSTRANSACTION_H_H
-#define GEO_NETWORK_CLIENT_GETTRUSTLINEBYADDRESSTRANSACTION_H_H
+#ifndef VTCPD_GETTRUSTLINEBYADDRESSTRANSACTION_H_H
+#define VTCPD_GETTRUSTLINEBYADDRESSTRANSACTION_H_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines_list/GetTrustLineByAddressCommand.h"
@@ -34,4 +34,4 @@ private:
     TrustLinesManager *mTrustLinesManager;
 };
 
-#endif //GEO_NETWORK_CLIENT_GETTRUSTLINEBYADDRESSTRANSACTION_H_H
+#endif //VTCPD_GETTRUSTLINEBYADDRESSTRANSACTION_H_H

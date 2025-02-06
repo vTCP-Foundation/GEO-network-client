@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PARTICIPANTVOTEMESSAGE_H
-#define GEO_NETWORK_CLIENT_PARTICIPANTVOTEMESSAGE_H
+#ifndef VTCPD_PARTICIPANTVOTEMESSAGE_H
+#define VTCPD_PARTICIPANTVOTEMESSAGE_H
 
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../crypto/lamportscheme.h"
@@ -44,4 +44,4 @@ private:
     lamport::Signature::Shared mSignature;
 };
 
-#endif // GEO_NETWORK_CLIENT_PARTICIPANTVOTEMESSAGE_H
+#endif // VTCPD_PARTICIPANTVOTEMESSAGE_H

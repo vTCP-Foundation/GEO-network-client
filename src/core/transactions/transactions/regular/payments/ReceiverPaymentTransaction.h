@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_RECEIVERPAYMENTTRANSACTION_H
-#define GEO_NETWORK_CLIENT_RECEIVERPAYMENTTRANSACTION_H
+﻿#ifndef VTCPD_RECEIVERPAYMENTTRANSACTION_H
+#define VTCPD_RECEIVERPAYMENTTRANSACTION_H
 
 #include "base/BasePaymentTransaction.h"
 #include "../../../../interface/events_interface/interface/EventsInterfaceManager.h"
@@ -117,4 +117,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_RECEIVERPAYMENTTRANSACTION_H
+#endif //VTCPD_RECEIVERPAYMENTTRANSACTION_H

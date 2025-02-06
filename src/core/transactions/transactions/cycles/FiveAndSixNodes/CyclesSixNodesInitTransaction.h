@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CYCLESSIXNODESINITTRANSACTION_H
-#define GEO_NETWORK_CLIENT_CYCLESSIXNODESINITTRANSACTION_H
+#ifndef VTCPD_CYCLESSIXNODESINITTRANSACTION_H
+#define VTCPD_CYCLESSIXNODESINITTRANSACTION_H
 
 #include "base/CyclesBaseFiveSixNodesInitTransaction.h"
 #include "../../../../network/messages/cycles/SixAndFiveNodes/CyclesSixNodesInBetweenMessage.hpp"
@@ -24,4 +24,4 @@ protected:
     TransactionResult::SharedConst runCollectDataAndSendMessagesStage() override;
     TransactionResult::SharedConst runParseMessageAndCreateCyclesStage() override;
 };
-#endif //GEO_NETWORK_CLIENT_CYCLESSIXNODESINITTRANSACTION_H
+#endif //VTCPD_CYCLESSIXNODESINITTRANSACTION_H

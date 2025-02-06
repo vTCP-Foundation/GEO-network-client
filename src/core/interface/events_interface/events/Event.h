@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_EVENT_H
-#define GEO_NETWORK_CLIENT_EVENT_H
+#ifndef VTCPD_EVENT_H
+#define VTCPD_EVENT_H
 
 #include "../../../common/Constraints.h"
 #include "../../../common/memory/MemoryUtils.h"
@@ -68,4 +68,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_EVENT_H
+#endif //VTCPD_EVENT_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BALANCESRESPONCEMESSAGE_H
-#define GEO_NETWORK_CLIENT_BALANCESRESPONCEMESSAGE_H
+#ifndef VTCPD_BALANCESRESPONCEMESSAGE_H
+#define VTCPD_BALANCESRESPONCEMESSAGE_H
 
 #include "../../base/transaction/TransactionMessage.h"
 #include "../../../../contractors/addresses/BaseAddress.h"
@@ -33,4 +33,4 @@ protected:
     vector<BaseAddress::Shared> mNeighbors;
 };
 
-#endif //GEO_NETWORK_CLIENT_BALANCESRESPONCEMESSAGE_H
+#endif //VTCPD_BALANCESRESPONCEMESSAGE_H

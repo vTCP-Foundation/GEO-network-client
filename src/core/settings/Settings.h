@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_SETTINGS_H
-#define GEO_NETWORK_CLIENT_SETTINGS_H
+#ifndef VTCPD_SETTINGS_H
+#define VTCPD_SETTINGS_H
 
 #include "../common/Types.h"
 
@@ -42,4 +42,4 @@ public:
     json loadParsedJSON() const;
 };
 
-#endif //GEO_NETWORK_CLIENT_SETTINGS_H
+#endif //VTCPD_SETTINGS_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RECEIPTRECORD_H
-#define GEO_NETWORK_CLIENT_RECEIPTRECORD_H
+#ifndef VTCPD_RECEIPTRECORD_H
+#define VTCPD_RECEIPTRECORD_H
 
 #include "../../../../common/Types.h"
 #include "../../../../crypto/lamportkeys.h"
@@ -53,4 +53,4 @@ private:
     lamport::Signature::Shared mSignature;
 };
 
-#endif // GEO_NETWORK_CLIENT_RECEIPTRECORD_H
+#endif // VTCPD_RECEIPTRECORD_H

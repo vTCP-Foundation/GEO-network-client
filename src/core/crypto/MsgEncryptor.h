@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_MSGENCRYPTOR_H
-#define GEO_NETWORK_CLIENT_MSGENCRYPTOR_H
+#ifndef VTCPD_MSGENCRYPTOR_H
+#define VTCPD_MSGENCRYPTOR_H
 
 #include "ByteEncryptor.h"
 
@@ -40,4 +40,4 @@ public:
 
 std::ostream &operator<<(std::ostream &out, const MsgEncryptor::KeyTrio &t);
 
-#endif // GEO_NETWORK_CLIENT_MSGENCRYPTOR_H
+#endif // VTCPD_MSGENCRYPTOR_H

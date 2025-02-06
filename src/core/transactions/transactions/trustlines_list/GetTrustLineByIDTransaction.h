@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETTRUSTLINEBYIDTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETTRUSTLINEBYIDTRANSACTION_H
+#ifndef VTCPD_GETTRUSTLINEBYIDTRANSACTION_H
+#define VTCPD_GETTRUSTLINEBYIDTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines_list/GetTrustLineByIDCommand.h"
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_GETTRUSTLINEBYIDTRANSACTION_H
+#endif //VTCPD_GETTRUSTLINEBYIDTRANSACTION_H

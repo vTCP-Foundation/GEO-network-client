@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_TOTALBALANCESTRANSACTION_H
-#define GEO_NETWORK_CLIENT_TOTALBALANCESTRANSACTION_H
+#ifndef VTCPD_TOTALBALANCESTRANSACTION_H
+#define VTCPD_TOTALBALANCESTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/total_balances/TotalBalancesCommand.h"
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TOTALBALANCESTRANSACTION_H
+#endif //VTCPD_TOTALBALANCESTRANSACTION_H

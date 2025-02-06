@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_TRANSACTIONSTATE_H
-#define GEO_NETWORK_CLIENT_TRANSACTIONSTATE_H
+﻿#ifndef VTCPD_TRANSACTIONSTATE_H
+#define VTCPD_TRANSACTIONSTATE_H
 
 #include "../../../../common/time/TimeUtils.h"
 #include "../../../../network/messages/Message.hpp"
@@ -100,4 +100,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_TRANSACTIONSTATE_H
+#endif //VTCPD_TRANSACTIONSTATE_H

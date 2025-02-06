@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_RESOURCESMANAGER_H
-#define GEO_NETWORK_CLIENT_RESOURCESMANAGER_H
+#ifndef VTCPD_RESOURCESMANAGER_H
+#define VTCPD_RESOURCESMANAGER_H
 
 #include "../../common/Types.h"
 #include "../../contractors/addresses/BaseAddress.h"
@@ -44,4 +44,4 @@ public:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_RESOURCESMANAGER_H
+#endif //VTCPD_RESOURCESMANAGER_H

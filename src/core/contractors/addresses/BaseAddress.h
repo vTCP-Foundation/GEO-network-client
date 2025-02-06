@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_BASEADDRESS_H
-#define GEO_NETWORK_CLIENT_BASEADDRESS_H
+#ifndef VTCPD_BASEADDRESS_H
+#define VTCPD_BASEADDRESS_H
 
 #include "../../common/memory/MemoryUtils.h"
 
@@ -55,4 +55,4 @@ public:
         BaseAddress::Shared address2);
 };
 
-#endif // GEO_NETWORK_CLIENT_BASEADDRESS_H
+#endif // VTCPD_BASEADDRESS_H

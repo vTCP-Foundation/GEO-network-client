@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_GETFIRSTLEVELCONTRACTORSTRANSACTION_H
-#define GEO_NETWORK_CLIENT_GETFIRSTLEVELCONTRACTORSTRANSACTION_H
+#ifndef VTCPD_GETFIRSTLEVELCONTRACTORSTRANSACTION_H
+#define VTCPD_GETFIRSTLEVELCONTRACTORSTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/trust_lines_list/GetFirstLevelContractorsCommand.h"
@@ -31,4 +31,4 @@ private:
     ContractorsManager *mContractorsManager;
 };
 
-#endif //GEO_NETWORK_CLIENT_GETFIRSTLEVELCONTRACTORSTRANSACTION_H
+#endif //VTCPD_GETFIRSTLEVELCONTRACTORSTRANSACTION_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_COMMANDSRECEIVER_H
-#define GEO_NETWORK_CLIENT_COMMANDSRECEIVER_H
+#ifndef VTCPD_COMMANDSRECEIVER_H
+#define VTCPD_COMMANDSRECEIVER_H
 
 #include "../../BaseFIFOInterface.h"
 
@@ -190,4 +190,4 @@ protected:
     unique_ptr<CommandsParser> mCommandsParser;
 };
 
-#endif //GEO_NETWORK_CLIENT_COMMANDSRECEIVER_H
+#endif //VTCPD_COMMANDSRECEIVER_H

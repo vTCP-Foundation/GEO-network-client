@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_TRANSACTIONSSCHEDULER_H
-#define GEO_NETWORK_CLIENT_TRANSACTIONSSCHEDULER_H
+﻿#ifndef VTCPD_TRANSACTIONSSCHEDULER_H
+#define VTCPD_TRANSACTIONSSCHEDULER_H
 
 #include "../../common/time/TimeUtils.h"
 
@@ -161,4 +161,4 @@ private:
     TrustLinesInfluenceController *mTrustLinesInfluenceController;
 };
 
-#endif //GEO_NETWORK_CLIENT_TRANSACTIONSSCHEDULER_H
+#endif //VTCPD_TRANSACTIONSSCHEDULER_H

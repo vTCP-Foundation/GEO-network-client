@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_SENDERMESSAGE_H
-#define GEO_NETWORK_CLIENT_SENDERMESSAGE_H
+#ifndef VTCPD_SENDERMESSAGE_H
+#define VTCPD_SENDERMESSAGE_H
 
 #include "EquivalentMessage.h"
 
@@ -36,4 +36,4 @@ protected:
     virtual const size_t kOffsetToInheritedBytes() const override;
 };
 
-#endif //GEO_NETWORK_CLIENT_SENDERMESSAGE_H
+#endif //VTCPD_SENDERMESSAGE_H

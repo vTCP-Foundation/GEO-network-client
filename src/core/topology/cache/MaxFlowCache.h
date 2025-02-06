@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_MAXFLOWCACHE_H
-#define GEO_NETWORK_CLIENT_MAXFLOWCACHE_H
+#ifndef VTCPD_MAXFLOWCACHE_H
+#define VTCPD_MAXFLOWCACHE_H
 
 #include "../../common/Types.h"
 #include "../../common/time/TimeUtils.h"
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_MAXFLOWCACHE_H
+#endif //VTCPD_MAXFLOWCACHE_H

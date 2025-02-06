@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_INITCHANNELMESSAGE_H
-#define GEO_NETWORK_CLIENT_INITCHANNELMESSAGE_H
+#ifndef VTCPD_INITCHANNELMESSAGE_H
+#define VTCPD_INITCHANNELMESSAGE_H
 
 #include "../base/transaction/TransactionMessage.h"
 #include "../../../contractors/Contractor.h"
@@ -33,4 +33,4 @@ protected:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_INITCHANNELMESSAGE_H
+#endif //VTCPD_INITCHANNELMESSAGE_H

@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PONGMESSAGE_H
-#define GEO_NETWORK_CLIENT_PONGMESSAGE_H
+#ifndef VTCPD_PONGMESSAGE_H
+#define VTCPD_PONGMESSAGE_H
 
 #include "../SenderMessage.h"
 
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PONGMESSAGE_H
+#endif //VTCPD_PONGMESSAGE_H

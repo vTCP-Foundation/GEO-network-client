@@ -1,5 +1,5 @@
-#ifndef NETWORK_COMMON_TYPES_H
-#define NETWORK_COMMON_TYPES_H
+#ifndef VTCPD_NETWORK_COMMON_TYPES_H
+#define VTCPD_NETWORK_COMMON_TYPES_H
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -27,4 +27,4 @@ using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 using Host = std::string;
 using Port = uint16_t;
 
-#endif // NETWORK_COMMON_TYPES_H
+#endif // VTCPD_NETWORK_COMMON_TYPES_H

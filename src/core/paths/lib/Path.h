@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_PATH_H
-#define GEO_NETWORK_CLIENT_PATH_H
+#ifndef VTCPD_PATH_H
+#define VTCPD_PATH_H
 
 #include "../../contractors/addresses/BaseAddress.h"
 #include "../../common/exceptions/IndexError.h"
@@ -44,4 +44,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_PATH_H
+#endif //VTCPD_PATH_H

@@ -1,5 +1,5 @@
-﻿#ifndef GEO_NETWORK_CLIENT_TRANSACTIONSMANAGER_H
-#define GEO_NETWORK_CLIENT_TRANSACTIONSMANAGER_H
+﻿#ifndef VTCPD_TRANSACTIONSMANAGER_H
+#define VTCPD_TRANSACTIONSMANAGER_H
 
 #include "../scheduler/TransactionsScheduler.h"
 #include "../../interface/results_interface/interface/ResultsInterface.h"
@@ -562,4 +562,4 @@ private:
     unique_ptr<EquivalentsCyclesSubsystemsRouter> mEquivalentsCyclesSubsystemsRouter;
 };
 
-#endif //GEO_NETWORK_CLIENT_TRANSACTIONSMANAGER_H
+#endif //VTCPD_TRANSACTIONSMANAGER_H

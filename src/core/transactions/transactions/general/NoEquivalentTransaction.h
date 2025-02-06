@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_NOEQUIVALENTTRANSACTION_H
-#define GEO_NETWORK_CLIENT_NOEQUIVALENTTRANSACTION_H
+#ifndef VTCPD_NOEQUIVALENTTRANSACTION_H
+#define VTCPD_NOEQUIVALENTTRANSACTION_H
 
 #include "../base/BaseTransaction.h"
 #include "../../../interface/commands_interface/commands/BaseUserCommand.h"
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_NOEQUIVALENTTRANSACTION_H
+#endif //VTCPD_NOEQUIVALENTTRANSACTION_H

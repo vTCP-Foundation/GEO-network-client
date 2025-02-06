@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_ROUTINGTABLERESPONCEMESSAGE_H
-#define GEO_NETWORK_CLIENT_ROUTINGTABLERESPONCEMESSAGE_H
+#ifndef VTCPD_ROUTINGTABLERESPONCEMESSAGE_H
+#define VTCPD_ROUTINGTABLERESPONCEMESSAGE_H
 
 #include "../base/transaction/ConfirmationMessage.h"
 #include <vector>
@@ -30,4 +30,4 @@ protected:
     vector<pair<SerializedEquivalent, vector<BaseAddress::Shared>>> mNeighbors;
 };
 
-#endif //GEO_NETWORK_CLIENT_ROUTINGTABLERESPONCEMESSAGE_H
+#endif //VTCPD_ROUTINGTABLERESPONCEMESSAGE_H

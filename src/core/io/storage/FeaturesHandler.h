@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_FEATURESHANDLER_H
-#define GEO_NETWORK_CLIENT_FEATURESHANDLER_H
+#ifndef VTCPD_FEATURESHANDLER_H
+#define VTCPD_FEATURESHANDLER_H
 
 #include "../../common/Types.h"
 #include "../../logger/Logger.h"
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //GEO_NETWORK_CLIENT_FEATURESHANDLER_H
+#endif //VTCPD_FEATURESHANDLER_H

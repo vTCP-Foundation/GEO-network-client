@@ -1,5 +1,5 @@
-#ifndef GEO_NETWORK_CLIENT_CONFLICTERROR_H
-#define GEO_NETWORK_CLIENT_CONFLICTERROR_H
+#ifndef VTCPD_CONFLICTERROR_H
+#define VTCPD_CONFLICTERROR_H
 
 #include "Exception.h"
 
@@ -9,4 +9,4 @@ class ConflictError: public Exception
     using Exception::Exception;
 };
 
-#endif //GEO_NETWORK_CLIENT_CONFLICTERROR_H
+#endif //VTCPD_CONFLICTERROR_H
