@@ -1,0 +1,64 @@
+version: '3.8'
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.88.0.0/16
+
+x-common-config: &common-config
+  environment: &common-env
+    LISTEN_ADDRESS: ${LISTEN_ADDRESS:-127.0.0.1}
+    LISTEN_PORT: ${LISTEN_PORT:-2000}
+    EQUIVALENTS_REGISTRY: ${EQUIVALENTS_REGISTRY:-eth}
+    MAX_HOPS: ${MAX_HOPS:-5}
+  ports:
+    - "${LISTEN_PORT:-2000}:${LISTEN_PORT:-2000}"
+  restart: unless-stopped
+
+# Development services
+x-dev-config: &dev-config
+  <<: *common-config
+  command: /vtcpd/vtcpd
+  user: root
+
+services:
+  # Development services
+  vtcpd-dev-manjaro:
+    <<: *dev-config
+    build:
+      context: .
+      target: final-manjaro
+      args:
+        BUILD_TYPE: Debug
+        LISTEN_ADDRESS: ${LISTEN_ADDRESS:-127.0.0.1}
+        LISTEN_PORT: ${LISTEN_PORT:-2000}
+        EQUIVALENTS_REGISTRY: ${EQUIVALENTS_REGISTRY:-eth}
+        MAX_HOPS: ${MAX_HOPS:-5}
+    profiles:
+      - dev
+      - manjaro
+    environment:
+      <<: *common-env
+    restart: no
+
+  vtcpd-dev-ubuntu:
+    <<: *dev-config
+    build:
+      context: .
+      target: final-ubuntu
+      args:
+        BUILD_TYPE: Debug
+        LISTEN_ADDRESS: ${LISTEN_ADDRESS:-127.0.0.1}
+        LISTEN_PORT: ${LISTEN_PORT:-2000}
+        EQUIVALENTS_REGISTRY: ${EQUIVALENTS_REGISTRY:-eth}
+        MAX_HOPS: ${MAX_HOPS:-5}
+    profiles:
+      - dev
+      - ubuntu
+    environment:
+      <<: *common-env
+    restart: no
+
