@@ -21,7 +21,7 @@ public:
 
 public:
     FeaturesManager(
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         const string& equivalentsRegistryAddress,
         const string& ownAddresses,
         StorageHandler *storageHandler,
@@ -47,7 +47,7 @@ private:
 private:
     StorageHandler *mStorageHandler;
     string mEquivalentsRegistryAddressValue;
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     unique_ptr<as::steady_timer> mNotificationTimer;
 };
 

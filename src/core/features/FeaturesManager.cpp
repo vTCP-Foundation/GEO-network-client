@@ -1,13 +1,13 @@
 #include "FeaturesManager.h"
 
 FeaturesManager::FeaturesManager(
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     const string& equivalentsRegistryAddress,
     const string& ownAddresses,
     StorageHandler *storageHandler,
     Logger &logger):
     LoggerMixin(logger),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mStorageHandler(storageHandler)
 {
     if (equivalentsRegistryAddress.empty()) {
@@ -46,8 +46,8 @@ FeaturesManager::FeaturesManager(
                 kOwnAddressesFieldName,
                 ownAddresses);
             mNotificationTimer = make_unique<as::steady_timer>(
-                                     mIOService);
-            mNotificationTimer->expires_from_now(
+                                     mIOCtx);
+            mNotificationTimer->expires_after(
                 chrono::seconds(
                     kSignalTimerPeriodSeconds));
             mNotificationTimer->async_wait(

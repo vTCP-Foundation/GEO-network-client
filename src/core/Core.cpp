@@ -39,7 +39,7 @@ int Core::run()
         mCommunicator->beginAcceptMessages();
         mCommandsInterface->beginAcceptCommands();
         info() << "Processing started.";
-        mIOService.run();
+        mIOCtx.run();
         return 0;
 
     } catch (Exception &e) {
@@ -202,7 +202,7 @@ int Core::initTailManager()
 {
     try {
         mTailManager = make_unique<TailManager>(
-                           mIOService,
+                           mIOCtx,
                            *mLog);
 
         info() << "Tail manager is successfully initialised";
@@ -220,7 +220,7 @@ int Core::initCommunicator(
     try {
         auto interface = mSettings->interface(&conf);
         mCommunicator = make_unique<Communicator>(
-                            mIOService,
+                            mIOCtx,
                             interface.first,
                             interface.second,
                             mContractorsManager.get(),
@@ -243,7 +243,7 @@ int Core::initObservingHandler(
     try {
         mObservingHandler = make_unique<ObservingHandler>(
                                 mSettings->observers(&conf),
-                                mIOService,
+                                mIOCtx,
                                 mStorageHandler.get(),
                                 mResourcesManager.get(),
                                 *mLog);
@@ -314,7 +314,7 @@ int Core::initEquivalentsSubsystemsRouter(
                                            mKeysStore.get(),
                                            mContractorsManager.get(),
                                            mEventsInterfaceManager.get(),
-                                           mIOService,
+                                           mIOCtx,
                                            equivalentIAmGateway,
                                            *mLog);
         info() << "EquivalentsSubsystemsRouter is successfully initialised";
@@ -342,7 +342,7 @@ int Core::initTransactionsManager()
 {
     try {
         mTransactionsManager = make_unique<TransactionsManager>(
-                                   mIOService,
+                                   mIOCtx,
                                    mContractorsManager.get(),
                                    mEquivalentsSubsystemsRouter.get(),
                                    mResourcesManager.get(),
@@ -368,7 +368,7 @@ int Core::initCommandsInterface()
 {
     try {
         mCommandsInterface = make_unique<CommandsInterface>(
-                                 mIOService,
+                                 mIOCtx,
                                  *mLog);
         info() << "Commands interface is successfully initialised";
         return 0;
@@ -437,7 +437,7 @@ int Core::initProvidingHandler(
 
         mProvidingHandler = make_unique<ProvidingHandler>(
                                 providers,
-                                mIOService,
+                                mIOCtx,
                                 mContractorsManager->selfContractor(),
                                 *mLog);
         info() << "Providing handler is successfully initialised";
@@ -492,7 +492,7 @@ int Core::initTopologyEventDelayedTask()
 {
     try {
         mTopologyEventDelayedTask = make_unique<TopologyEventDelayedTask>(
-                                        mIOService,
+                                        mIOCtx,
                                         mEquivalentsSubsystemsRouter.get(),
                                         *mLog);
         info() << "Topology Event Delayed Task is successfully initialized";
@@ -508,7 +508,7 @@ int Core::initFeaturesManager(
 {
     try {
         mFeaturesManager = make_unique<FeaturesManager>(
-                               mIOService,
+                               mIOCtx,
                                mSettings->equivalentsRegistryAddress(&conf),
                                mContractorsManager->selfContractor()->outputString(),
                                mStorageHandler.get(),

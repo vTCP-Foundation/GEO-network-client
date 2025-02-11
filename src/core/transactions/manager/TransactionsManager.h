@@ -109,7 +109,7 @@ public:
 
 public:
     TransactionsManager(
-        as::io_service &IOService,
+        as::io_context &IOCtx,
         ContractorsManager *contractorsManager,
         EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
         ResourcesManager *ResourcesManager,
@@ -542,7 +542,7 @@ protected:
     noexcept;
 
 private:
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     ContractorsManager *mContractorsManager;
     EquivalentsSubsystemsRouter *mEquivalentsSubsystemsRouter;
     ResourcesManager *mResourcesManager;

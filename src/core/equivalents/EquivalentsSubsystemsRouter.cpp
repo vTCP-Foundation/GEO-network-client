@@ -5,7 +5,7 @@ EquivalentsSubsystemsRouter::EquivalentsSubsystemsRouter(
     Keystore *keystore,
     ContractorsManager *contractorsManager,
     EventsInterfaceManager *eventsInterfaceManager,
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     vector<SerializedEquivalent> &equivalentsIAmGateway,
     Logger &logger):
 
@@ -13,7 +13,7 @@ EquivalentsSubsystemsRouter::EquivalentsSubsystemsRouter(
     mKeysStore(keystore),
     mContractorsManager(contractorsManager),
     mEventsInterfaceManager(eventsInterfaceManager),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLogger(logger)
 {
     {
@@ -72,7 +72,7 @@ EquivalentsSubsystemsRouter::EquivalentsSubsystemsRouter(
                 equivalent,
                 make_unique<TopologyCacheUpdateDelayedTask>(
                     equivalent,
-                    mIOService,
+                    mIOCtx,
                     mTopologyCacheManagers[equivalent].get(),
                     mTopologyTrustLinesManagers[equivalent].get(),
                     mMaxFlowCacheManagers[equivalent].get(),
@@ -98,7 +98,7 @@ EquivalentsSubsystemsRouter::EquivalentsSubsystemsRouter(
     }
 
     mGatewayNotificationAndRoutingTablesDelayedTask = make_unique<GatewayNotificationAndRoutingTablesDelayedTask>(
-            mIOService,
+            mIOCtx,
             mLogger);
     subscribeForGatewayNotification(
         mGatewayNotificationAndRoutingTablesDelayedTask->gatewayNotificationSignal);
@@ -231,7 +231,7 @@ void EquivalentsSubsystemsRouter::initNewEquivalent(
             equivalent,
             make_unique<TopologyCacheUpdateDelayedTask>(
                 equivalent,
-                mIOService,
+                mIOCtx,
                 mTopologyCacheManagers[equivalent].get(),
                 mTopologyTrustLinesManagers[equivalent].get(),
                 mMaxFlowCacheManagers[equivalent].get(),

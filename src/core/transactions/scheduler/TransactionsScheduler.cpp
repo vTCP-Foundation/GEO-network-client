@@ -1,16 +1,16 @@
 ﻿#include "TransactionsScheduler.h"
 
 TransactionsScheduler::TransactionsScheduler(
-    as::io_service &IOService,
+    as::io_context &IOCtx,
     TrustLinesInfluenceController *trustLinesInfluenceController,
     Logger &logger) :
 
-    mIOService(IOService),
+    mIOCtx(IOCtx),
     mTrustLinesInfluenceController(trustLinesInfluenceController),
     mLog(logger),
 
     mTransactions(new map<BaseTransaction::Shared, TransactionState::SharedConst>()),
-    mProcessingTimer(new as::steady_timer(mIOService))
+    mProcessingTimer(new as::steady_timer(mIOCtx))
 {}
 
 /*!
@@ -393,7 +393,7 @@ void TransactionsScheduler::asyncWaitUntil(
         microsecondsDelay = nextAwakeningTimestamp - now;
     }
 
-    mProcessingTimer->expires_from_now(
+    mProcessingTimer->expires_after(
         chrono::microseconds(microsecondsDelay));
 
     mProcessingTimer->async_wait(

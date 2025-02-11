@@ -26,7 +26,7 @@ public:
 public:
     ProvidingHandler(
         vector<Provider::Shared> &providers,
-        IOService &ioService,
+        IOCtx &ioCtx,
         Contractor::Shared selfContractor,
         Logger &logger);
 

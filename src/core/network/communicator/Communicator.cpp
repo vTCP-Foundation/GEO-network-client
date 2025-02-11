@@ -2,7 +2,7 @@
 
 
 Communicator::Communicator(
-    IOService &IOService,
+    IOCtx &IOCtx,
     Host host,
     Port port,
     ContractorsManager *contractorsManager,
@@ -10,7 +10,7 @@ Communicator::Communicator(
     ProvidingHandler *providingHandler,
     Logger &logger):
 
-    mIOService(IOService),
+    mIOCtx(IOCtx),
     mContractorsManager(contractorsManager),
     mTailManager(tailManager),
     mLog(logger),
@@ -24,38 +24,38 @@ Communicator::Communicator(
 
     mConfirmationRequiredMessagesHandler(
         make_unique<ConfirmationRequiredMessagesHandler>(
-            IOService,
+            IOCtx,
             mCommunicatorStorageHandler.get(),
             logger)),
 
     mConfirmationNotStronglyRequiredMessagesHandler(
         make_unique<ConfirmationNotStronglyRequiredMessagesHandler>(
-            IOService,
+            IOCtx,
             logger)),
 
     mConfirmationResponseMessagesHandler(
         make_unique<ConfirmationResponseMessagesHandler>(
-            IOService,
+            IOCtx,
             logger)),
 
     mPingMessagesHandler(
         make_unique<PingMessagesHandler>(
             contractorsManager,
-            IOService,
+            IOCtx,
             logger))
 {
     if (!host.empty()) {
         mSocket = make_unique<UDPSocket>(
-                      IOService,
+                      IOCtx,
                       udp::endpoint(
-                          address::from_string(host),
+                          boost::asio::ip::make_address(host),
                           port));
 #ifdef DEBUG_LOG_NETWORK_COMMUNICATOR
         logger.debug("Communicator mSocket ") << host << ":" << port;
 #endif
     } else {
         mSocket = make_unique<UDPSocket>(
-                      IOService,
+                      IOCtx,
                       udp::endpoint(
                           udp::v4(),
                           contractorsManager->selfContractor()->mainAddress()->port()));
@@ -66,7 +66,7 @@ Communicator::Communicator(
 
     mIncomingMessagesHandler =
         make_unique<IncomingMessagesHandler>(
-            IOService,
+            IOCtx,
             *mSocket,
             contractorsManager,
             tailManager,
@@ -74,7 +74,7 @@ Communicator::Communicator(
 
     mOutgoingMessagesHandler =
         make_unique<OutgoingMessagesHandler>(
-            IOService,
+            IOCtx,
             *mSocket,
             contractorsManager,
             providingHandler,

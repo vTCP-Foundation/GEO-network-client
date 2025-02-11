@@ -2,17 +2,17 @@
 
 PingMessagesHandler::PingMessagesHandler(
     ContractorsManager *contractorsManager,
-    IOService &ioService,
+    IOCtx &ioCtx,
     Logger &logger) :
 
     LoggerMixin(logger),
     mContractorsManager(contractorsManager),
-    mIOService(ioService),
-    mResendingTimer(ioService)
+    mIOCtx(ioCtx),
+    mResendingTimer(ioCtx)
 {
     mReschedulingTimer = make_unique<as::steady_timer>(
-                             mIOService);
-    mReschedulingTimer->expires_from_now(
+                             mIOCtx);
+    mReschedulingTimer->expires_after(
         chrono::seconds(
             +kMessagesReschedulingSecondsTime));
     mReschedulingTimer->async_wait(
@@ -95,7 +95,7 @@ void PingMessagesHandler::rescheduleResending()
         return;
     }
 
-    mResendingTimer.expires_from_now(chrono::seconds(+kPingMessagesSecondsTimeOut));
+    mResendingTimer.expires_after(chrono::seconds(+kPingMessagesSecondsTimeOut));
     mResendingTimer.async_wait([this] (const boost::system::error_code &e) {
 
         if (e == boost::asio::error::operation_aborted) {

@@ -21,7 +21,7 @@ public:
 
 public:
     GatewayNotificationAndRoutingTablesDelayedTask(
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         Logger &logger);
 
 public:
@@ -45,7 +45,7 @@ private:
     static const uint32_t kUpdatingTimerPeriodSeconds = 60 * 60 * 24 * 2;
 
 private:
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     unique_ptr<as::steady_timer> mNotificationTimer;
     Logger &mLog;
 };

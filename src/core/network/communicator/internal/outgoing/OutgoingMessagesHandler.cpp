@@ -1,7 +1,9 @@
 #include "OutgoingMessagesHandler.h"
 
+const uint16_t OutgoingMessagesHandler::kPostponedMessagesClearingPeriodSeconds;
+
 OutgoingMessagesHandler::OutgoingMessagesHandler(
-    IOService &ioService,
+    IOCtx &ioCtx,
     UDPSocket &socket,
     ContractorsManager *contractorsManager,
     ProvidingHandler *providingHandler,
@@ -9,12 +11,12 @@ OutgoingMessagesHandler::OutgoingMessagesHandler(
 
     mLog(log),
     mNodes(
-        ioService,
+        ioCtx,
         socket,
         log),
     mContractorsManager(contractorsManager),
     mProvidingHandler(providingHandler),
-    mPostponedMessagesCleaningTimer(ioService)
+    mPostponedMessagesCleaningTimer(ioCtx)
 {
     mProvidingHandler->sendPingMessageSignal.connect(
         boost::bind(
@@ -22,9 +24,8 @@ OutgoingMessagesHandler::OutgoingMessagesHandler(
             this,
             _1));
 
-    mPostponedMessagesCleaningTimer.expires_from_now(
-        std::chrono::seconds(
-            +kPostponedMessagesClearingPeriodSeconds));
+    mPostponedMessagesCleaningTimer.expires_after(
+        chrono::seconds(kPostponedMessagesClearingPeriodSeconds));
     mPostponedMessagesCleaningTimer.async_wait(
         boost::bind(
             &OutgoingMessagesHandler::clearUndeliveredMessages,
@@ -411,9 +412,8 @@ void OutgoingMessagesHandler::clearUndeliveredMessages(
         << "mPostponedMessages after deleting " << mPostponedMessages.size();
 #endif
 
-    mPostponedMessagesCleaningTimer.expires_from_now(
-        std::chrono::seconds(
-            +kPostponedMessagesClearingPeriodSeconds));
+    mPostponedMessagesCleaningTimer.expires_after(
+        chrono::seconds(kPostponedMessagesClearingPeriodSeconds));
     mPostponedMessagesCleaningTimer.async_wait(
         boost::bind(
             &OutgoingMessagesHandler::clearUndeliveredMessages,

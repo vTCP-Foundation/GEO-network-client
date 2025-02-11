@@ -1,9 +1,9 @@
 #include "ObservingCommunicator.h"
 
 ObservingCommunicator::ObservingCommunicator(
-    IOService &ioService,
+    IOCtx &ioCtx,
     Logger &logger):
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLogger(logger)
 {}
 
@@ -14,20 +14,21 @@ BytesShared ObservingCommunicator::sendRequestToObserver(
 #ifdef DEBUG_LOG_OBSEVING_HANDLER
     debug() << "sendRequestToObserver " << observerAddress->fullAddress();
 #endif
-    tcp::resolver resolver(mIOService);
-    tcp::resolver::query query(
-        tcp::v4(),
-        observerAddress->host(),
-        to_string(observerAddress->port()));
-    tcp::resolver::iterator iterator = resolver.resolve(query);
-    tcp::resolver::iterator end;
+    tcp::resolver resolver(mIOCtx);
+    boost::system::error_code errorCode;
 
-    tcp::socket socket(mIOService);
-    boost::system::error_code errorCode = boost::asio::error::host_not_found;
-    while(errorCode && iterator != end) {
-        socket.close();
-        socket.connect(*iterator++, errorCode);
+    auto endpoints = resolver.resolve(
+                         observerAddress->host(),
+                         to_string(observerAddress->port()),
+                         errorCode);
+
+    if (errorCode) {
+        throw errorCode;
     }
+
+    tcp::socket socket(mIOCtx);
+    boost::asio::connect(socket, endpoints, errorCode);
+
     if (errorCode) {
         throw errorCode;
     }
@@ -38,6 +39,7 @@ BytesShared ObservingCommunicator::sendRequestToObserver(
         boost::asio::buffer(
             serializedRequest.get(),
             request->serializedSize()));
+
 #ifdef DEBUG_LOG_OBSEVING_HANDLER
     debug() << "request sent";
 #endif

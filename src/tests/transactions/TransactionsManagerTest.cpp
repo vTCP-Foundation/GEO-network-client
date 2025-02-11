@@ -1,7 +1,7 @@
 #include "TransactionsManagerTest.h"
 
 TransactionsManagerTest::TransactionsManagerTest(
-    as::io_service &IOService,
+    as::io_context &IOCtx,
     TrustLinesManager *trustLinesManager,
     ResultsInterface *resultsInterface,
     Logger *logger) :
@@ -9,7 +9,7 @@ TransactionsManagerTest::TransactionsManagerTest(
     mLog(logger)
 {
 
-    mTransactionsManager = new TransactionsManager(IOService, trustLinesManager, resultsInterface, logger);
+    mTransactionsManager = new TransactionsManager(IOCtx, trustLinesManager, resultsInterface, logger);
 }
 
 TransactionsManagerTest::~TransactionsManagerTest()

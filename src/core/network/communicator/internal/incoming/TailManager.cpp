@@ -7,9 +7,9 @@ TailManager::Tail::Tail(TailManager &manager) :
 }
 
 TailManager::TailManager(
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     Logger &logger):
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLog(logger),
     mTails(),
     mFlowTail(*this),
@@ -18,8 +18,8 @@ TailManager::TailManager(
     mRoutingTableTail(*this)
 {
     mUpdatingTimer = make_unique<as::steady_timer>(
-                         mIOService);
-    mUpdatingTimer->expires_from_now(
+                         mIOCtx);
+    mUpdatingTimer->expires_after(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));
     mUpdatingTimer->async_wait(
@@ -38,7 +38,7 @@ void TailManager::update(const boost::system::error_code &err)
         warning() << err.message();
     }
     mUpdatingTimer->cancel();
-    mUpdatingTimer->expires_from_now(
+    mUpdatingTimer->expires_after(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));
     mUpdatingTimer->async_wait(

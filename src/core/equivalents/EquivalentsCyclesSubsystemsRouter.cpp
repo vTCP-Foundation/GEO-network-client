@@ -3,13 +3,13 @@
 EquivalentsCyclesSubsystemsRouter::EquivalentsCyclesSubsystemsRouter(
     TransactionsScheduler *transactionScheduler,
     SubsystemsController *subsystemsController,
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     vector<SerializedEquivalent> equivalents,
     Logger &logger):
 
     mTransactionScheduler(transactionScheduler),
     mSubsystemsController(subsystemsController),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLogger(logger)
 {
     for (const auto &equivalent : equivalents) {
@@ -20,7 +20,7 @@ EquivalentsCyclesSubsystemsRouter::EquivalentsCyclesSubsystemsRouter(
                 make_unique<CyclesManager>(
                     equivalent,
                     mTransactionScheduler,
-                    mIOService,
+                    mIOCtx,
                     mLogger,
                     mSubsystemsController)));
         info() << "Cycles Manager is successfully initialized";
@@ -74,7 +74,7 @@ void EquivalentsCyclesSubsystemsRouter::initNewEquivalent(
             make_unique<CyclesManager>(
                 equivalent,
                 mTransactionScheduler,
-                mIOService,
+                mIOCtx,
                 mLogger,
                 mSubsystemsController)));
     subscribeForBuildingFiveNodesCycles(

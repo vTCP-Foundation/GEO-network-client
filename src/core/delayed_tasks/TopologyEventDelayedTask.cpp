@@ -1,17 +1,17 @@
 #include "TopologyEventDelayedTask.h"
 
 TopologyEventDelayedTask::TopologyEventDelayedTask(
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
     Logger &logger) :
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mEquivalentsSubsystemsRouter(equivalentsSubsystemsRouter),
     mLog(logger)
 {
     mTopologyEventTimer = make_unique<as::steady_timer>(
-                              mIOService);
+                              mIOCtx);
 
-    mTopologyEventTimer->expires_from_now(
+    mTopologyEventTimer->expires_after(
         chrono::seconds(
             +kDelayedTaskTimeSec));
     mTopologyEventTimer->async_wait(boost::bind(

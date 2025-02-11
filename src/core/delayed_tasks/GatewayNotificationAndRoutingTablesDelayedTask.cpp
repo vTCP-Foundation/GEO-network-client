@@ -1,14 +1,14 @@
 #include "GatewayNotificationAndRoutingTablesDelayedTask.h"
 
 GatewayNotificationAndRoutingTablesDelayedTask::GatewayNotificationAndRoutingTablesDelayedTask(
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     Logger &logger):
 
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLog(logger)
 {
     mNotificationTimer = make_unique<as::steady_timer>(
-                             mIOService);
+                             mIOCtx);
     // todo : rand() used for concurrent start of all nodes or some part of nodes (data center)
     // on decentralize network it is not necessary
     srand(randomInitializer());
@@ -17,7 +17,7 @@ GatewayNotificationAndRoutingTablesDelayedTask::GatewayNotificationAndRoutingTab
 #ifdef TESTS
     timeStarted = 10;
 #endif
-    mNotificationTimer->expires_from_now(
+    mNotificationTimer->expires_after(
         chrono::seconds(
             timeStarted));
     mNotificationTimer->async_wait(
@@ -35,12 +35,12 @@ void GatewayNotificationAndRoutingTablesDelayedTask::runSignalNotify(
     }
     info() << "run gateway notification signal";
     mNotificationTimer->cancel();
-    mNotificationTimer->expires_from_now(
+    mNotificationTimer->expires_after(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds + rand() % (60 * 60 * 24)));
 #ifdef TESTS
     mNotificationTimer->cancel();
-    mNotificationTimer->expires_from_now(
+    mNotificationTimer->expires_after(
         std::chrono::seconds(15));
 #endif
     mNotificationTimer->async_wait(

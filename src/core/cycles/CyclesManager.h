@@ -38,7 +38,7 @@ public:
     CyclesManager(
         const SerializedEquivalent equivalent,
         TransactionsScheduler *transactionsScheduler,
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         Logger &logger,
         SubsystemsController *subsystemsController);
 
@@ -134,7 +134,7 @@ private:
 private:
     TransactionsScheduler *mTransactionScheduler;
     SerializedEquivalent mEquivalent;
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
 
     vector<Path::Shared> mThreeNodesCycles;
     vector<Path::Shared> mFourNodesCycles;

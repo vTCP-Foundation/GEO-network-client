@@ -30,7 +30,7 @@ public:
 public:
     PingMessagesHandler(
         ContractorsManager *contractorsManager,
-        IOService &ioService,
+        IOCtx &ioCtx,
         Logger &logger);
 
     /**
@@ -73,7 +73,7 @@ private:
     ContractorsManager *mContractorsManager;
     vector<ContractorID> mContractors;
 
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     as::steady_timer mResendingTimer;
     unique_ptr<as::steady_timer> mReschedulingTimer;
 };

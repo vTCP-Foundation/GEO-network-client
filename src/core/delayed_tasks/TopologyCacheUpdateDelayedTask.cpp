@@ -2,24 +2,24 @@
 
 TopologyCacheUpdateDelayedTask::TopologyCacheUpdateDelayedTask(
     const SerializedEquivalent equivalent,
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     TopologyCacheManager *topologyCacheManager,
     TopologyTrustLinesManager *topologyTrustLineManager,
     MaxFlowCacheManager *maxFlowCalculationNodeCacheManager,
     Logger &logger):
 
     mEquivalent(equivalent),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mTopologyCacheManager(topologyCacheManager),
     mTopologyTrustLineManager(topologyTrustLineManager),
     mMaxFlowCalculationNodeCacheManager(maxFlowCalculationNodeCacheManager),
     mLog(logger)
 {
     mTopologyCacheUpdateTimer = make_unique<as::steady_timer>(
-                                    mIOService);
+                                    mIOCtx);
 
     Duration microsecondsDelay = minimalAwakeningTimestamp() - utc_now();
-    mTopologyCacheUpdateTimer->expires_from_now(
+    mTopologyCacheUpdateTimer->expires_after(
         chrono::milliseconds(
             microsecondsDelay.total_milliseconds()));
     mTopologyCacheUpdateTimer->async_wait(boost::bind(
@@ -29,18 +29,15 @@ TopologyCacheUpdateDelayedTask::TopologyCacheUpdateDelayedTask(
 }
 
 void TopologyCacheUpdateDelayedTask::runSignalTopologyCacheUpdate(
-    const boost::system::error_code &errorCode)
+    const boost::system::error_code &error)
 {
-    if (errorCode) {
-        warning() << errorCode.message().c_str();
+    if (error != boost::system::errc::success) {
+        return;
     }
-    DateTime closestTimeEvent = updateCache();
-    Duration microsecondsDelay = closestTimeEvent - utc_now();
-#ifdef DEBUG_LOG_MAX_FLOW_CALCULATION
-    auto duration = chrono::milliseconds(microsecondsDelay.total_milliseconds());
-    debug() << "next launch: " << duration.count() << " ms" << endl;
-#endif
-    mTopologyCacheUpdateTimer->expires_from_now(
+
+    DateTime nextUpdateTime = updateCache();
+    Duration microsecondsDelay = nextUpdateTime - utc_now();
+    mTopologyCacheUpdateTimer->expires_after(
         chrono::milliseconds(
             microsecondsDelay.total_milliseconds()));
     mTopologyCacheUpdateTimer->async_wait(boost::bind(

@@ -11,7 +11,7 @@ class TopologyEventDelayedTask
 
 public:
     TopologyEventDelayedTask(
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
         Logger &logger);
 
@@ -22,7 +22,7 @@ private:
     static const uint16_t kDelayedTaskTimeSec = 5;
 
 private:
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     unique_ptr<as::steady_timer> mTopologyEventTimer;
     EquivalentsSubsystemsRouter *mEquivalentsSubsystemsRouter;
     Logger &mLog;

@@ -5,19 +5,19 @@ const BlockNumber ObservingHandler::kDefaultBlockNumber;
 
 ObservingHandler::ObservingHandler(
     vector<pair<string, string>> observersAddressesStr,
-    IOService &ioService,
+    IOCtx &ioCtx,
     StorageHandler *storageHandler,
     ResourcesManager *resourcesManager,
     Logger &logger) :
     LoggerMixin(logger),
     mObservingCommunicator(
         make_unique<ObservingCommunicator>(
-            ioService,
+            ioCtx,
             logger)),
-    mBlockNumberRequestTimer(ioService),
-    mClaimsTimer(ioService),
-    mTransactionsTimer(ioService),
-    mRequestsTimer(ioService),
+    mBlockNumberRequestTimer(ioCtx),
+    mClaimsTimer(ioCtx),
+    mTransactionsTimer(ioCtx),
+    mRequestsTimer(ioCtx),
     mStorageHandler(storageHandler),
     mResourcesManager(resourcesManager)
 {}
@@ -37,7 +37,7 @@ void ObservingHandler::requestActualBlockNumber(
 #ifdef DEBUG_LOG_OBSEVING_HANDLER
     debug() << "requestActualBlockNumber for " << transactionUUID;
 #endif
-    mRequestsTimer.expires_from_now(
+    mRequestsTimer.expires_after(
         std::chrono::milliseconds(
             5));
     mRequestsTimer.async_wait(
@@ -84,7 +84,7 @@ void ObservingHandler::rescheduleResending()
     }
 
     const auto kCleaningTimeout = closestClaimPerformingTimestamp() - utc_now();
-    mClaimsTimer.expires_from_now(chrono::microseconds(kCleaningTimeout.total_microseconds()));
+    mClaimsTimer.expires_after(chrono::microseconds(kCleaningTimeout.total_microseconds()));
     mClaimsTimer.async_wait([this] (const boost::system::error_code &e) {
 
         if (e == boost::asio::error::operation_aborted) {

@@ -1,13 +1,13 @@
 #include "ConfirmationNotStronglyRequiredMessagesHandler.h"
 
 ConfirmationNotStronglyRequiredMessagesHandler::ConfirmationNotStronglyRequiredMessagesHandler(
-    IOService &ioService,
+    IOCtx &ioCtx,
     Logger &logger)
 noexcept:
 
     LoggerMixin(logger),
-    mIOService(ioService),
-    mCleaningTimer(ioService),
+    mIOCtx(ioCtx),
+    mCleaningTimer(ioCtx),
     mCurrentConfirmationID(0)
 {}
 
@@ -120,7 +120,7 @@ void ConfirmationNotStronglyRequiredMessagesHandler::rescheduleResending()
     }
 
     const auto kCleaningTimeout = closestQueueSendingTimestamp() - utc_now();
-    mCleaningTimer.expires_from_now(chrono::microseconds(kCleaningTimeout.total_microseconds()));
+    mCleaningTimer.expires_after(chrono::microseconds(kCleaningTimeout.total_microseconds()));
     mCleaningTimer.async_wait([this] (const boost::system::error_code &e) {
 
         if (e == boost::asio::error::operation_aborted) {

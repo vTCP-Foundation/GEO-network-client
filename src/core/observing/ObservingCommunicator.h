@@ -14,7 +14,7 @@ class ObservingCommunicator
 
 public:
     ObservingCommunicator(
-        IOService &ioService,
+        IOCtx &ioCtx,
         Logger &logger);
 
     BytesShared sendRequestToObserver(
@@ -31,7 +31,7 @@ protected:
     LoggerStream info() const;
 
 private:
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     Logger &mLogger;
 };
 

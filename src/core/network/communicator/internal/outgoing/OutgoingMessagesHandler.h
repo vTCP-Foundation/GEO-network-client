@@ -12,7 +12,7 @@ class OutgoingMessagesHandler
 {
 public:
     OutgoingMessagesHandler(
-        IOService &ioService,
+        IOCtx &ioCtx,
         UDPSocket &socket,
         ContractorsManager *contractorsManager,
         ProvidingHandler *providingHandler,
@@ -28,6 +28,8 @@ public:
 
     void processProviderResponse(
         ProvidingAddressResponseMessage::Shared providerResponse);
+
+    static const constexpr uint32_t kPostponedMessagesCleaningTimeout = 30; // 30 seconds timeout for cleaning
 
 private:
     void onPingMessageToProviderReady(

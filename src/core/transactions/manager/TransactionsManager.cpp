@@ -5,7 +5,7 @@
  * Throws RuntimeError in case if some internal components can't be initialised.
  */
 TransactionsManager::TransactionsManager(
-    as::io_service &IOService,
+    as::io_context &IOCtx,
     ContractorsManager *contractorsManager,
     EquivalentsSubsystemsRouter *equivalentsSubsystemsRouter,
     ResourcesManager *resourcesManager,
@@ -19,7 +19,7 @@ TransactionsManager::TransactionsManager(
     SubsystemsController *subsystemsController,
     TrustLinesInfluenceController *trustLinesInfluenceController) :
 
-    mIOService(IOService),
+    mIOCtx(IOCtx),
     mContractorsManager(contractorsManager),
     mEquivalentsSubsystemsRouter(equivalentsSubsystemsRouter),
     mResourcesManager(resourcesManager),
@@ -36,7 +36,7 @@ TransactionsManager::TransactionsManager(
 
     mScheduler(
         new TransactionsScheduler(
-            mIOService,
+            mIOCtx,
             mTrustLinesInfluenceController,
             mLog)),
 
@@ -44,7 +44,7 @@ TransactionsManager::TransactionsManager(
         new EquivalentsCyclesSubsystemsRouter(
             mScheduler.get(),
             mSubsystemsController,
-            mIOService,
+            mIOCtx,
             mEquivalentsSubsystemsRouter->equivalents(),
             mLog))
 {

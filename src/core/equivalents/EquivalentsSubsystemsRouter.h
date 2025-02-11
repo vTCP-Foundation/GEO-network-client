@@ -24,7 +24,7 @@ public:
         Keystore *keystore,
         ContractorsManager *contractorsManager,
         EventsInterfaceManager *eventsInterfaceManager,
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         vector<SerializedEquivalent> &equivalentsIAmGateway,
         Logger &logger);
 
@@ -86,7 +86,7 @@ private:
 
 private:
     map<SerializedEquivalent, bool> mIAmGateways;
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     StorageHandler *mStorageHandler;
     Keystore *mKeysStore;
     ContractorsManager *mContractorsManager;

@@ -44,7 +44,7 @@
 #include "../../../common/exceptions/RuntimeError.h"
 
 #include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/lexical_cast.hpp>
@@ -61,6 +61,7 @@
 using namespace std;
 using namespace boost::uuids;
 namespace signals = boost::signals2;
+using namespace boost::placeholders;
 
 /**
  * User commands are transmitted via text protocol.
@@ -148,7 +149,7 @@ public:
 
 public:
     explicit CommandsInterface(
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         Logger &logger);
 
     ~CommandsInterface();
@@ -180,13 +181,13 @@ public:
 protected:
     static const constexpr size_t kCommandBufferSize = 1024;
 
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     Logger &mLog;
 
     as::streambuf mCommandBuffer;
 
     unique_ptr<as::posix::stream_descriptor> mFIFOStreamDescriptor;
-    unique_ptr<as::deadline_timer> mReadTimeoutTimer;
+    unique_ptr<as::steady_timer> mReadTimeoutTimer;
     unique_ptr<CommandsParser> mCommandsParser;
 };
 

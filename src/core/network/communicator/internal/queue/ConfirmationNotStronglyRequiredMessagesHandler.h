@@ -33,7 +33,7 @@ public:
 
 public:
     ConfirmationNotStronglyRequiredMessagesHandler(
-        IOService &ioService,
+        IOCtx &ioCtx,
         Logger &logger)
     noexcept;
 
@@ -91,7 +91,7 @@ protected:
      */
     map<pair<SerializedEquivalent, string>, ConfirmationNotStronglyRequiredMessagesQueue::Shared> mQueues;
 
-    IOService &mIOService;
+    IOCtx &mIOCtx;
 
     as::steady_timer mCleaningTimer;
 

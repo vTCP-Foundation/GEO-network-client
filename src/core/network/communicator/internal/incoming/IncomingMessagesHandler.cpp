@@ -13,7 +13,7 @@ static const uint32_t kMaxReadSocketSize = 1024*1024; // 1MB of data
 #endif
 
 IncomingMessagesHandler::IncomingMessagesHandler(
-    IOService &ioService,
+    IOCtx &ioCtx,
     UDPSocket &socket,
     ContractorsManager *contractorsManager,
     TailManager *tailManager,
@@ -21,7 +21,7 @@ IncomingMessagesHandler::IncomingMessagesHandler(
 noexcept:
 
     mSocket(socket),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLog(logger),
     mMessagesParser(contractorsManager, &logger),
 
@@ -30,7 +30,7 @@ noexcept:
         mMessagesParser,
         mTailManager,
         mLog),
-    mCleaningTimer(ioService)
+    mCleaningTimer(ioCtx)
 {
     boost::asio::socket_base::receive_buffer_size option(kMaxReadSocketSize);
     mSocket.set_option(option);
@@ -57,7 +57,7 @@ void IncomingMessagesHandler::handleReceivedInfo(
 noexcept
 {
     static auto exponetialTimeoutSeconds = 1;
-    static boost::asio::steady_timer waitingTimer(mIOService);
+    static boost::asio::steady_timer waitingTimer(mIOCtx);
 
 
     if (errorMessage) {
@@ -66,9 +66,8 @@ noexcept
         // In case of error - wait for some period of time
         // and then restart receiving messages.
         exponetialTimeoutSeconds = exponetialTimeoutSeconds * 2;
-        waitingTimer.expires_from_now(
-            chrono::seconds(
-                exponetialTimeoutSeconds));
+        waitingTimer.expires_after(
+            chrono::seconds(exponetialTimeoutSeconds));
 
         waitingTimer.async_wait([this] (const boost::system::error_code&) {
             beginReceivingData();

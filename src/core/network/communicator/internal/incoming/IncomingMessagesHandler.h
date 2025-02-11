@@ -18,7 +18,7 @@ public:
 
 public:
     IncomingMessagesHandler(
-        IOService &ioService,
+        IOCtx &ioCtx,
         UDPSocket &socket,
         ContractorsManager *contractorsManager,
         TailManager *tailManager,
@@ -52,7 +52,7 @@ protected:
 
 protected:
     UDPSocket &mSocket;
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     TailManager *mTailManager;
     Logger &mLog;
 

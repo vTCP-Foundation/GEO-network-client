@@ -14,7 +14,7 @@ class OutgoingNodesHandler
 {
 public:
     OutgoingNodesHandler (
-        IOService &ioService,
+        IOCtx &ioCtx,
         UDPSocket &socket,
         Logger &logger)
     noexcept;
@@ -55,7 +55,7 @@ protected:
 
     boost::asio::steady_timer mCleaningTimer;
 
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     UDPSocket &mSocket;
     Logger &mLog;
 };

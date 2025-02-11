@@ -25,7 +25,7 @@ public:
     EquivalentsCyclesSubsystemsRouter(
         TransactionsScheduler *transactionScheduler,
         SubsystemsController *subsystemsController,
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         vector<SerializedEquivalent> equivalents,
         Logger &logger);
 
@@ -81,7 +81,7 @@ private:
         Path::Shared cycle);
 
 private:
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     TransactionsScheduler *mTransactionScheduler;
     SubsystemsController *mSubsystemsController;
     Logger &mLogger;

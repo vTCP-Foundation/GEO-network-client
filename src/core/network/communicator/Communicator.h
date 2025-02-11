@@ -29,7 +29,7 @@ public:
 
 public:
     explicit Communicator(
-        IOService &ioService,
+        IOCtx &ioCtx,
         Host host,
         Port port,
         ContractorsManager *contractorsManager,
@@ -105,7 +105,7 @@ protected:
     noexcept;
 
 protected:
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     unique_ptr<CommunicatorStorageHandler> mCommunicatorStorageHandler;
     TailManager *mTailManager;
     Logger &mLog;

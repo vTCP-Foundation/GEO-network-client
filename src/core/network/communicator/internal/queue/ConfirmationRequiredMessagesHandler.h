@@ -59,8 +59,10 @@ public:
     signals::signal<void(pair<ContractorID, TransactionMessage::Shared>)> signalOutgoingMessageReady;
 
 public:
+    static const constexpr uint32_t kDeserializationTimeout = 5; // 5 seconds timeout for deserialization
+
     ConfirmationRequiredMessagesHandler(
-        IOService &ioService,
+        IOCtx &ioCtx,
         CommunicatorStorageHandler *communicatorStorageHandler,
         Logger &logger)
     noexcept;
@@ -141,7 +143,7 @@ protected:
      */
     map<pair<SerializedEquivalent, ContractorID>, ConfirmationRequiredMessagesQueue::Shared> mQueues;
 
-    IOService &mIOService;
+    IOCtx &mIOCtx;
 
     CommunicatorStorageHandler *mCommunicatorStorageHandler;
 

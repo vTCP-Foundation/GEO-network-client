@@ -119,7 +119,7 @@ uint64_t IncomingNodesHandler::key(
 noexcept
 {
     return
-        endpoint.address().to_v4().to_ulong()
+        endpoint.address().to_v4().to_uint()
         + endpoint.port();
 }
 

@@ -2,13 +2,13 @@
 
 ProvidingHandler::ProvidingHandler(
     vector<Provider::Shared> &providers,
-    IOService &ioService,
+    IOCtx &ioCtx,
     Contractor::Shared selfContractor,
     Logger &logger) :
     LoggerMixin(logger),
     mProviders(providers),
-    mUpdatingAddressTimer(ioService),
-    mCacheCleaningTimer(ioService),
+    mUpdatingAddressTimer(ioCtx),
+    mCacheCleaningTimer(ioCtx),
     mSelfContractor(selfContractor)
 {
 #ifdef DEBUG_LOG_PROVIDING_HANDLER
@@ -29,7 +29,7 @@ ProvidingHandler::ProvidingHandler(
     }
 
     if (!mProvidersForPing.empty()) {
-        mUpdatingAddressTimer.expires_from_now(
+        mUpdatingAddressTimer.expires_after(
             std::chrono::seconds(
                 +kStartingAddressPeriodSeconds));
         mUpdatingAddressTimer.async_wait(
@@ -56,7 +56,7 @@ void ProvidingHandler::updateAddressForProviders(
             provider);
     }
 
-    mUpdatingAddressTimer.expires_from_now(
+    mUpdatingAddressTimer.expires_after(
         std::chrono::seconds(
             +kUpdatingAddressPeriodSeconds));
     mUpdatingAddressTimer.async_wait(
@@ -129,7 +129,7 @@ void ProvidingHandler::rescheduleCleaning()
         return;
     }
     const auto kCleaningTimeout = mTimesCache.at(0).first - utc_now();
-    mCacheCleaningTimer.expires_from_now(
+    mCacheCleaningTimer.expires_after(
         chrono::microseconds(
             kCleaningTimeout.total_microseconds()));
     mCacheCleaningTimer.async_wait(

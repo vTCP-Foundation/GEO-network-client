@@ -26,11 +26,9 @@ void CommandsParser::appendReadData(
         return;
     }
 
-    // TODO: check if using buffer->data() doesn't leads to the buffer overflow.
-    const char* data = as::buffer_cast<const char*>(buffer->data());
-    for (size_t i = 0; i < receivedBytesCount; ++i) {
-        mBuffer.push_back(*data++);
-    }
+    string tempBuffer(receivedBytesCount, '\0');
+    boost::asio::buffer_copy(boost::asio::buffer(tempBuffer), buffer->data(), receivedBytesCount);
+    mBuffer.append(tempBuffer);
 }
 
 /**
@@ -376,10 +374,10 @@ pair<bool, BaseUserCommand::Shared> CommandsParser::commandError(
 }
 
 CommandsInterface::CommandsInterface(
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     Logger &logger) :
 
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLog(logger)
 {
     // Try to open FIFO file in non-blocking manner.
@@ -405,7 +403,7 @@ CommandsInterface::CommandsInterface(
 
     try {
         mFIFOStreamDescriptor = make_unique<as::posix::stream_descriptor>(
-                                    mIOService,
+                                    mIOCtx,
                                     mFIFODescriptor);
         mFIFOStreamDescriptor->non_blocking(true);
 
@@ -415,9 +413,7 @@ CommandsInterface::CommandsInterface(
     }
 
     try {
-        mReadTimeoutTimer = make_unique<as::deadline_timer>(
-                                mIOService,
-                                boost::posix_time::seconds(2));
+        mReadTimeoutTimer = make_unique<as::steady_timer>(mIOCtx);
 
     } catch (std::bad_alloc &) {
         throw MemoryError(
@@ -492,7 +488,7 @@ void CommandsInterface::handleReceivedInfo(
 
     } else {
         if (error == as::error::eof) {
-            mReadTimeoutTimer->expires_from_now(boost::posix_time::seconds(1));
+            mReadTimeoutTimer->expires_after(std::chrono::seconds(1));
             mReadTimeoutTimer->async_wait(
                 boost::bind(
                     &CommandsInterface::handleTimeout,
@@ -502,7 +498,7 @@ void CommandsInterface::handleReceivedInfo(
         } else {
             // Looks like FIFO file is corrupted or unreachable.
             // Next read attempt should be performed with a long Timeout.
-            mReadTimeoutTimer->expires_from_now(boost::posix_time::minutes(10));
+            mReadTimeoutTimer->expires_after(std::chrono::minutes(10));
             mReadTimeoutTimer->async_wait(
                 boost::bind(
                     &CommandsInterface::handleTimeout,

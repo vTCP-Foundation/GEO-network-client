@@ -1,19 +1,20 @@
 #include "ConfirmationRequiredMessagesHandler.h"
 
+const uint16_t ConfirmationRequiredMessagesHandler::kMessagesDeserializationDelayedSecondsTime;
 
 ConfirmationRequiredMessagesHandler::ConfirmationRequiredMessagesHandler(
-    IOService &ioService,
+    IOCtx &ioCtx,
     CommunicatorStorageHandler *communicatorStorageHandler,
     Logger &logger)
 noexcept:
 
     LoggerMixin(logger),
     mCommunicatorStorageHandler(communicatorStorageHandler),
-    mIOService(ioService),
-    mCleaningTimer(ioService)
+    mIOCtx(ioCtx),
+    mCleaningTimer(ioCtx)
 {
     mDeserializationMessagesTimer = make_unique<as::steady_timer>(
-                                        mIOService);
+                                        mIOCtx);
     deserializeMessages();
 }
 
@@ -147,7 +148,7 @@ void ConfirmationRequiredMessagesHandler::rescheduleResending()
     }
 
     const auto kCleaningTimeout = closestQueueSendingTimestamp() - utc_now();
-    mCleaningTimer.expires_from_now(chrono::microseconds(kCleaningTimeout.total_microseconds()));
+    mCleaningTimer.expires_after(chrono::microseconds(kCleaningTimeout.total_microseconds()));
     mCleaningTimer.async_wait([this] (const boost::system::error_code &e) {
 
         if (e == boost::asio::error::operation_aborted) {
@@ -271,9 +272,8 @@ void ConfirmationRequiredMessagesHandler::deserializeMessages()
                 _2,
                 _3));
     }
-    mDeserializationMessagesTimer->expires_from_now(
-        chrono::seconds(
-            +kMessagesDeserializationDelayedSecondsTime));
+    mDeserializationMessagesTimer->expires_after(
+        chrono::seconds(kMessagesDeserializationDelayedSecondsTime));
     mDeserializationMessagesTimer->async_wait(
         boost::bind(
             &ConfirmationRequiredMessagesHandler::delayedRescheduleResendingAfterDeserialization,

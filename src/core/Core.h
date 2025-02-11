@@ -1,5 +1,4 @@
-﻿
-#ifndef VTCPD_CORE_H
+﻿#ifndef VTCPD_CORE_H
 #define VTCPD_CORE_H
 
 #include "common/Types.h"
@@ -22,7 +21,7 @@
 
 #include "logger/Logger.h"
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/signals2.hpp>
 
@@ -33,12 +32,12 @@
 #include <sys/prctl.h>
 #include <iomanip>
 
-
 using namespace std;
 using namespace crypto;
 
 namespace as = boost::asio;
 namespace signals = boost::signals2;
+using namespace boost::placeholders;
 
 class Core
 {
@@ -206,7 +205,7 @@ protected:
     // By default, it would point to the standard argv[0] char sequence;
     char* mCommandDescriptionPtr;
 
-    as::io_service mIOService;
+    as::io_context mIOCtx;
 
     unique_ptr<Logger> mLog;
     unique_ptr<Settings> mSettings;

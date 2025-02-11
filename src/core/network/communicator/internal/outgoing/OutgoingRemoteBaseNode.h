@@ -24,7 +24,7 @@ public:
 public:
     OutgoingRemoteBaseNode(
         UDPSocket &socket,
-        IOService &ioService,
+        IOCtx &ioCtx,
         IPv4WithPortAddress::Shared remoteAddress,
         Logger &logger);
 
@@ -54,18 +54,15 @@ protected:
     LoggerStream debug() const;
 
 protected:
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     UDPSocket &mSocket;
     Logger &mLog;
 
     IPv4WithPortAddress::Shared mRemoteAddress;
     queue<pair<byte_t*, Packet::Size>> mPacketsQueue;
     PacketHeader::ChannelIndex mNextAvailableChannelIndex;
-
-    // This pair contains date time of last packet sending
-    // and count of sending operations, that would be done in interval, less than 50 msecs between 2 operations.
-    pair<boost::posix_time::ptime, size_t> mCyclesStats;
-    as::deadline_timer mSendingDelayTimer;
+    pair<TimePoint, size_t> mCyclesStats;
+    as::steady_timer mSendingDelayTimer;
 };
 
 #endif // VTCPD_OUTGOINGREMOTEBASENODE_H

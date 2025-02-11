@@ -43,7 +43,7 @@ public:
 public:
     ObservingHandler(
         vector<pair<string, string>> observersAddressesStr,
-        IOService &ioService,
+        IOCtx &ioCtx,
         StorageHandler *storageHandler,
         ResourcesManager *resourcesManager,
         Logger &logger);

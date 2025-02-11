@@ -2,17 +2,17 @@
 
 OutgoingRemoteBaseNode::OutgoingRemoteBaseNode(
     UDPSocket &socket,
-    IOService &ioService,
+    IOCtx &ioCtx,
     IPv4WithPortAddress::Shared remoteAddress,
     Logger &logger) :
 
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mSocket(socket),
     mRemoteAddress(remoteAddress),
     mLog(logger),
     mNextAvailableChannelIndex(0),
-    mCyclesStats(boost::posix_time::microsec_clock::universal_time(), 0),
-    mSendingDelayTimer(mIOService)
+    mCyclesStats(std::chrono::steady_clock::now(), 0),
+    mSendingDelayTimer(mIOCtx)
 {
 }
 
@@ -212,7 +212,7 @@ void OutgoingRemoteBaseNode::beginPacketsSending()
     UDPEndpoint endpoint;
     try {
         endpoint = as::ip::udp::endpoint(
-                       as::ip::address_v4::from_string(
+                       boost::asio::ip::make_address_v4(
                            mRemoteAddress->host()),
                        mRemoteAddress->port());
         debug() << "Endpoint address " << endpoint.address().to_string();
@@ -232,8 +232,8 @@ void OutgoingRemoteBaseNode::beginPacketsSending()
     }
 
     // The next code inserts delay between sending packets in case of high traffic.
-    const auto kShortSendingTimeInterval = boost::posix_time::milliseconds(20);
-    const auto kTimeoutFromLastSending = boost::posix_time::microsec_clock::universal_time() - mCyclesStats.first;
+    const auto kShortSendingTimeInterval = std::chrono::milliseconds(20);
+    const auto kTimeoutFromLastSending = std::chrono::steady_clock::now() - mCyclesStats.first;
     if (kTimeoutFromLastSending < kShortSendingTimeInterval) {
         // Increasing short sendings counter.
         mCyclesStats.second += 1;
@@ -241,7 +241,7 @@ void OutgoingRemoteBaseNode::beginPacketsSending()
         const auto kMaxShortSendings = 30;
         if (mCyclesStats.second > kMaxShortSendings) {
             mCyclesStats.second = 0;
-            mSendingDelayTimer.expires_from_now(kShortSendingTimeInterval);
+            mSendingDelayTimer.expires_after(kShortSendingTimeInterval);
             mSendingDelayTimer.async_wait([this](const boost::system::error_code &_) {
                 this->beginPacketsSending();
                 debug() << "Sending delayed";
@@ -298,7 +298,7 @@ void OutgoingRemoteBaseNode::beginPacketsSending()
         free(packetDataAndSize.first);
         mPacketsQueue.pop();
 
-        mCyclesStats.first = boost::posix_time::microsec_clock::universal_time();
+        mCyclesStats.first = std::chrono::steady_clock::now();
         if (!mPacketsQueue.empty()) {
             beginPacketsSending();
         }

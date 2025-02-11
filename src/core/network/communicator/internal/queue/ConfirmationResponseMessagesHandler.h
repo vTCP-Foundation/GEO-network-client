@@ -17,7 +17,7 @@ class ConfirmationResponseMessagesHandler : LoggerMixin
 
 public:
     ConfirmationResponseMessagesHandler(
-        IOService &ioService,
+        IOCtx &ioCtx,
         Logger &logger);
 
     void addCachedMessage(
@@ -54,7 +54,7 @@ protected:
 
 private:
     map<pair<SerializedEquivalent, ContractorID>, ConfirmationCachedResponseMessage::Shared> mCachedMessages;
-    IOService &mIOService;
+    IOCtx &mIOCtx;
     as::steady_timer mCleaningTimer;
 };
 

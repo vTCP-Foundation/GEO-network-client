@@ -48,7 +48,7 @@ private:
 
 public:
     TailManager(
-        as::io_service &ioService,
+        as::io_context &ioCtx,
         Logger &logger);
     ~TailManager();
 
@@ -88,7 +88,7 @@ private:
     Tail mCyclesSixTail;
     Tail mRoutingTableTail;
 
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     unique_ptr<as::steady_timer> mUpdatingTimer;
 };
 

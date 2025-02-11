@@ -3,13 +3,13 @@
 CyclesManager::CyclesManager(
     const SerializedEquivalent equivalent,
     TransactionsScheduler *transactionsScheduler,
-    as::io_service &ioService,
+    as::io_context &ioCtx,
     Logger &logger,
     SubsystemsController *subsystemsController) :
 
     mEquivalent(equivalent),
     mTransactionScheduler(transactionsScheduler),
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mLog(logger),
     mSubsystemsController(subsystemsController),
     mIsCycleInProcess(false)
@@ -22,8 +22,8 @@ CyclesManager::CyclesManager(
     timeStarted = kSignalStartTimeSecondsTests;
 #endif
     mFiveNodesCycleTimer = make_unique<as::steady_timer>(
-                               mIOService);
-    mFiveNodesCycleTimer->expires_from_now(
+                               mIOCtx);
+    mFiveNodesCycleTimer->expires_after(
         std::chrono::seconds(
             timeStarted));
     mFiveNodesCycleTimer->async_wait(
@@ -37,8 +37,8 @@ CyclesManager::CyclesManager(
     timeStarted = kSignalStartTimeSecondsTests;
 #endif
     mSixNodesCycleTimer = make_unique<as::steady_timer>(
-                              mIOService);
-    mSixNodesCycleTimer->expires_from_now(
+                              mIOCtx);
+    mSixNodesCycleTimer->expires_after(
         std::chrono::seconds(
             timeStarted));
     mSixNodesCycleTimer->async_wait(
@@ -48,8 +48,8 @@ CyclesManager::CyclesManager(
             as::placeholders::error));
 
     mUpdatingTimer = make_unique<as::steady_timer>(
-                         mIOService);
-    mUpdatingTimer->expires_from_now(
+                         mIOCtx);
+    mUpdatingTimer->expires_after(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));
     mUpdatingTimer->async_wait(
@@ -178,7 +178,7 @@ void CyclesManager::runSignalFiveNodes(
 #ifdef TESTS
     timeRepeated = kSignalRepeatTimeSecondsTests;
 #endif
-    mFiveNodesCycleTimer->expires_from_now(
+    mFiveNodesCycleTimer->expires_after(
         std::chrono::seconds(
             timeRepeated));
     mFiveNodesCycleTimer->async_wait(
@@ -200,7 +200,7 @@ void CyclesManager::runSignalSixNodes(
 #ifdef TESTS
     timeRepeated = kSignalRepeatTimeSecondsTests;
 #endif
-    mSixNodesCycleTimer->expires_from_now(
+    mSixNodesCycleTimer->expires_after(
         std::chrono::seconds(
             timeRepeated));
     mSixNodesCycleTimer->async_wait(
@@ -402,7 +402,7 @@ void CyclesManager::updateOfflineNodesAndClosedTLLists(
         warning() << err.message();
     }
     mUpdatingTimer->cancel();
-    mUpdatingTimer->expires_from_now(
+    mUpdatingTimer->expires_after(
         std::chrono::seconds(
             kUpdatingTimerPeriodSeconds));
     mUpdatingTimer->async_wait(

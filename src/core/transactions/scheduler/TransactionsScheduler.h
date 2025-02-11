@@ -24,7 +24,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/steady_timer.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/signals2.hpp>
 
 #include <chrono>
@@ -34,6 +34,7 @@
 
 
 using namespace std;
+using namespace boost::placeholders;
 
 namespace as = boost::asio;
 namespace signals = boost::signals2;
@@ -49,7 +50,7 @@ public:
 
 public:
     TransactionsScheduler(
-        as::io_service &IOService,
+        as::io_context &IOCtx,
         TrustLinesInfluenceController *trustLinesInfluenceController,
         Logger &logger);
 
@@ -152,7 +153,7 @@ public:
     mutable CycleCloserTransactionWasFinishedSignal cycleCloserTransactionWasFinishedSignal;
 
 private:
-    as::io_service &mIOService;
+    as::io_context &mIOCtx;
     Logger &mLog;
 
     unique_ptr<as::steady_timer> mProcessingTimer;

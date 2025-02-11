@@ -2,14 +2,14 @@
 
 
 OutgoingNodesHandler::OutgoingNodesHandler(
-    IOService &ioService,
+    IOCtx &ioCtx,
     UDPSocket &socket,
     Logger &logger)
 noexcept:
 
-    mIOService(ioService),
+    mIOCtx(ioCtx),
     mSocket(socket),
-    mCleaningTimer(ioService),
+    mCleaningTimer(ioCtx),
     mLog(logger)
 {
     rescheduleCleaning();
@@ -24,7 +24,7 @@ noexcept
     if (0 == mNodes.count(address->fullAddress())) {
         mNodes[address->fullAddress()] = make_unique<OutgoingRemoteBaseNode>(
                                              mSocket,
-                                             mIOService,
+                                             mIOCtx,
                                              address,
                                              mLog);
     }
@@ -42,7 +42,7 @@ noexcept
     if (0 == mProviders.count(address->fullAddress())) {
         mProviders[address->fullAddress()] = make_unique<OutgoingRemoteBaseNode>(
                 mSocket,
-                mIOService,
+                mIOCtx,
                 address,
                 mLog);
     }
@@ -66,7 +66,7 @@ noexcept
 void OutgoingNodesHandler::rescheduleCleaning()
 noexcept
 {
-    mCleaningTimer.expires_from_now(kHandlersTTL());
+    mCleaningTimer.expires_after(kHandlersTTL());
     mCleaningTimer.async_wait([this] (const boost::system::error_code&) {
         this->removeOutdatedNodeHandlers();
         this->removeOutdatedProviderHandlers();
