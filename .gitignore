@@ -1,7 +1,8 @@
 .idea/*
 uuid2address/
-bin/
 build/
+build-debug/
+build-release/
 cmake/
 cmake-build-debug/
 cmake-build-release/
@@ -10,7 +11,6 @@ compile_commands.json
 
 *.cmake
 *.a
-*Makefile
 *.cbp
 *.cpp.o
 CMakeCache.txt
