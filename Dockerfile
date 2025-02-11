@@ -40,7 +40,7 @@ RUN mkdir -p /vtcpd
 WORKDIR /vtcpd
 
 # Copy pre-built binaries and config from host
-COPY ./build/bin/vtcpd ./build/bin/conf.json /vtcpd/
+COPY ./build-debug/bin/vtcpd ./build-debug/bin/conf.json /vtcpd/
 
 # Make fifo and io directories with proper permissions
 RUN mkdir -p /vtcpd/fifo /vtcpd/io && \
@@ -71,7 +71,7 @@ RUN mkdir -p /vtcpd
 WORKDIR /vtcpd
 
 # Copy pre-built binaries and config from host
-COPY ./build/bin/vtcpd ./build/bin/conf.json /vtcpd/
+COPY ./build-debug/bin/vtcpd ./build-debug/bin/conf.json /vtcpd/
 
 # Make fifo and io directories with proper permissions
 RUN mkdir -p /vtcpd/fifo /vtcpd/io && \
