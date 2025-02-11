@@ -1,0 +1,36 @@
+{
+    "addresses":[
+      {
+        "type":"ipv4",
+        "address":"10.135.255.90:2033"
+      }
+    ],
+    "equivalents_registry_address":"eth",
+    "max_hops_count": 2,
+    "observers": [
+      {
+        "type": "ipv4", 
+        "address": "68.183.146.232:4000"
+      },
+      {
+        "type": "ipv4", 
+        "address": "46.101.51.158:4000"
+      },
+      {
+        "type": "ipv4", 
+        "address": "206.189.84.116:4000"
+      },
+      {
+        "type": "ipv4", 
+        "address": "159.89.115.33:4000"
+      }
+    ],
+    "event_files": [
+      {
+        "file": "events.fifo",
+        "blocked": false,
+        "events": [4]
+      }
+    ]
+  }
+  
