@@ -33,15 +33,9 @@ services:
       target: final-manjaro
       args:
         BUILD_TYPE: Debug
-        LISTEN_ADDRESS: ${LISTEN_ADDRESS:-127.0.0.1}
-        LISTEN_PORT: ${LISTEN_PORT:-2000}
-        EQUIVALENTS_REGISTRY: ${EQUIVALENTS_REGISTRY:-eth}
-        MAX_HOPS: ${MAX_HOPS:-5}
     profiles:
       - dev
       - manjaro
-    environment:
-      <<: *common-env
     restart: no
 
   vtcpd-dev-ubuntu:
@@ -51,14 +45,8 @@ services:
       target: final-ubuntu
       args:
         BUILD_TYPE: Debug
-        LISTEN_ADDRESS: ${LISTEN_ADDRESS:-127.0.0.1}
-        LISTEN_PORT: ${LISTEN_PORT:-2000}
-        EQUIVALENTS_REGISTRY: ${EQUIVALENTS_REGISTRY:-eth}
-        MAX_HOPS: ${MAX_HOPS:-5}
     profiles:
       - dev
       - ubuntu
-    environment:
-      <<: *common-env
     restart: no
 
